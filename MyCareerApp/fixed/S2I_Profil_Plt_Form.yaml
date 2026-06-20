@@ -1,0 +1,485 @@
+Screens:
+  S2I_Profil_Plt_Form:
+    Properties:
+      Fill: =RGBA(245, 245, 245, 1)
+      LoadingSpinnerColor: =RGBA(31, 56, 100, 1)
+    Children:
+      - ScreenContainerPltForm:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(245, 245, 245, 1)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =0
+            Width: =Parent.Width
+          Children:
+            - HeaderPltForm:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  Fill: =RGBA(18, 38, 82, 1)
+                  FillPortions: =0
+                  Height: =64
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutMinHeight: =64
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  Width: =Parent.Width
+                Children:
+                  - BtnBackPltForm:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =64
+                        OnSelect: |-
+                          =Set(gblPltEditMode, false);
+                          Set(gblSelectedPlt, Defaults(Profil_Plt));
+                          Back()
+                        Size: =24
+                        Text: ="‹"
+                        Width: =44
+                  - LblAppNamePltForm:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        FillPortions: =1
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =64
+                        Size: =16
+                        Text: ="MyCareerApp"
+                  - HeaderSpacerPltForm:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =RGBA(0, 0, 0, 0)
+                        Height: =64
+                        Width: =44
+            - TopBarShadowPltForm:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderThickness: =0
+                  Fill: =RGBA(0, 0, 0, 0.08)
+                  Height: =5
+                  Width: =Parent.Width
+            - MainPltForm:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutMinHeight: =16
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                  PaddingBottom: =16
+                  PaddingLeft: =16
+                  PaddingRight: =16
+                  PaddingTop: =16
+                  Width: =Parent.Width
+                Children:
+                  - CardPltForm:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(225, 223, 221, 1)
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =1000
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =18
+                        LayoutMinHeight: =1000
+                        PaddingBottom: =28
+                        PaddingLeft: =28
+                        PaddingRight: =28
+                        PaddingTop: =24
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Width: =Parent.Width
+                      Children:
+                        - TitlePltForm:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(31, 56, 100, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Size: =20
+                              Text: =If(Coalesce(gblPltEditMode, false), "Edit PLT", "Tambah PLT")
+                              Width: =Parent.Width
+                        - SubtitlePltForm:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(96, 94, 92, 1)
+                              Font: =Font.'Open Sans'
+                              Size: =12
+                              Text: |-
+                                ="Pegawai: " &
+                                Coalesce(
+                                    LookUp(
+                                        Pegawai,
+                                        Title = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
+                                        Nama
+                                    ),
+                                    Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))
+                                )
+                              Width: =Parent.Width
+                        - DividerPltForm:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              Fill: =RGBA(225, 223, 221, 1)
+                              Height: =1
+                              Width: =Parent.Width
+                        - FieldJabatanPltPlt:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblJabatanPltPlt:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Jabatan PLT *"
+                                    Width: =Parent.Width
+                              - TxtJabatanPltPlt:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Jabatan PLT"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Value: =If(Coalesce(gblPltEditMode, false), Coalesce(gblSelectedPlt.JabatanPlt, ""), "")
+                                    Width: =Parent.Width
+
+                        - FieldUnitKerjaPlt:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblUnitKerjaPlt:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Unit Kerja *"
+                                    Width: =Parent.Width
+                              - TxtUnitKerjaPlt:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Unit Kerja"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Value: =If(Coalesce(gblPltEditMode, false), Coalesce(gblSelectedPlt.UnitKerja, ""), "")
+                                    Width: =Parent.Width
+
+                        - FieldPeriodeMulaiPlt:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblPeriodeMulaiPlt:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Periode Mulai *"
+                                    Width: =Parent.Width
+                              - DatePeriodeMulaiPlt:
+                                  Control: ModernDatePicker@1.0.0
+                                  Properties:
+                                    AccessibleLabel: ="Periode Mulai"
+                                    DefaultDate: =If(Coalesce(gblPltEditMode, false), Date(1899, 12, 30) + Value(gblSelectedPlt.PeriodeMulai), Today())
+                                    Format: ="dd/mm/yyyy"
+                                    Placeholder: ="Pilih tanggal"
+                                    Width: =Parent.Width
+
+                        - FieldPeriodeSelesaiPlt:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblPeriodeSelesaiPlt:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Periode Selesai *"
+                                    Width: =Parent.Width
+                              - DatePeriodeSelesaiPlt:
+                                  Control: ModernDatePicker@1.0.0
+                                  Properties:
+                                    AccessibleLabel: ="Periode Selesai"
+                                    DefaultDate: =If(Coalesce(gblPltEditMode, false), Date(1899, 12, 30) + Value(gblSelectedPlt.PeriodeSelesai), Today())
+                                    Format: ="dd/mm/yyyy"
+                                    Placeholder: ="Pilih tanggal"
+                                    Width: =Parent.Width
+
+                        - FieldNoSKPlt:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblNoSKPlt:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Nomor SK *"
+                                    Width: =Parent.Width
+                              - TxtNoSKPlt:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Nomor SK"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Value: =If(Coalesce(gblPltEditMode, false), Coalesce(gblSelectedPlt.NoSK, ""), "")
+                                    Width: =Parent.Width
+
+                        - FieldSkorPlt:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblSkorPlt:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Skor *"
+                                    Width: =Parent.Width
+                              - NumSkorPlt:
+                                  Control: NumberInput@2.9.12
+                                  Properties:
+                                    AccessibleLabel: ="Skor"
+                                    Value: =If(Coalesce(gblPltEditMode, false), Value(gblSelectedPlt.Skor), 0)
+                                    Width: =Parent.Width
+
+                        - FieldCatatanPlt:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =118
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =118
+                              Width: =Parent.Width
+                            Children:
+                              - LblCatatanPlt:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Catatan *"
+                                    Width: =Parent.Width
+                              - TxtCatatanPlt:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Catatan"
+                                    Height: =76
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeMultiline"
+                                    Value: =If(Coalesce(gblPltEditMode, false), Coalesce(gblSelectedPlt.Catatan, ""), "")
+                                    Width: =Parent.Width
+
+
+                        - FormActionsPlt:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =48
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =12
+                              LayoutJustifyContent: =LayoutJustifyContent.End
+                              LayoutMinHeight: =48
+                              Width: =Parent.Width
+                            Children:
+                              - BtnBatalPlt:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =Set(gblPltEditMode, false);
+                                      Set(gblSelectedPlt, Defaults(Profil_Plt));
+                                      Back()
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="Batal"
+                                    Width: =110
+                              - BtnSimpanPlt:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisplayMode: =If(Coalesce(gblPltSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Fill: =RGBA(18, 38, 82, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =If(
+                                          Or(
+                                              IsBlank(Trim(TxtJabatanPltPlt.Value)),
+                                              IsBlank(Trim(TxtUnitKerjaPlt.Value)),
+                                              IsBlank(DatePeriodeMulaiPlt.SelectedDate),
+                                              IsBlank(DatePeriodeSelesaiPlt.SelectedDate),
+                                              IsBlank(Trim(TxtNoSKPlt.Value)),
+                                              IsBlank(NumSkorPlt.Value),
+                                              IsBlank(Trim(TxtCatatanPlt.Value))
+                                          ),
+                                          Notify(
+                                              "Lengkapi seluruh field PLT.",
+                                              NotificationType.Warning
+                                          ),
+                                          !Coalesce(gblPltSubmitting, false),
+                                          Set(gblPltSubmitting, true);
+                                          IfError(
+                                              If(
+                                                  Coalesce(gblPltEditMode, false),
+                                                  Patch(
+                                                      Profil_Plt,
+                                                      gblSelectedPlt,
+                                                      {
+                                                          NIP: gblSelectedPlt.NIP,
+                                                          JabatanPlt: Trim(TxtJabatanPltPlt.Value),
+                                                          UnitKerja: Trim(TxtUnitKerjaPlt.Value),
+                                                          PeriodeMulai: DateDiff(Date(1899, 12, 30), DatePeriodeMulaiPlt.SelectedDate, TimeUnit.Days),
+                                                          PeriodeSelesai: DateDiff(Date(1899, 12, 30), DatePeriodeSelesaiPlt.SelectedDate, TimeUnit.Days),
+                                                          NoSK: Trim(TxtNoSKPlt.Value),
+                                                          Skor: Value(NumSkorPlt.Value),
+                                                          Catatan: Trim(TxtCatatanPlt.Value)
+                                                      }
+                                                  ),
+                                                  With(
+                                                      {
+                                                          newRecord:
+                                                              Patch(
+                                                                  Profil_Plt,
+                                                                  Defaults(Profil_Plt),
+                                                                  {
+                                                                      Title: "TEMP_" & Text(GUID()),
+                                                                      NIP: Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
+                                                                      JabatanPlt: Trim(TxtJabatanPltPlt.Value),
+                                                                      UnitKerja: Trim(TxtUnitKerjaPlt.Value),
+                                                                      PeriodeMulai: DateDiff(Date(1899, 12, 30), DatePeriodeMulaiPlt.SelectedDate, TimeUnit.Days),
+                                                                      PeriodeSelesai: DateDiff(Date(1899, 12, 30), DatePeriodeSelesaiPlt.SelectedDate, TimeUnit.Days),
+                                                                      NoSK: Trim(TxtNoSKPlt.Value),
+                                                                      Skor: Value(NumSkorPlt.Value),
+                                                                      Catatan: Trim(TxtCatatanPlt.Value)
+                                                                  }
+                                                              )
+                                                      },
+                                                      Patch(
+                                                          Profil_Plt,
+                                                          newRecord,
+                                                          {Title: Text(newRecord.ID)}
+                                                      )
+                                                  )
+                                              );
+                                              Refresh(Profil_Plt);
+                                              Notify(
+                                                  If(Coalesce(gblPltEditMode, false), "Data PLT berhasil diperbarui.", "Data PLT berhasil ditambahkan."),
+                                                  NotificationType.Success
+                                              );
+                                              Set(gblPltSubmitting, false);
+                                              Set(gblPltEditMode, false);
+                                              Set(gblSelectedPlt, Defaults(Profil_Plt));
+                                              Navigate(S2_ProfilPegawai, ScreenTransition.Fade),
+                                              Notify(
+                                                  "Gagal menyimpan data PLT: " & FirstError.Message,
+                                                  NotificationType.Error
+                                              );
+                                              Set(gblPltSubmitting, false)
+                                          )
+                                      )
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: =If(Coalesce(gblPltSubmitting, false), "Menyimpan...", "Simpan")
+                                    Width: =130

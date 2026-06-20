@@ -1,0 +1,399 @@
+Screens:
+  S7B_CoachingTematik_Form:
+    Properties:
+      Fill: =RGBA(245, 245, 245, 1)
+      LoadingSpinnerColor: =RGBA(9, 33, 98, 1)
+      OnVisible: =Set(gblCoachingTematikSubmitting, false)
+    Children:
+      - CTFormScreenContainer:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(245, 245, 245, 1)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =16
+            PaddingBottom: =16
+            PaddingLeft: =16
+            PaddingRight: =16
+            PaddingTop: =16
+            Width: =Parent.Width
+          Children:
+            - CTFormHeader:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(9, 33, 98, 1)
+                  FillPortions: =0
+                  Height: =75
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutMinHeight: =75
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                Children:
+                  - BtnBackCTForm:
+                      Control: Classic/Icon@2.5.0
+                      Properties:
+                        AccessibleLabel: ="Kembali"
+                        Color: =RGBA(255, 255, 255, 1)
+                        Height: =40
+                        Icon: =Icon.ChevronLeft
+                        OnSelect: |-
+                          =Set(gblCoachingTematikSubmitting, false);
+                          Back()
+                        PaddingBottom: =10
+                        PaddingLeft: =10
+                        PaddingRight: =10
+                        PaddingTop: =10
+                        Tooltip: ="Kembali"
+                        Width: =40
+                  - LblAppNameCTForm:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        FillPortions: =1
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        Size: =18
+                        Text: ="MyCareerApp"
+                  - CTFormHeaderSpacer:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =RGBA(0, 0, 0, 0)
+                        Height: =40
+                        Width: =40
+            - CTFormScroll:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutMinHeight: =16
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                  PaddingBottom: =8
+                Children:
+                  - CTFormCard:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(225, 223, 221, 1)
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.Light
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =750
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =18
+                        LayoutMinHeight: =750
+                        PaddingBottom: =If(Parent.Width < 640, 40, 48)
+                        PaddingLeft: =If(Parent.Width < 640, 18, 28)
+                        PaddingRight: =If(Parent.Width < 640, 18, 28)
+                        PaddingTop: =If(Parent.Width < 640, 18, 24)
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                      Children:
+                        - CTFormTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Color: =RGBA(31, 56, 100, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =36
+                              Size: =20
+                              Text: =If(Coalesce(gblCoachingTematikEditMode, false), "Edit Coaching Tematik", "Buat Coaching Tematik")
+                              Width: =Parent.Width
+                        - CTFormSubject:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(96, 94, 92, 1)
+                              Font: =Font.'Open Sans'
+                              Size: =12
+                              Text: |-
+                                ="Mentee: " &
+                                Coalesce(
+                                    LookUp(
+                                        Pegawai,
+                                        Title = Text(
+                                            If(
+                                                Coalesce(gblCoachingTematikEditMode, false),
+                                                gblSelectedCoachingTematik.MenteeNIP,
+                                                gblCurrentNIP
+                                            )
+                                        ),
+                                        Nama
+                                    ),
+                                    Text(
+                                        If(
+                                            Coalesce(gblCoachingTematikEditMode, false),
+                                            gblSelectedCoachingTematik.MenteeNIP,
+                                            gblCurrentNIP
+                                        )
+                                    ),
+                                    "-"
+                                )
+                              Width: =Parent.Width
+                        - CTFormDivider:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              Fill: =RGBA(225, 223, 221, 1)
+                              Height: =1
+                              Width: =Parent.Width
+                        - FieldTanggalCTForm:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                            Children:
+                              - LblTanggalCTForm:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Tanggal *"
+                              - DateTanggalCTForm:
+                                  Control: ModernDatePicker@1.0.0
+                                  Properties:
+                                    AccessibleLabel: ="Tanggal coaching"
+                                    DefaultDate: |-
+                                      =If(
+                                          Coalesce(gblCoachingTematikEditMode, false),
+                                          IfError(
+                                              Date(1899, 12, 30) + Value(gblSelectedCoachingTematik.Tanggal),
+                                              gblSelectedCoachingTematik.Tanggal
+                                          ),
+                                          Today()
+                                      )
+                                    Format: ="dd/mm/yyyy"
+                                    Placeholder: ="Pilih tanggal"
+                                    Width: =Parent.Width
+                        - FieldMentorCTForm:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                            Children:
+                              - LblMentorCTForm:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Mentor *"
+                              - CmbMentorCTForm:
+                                  Control: ComboBox@0.0.51
+                                  Properties:
+                                    AccessibleLabel: ="Pilih mentor"
+                                    DefaultSelectedItems: |-
+                                      =If(
+                                          Coalesce(gblCoachingTematikEditMode, false),
+                                          Filter(
+                                              ForAll(Pegawai, {Value: Nama, NIP: Title}),
+                                              NIP = gblSelectedCoachingTematik.MentorNIP
+                                          ),
+                                          Blank()
+                                      )
+                                    InputTextPlaceholder: ="Cari nama mentor"
+                                    Items: |-
+                                      =ForAll(
+                                          Pegawai,
+                                          {
+                                              Value: Nama,
+                                              NIP: Title
+                                          }
+                                      )
+                                    SelectMultiple: =false
+                                    Width: =Parent.Width
+                        - FieldTopikCTForm:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =96
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =96
+                            Children:
+                              - LblTopikCTForm:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Topik *"
+                              - TxtTopikCTForm:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Topik coaching"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Value: =If(Coalesce(gblCoachingTematikEditMode, false), Coalesce(gblSelectedCoachingTematik.Topik, ""), "")
+                                    Width: =Parent.Width
+                        - FieldHasilCTForm:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =190
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =190
+                            Children:
+                              - LblHasilCTForm:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Hasil Coaching *"
+                              - TxtHasilCTForm:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Hasil coaching"
+                                    Height: =150
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeMultiLine"
+                                    Value: =If(Coalesce(gblCoachingTematikEditMode, false), Coalesce(gblSelectedCoachingTematik.HasilCoaching, ""), "")
+                                    Width: =Parent.Width
+                        - CTFormActions:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =48
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =12
+                              LayoutJustifyContent: =LayoutJustifyContent.End
+                              LayoutMinHeight: =48
+                            Children:
+                              - BtnCancelCTForm:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: =Back()
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Text: ="Batal"
+                                    Width: =110
+                              - BtnSaveCTForm:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisplayMode: =If(Coalesce(gblCoachingTematikSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Fill: =RGBA(9, 33, 98, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =If(
+                                          Or(
+                                              IsBlank(DateTanggalCTForm.SelectedDate),
+                                              IsBlank(CmbMentorCTForm.Selected.NIP),
+                                              IsBlank(Trim(TxtTopikCTForm.Value)),
+                                              IsBlank(Trim(TxtHasilCTForm.Value))
+                                          ),
+                                          Notify(
+                                              "Lengkapi Tanggal, Mentor, Topik, dan Hasil Coaching.",
+                                              NotificationType.Warning
+                                          ),
+                                          !Coalesce(gblCoachingTematikSubmitting, false),
+                                          Set(gblCoachingTematikSubmitting, true);
+                                          IfError(
+                                              If(
+                                                  Coalesce(gblCoachingTematikEditMode, false),
+                                                  Patch(
+                                                      CoachingTematik,
+                                                      gblSelectedCoachingTematik,
+                                                      {
+                                                          MenteeNIP: gblSelectedCoachingTematik.MenteeNIP,
+                                                          Tanggal: DateDiff(Date(1899, 12, 30), DateTanggalCTForm.SelectedDate, TimeUnit.Days),
+                                                          MentorNIP: CmbMentorCTForm.Selected.NIP,
+                                                          Topik: Trim(TxtTopikCTForm.Value),
+                                                          HasilCoaching: Trim(TxtHasilCTForm.Value)
+                                                      }
+                                                  ),
+                                                  With(
+                                                      {
+                                                          newCoachingTematik:
+                                                              Patch(
+                                                                  CoachingTematik,
+                                                                  Defaults(CoachingTematik),
+                                                                  {
+                                                                      Title: "TEMP_" & Text(GUID()),
+                                                                      MenteeNIP: Text(gblCurrentNIP),
+                                                                      Tanggal: DateDiff(Date(1899, 12, 30), DateTanggalCTForm.SelectedDate, TimeUnit.Days),
+                                                                      MentorNIP: CmbMentorCTForm.Selected.NIP,
+                                                                      Topik: Trim(TxtTopikCTForm.Value),
+                                                                      HasilCoaching: Trim(TxtHasilCTForm.Value)
+                                                                  }
+                                                              )
+                                                      },
+                                                      Patch(
+                                                          CoachingTematik,
+                                                          newCoachingTematik,
+                                                          {Title: Text(newCoachingTematik.ID)}
+                                                      )
+                                                  )
+                                              );
+                                              Refresh(CoachingTematik);
+                                              Notify(
+                                                  If(
+                                                      Coalesce(gblCoachingTematikEditMode, false),
+                                                      "Coaching Tematik berhasil diperbarui.",
+                                                      "Coaching Tematik berhasil disimpan."
+                                                  ),
+                                                  NotificationType.Success
+                                              );
+                                              Set(gblCoachingTematikSubmitting, false);
+                                              Set(gblCoachingTematikEditMode, false);
+                                              Set(gblSelectedCoachingTematik, Defaults(CoachingTematik));
+                                              Navigate(S7A_CoachingTematik_List, ScreenTransition.Fade),
+                                              Notify(
+                                                  "Gagal menyimpan Coaching Tematik: " & FirstError.Message,
+                                                  NotificationType.Error
+                                              );
+                                              Set(gblCoachingTematikSubmitting, false)
+                                          )
+                                      )
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Text: =If(Coalesce(gblCoachingTematikSubmitting, false), "Menyimpan...", If(Coalesce(gblCoachingTematikEditMode, false), "Simpan Perubahan", "Simpan"))
+                                    Width: =If(App.Width < 520, 145, 170)

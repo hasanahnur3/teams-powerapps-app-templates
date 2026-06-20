@@ -1,0 +1,419 @@
+Screens:
+  S2B_Profil_SertifikasiTier1_Form:
+    Properties:
+      Fill: =RGBA(245, 245, 245, 1)
+      LoadingSpinnerColor: =RGBA(31, 56, 100, 1)
+    Children:
+      - ScreenContainerSertifikasiTier1Form:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(245, 245, 245, 1)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =0
+            Width: =Parent.Width
+          Children:
+            - HeaderSertifikasiTier1Form:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  Fill: =RGBA(18, 38, 82, 1)
+                  FillPortions: =0
+                  Height: =64
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutMinHeight: =64
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  Width: =Parent.Width
+                Children:
+                  - BtnBackSertifikasiTier1Form:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =64
+                        OnSelect: |-
+                          =Set(gblSertifikasiTier1EditMode, false);
+                          Set(gblSelectedSertifikasiTier1, Defaults(Profil_SertifikasiTier1));
+                          Back()
+                        Size: =24
+                        Text: ="‹"
+                        Width: =44
+                  - LblAppNameSertifikasiTier1Form:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        FillPortions: =1
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =64
+                        Size: =16
+                        Text: ="MyCareerApp"
+                  - HeaderSpacerSertifikasiTier1Form:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =RGBA(0, 0, 0, 0)
+                        Height: =64
+                        Width: =44
+            - TopBarShadowSertifikasiTier1Form:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderThickness: =0
+                  Fill: =RGBA(0, 0, 0, 0.08)
+                  Height: =5
+                  Width: =Parent.Width
+            - MainSertifikasiTier1Form:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutMinHeight: =16
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                  PaddingBottom: =16
+                  PaddingLeft: =16
+                  PaddingRight: =16
+                  PaddingTop: =16
+                  Width: =Parent.Width
+                Children:
+                  - CardSertifikasiTier1Form:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(225, 223, 221, 1)
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =770
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =18
+                        LayoutMinHeight: =770
+                        PaddingBottom: =28
+                        PaddingLeft: =28
+                        PaddingRight: =28
+                        PaddingTop: =24
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Width: =Parent.Width
+                      Children:
+                        - TitleSertifikasiTier1Form:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(31, 56, 100, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Size: =20
+                              Text: =If(Coalesce(gblSertifikasiTier1EditMode, false), "Edit Sertifikasi Tier 1", "Tambah Sertifikasi Tier 1")
+                              Width: =Parent.Width
+                        - SubtitleSertifikasiTier1Form:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(96, 94, 92, 1)
+                              Font: =Font.'Open Sans'
+                              Size: =12
+                              Text: |-
+                                ="Pegawai: " &
+                                Coalesce(
+                                    LookUp(
+                                        Pegawai,
+                                        Title = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
+                                        Nama
+                                    ),
+                                    Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))
+                                )
+                              Width: =Parent.Width
+                        - DividerSertifikasiTier1Form:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              Fill: =RGBA(225, 223, 221, 1)
+                              Height: =1
+                              Width: =Parent.Width
+                        - FieldNamaSertifikatSertifikasiTier1:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblNamaSertifikatSertifikasiTier1:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Nama Sertifikat *"
+                                    Width: =Parent.Width
+                              - TxtNamaSertifikatSertifikasiTier1:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Nama Sertifikat"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Value: =If(Coalesce(gblSertifikasiTier1EditMode, false), Coalesce(gblSelectedSertifikasiTier1.NamaSertifikat, ""), "")
+                                    Width: =Parent.Width
+
+                        - FieldPenerbitSertifikasiTier1:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblPenerbitSertifikasiTier1:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Penerbit *"
+                                    Width: =Parent.Width
+                              - TxtPenerbitSertifikasiTier1:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Penerbit"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Value: =If(Coalesce(gblSertifikasiTier1EditMode, false), Coalesce(gblSelectedSertifikasiTier1.Penerbit, ""), "")
+                                    Width: =Parent.Width
+
+                        - FieldTanggalTerbitSertifikasiTier1:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblTanggalTerbitSertifikasiTier1:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Tanggal Terbit *"
+                                    Width: =Parent.Width
+                              - DateTanggalTerbitSertifikasiTier1:
+                                  Control: ModernDatePicker@1.0.0
+                                  Properties:
+                                    AccessibleLabel: ="Tanggal Terbit"
+                                    DefaultDate: =If(Coalesce(gblSertifikasiTier1EditMode, false), Date(1899, 12, 30) + Value(gblSelectedSertifikasiTier1.TanggalTerbit), Today())
+                                    Format: ="dd/mm/yyyy"
+                                    Placeholder: ="Pilih tanggal"
+                                    Width: =Parent.Width
+
+                        - FieldTanggalBerakhirSertifikasiTier1:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblTanggalBerakhirSertifikasiTier1:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Tanggal Berakhir *"
+                                    Width: =Parent.Width
+                              - DateTanggalBerakhirSertifikasiTier1:
+                                  Control: ModernDatePicker@1.0.0
+                                  Properties:
+                                    AccessibleLabel: ="Tanggal Berakhir"
+                                    DefaultDate: =If(Coalesce(gblSertifikasiTier1EditMode, false), Date(1899, 12, 30) + Value(gblSelectedSertifikasiTier1.TanggalBerakhir), Today())
+                                    Format: ="dd/mm/yyyy"
+                                    Placeholder: ="Pilih tanggal"
+                                    Width: =Parent.Width
+
+                        - FieldNomorSertifikatSertifikasiTier1:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblNomorSertifikatSertifikasiTier1:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Nomor Sertifikat *"
+                                    Width: =Parent.Width
+                              - TxtNomorSertifikatSertifikasiTier1:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Nomor Sertifikat"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Value: =If(Coalesce(gblSertifikasiTier1EditMode, false), Coalesce(gblSelectedSertifikasiTier1.NomorSertifikat, ""), "")
+                                    Width: =Parent.Width
+
+
+                        - FormActionsSertifikasiTier1:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =48
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =12
+                              LayoutJustifyContent: =LayoutJustifyContent.End
+                              LayoutMinHeight: =48
+                              Width: =Parent.Width
+                            Children:
+                              - BtnBatalSertifikasiTier1:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =Set(gblSertifikasiTier1EditMode, false);
+                                      Set(gblSelectedSertifikasiTier1, Defaults(Profil_SertifikasiTier1));
+                                      Back()
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="Batal"
+                                    Width: =110
+                              - BtnSimpanSertifikasiTier1:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisplayMode: =If(Coalesce(gblSertifikasiTier1Submitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Fill: =RGBA(18, 38, 82, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =If(
+                                          Or(
+                                              IsBlank(Trim(TxtNamaSertifikatSertifikasiTier1.Value)),
+                                              IsBlank(Trim(TxtPenerbitSertifikasiTier1.Value)),
+                                              IsBlank(DateTanggalTerbitSertifikasiTier1.SelectedDate),
+                                              IsBlank(DateTanggalBerakhirSertifikasiTier1.SelectedDate),
+                                              IsBlank(Trim(TxtNomorSertifikatSertifikasiTier1.Value))
+                                          ),
+                                          Notify(
+                                              "Lengkapi seluruh field Sertifikasi Tier 1.",
+                                              NotificationType.Warning
+                                          ),
+                                          !Coalesce(gblSertifikasiTier1Submitting, false),
+                                          Set(gblSertifikasiTier1Submitting, true);
+                                          IfError(
+                                              If(
+                                                  Coalesce(gblSertifikasiTier1EditMode, false),
+                                                  Patch(
+                                                      Profil_SertifikasiTier1,
+                                                      gblSelectedSertifikasiTier1,
+                                                      {
+                                                          NIP: gblSelectedSertifikasiTier1.NIP,
+                                                          NamaSertifikat: Trim(TxtNamaSertifikatSertifikasiTier1.Value),
+                                                          Penerbit: Trim(TxtPenerbitSertifikasiTier1.Value),
+                                                          TanggalTerbit: DateDiff(Date(1899, 12, 30), DateTanggalTerbitSertifikasiTier1.SelectedDate, TimeUnit.Days),
+                                                          TanggalBerakhir: DateDiff(Date(1899, 12, 30), DateTanggalBerakhirSertifikasiTier1.SelectedDate, TimeUnit.Days),
+                                                          NomorSertifikat: Trim(TxtNomorSertifikatSertifikasiTier1.Value)
+                                                      }
+                                                  ),
+                                                  With(
+                                                      {
+                                                          newRecord:
+                                                              Patch(
+                                                                  Profil_SertifikasiTier1,
+                                                                  Defaults(Profil_SertifikasiTier1),
+                                                                  {
+                                                                      Title: "TEMP_" & Text(GUID()),
+                                                                      NIP: Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
+                                                                      NamaSertifikat: Trim(TxtNamaSertifikatSertifikasiTier1.Value),
+                                                                      Penerbit: Trim(TxtPenerbitSertifikasiTier1.Value),
+                                                                      TanggalTerbit: DateDiff(Date(1899, 12, 30), DateTanggalTerbitSertifikasiTier1.SelectedDate, TimeUnit.Days),
+                                                                      TanggalBerakhir: DateDiff(Date(1899, 12, 30), DateTanggalBerakhirSertifikasiTier1.SelectedDate, TimeUnit.Days),
+                                                                      NomorSertifikat: Trim(TxtNomorSertifikatSertifikasiTier1.Value)
+                                                                  }
+                                                              )
+                                                      },
+                                                      Patch(
+                                                          Profil_SertifikasiTier1,
+                                                          newRecord,
+                                                          {Title: Text(newRecord.ID)}
+                                                      )
+                                                  )
+                                              );
+                                              Refresh(Profil_SertifikasiTier1);
+                                              Notify(
+                                                  If(Coalesce(gblSertifikasiTier1EditMode, false), "Data Sertifikasi Tier 1 berhasil diperbarui.", "Data Sertifikasi Tier 1 berhasil ditambahkan."),
+                                                  NotificationType.Success
+                                              );
+                                              Set(gblSertifikasiTier1Submitting, false);
+                                              Set(gblSertifikasiTier1EditMode, false);
+                                              Set(gblSelectedSertifikasiTier1, Defaults(Profil_SertifikasiTier1));
+                                              Navigate(S2_ProfilPegawai, ScreenTransition.Fade),
+                                              Notify(
+                                                  "Gagal menyimpan data Sertifikasi Tier 1: " & FirstError.Message,
+                                                  NotificationType.Error
+                                              );
+                                              Set(gblSertifikasiTier1Submitting, false)
+                                          )
+                                      )
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: =If(Coalesce(gblSertifikasiTier1Submitting, false), "Menyimpan...", "Simpan")
+                                    Width: =130

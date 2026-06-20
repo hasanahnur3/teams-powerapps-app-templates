@@ -1,0 +1,402 @@
+Screens:
+  S2A_Profil_Pendidikan_Form:
+    Properties:
+      Fill: =RGBA(255, 255, 255, 1)
+      LoadingSpinnerColor: =RGBA(31, 56, 100, 1)
+    Children:
+      - ScreenContainerPendidikanForm:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(245, 245, 245, 1)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =0
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Width: =Parent.Width
+          Children:
+            - HeaderPendidikanForm:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  Fill: =RGBA(18, 38, 82, 1)
+                  FillPortions: =0
+                  Height: =64
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutMinHeight: =64
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  RadiusBottomLeft: =0
+                  RadiusBottomRight: =0
+                  RadiusTopLeft: =0
+                  RadiusTopRight: =0
+                  Width: =Parent.Width
+                Children:
+                  - BtnBackPendidikanForm:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =64
+                        OnSelect: |-
+                          =Set(gblPendidikanEditMode, false);
+                          Set(gblSelectedPendidikan, Defaults(Profil_Pendidikan));
+                          Back()
+                        Size: =24
+                        Text: ="‹"
+                        Width: =44
+                  - LblAppNamePendidikanForm:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        FillPortions: =1
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =64
+                        Size: =16
+                        Text: ="MyCareerApp"
+                  - HeaderSpacerPendidikanForm:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =RGBA(0, 0, 0, 0)
+                        Height: =64
+                        Width: =44
+            - TopBarShadowPendidikanForm:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderThickness: =0
+                  Fill: =RGBA(0, 0, 0, 0.08)
+                  Height: =5
+                  Width: =Parent.Width
+            - MainPendidikanForm:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutMinHeight: =16
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                  PaddingBottom: =16
+                  PaddingLeft: =16
+                  PaddingRight: =16
+                  PaddingTop: =16
+                  Width: =Parent.Width
+                Children:
+                  - CardPendidikanForm:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(225, 223, 221, 1)
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =610
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =18
+                        LayoutMinHeight: =610
+                        PaddingBottom: =28
+                        PaddingLeft: =28
+                        PaddingRight: =28
+                        PaddingTop: =24
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Width: =Parent.Width
+                      Children:
+                        - TitlePendidikanForm:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(31, 56, 100, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Size: =20
+                              Text: =If(Coalesce(gblPendidikanEditMode, false), "Edit Pendidikan", "Tambah Pendidikan")
+                              Width: =Parent.Width
+                        - SubtitlePendidikanForm:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(96, 94, 92, 1)
+                              Font: =Font.'Open Sans'
+                              Size: =12
+                              Text: |-
+                                ="Pegawai: " &
+                                Coalesce(
+                                    LookUp(
+                                        Pegawai,
+                                        Title = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
+                                        Nama
+                                    ),
+                                    Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))
+                                )
+                              Width: =Parent.Width
+                        - DividerPendidikanForm:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              Fill: =RGBA(225, 223, 221, 1)
+                              Height: =1
+                              Width: =Parent.Width
+                        - FieldJenjangPendidikan:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblJenjangPendidikan:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Jenjang *"
+                                    Width: =Parent.Width
+                              - TxtJenjangPendidikan:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Jenjang pendidikan"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Value: =If(Coalesce(gblPendidikanEditMode, false), Coalesce(gblSelectedPendidikan.Jenjang, ""), "")
+                                    Width: =Parent.Width
+                        - FieldUniversitasPendidikan:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblUniversitasPendidikan:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Universitas / Institusi *"
+                                    Width: =Parent.Width
+                              - TxtUniversitasPendidikan:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Universitas atau institusi"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Value: =If(Coalesce(gblPendidikanEditMode, false), Coalesce(gblSelectedPendidikan.Universitas, ""), "")
+                                    Width: =Parent.Width
+                        - FieldProgramStudiPendidikan:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblProgramStudiPendidikan:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Program Studi / Bidang *"
+                                    Width: =Parent.Width
+                              - TxtProgramStudiPendidikan:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Program studi atau bidang"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Value: =If(Coalesce(gblPendidikanEditMode, false), Coalesce(gblSelectedPendidikan.ProgramStudi, ""), "")
+                                    Width: =Parent.Width
+                        - FieldTahunLulusPendidikan:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblTahunLulusPendidikan:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Tahun Lulus *"
+                                    Width: =Parent.Width
+                              - NumTahunLulusPendidikan:
+                                  Control: NumberInput@2.9.12
+                                  Properties:
+                                    AccessibleLabel: ="Tahun lulus"
+                                    Max: =Year(Today()) + 10
+                                    Min: =1900
+                                    Value: =If(Coalesce(gblPendidikanEditMode, false), Value(gblSelectedPendidikan.TahunLulus), Year(Today()))
+                                    Width: =Parent.Width
+                        - FormActionsPendidikan:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =48
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =12
+                              LayoutJustifyContent: =LayoutJustifyContent.End
+                              LayoutMinHeight: =48
+                              Width: =Parent.Width
+                            Children:
+                              - BtnBatalPendidikan:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =Set(gblPendidikanEditMode, false);
+                                      Set(gblSelectedPendidikan, Defaults(Profil_Pendidikan));
+                                      Back()
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="Batal"
+                                    Width: =110
+                              - BtnSimpanPendidikan:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisplayMode: =If(Coalesce(gblPendidikanSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Fill: =RGBA(9, 33, 98, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =If(
+                                          Or(
+                                              IsBlank(Trim(TxtJenjangPendidikan.Value)),
+                                              IsBlank(Trim(TxtUniversitasPendidikan.Value)),
+                                              IsBlank(Trim(TxtProgramStudiPendidikan.Value)),
+                                              IsBlank(NumTahunLulusPendidikan.Value)
+                                          ),
+                                          Notify(
+                                              "Lengkapi Jenjang, Universitas, Program Studi, dan Tahun Lulus.",
+                                              NotificationType.Warning
+                                          ),
+                                          Or(
+                                              NumTahunLulusPendidikan.Value < 1900,
+                                              NumTahunLulusPendidikan.Value > Year(Today()) + 10
+                                          ),
+                                          Notify(
+                                              "Tahun lulus harus berada antara 1900 dan " & Text(Year(Today()) + 10) & ".",
+                                              NotificationType.Warning
+                                          ),
+                                          !Coalesce(gblPendidikanSubmitting, false),
+                                          Set(gblPendidikanSubmitting, true);
+                                          IfError(
+                                              If(
+                                                  Coalesce(gblPendidikanEditMode, false),
+                                                  Patch(
+                                                      Profil_Pendidikan,
+                                                      gblSelectedPendidikan,
+                                                      {
+                                                          NIP: gblSelectedPendidikan.NIP,
+                                                          Jenjang: Trim(TxtJenjangPendidikan.Value),
+                                                          Universitas: Trim(TxtUniversitasPendidikan.Value),
+                                                          ProgramStudi: Trim(TxtProgramStudiPendidikan.Value),
+                                                          TahunLulus: Value(NumTahunLulusPendidikan.Value)
+                                                      }
+                                                  ),
+                                                  With(
+                                                      {
+                                                          newPendidikan:
+                                                              Patch(
+                                                                  Profil_Pendidikan,
+                                                                  Defaults(Profil_Pendidikan),
+                                                                  {
+                                                                      Title: "TEMP_" & Text(GUID()),
+                                                                      NIP: Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
+                                                                      Jenjang: Trim(TxtJenjangPendidikan.Value),
+                                                                      Universitas: Trim(TxtUniversitasPendidikan.Value),
+                                                                      ProgramStudi: Trim(TxtProgramStudiPendidikan.Value),
+                                                                      TahunLulus: Value(NumTahunLulusPendidikan.Value)
+                                                                  }
+                                                              )
+                                                      },
+                                                      Patch(
+                                                          Profil_Pendidikan,
+                                                          newPendidikan,
+                                                          {
+                                                              Title: Text(newPendidikan.ID)
+                                                          }
+                                                      )
+                                                  )
+                                              );
+                                              Refresh(Profil_Pendidikan);
+                                              Notify(
+                                                  If(
+                                                      Coalesce(gblPendidikanEditMode, false),
+                                                      "Data pendidikan berhasil diperbarui.",
+                                                      "Data pendidikan berhasil ditambahkan."
+                                                  ),
+                                                  NotificationType.Success
+                                              );
+                                              Set(gblPendidikanSubmitting, false);
+                                              Set(gblPendidikanEditMode, false);
+                                              Set(gblSelectedPendidikan, Defaults(Profil_Pendidikan));
+                                              Navigate(S2_ProfilPegawai, ScreenTransition.Fade),
+                                              Notify(
+                                                  "Gagal menyimpan data pendidikan: " & FirstError.Message,
+                                                  NotificationType.Error
+                                              );
+                                              Set(gblPendidikanSubmitting, false)
+                                          )
+                                      )
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: =If(Coalesce(gblPendidikanSubmitting, false), "Menyimpan...", "Simpan")
+                                    Width: =130

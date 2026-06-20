@@ -1,0 +1,939 @@
+Screens:
+  S3B_PR_Form:
+    Properties:
+      Fill: =RGBA(245, 245, 245, 1)
+      LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+    Children:
+      - ScreenContainer1_1:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(245, 245, 245, 1)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =16
+            PaddingBottom: =16
+            PaddingLeft: =16
+            PaddingRight: =16
+            PaddingTop: =16
+            Width: =Parent.Width
+          Children:
+            - HeaderContainer_4:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(9, 33, 98, 1)
+                  FillPortions: =0
+                  Height: =75
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                Children:
+                  - BtnBack_5:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        AutoHeight: =true
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        OnSelect: =Back()
+                        PaddingLeft: =20
+                        Size: =22
+                        Text: ="‹"
+                        Width: =40
+                  - LblAppName_4:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        FillPortions: =1
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        Size: =18
+                        Text: ="MyCareerApp"
+                  - HeaderSpacer_4:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =RGBA(0, 0, 0, 0)
+                        Height: =40
+                        Width: =40
+            - MainContainer1_1:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                  PaddingBottom: =8
+                  PaddingTop: =8
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                Children:
+                  - Form5:
+                      Control: Form@2.4.4
+                      Layout: Vertical
+                      Properties:
+                        BorderColor: =RGBA(214, 221, 224, 1)
+                        BorderThickness: =1
+                        DataSource: =PerformanceReview
+                        DefaultMode: =If(Coalesce(gblPREditMode, false), FormMode.Edit, FormMode.New)
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =1
+                        Item: =If(Coalesce(gblPREditMode, false), gblSelectedPR, Defaults(PerformanceReview))
+                        LayoutMinHeight: =16
+                        LayoutMinWidth: =16
+                      Children:
+                        - Title_DataCard3:
+                            Control: TypedDataCard@1.0.7
+                            Variant: TextualEdit
+                            IsLocked: true
+                            Properties:
+                              BorderColor: =RGBA(245, 245, 245, 1)
+                              DataField: ="Title"
+                              Default: |-
+                                =If(
+                                    Form5.Mode = FormMode.New,
+                                    Text(gblCurrentNIP) & "_" &
+                                    Text(DataCardValue27.Value) & "_" &
+                                    Text(DataCardValue28.Value) & "_" &
+                                    Text(Now(), "yyyymmddhhmmss"),
+                                    ThisItem.Title
+                                )
+                              DisplayName: =DataSourceInfo([@PerformanceReview],DataSourceInfo.DisplayName,'Title')
+                              MaxLength: =DataSourceInfo([@PerformanceReview], DataSourceInfo.MaxLength, 'Title')
+                              Required: =false
+                              Update: =DataCardValue25.Value
+                              Visible: =false
+                              Width: =439
+                              X: =0
+                              Y: =0
+                            Children:
+                              - DataCardKey25:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldName
+                                  Properties:
+                                    Height: =22
+                                    Text: =Parent.DisplayName
+                                    Weight: ='TextCanvas.Weight'.Semibold
+                                    Width: =Parent.Width - 48
+                                    Wrap: =false
+                                    X: =24
+                                    Y: =10
+                              - DataCardValue25:
+                                  Control: TextInput@0.0.54
+                                  MetadataKey: FieldValue
+                                  Properties:
+                                    AccessibleLabel: =Parent.DisplayName
+                                    DisplayMode: =Parent.DisplayMode
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Required: =Parent.Required
+                                    ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
+                                    Value: =Parent.Default
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardKey25.Y + DataCardKey25.Height + 4
+                              - ErrorMessage25:
+                                  Control: Text@0.0.51
+                                  MetadataKey: ErrorMessage
+                                  Properties:
+                                    Height: =30
+                                    Text: =Parent.Error
+                                    Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardValue25.Y + DataCardValue25.Height
+                              - StarVisible25:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldRequired
+                                  Properties:
+                                    Align: ='TextCanvas.Align'.Center
+                                    Height: =30
+                                    Text: ="*"
+                                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =30
+                                    Y: =DataCardKey25.Y
+                        - NIP_DataCard3:
+                            Control: TypedDataCard@1.0.7
+                            Variant: TextualEdit
+                            IsLocked: true
+                            Properties:
+                              BorderColor: =RGBA(245, 245, 245, 1)
+                              DataField: ="NIP"
+                              Default: =If(Form5.Mode = FormMode.New, Text(gblCurrentNIP), ThisItem.NIP)
+                              DisplayName: =DataSourceInfo([@PerformanceReview],DataSourceInfo.DisplayName,'NIP')
+                              MaxLength: =DataSourceInfo([@PerformanceReview], DataSourceInfo.MaxLength, 'NIP')
+                              Required: =false
+                              Update: =DataCardValue26.Value
+                              Width: =439
+                              X: =1
+                              Y: =0
+                            Children:
+                              - DataCardKey26:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldName
+                                  Properties:
+                                    Height: =22
+                                    Text: =Parent.DisplayName
+                                    Weight: ='TextCanvas.Weight'.Semibold
+                                    Width: =Parent.Width - 48
+                                    Wrap: =false
+                                    X: =24
+                                    Y: =10
+                              - DataCardValue26:
+                                  Control: TextInput@0.0.54
+                                  MetadataKey: FieldValue
+                                  Properties:
+                                    AccessibleLabel: =Parent.DisplayName
+                                    DisplayMode: =DisplayMode.Disabled
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Required: =Parent.Required
+                                    ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
+                                    Value: =Parent.Default
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardKey26.Y + DataCardKey26.Height + 4
+                              - ErrorMessage26:
+                                  Control: Text@0.0.51
+                                  MetadataKey: ErrorMessage
+                                  Properties:
+                                    Height: =30
+                                    Text: =Parent.Error
+                                    Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardValue26.Y + DataCardValue26.Height
+                              - StarVisible26:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldRequired
+                                  Properties:
+                                    Align: ='TextCanvas.Align'.Center
+                                    Height: =30
+                                    Text: ="*"
+                                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =30
+                                    Y: =DataCardKey26.Y
+                        - Tahun_DataCard3:
+                            Control: TypedDataCard@1.0.7
+                            Variant: NumberEdit
+                            IsLocked: true
+                            Properties:
+                              BorderColor: =RGBA(245, 245, 245, 1)
+                              DataField: ="Tahun"
+                              Default: =If(Form5.Mode = FormMode.New, Year(Today()), ThisItem.Tahun)
+                              DisplayName: =DataSourceInfo([@PerformanceReview],DataSourceInfo.DisplayName,'Tahun')
+                              Required: =false
+                              Update: =Value(DataCardValue27.Value)
+                              Width: =439
+                              X: =2
+                              Y: =0
+                            Children:
+                              - DataCardKey27:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldName
+                                  Properties:
+                                    Height: =22
+                                    Text: =Parent.DisplayName
+                                    Weight: ='TextCanvas.Weight'.Semibold
+                                    Width: =Parent.Width - 48
+                                    Wrap: =false
+                                    X: =24
+                                    Y: =10
+                              - DataCardValue27:
+                                  Control: NumberInput@2.9.12
+                                  MetadataKey: FieldValue
+                                  Properties:
+                                    AccessibleLabel: =Parent.DisplayName
+                                    DisplayMode: =Parent.DisplayMode
+                                    Max: =Blank()
+                                    Min: =Blank()
+                                    ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
+                                    Value: =Parent.Default
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardKey27.Y + DataCardKey27.Height + 4
+                              - ErrorMessage27:
+                                  Control: Text@0.0.51
+                                  MetadataKey: ErrorMessage
+                                  Properties:
+                                    Height: =30
+                                    Text: =Parent.Error
+                                    Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardValue27.Y + DataCardValue27.Height
+                              - StarVisible27:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldRequired
+                                  Properties:
+                                    Align: ='TextCanvas.Align'.Center
+                                    Height: =30
+                                    Text: ="*"
+                                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =30
+                                    Y: =DataCardKey27.Y
+                        - Semester_DataCard3:
+                            Control: TypedDataCard@1.0.7
+                            Variant: NumberEdit
+                            IsLocked: true
+                            Properties:
+                              BorderColor: =RGBA(245, 245, 245, 1)
+                              DataField: ="Semester"
+                              Default: =ThisItem.Semester
+                              DisplayName: =DataSourceInfo([@PerformanceReview],DataSourceInfo.DisplayName,'Semester')
+                              Required: =false
+                              Update: =Value(DataCardValue28.Value)
+                              Width: =439
+                              X: =0
+                              Y: =1
+                            Children:
+                              - DataCardKey28:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldName
+                                  Properties:
+                                    Height: =22
+                                    Text: =Parent.DisplayName
+                                    Weight: ='TextCanvas.Weight'.Semibold
+                                    Width: =Parent.Width - 48
+                                    Wrap: =false
+                                    X: =24
+                                    Y: =10
+                              - DataCardValue28:
+                                  Control: NumberInput@2.9.12
+                                  MetadataKey: FieldValue
+                                  Properties:
+                                    AccessibleLabel: =Parent.DisplayName
+                                    DisplayMode: =Parent.DisplayMode
+                                    Max: =Blank()
+                                    Min: =Blank()
+                                    ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
+                                    Value: =Parent.Default
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardKey28.Y + DataCardKey28.Height + 4
+                              - ErrorMessage28:
+                                  Control: Text@0.0.51
+                                  MetadataKey: ErrorMessage
+                                  Properties:
+                                    Height: =30
+                                    Text: =Parent.Error
+                                    Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardValue28.Y + DataCardValue28.Height
+                              - StarVisible28:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldRequired
+                                  Properties:
+                                    Align: ='TextCanvas.Align'.Center
+                                    Height: =30
+                                    Text: ="*"
+                                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =30
+                                    Y: =DataCardKey28.Y
+                        - Tanggal_DataCard3:
+                            Control: TypedDataCard@1.0.7
+                            Variant: DateEdit
+                            IsLocked: false
+                            Properties:
+                              BorderColor: =RGBA(245, 245, 245, 1)
+                              DataField: ="Tanggal"
+                              Default: =If(Form5.Mode = FormMode.New, Today(), ThisItem.Tanggal)
+                              DisplayName: =DataSourceInfo([@PerformanceReview],DataSourceInfo.DisplayName,'Tanggal')
+                              Required: =false
+                              Update: =DataCardValue29.SelectedDate
+                              Width: =439
+                              X: =1
+                              Y: =1
+                            Children:
+                              - DataCardKey29:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldName
+                                  Properties:
+                                    Height: =22
+                                    Text: =Parent.DisplayName
+                                    Weight: ='TextCanvas.Weight'.Semibold
+                                    Width: =Parent.Width - 48
+                                    Wrap: =false
+                                    X: =24
+                                    Y: =10
+                              - DataCardValue29:
+                                  Control: ModernDatePicker@1.0.0
+                                  MetadataKey: FieldValue
+                                  Properties:
+                                    AccessibleLabel: =Parent.DisplayName
+                                    DefaultDate: =Parent.Default
+                                    DisplayMode: =Parent.DisplayMode
+                                    Format: ="dd/mm/yyyy"
+                                    Placeholder: ="Pilih tanggal"
+                                    ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardKey29.Y + DataCardKey29.Height + 4
+                              - ErrorMessage29:
+                                  Control: Text@0.0.51
+                                  MetadataKey: ErrorMessage
+                                  Properties:
+                                    Height: =30
+                                    Text: =Parent.Error
+                                    Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardValue29.Y + DataCardValue29.Height
+                              - StarVisible29:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldRequired
+                                  Properties:
+                                    Align: ='TextCanvas.Align'.Center
+                                    Height: =30
+                                    Text: ="*"
+                                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =30
+                                    Y: =DataCardKey29.Y
+                        - LineManagerNIP_DataCard3:
+                            Control: TypedDataCard@1.0.7
+                            Variant: TextualEdit
+                            IsLocked: false
+                            Properties:
+                              BorderColor: =RGBA(245, 245, 245, 1)
+                              DataField: ="LineManagerNIP"
+                              Default: =ThisItem.LineManagerNIP
+                              DisplayName: =DataSourceInfo([@PerformanceReview],DataSourceInfo.DisplayName,'LineManagerNIP')
+                              MaxLength: =DataSourceInfo([@PerformanceReview], DataSourceInfo.MaxLength, 'LineManagerNIP')
+                              Required: =false
+                              Update: =DataCardValue30.Selected.NIP
+                              Width: =439
+                              X: =2
+                              Y: =1
+                            Children:
+                              - DataCardKey30:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldName
+                                  Properties:
+                                    Height: =22
+                                    Text: =Parent.DisplayName
+                                    Weight: ='TextCanvas.Weight'.Semibold
+                                    Width: =Parent.Width - 48
+                                    Wrap: =false
+                                    X: =24
+                                    Y: =10
+                              - DataCardValue30:
+                                  Control: ComboBox@0.0.51
+                                  MetadataKey: FieldValue
+                                  Properties:
+                                    AccessibleLabel: =Parent.DisplayName
+                                    DefaultSelectedItems: |-
+                                      =If(
+                                          IsBlank(Parent.Default),
+                                          Blank(),
+                                          Filter(
+                                              ForAll(Pegawai, {Value: Nama, NIP: Title}),
+                                              NIP = Parent.Default
+                                          )
+                                      )
+                                    DisplayMode: =Parent.DisplayMode
+                                    InputTextPlaceholder: ="Pilih Line Manager"
+                                    Items: |-
+                                      =ForAll(
+                                          Pegawai,
+                                          {Value: Nama, NIP: Title}
+                                      )
+                                    Required: =Parent.Required
+                                    SelectMultiple: =false
+                                    ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardKey30.Y + DataCardKey30.Height + 4
+                              - ErrorMessage30:
+                                  Control: Text@0.0.51
+                                  MetadataKey: ErrorMessage
+                                  Properties:
+                                    Height: =30
+                                    Text: =Parent.Error
+                                    Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardValue30.Y + DataCardValue30.Height
+                              - StarVisible30:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldRequired
+                                  Properties:
+                                    Align: ='TextCanvas.Align'.Center
+                                    Height: =30
+                                    Text: ="*"
+                                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =30
+                                    Y: =DataCardKey30.Y
+                        - Goal_DataCard3:
+                            Control: TypedDataCard@1.0.7
+                            Variant: TextualEdit
+                            IsLocked: true
+                            Properties:
+                              BorderColor: =RGBA(245, 245, 245, 1)
+                              DataField: ="Goal"
+                              Default: =ThisItem.Goal
+                              DisplayName: =DataSourceInfo([@PerformanceReview],DataSourceInfo.DisplayName,'Goal')
+                              Height: =170
+                              MaxLength: =DataSourceInfo([@PerformanceReview], DataSourceInfo.MaxLength, 'Goal')
+                              Required: =false
+                              Update: =DataCardValue31.Value
+                              Width: =439
+                              X: =0
+                              Y: =2
+                            Children:
+                              - DataCardKey31:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldName
+                                  Properties:
+                                    Height: =22
+                                    Text: =Parent.DisplayName
+                                    Weight: ='TextCanvas.Weight'.Semibold
+                                    Width: =Parent.Width - 48
+                                    Wrap: =false
+                                    X: =24
+                                    Y: =10
+                              - DataCardValue31:
+                                  Control: TextInput@0.0.54
+                                  MetadataKey: FieldValue
+                                  Properties:
+                                    AccessibleLabel: =Parent.DisplayName
+                                    DisplayMode: =Parent.DisplayMode
+                                    Height: =100
+                                    Mode: ='TextInputCanvas.Mode'.Multiline
+                                    Required: =Parent.Required
+                                    ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
+                                    Value: =Parent.Default
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardKey31.Y + DataCardKey31.Height + 4
+                              - ErrorMessage31:
+                                  Control: Text@0.0.51
+                                  MetadataKey: ErrorMessage
+                                  Properties:
+                                    Height: =30
+                                    Text: =Parent.Error
+                                    Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardValue31.Y + DataCardValue31.Height
+                              - StarVisible31:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldRequired
+                                  Properties:
+                                    Align: ='TextCanvas.Align'.Center
+                                    Height: =30
+                                    Text: ="*"
+                                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =30
+                                    Y: =DataCardKey31.Y
+                        - Reality_DataCard3:
+                            Control: TypedDataCard@1.0.7
+                            Variant: TextualEdit
+                            IsLocked: true
+                            Properties:
+                              BorderColor: =RGBA(245, 245, 245, 1)
+                              DataField: ="Reality"
+                              Default: =ThisItem.Reality
+                              DisplayName: =DataSourceInfo([@PerformanceReview],DataSourceInfo.DisplayName,'Reality')
+                              Height: =170
+                              MaxLength: =DataSourceInfo([@PerformanceReview], DataSourceInfo.MaxLength, 'Reality')
+                              Required: =false
+                              Update: =DataCardValue32.Value
+                              Width: =439
+                              X: =1
+                              Y: =2
+                            Children:
+                              - DataCardKey32:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldName
+                                  Properties:
+                                    Height: =22
+                                    Text: =Parent.DisplayName
+                                    Weight: ='TextCanvas.Weight'.Semibold
+                                    Width: =Parent.Width - 48
+                                    Wrap: =false
+                                    X: =24
+                                    Y: =10
+                              - DataCardValue32:
+                                  Control: TextInput@0.0.54
+                                  MetadataKey: FieldValue
+                                  Properties:
+                                    AccessibleLabel: =Parent.DisplayName
+                                    DisplayMode: =Parent.DisplayMode
+                                    Height: =100
+                                    Mode: ='TextInputCanvas.Mode'.Multiline
+                                    Required: =Parent.Required
+                                    ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
+                                    Value: =Parent.Default
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardKey32.Y + DataCardKey32.Height + 4
+                              - ErrorMessage32:
+                                  Control: Text@0.0.51
+                                  MetadataKey: ErrorMessage
+                                  Properties:
+                                    Height: =30
+                                    Text: =Parent.Error
+                                    Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardValue32.Y + DataCardValue32.Height
+                              - StarVisible32:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldRequired
+                                  Properties:
+                                    Align: ='TextCanvas.Align'.Center
+                                    Height: =30
+                                    Text: ="*"
+                                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =30
+                                    Y: =DataCardKey32.Y
+                        - Options_DataCard3:
+                            Control: TypedDataCard@1.0.7
+                            Variant: TextualEdit
+                            IsLocked: true
+                            Properties:
+                              BorderColor: =RGBA(245, 245, 245, 1)
+                              DataField: ="Options"
+                              Default: =ThisItem.Options
+                              DisplayName: =DataSourceInfo([@PerformanceReview],DataSourceInfo.DisplayName,'Options')
+                              Height: =170
+                              MaxLength: =DataSourceInfo([@PerformanceReview], DataSourceInfo.MaxLength, 'Options')
+                              Required: =false
+                              Update: =DataCardValue33.Value
+                              Width: =439
+                              X: =2
+                              Y: =2
+                            Children:
+                              - DataCardKey33:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldName
+                                  Properties:
+                                    Height: =22
+                                    Text: =Parent.DisplayName
+                                    Weight: ='TextCanvas.Weight'.Semibold
+                                    Width: =Parent.Width - 48
+                                    Wrap: =false
+                                    X: =24
+                                    Y: =10
+                              - DataCardValue33:
+                                  Control: TextInput@0.0.54
+                                  MetadataKey: FieldValue
+                                  Properties:
+                                    AccessibleLabel: =Parent.DisplayName
+                                    DisplayMode: =Parent.DisplayMode
+                                    Height: =100
+                                    Mode: ='TextInputCanvas.Mode'.Multiline
+                                    Required: =Parent.Required
+                                    ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
+                                    Value: =Parent.Default
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardKey33.Y + DataCardKey33.Height + 4
+                              - ErrorMessage33:
+                                  Control: Text@0.0.51
+                                  MetadataKey: ErrorMessage
+                                  Properties:
+                                    Height: =30
+                                    Text: =Parent.Error
+                                    Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardValue33.Y + DataCardValue33.Height
+                              - StarVisible33:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldRequired
+                                  Properties:
+                                    Align: ='TextCanvas.Align'.Center
+                                    Height: =30
+                                    Text: ="*"
+                                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =30
+                                    Y: =DataCardKey33.Y
+                        - Will_DataCard3:
+                            Control: TypedDataCard@1.0.7
+                            Variant: TextualEdit
+                            IsLocked: true
+                            Properties:
+                              BorderColor: =RGBA(245, 245, 245, 1)
+                              DataField: ="Will"
+                              Default: =ThisItem.Will
+                              DisplayName: =DataSourceInfo([@PerformanceReview],DataSourceInfo.DisplayName,'Will')
+                              Height: =170
+                              MaxLength: =DataSourceInfo([@PerformanceReview], DataSourceInfo.MaxLength, 'Will')
+                              Required: =false
+                              Update: =DataCardValue34.Value
+                              Width: =439
+                              X: =0
+                              Y: =3
+                            Children:
+                              - DataCardKey34:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldName
+                                  Properties:
+                                    Height: =22
+                                    Text: =Parent.DisplayName
+                                    Weight: ='TextCanvas.Weight'.Semibold
+                                    Width: =Parent.Width - 48
+                                    Wrap: =false
+                                    X: =24
+                                    Y: =10
+                              - DataCardValue34:
+                                  Control: TextInput@0.0.54
+                                  MetadataKey: FieldValue
+                                  Properties:
+                                    AccessibleLabel: =Parent.DisplayName
+                                    DisplayMode: =Parent.DisplayMode
+                                    Height: =100
+                                    Mode: ='TextInputCanvas.Mode'.Multiline
+                                    Required: =Parent.Required
+                                    ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
+                                    Value: =Parent.Default
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardKey34.Y + DataCardKey34.Height + 4
+                              - ErrorMessage34:
+                                  Control: Text@0.0.51
+                                  MetadataKey: ErrorMessage
+                                  Properties:
+                                    Height: =30
+                                    Text: =Parent.Error
+                                    Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =Parent.Width - 48
+                                    X: =24
+                                    Y: =DataCardValue34.Y + DataCardValue34.Height
+                              - StarVisible34:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldRequired
+                                  Properties:
+                                    Align: ='TextCanvas.Align'.Center
+                                    Height: =30
+                                    Text: ="*"
+                                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =30
+                                    Y: =DataCardKey34.Y
+                        - FotoBukti_DataCard3:
+                            Control: TypedDataCard@1.0.7
+                            Variant: LargePicture
+                            IsLocked: false
+                            Properties:
+                              BorderColor: =RGBA(245, 245, 245, 1)
+                              DataField: ="FotoBukti"
+                              Default: =ThisItem.FotoBukti
+                              DisplayName: =DataSourceInfo([@PerformanceReview],DataSourceInfo.DisplayName,'FotoBukti')
+                              Height: =280
+                              Required: =false
+                              Update: =ImageFotoBukti.Image
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =4
+                            Children:
+                              - DataCardKeyFotoBukti:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldName
+                                  Properties:
+                                    Height: =34
+                                    Text: =Parent.DisplayName
+                                    Weight: ='TextCanvas.Weight'.Semibold
+                                    Width: =Parent.Width - 60
+                                    Wrap: =false
+                                    X: =30
+                                    Y: =10
+                              - ImageFotoBukti:
+                                  Control: Image@2.2.3
+                                  MetadataKey: FieldValue
+                                  Properties:
+                                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                                    BorderStyle: =BorderStyle.None
+                                    BorderThickness: =2
+                                    DisplayMode: =Parent.DisplayMode
+                                    Height: =AddMediaFotoBukti.Height
+                                    Image: =If(IsBlank(AddMediaFotoBukti.Media), Parent.Default, AddMediaFotoBukti.Media)
+                                    ImagePosition: =ImagePosition.Fit
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Tooltip: =Parent.DisplayName
+                                    Width: =AddMediaFotoBukti.Width
+                                    X: =AddMediaFotoBukti.X
+                                    Y: =AddMediaFotoBukti.Y
+                              - AddMediaFotoBukti:
+                                  Control: AddMedia@2.2.1
+                                  MetadataKey: AddPicture
+                                  Properties:
+                                    BorderColor: =RGBA(0, 0, 0, 0)
+                                    BorderStyle: =BorderStyle.None
+                                    BorderThickness: =2
+                                    ChangePictureText: ="Ganti foto"
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisplayMode: =Parent.DisplayMode
+                                    Fill: =RGBA(9, 33, 98, 1)
+                                    Font: =Font.'Open Sans'
+                                    Height: =200
+                                    HoverColor: =RGBA(255, 255, 255, 1)
+                                    HoverFill: =RGBA(20, 54, 145, 1)
+                                    PressedColor: =RGBA(255, 255, 255, 1)
+                                    PressedFill: =RGBA(6, 24, 72, 1)
+                                    Size: =15
+                                    Text: ="Unggah foto"
+                                    Width: =Min(420, Parent.Width - 60)
+                                    X: =30
+                                    Y: =DataCardKeyFotoBukti.Y + DataCardKeyFotoBukti.Height + 8
+                              - ErrorMessageFotoBukti:
+                                  Control: Text@0.0.51
+                                  MetadataKey: ErrorMessage
+                                  Properties:
+                                    Height: =24
+                                    Size: =12
+                                    Text: =Parent.Error
+                                    Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =Parent.Width - 60
+                                    X: =30
+                                    Y: =ImageFotoBukti.Y + ImageFotoBukti.Height
+                              - StarVisibleFotoBukti:
+                                  Control: Text@0.0.51
+                                  MetadataKey: FieldRequired
+                                  Properties:
+                                    Align: ='TextCanvas.Align'.Center
+                                    Height: =DataCardKeyFotoBukti.Height
+                                    Text: ="*"
+                                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                                    Width: =30
+                                    Wrap: =false
+                                    Y: =DataCardKeyFotoBukti.Y
+            - FooterContainer1_1:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  FillPortions: =0
+                  Height: =75
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutJustifyContent: =LayoutJustifyContent.Center
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                Children:
+                  - Button2_1:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Fill: =RGBA(9, 33, 98, 1)
+                        FillPortions: =1
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =48
+                        DisplayMode: =If(Coalesce(gblPRSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                        OnSelect: |-
+                          =If(
+                              Or(
+                                  IsBlank(DataCardValue28.Value),
+                                  IsBlank(DataCardValue30.Selected.NIP),
+                                  IsBlank(Trim(DataCardValue31.Value)),
+                                  IsBlank(Trim(DataCardValue32.Value)),
+                                  IsBlank(Trim(DataCardValue33.Value)),
+                                  IsBlank(Trim(DataCardValue34.Value))
+                              ),
+                              Notify(
+                                  "Lengkapi Semester, Line Manager, Goal, Reality, Options, dan Will.",
+                                  NotificationType.Warning
+                              ),
+                              !Coalesce(gblPRSubmitting, false),
+                              Set(gblPRSubmitting, true);
+                              IfError(
+                                  If(
+                                      Coalesce(gblPREditMode, false),
+                                      Patch(
+                                          PerformanceReview,
+                                          gblSelectedPR,
+                                          {
+                                              NIP: gblSelectedPR.NIP,
+                                              Tahun: Value(DataCardValue27.Value),
+                                              Semester: Value(DataCardValue28.Value),
+                                              Tanggal: DataCardValue29.SelectedDate,
+                                              LineManagerNIP: DataCardValue30.Selected.NIP,
+                                              Goal: DataCardValue31.Value,
+                                              Reality: DataCardValue32.Value,
+                                              Options: DataCardValue33.Value,
+                                              Will: DataCardValue34.Value,
+                                              FotoBukti: ImageFotoBukti.Image
+                                          }
+                                      ),
+                                      With(
+                                          {
+                                              newPerformanceReview: Patch(
+                                                  PerformanceReview,
+                                                  Defaults(PerformanceReview),
+                                                  {
+                                                      Title: "TEMP_" & Text(GUID()),
+                                                      NIP: Text(gblCurrentNIP),
+                                                      Tahun: Value(DataCardValue27.Value),
+                                                      Semester: Value(DataCardValue28.Value),
+                                                      Tanggal: DataCardValue29.SelectedDate,
+                                                      LineManagerNIP: DataCardValue30.Selected.NIP,
+                                                      Goal: DataCardValue31.Value,
+                                                      Reality: DataCardValue32.Value,
+                                                      Options: DataCardValue33.Value,
+                                                      Will: DataCardValue34.Value,
+                                                      FotoBukti: ImageFotoBukti.Image
+                                                  }
+                                              )
+                                          },
+                                          Patch(
+                                              PerformanceReview,
+                                              newPerformanceReview,
+                                              {
+                                                  Title: Text(newPerformanceReview.ID)
+                                              }
+                                          )
+                                      )
+                                  );
+                                  Refresh(PerformanceReview);
+                                  Notify(
+                                      If(
+                                          Coalesce(gblPREditMode, false),
+                                          "Performance Review berhasil diperbarui.",
+                                          "Performance Review berhasil disimpan."
+                                      ),
+                                      NotificationType.Success
+                                  );
+                                  Set(gblPRSubmitting, false);
+                                  Set(gblPREditMode, false);
+                                  Navigate(S3A_PR_List, ScreenTransition.Fade),
+                                  Notify(
+                                      "Gagal menyimpan: " & FirstError.Message,
+                                      NotificationType.Error
+                                  );
+                                  Set(gblPRSubmitting, false)
+                              )
+                          )
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Size: =13
+                        Text: =If(Coalesce(gblPREditMode, false), "Simpan Perubahan", "Simpan")
+                        Width: =160

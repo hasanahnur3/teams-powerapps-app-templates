@@ -1,0 +1,4177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyCareerApp – Homepage</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f3f2f1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* 16:9 canvas wrapper */
+    .canvas-wrapper {
+      width: 100%;
+      max-width: 1280px;
+      aspect-ratio: 16 / 9;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-shell {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      background: #f3f2f1;
+    }
+
+    /* ── Top Bar ── */
+    .topbar {
+      background: #1f3864;
+      height: 7%;
+      display: flex;
+      align-items: center;
+      padding: 0 2%;
+      gap: 1.2%;
+      flex-shrink: 0;
+    }
+
+    .topbar-logo {
+      width: 2.8%;
+      aspect-ratio: 1;
+      background: white;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .topbar-logo svg {
+      width: 65%;
+      height: 65%;
+    }
+
+    .topbar-title {
+      color: white;
+      font-size: 1.15em;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    .topbar-spacer { flex: 1; }
+
+    .topbar-user {
+      display: flex;
+      align-items: center;
+      gap: 0.8%;
+      color: white;
+    }
+
+    .topbar-user-avatar {
+      width: 3.2%;
+      aspect-ratio: 1;
+      background: #c7e0f4;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72em;
+      font-weight: 700;
+      color: #1f3864;
+    }
+
+    .topbar-user-name {
+      font-size: 0.82em;
+      color: white;
+    }
+
+    /* ── Main Layout ── */
+    .main-layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 18%;
+      height: 100%;
+      background: #ffffff;
+      border-right: 1px solid #e1dfdd;
+      display: flex;
+      flex-direction: column;
+      padding: 3.5% 0 2% 0;
+      gap: 0.4%;
+      flex-shrink: 0;
+      align-self: stretch;
+      overflow-y: auto;
+    }
+
+    .sidebar-section-label {
+      font-size: 0.62em;
+      font-weight: 700;
+      color: #a19f9d;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0 7% 2% 7%;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10%;
+      padding: 5% 7%;
+      cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: background 0.15s;
+      color: #323130;
+      font-size: 0.78em;
+    }
+
+    .nav-item:hover {
+      background: #f3f2f1;
+    }
+
+    .nav-item.active {
+      background: #deecf9;
+      border-left-color: #0078d4;
+      color: #0078d4;
+      font-weight: 600;
+    }
+
+    .sidebar-divider {
+      height: 1px;
+      background: #e1dfdd;
+      margin: 4% 7%;
+    }
+
+    /* ── Content Area ── */
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 2.5% 2.8%;
+      display: flex;
+      flex-direction: column;
+      gap: 2%;
+    }
+
+    /* ── Greeting Banner ── */
+    .greeting-banner {
+      background: linear-gradient(135deg, #1f3864 0%, #0078d4 100%);
+      border-radius: 8px;
+      padding: 3% 3.5%;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .greeting-text h1 {
+      font-size: 1.3em;
+      font-weight: 600;
+      margin-bottom: 1%;
+    }
+
+    .greeting-text p {
+      font-size: 0.78em;
+      opacity: 0.88;
+    }
+
+    .greeting-illustration {
+      width: 12%;
+      opacity: 0.9;
+    }
+
+    .greeting-illustration svg {
+      width: 100%;
+      height: auto;
+    }
+
+    /* ── Section Title ── */
+    .section-title {
+      font-size: 0.88em;
+      font-weight: 700;
+      color: #323130;
+      display: flex;
+      align-items: center;
+      gap: 1%;
+    }
+
+    .section-title span {
+      font-size: 0.78em;
+      font-weight: 400;
+      color: #605e5c;
+    }
+
+    /* ── Cards Row ── */
+    .cards-row {
+      display: flex;
+      gap: 2%;
+    }
+
+    /* ── Menu Cards ── */
+    .menu-card {
+      flex: 1;
+    }
+
+    .menu-card-btn {
+      height: 100%;
+      min-height: 80px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95em;
+      font-weight: 700;
+      text-align: center;
+      padding: 6% 8%;
+      transition: filter 0.15s, transform 0.15s;
+      color: white;
+    }
+
+    .menu-card-btn:hover {
+      filter: brightness(1.08);
+      transform: translateY(-2px);
+    }
+
+    .menu-card-btn.blue   { background: #0078d4; }
+    .menu-card-btn.green  { background: #038387; }
+    .menu-card-btn.purple { background: #8764b8; }
+
+    /* ── Status Row ── */
+    .status-row {
+      display: flex;
+      gap: 2%;
+      flex: 1;
+    }
+
+    /* ── Activity Panel ── */
+    .panel {
+      background: white;
+      border-radius: 8px;
+      border: 1px solid #e1dfdd;
+      padding: 4% 5%;
+      display: flex;
+      flex-direction: column;
+      gap: 4%;
+    }
+
+    .panel-title {
+      font-size: 0.8em;
+      font-weight: 700;
+      color: #323130;
+      padding-bottom: 3%;
+      border-bottom: 1px solid #f3f2f1;
+    }
+
+    .activity-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 5%;
+      padding: 2% 0;
+    }
+
+    .activity-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .activity-dot.blue   { background: #0078d4; }
+    .activity-dot.orange { background: #d83b01; }
+    .activity-dot.green  { background: #107c10; }
+    .activity-dot.gray   { background: #a19f9d; }
+
+    .activity-text {
+      font-size: 0.72em;
+      color: #323130;
+      line-height: 1.4;
+    }
+
+    .activity-time {
+      font-size: 0.65em;
+      color: #a19f9d;
+      margin-top: 2px;
+    }
+
+    /* ── Announcements ── */
+    .announcement-item {
+      padding: 3% 0;
+      border-bottom: 1px solid #f3f2f1;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .announcement-item:last-child { border-bottom: none; }
+
+    .announcement-date {
+      font-size: 0.65em;
+      color: #a19f9d;
+    }
+
+    .announcement-text {
+      font-size: 0.74em;
+      color: #323130;
+      line-height: 1.5;
+    }
+
+    /* ── Quick Status ── */
+    .quick-status-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2.5% 0;
+      border-bottom: 1px solid #f3f2f1;
+      font-size: 0.72em;
+    }
+
+    .quick-status-item:last-child { border-bottom: none; }
+
+    .status-label { color: #605e5c; }
+
+    .status-badge {
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9em;
+    }
+
+    .badge-warning  { background: #fff4ce; color: #7a4600; }
+    .badge-success  { background: #dff6dd; color: #107c10; }
+    .badge-info     { background: #deecf9; color: #004e8c; }
+    .badge-neutral  { background: #f3f2f1; color: #605e5c; }
+
+    /* ── Progress Bar ── */
+    .progress-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 2%;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.68em;
+      color: #605e5c;
+    }
+
+    .progress-track {
+      height: 6px;
+      background: #f3f2f1;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: #0078d4;
+    }
+
+    /* ── Page Header ── */
+    .page-header {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .page-breadcrumb {
+      font-size: 0.68em;
+      color: #a19f9d;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .breadcrumb-link {
+      color: #0078d4;
+      cursor: pointer;
+    }
+
+    .breadcrumb-sep { color: #c8c6c4; }
+
+    .page-title {
+      font-size: 1.05em;
+      font-weight: 700;
+      color: #1f3864;
+    }
+
+    /* ── Form Card ── */
+    .form-card {
+      background: white;
+      border-radius: 8px;
+      border: 1px solid #e1dfdd;
+      padding: 3% 3%;
+      display: flex;
+      flex-direction: column;
+      gap: 3%;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    /* ── GROW 2-column grid ── */
+    .grow-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3% 4%;
+    }
+
+    /* ── Form Actions ── */
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 2%;
+      padding-top: 2%;
+      border-top: 1px solid #f3f2f1;
+      flex-shrink: 0;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 4%;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      flex: 1;
+    }
+
+    .form-label {
+      font-size: 0.72em;
+      font-weight: 600;
+      color: #323130;
+    }
+
+    .form-label span {
+      color: #c50f1f;
+      margin-left: 2px;
+    }
+
+    .form-control {
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 0.78em;
+      border: 1px solid #8a8886;
+      border-radius: 4px;
+      padding: 6px 10px;
+      color: #323130;
+      background: white;
+      outline: none;
+      transition: border-color 0.15s;
+      width: 100%;
+    }
+
+    .form-control:focus { border-color: #0078d4; box-shadow: 0 0 0 1px #0078d4; }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 60px;
+      line-height: 1.5;
+    }
+
+    .grow-label-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      font-size: 0.68em;
+      font-weight: 700;
+      color: white;
+      margin-right: 5px;
+      flex-shrink: 0;
+    }
+
+    .grow-label-tag.g { background: #0078d4; }
+    .grow-label-tag.r { background: #038387; }
+    .grow-label-tag.o { background: #8764b8; }
+    .grow-label-tag.w { background: #1f3864; }
+
+    .grow-field-label {
+      display: flex;
+      align-items: center;
+      font-size: 0.72em;
+      font-weight: 600;
+      color: #323130;
+    }
+
+    .grow-sublabel {
+      font-size: 0.65em;
+      font-weight: 400;
+      color: #a19f9d;
+      margin-left: 4px;
+    }
+
+    .attachment-box {
+      border: 1.5px dashed #c8c6c4;
+      border-radius: 6px;
+      padding: 4% 3%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .attachment-box:hover { border-color: #0078d4; background: #f0f6ff; }
+
+    .attachment-icon { font-size: 1.4em; opacity: 0.5; }
+
+    .attachment-text {
+      font-size: 0.7em;
+      color: #605e5c;
+      text-align: center;
+    }
+
+    .attachment-link {
+      font-size: 0.7em;
+      color: #0078d4;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn {
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 0.78em;
+      font-weight: 600;
+      padding: 6px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      border: none;
+    }
+
+    /* ── Action Items ── */
+    .action-items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid #e1dfdd;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .action-item {
+      padding: 3% 3%;
+      border-bottom: 1px solid #f3f2f1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .action-item:last-child { border-bottom: none; }
+
+    .action-item-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .action-category-badge {
+      font-size: 0.65em;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+
+    .cat-pendidikan  { background: #deecf9; color: #004e8c; }
+    .cat-sertifikasi { background: #dff6dd; color: #107c10; }
+    .cat-exposure    { background: #f0e6ff; color: #6b39bf; }
+
+    .action-type {
+      font-size: 0.75em;
+      font-weight: 600;
+      color: #323130;
+    }
+
+    .action-freetext {
+      font-size: 0.73em;
+      color: #605e5c;
+      line-height: 1.5;
+      padding-left: 2px;
+    }
+
+    /* ── IDP Page ── */
+    .idp-section {
+      background: white;
+      border: 1px solid #e1dfdd;
+      border-radius: 8px;
+      padding: 3% 3%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .idp-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .idp-section-title {
+      font-size: 0.82em;
+      font-weight: 700;
+      color: #1f3864;
+    }
+
+    /* Quadrant info row */
+    .idp-quadrant-info {
+      display: flex;
+      align-items: center;
+      gap: 4%;
+    }
+
+    .idp-quadrant-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .idp-quadrant-number {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #0078d4;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3em;
+      font-weight: 700;
+    }
+
+    .idp-quadrant-label {
+      font-size: 0.62em;
+      color: #605e5c;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .idp-quadrant-desc {
+      flex: 1;
+    }
+
+    .idp-quadrant-desc-title {
+      font-size: 0.8em;
+      font-weight: 700;
+      color: #323130;
+      margin-bottom: 4px;
+    }
+
+    .idp-quadrant-desc-text {
+      font-size: 0.72em;
+      color: #605e5c;
+      line-height: 1.5;
+    }
+
+    /* Quadrant diagram */
+    .idp-quadrant-diagram {
+      flex-shrink: 0;
+      width: 28%;
+    }
+
+    .quadrant-grid {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .quadrant-axis-y {
+      font-size: 0.6em;
+      color: #a19f9d;
+      align-self: flex-start;
+      padding-left: 18px;
+    }
+
+    .quadrant-axis-x {
+      font-size: 0.6em;
+      color: #a19f9d;
+      align-self: flex-end;
+    }
+
+    .quadrant-cells {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px;
+      width: 100%;
+    }
+
+    .q-cell {
+      border: 1.5px solid #e1dfdd;
+      border-radius: 4px;
+      padding: 6% 4%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      background: #faf9f8;
+    }
+
+    .q-cell.active {
+      border-color: #0078d4;
+      background: #deecf9;
+    }
+
+    .q-label {
+      font-size: 0.72em;
+      font-weight: 700;
+      color: #323130;
+    }
+
+    .q-cell.active .q-label { color: #0078d4; }
+
+    .q-sublabel {
+      font-size: 0.55em;
+      color: #a19f9d;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .q-cell.active .q-sublabel { color: #0078d4; }
+
+    /* ── Add Action Button ── */
+    .btn-add-action {
+      margin-top: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 0.75em;
+      font-weight: 600;
+      color: #0078d4;
+      background: #deecf9;
+      border: none;
+      border-radius: 4px;
+      padding: 6px 14px;
+      cursor: pointer;
+    }
+
+    .btn-add-action:hover { background: #c7e0f4; }
+
+    /* ── Action Item Panel ── */
+    .action-item-panel {
+      border: 1px solid #e1dfdd;
+      border-radius: 6px;
+      padding: 3% 3%;
+      background: #faf9f8;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .action-item-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .action-item-panel-title {
+      font-size: 0.72em;
+      font-weight: 700;
+      color: #605e5c;
+    }
+
+    .btn-delete-action {
+      background: none;
+      border: none;
+      color: #a19f9d;
+      font-size: 0.8em;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .btn-delete-action:hover { background: #fde7e9; color: #c50f1f; }
+
+    .btn-primary { background: #0078d4; color: white; }
+    .btn-primary:hover { background: #106ebe; }
+    .btn-ghost { background: transparent; color: #323130; border: 1px solid #8a8886; }
+    .btn-ghost:hover { background: #f3f2f1; }
+
+    /* ── List Card ── */
+    .list-card {
+      background: white;
+      border-radius: 8px;
+      border: 1px solid #e1dfdd;
+      overflow: hidden;
+      flex: 1;
+    }
+
+    .list-header {
+      display: flex;
+      align-items: center;
+      padding: 2.5% 3%;
+      background: #f3f2f1;
+      border-bottom: 1px solid #e1dfdd;
+    }
+
+    .list-col-head {
+      font-size: 0.68em;
+      font-weight: 700;
+      color: #605e5c;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .list-item {
+      display: flex;
+      align-items: center;
+      padding: 3% 3%;
+      border-bottom: 1px solid #f3f2f1;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .list-item:last-child { border-bottom: none; }
+    .list-item:hover { background: #f0f6ff; }
+
+    .list-col {
+      font-size: 0.78em;
+      color: #323130;
+    }
+
+    .list-chevron {
+      color: #0078d4;
+      font-size: 1.1em;
+      font-weight: 600;
+      text-align: right;
+    }
+
+    /* ── Detail ── */
+    .detail-meta {
+      display: flex;
+      gap: 6%;
+      padding-bottom: 3%;
+      border-bottom: 1px solid #f3f2f1;
+    }
+
+    .detail-meta-label {
+      font-size: 0.65em;
+      font-weight: 600;
+      color: #a19f9d;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 3px;
+    }
+
+    .detail-meta-value {
+      font-size: 0.82em;
+      font-weight: 600;
+      color: #323130;
+    }
+
+    .detail-text-box {
+      font-size: 0.78em;
+      color: #323130;
+      line-height: 1.6;
+      background: #faf9f8;
+      border: 1px solid #e1dfdd;
+      border-radius: 4px;
+      padding: 8px 10px;
+    }
+
+    /* ── Detail GROW grid equal height ── */
+    .detail-grow-grid {
+      align-items: stretch;
+    }
+
+    .detail-grow-grid .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .detail-text-equal {
+      flex: 1;
+    }
+
+    /* ── Detail GROW list ── */
+    .detail-grow-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid #e1dfdd;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .detail-grow-item {
+      display: flex;
+      border-bottom: 1px solid #e1dfdd;
+    }
+
+    .detail-grow-item:last-child { border-bottom: none; }
+
+    .detail-grow-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 3% 2%;
+      width: 8%;
+      flex-shrink: 0;
+      background: #faf9f8;
+      border-right: 1px solid #e1dfdd;
+      justify-content: center;
+    }
+
+    .detail-grow-letter {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.68em;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .detail-grow-title {
+      font-size: 0.62em;
+      font-weight: 700;
+      color: #605e5c;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .detail-grow-body {
+      padding: 3% 3%;
+      font-size: 0.78em;
+      color: #323130;
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    /* ── Detail photo ── */
+    .detail-photo {
+      border: 1px solid #e1dfdd;
+      border-radius: 6px;
+      overflow: hidden;
+      width: 30%;
+    }
+
+    .detail-photo-placeholder {
+      background: #f3f2f1;
+      aspect-ratio: 4/3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .detail-photo-placeholder svg {
+      width: 40%;
+      height: auto;
+      opacity: 0.6;
+    }
+
+    .detail-photo-placeholder span {
+      font-size: 0.65em;
+      color: #a19f9d;
+    }
+    .file-preview-name {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.72em;
+      color: #107c10;
+      background: #dff6dd;
+      border-radius: 4px;
+      padding: 5px 10px;
+      margin-top: 4px;
+    }
+
+    .file-preview-name::before {
+      content: '✓';
+      font-weight: 700;
+    }
+
+    .mentoring-session-panel {
+      border: 1px solid #e1dfdd;
+      border-radius: 6px;
+      padding: 3% 3%;
+      background: #faf9f8;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .mentoring-session-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .mentoring-session-title {
+      font-size: 0.72em;
+      font-weight: 700;
+      color: #605e5c;
+    }
+
+    .session-required-badge {
+      font-size: 0.62em;
+      font-weight: 700;
+      background: #fff4ce;
+      color: #7a4600;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+    .status-select {
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 0.72em;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      padding: 2px 8px;
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23605e5c'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 6px center;
+      padding-right: 20px;
+    }
+    .status-select.st-rencana    { background-color: #deecf9; color: #004e8c; }
+    .status-select.st-proses     { background-color: #fff4ce; color: #7a4600; }
+    .status-select.st-selesai    { background-color: #dff6dd; color: #107c10; }
+    .status-select.st-tertunda   { background-color: #f3f2f1; color: #605e5c; }
+    .status-select.st-dibatalkan { background-color: #fde7e9; color: #a80000; }
+    .profil-section {
+      background: white;
+      border: 1px solid #e1dfdd;
+      border-radius: 8px;
+      padding: 3% 3%;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      flex-shrink: 0;
+    }
+
+    .profil-section-title {
+      font-size: 0.82em;
+      font-weight: 700;
+      color: #1f3864;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #f3f2f1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .profil-section-title .section-tag {
+      font-size: 0.75em;
+      font-weight: 700;
+      background: #1f3864;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .profil-subsection-title {
+      font-size: 0.76em;
+      font-weight: 700;
+      color: #0078d4;
+      margin-bottom: 6px;
+      margin-top: 4px;
+    }
+
+    .profil-table-wrap {
+      overflow-x: auto;
+      width: 100%;
+    }
+
+    .profil-table {
+      width: 100%;
+      min-width: max-content;
+      border-collapse: collapse;
+      font-size: 0.75em;
+    }
+
+    .profil-table th {
+      background: #f3f2f1;
+      color: #605e5c;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.85em;
+      letter-spacing: 0.04em;
+      padding: 7px 10px;
+      border: 1px solid #e1dfdd;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    .profil-table td {
+      padding: 6px 10px;
+      border: 1px solid #e1dfdd;
+      color: #323130;
+      vertical-align: middle;
+    }
+
+    .profil-table td input,
+    .profil-table td select {
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 1em;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      padding: 3px 6px;
+      color: #323130;
+      background: transparent;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .profil-table td input:hover,
+    .profil-table td select:hover {
+      border-color: #c8c6c4;
+      background: white;
+    }
+
+    .profil-table td input:focus,
+    .profil-table td select:focus {
+      border-color: #0078d4;
+      background: white;
+      box-shadow: 0 0 0 1px #0078d4;
+    }
+
+    .profil-table tr:nth-child(even) td { background: #faf9f8; }
+    .profil-table tr:nth-child(even) td input,
+    .profil-table tr:nth-child(even) td select { background: transparent; }
+    .profil-table tr:nth-child(even) td input:focus,
+    .profil-table tr:nth-child(even) td select:focus { background: white; }
+
+    .profil-add-row {
+      font-size: 0.72em;
+      color: #0078d4;
+      font-weight: 600;
+      background: none;
+      border: 1px dashed #c8c6c4;
+      border-radius: 4px;
+      padding: 5px 12px;
+      cursor: pointer;
+      margin-top: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .profil-add-row:hover { background: #deecf9; border-color: #0078d4; }
+
+    .no-col { width: 36px; color: #a19f9d; font-weight: 600; text-align: center; }
+    .pimpinan-select-bar {
+      background: white;
+      border: 1px solid #e1dfdd;
+      border-radius: 8px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-shrink: 0;
+    }
+
+    .pimpinan-select-bar label {
+      font-size: 0.78em;
+      font-weight: 700;
+      color: #1f3864;
+      white-space: nowrap;
+    }
+
+    .pimpinan-select-bar select {
+      flex: 1;
+      max-width: 320px;
+    }
+
+    .pimpinan-tab-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      min-height: 0;
+    }
+
+    .pimpinan-empty-state {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #a19f9d;
+      gap: 10px;
+      font-size: 0.82em;
+    }
+
+    .pimpinan-empty-icon {
+      font-size: 2.4em;
+    }
+
+    .tab-bar {
+      display: flex;
+      border-bottom: 2px solid #e1dfdd;
+      gap: 0;
+      flex-shrink: 0;
+      background: white;
+      border-radius: 8px 8px 0 0;
+      border: 1px solid #e1dfdd;
+      border-bottom: none;
+      overflow-x: auto;
+    }
+
+    .tab-item {
+      font-size: 0.74em;
+      font-weight: 600;
+      color: #605e5c;
+      padding: 10px 16px;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      transition: color 0.15s, border-color 0.15s;
+      user-select: none;
+    }
+
+    .tab-item:hover { color: #0078d4; }
+
+    .tab-item.active {
+      color: #0078d4;
+      border-bottom-color: #0078d4;
+    }
+
+    .tab-panel {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      background: white;
+      border: 1px solid #e1dfdd;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      padding: 20px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .tab-panel.active { display: flex; }
+  </style>
+</head>
+<body>
+
+<div class="canvas-wrapper">
+  <div class="app-shell">
+
+    <!-- Top Bar -->
+    <div class="topbar">
+      <div class="topbar-title">MyCareerApp</div>
+      <div class="topbar-spacer"></div>
+      <div class="topbar-user-name">Bhaskoro Siddhi</div>
+    </div>
+
+    <div class="main-layout">
+
+      <!-- Sidebar -->
+      <nav class="sidebar">
+        <div class="sidebar-section-label">Menu Pegawai</div>
+        <div class="nav-item active" onclick="navigate('home')">Home</div>
+        <div class="nav-item" onclick="navigate('profil-pegawai')">Profil Pegawai</div>
+        <div class="nav-item" onclick="navigate('performance-review')">Performance Review</div>
+        <div class="nav-item" onclick="navigate('coaching')">Coaching Karir</div>
+        <div class="nav-item" onclick="navigate('idp')">IDP</div>
+        <div class="nav-item" onclick="navigate('checklist-mentoring')">Checklist Mentoring</div>
+        <div class="nav-item" onclick="navigate('coaching-tematik')">Coaching Tematik</div>
+
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-label">Menu Line Manager</div>
+        <div class="nav-item" onclick="navigate('lm-performance-review')">Performance Review</div>
+
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-label">Menu Coach</div>
+        <div class="nav-item" onclick="navigate('mentor-coaching')">Coaching Karir</div>
+        <div class="nav-item" onclick="navigate('coach-coaching-tematik')">Coaching Tematik</div>
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-label">Menu Pimpinan</div>
+        <div class="nav-item" onclick="navigate('pimpinan-daftar-pegawai')">Daftar Pegawai</div>
+
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-section-label">Menu Admin</div>
+        <div class="nav-item" onclick="navigate('admin-monitoring-mentoring')">Monitoring Mentoring</div>
+      </nav>
+
+      <!-- ══ PAGE: HOME ══ -->
+      <div class="content" id="page-home">
+
+        <div class="greeting-banner">
+          <div class="greeting-text">
+            <h1>Selamat Datang, Bhaskoro Siddhi</h1>
+          </div>
+        </div>
+
+        <div class="cards-row">
+          <div class="menu-card menu-card-btn blue" onclick="navigate('performance-review')">Performance Review</div>
+          <div class="menu-card menu-card-btn green" onclick="navigate('coaching')">Coaching Karir</div>
+          <div class="menu-card menu-card-btn purple" onclick="navigate('idp')">Individual Development Plan</div>
+        </div>
+
+        <div class="status-row">
+          <div class="panel" style="flex:1.4">
+            <div class="panel-title">Pengumuman</div>
+            <div class="announcement-item">
+              <div class="announcement-date">29 Apr 2026</div>
+              <div class="announcement-text">Periode pengisian Performance Review Semester 1 telah dimulai. Harap segera melengkapi formulir sebelum batas waktu yang ditentukan.</div>
+            </div>
+            <div class="announcement-item">
+              <div class="announcement-date">20 Apr 2026</div>
+              <div class="announcement-text">Sesi Coaching Karir wajib dijadwalkan minimal 2 kali per bulan. Koordinasikan jadwal dengan atasan langsung Anda.</div>
+            </div>
+            <div class="announcement-item">
+              <div class="announcement-date">10 Apr 2026</div>
+              <div class="announcement-text">Individual Development Plan tahun 2026 telah dibuka. Segera susun target pengembangan kompetensi Anda.</div>
+            </div>
+          </div>
+          <div class="panel" style="flex:1">
+            <div class="panel-title">Status Kamu</div>
+            <div class="quick-status-item">
+              <div class="status-label">Performance Review Q1</div>
+              <div class="status-badge badge-warning">Perlu Diisi</div>
+            </div>
+            <div class="quick-status-item">
+              <div class="status-label">Performance Review Q2</div>
+              <div class="status-badge badge-neutral">Belum Dimulai</div>
+            </div>
+            <div class="quick-status-item">
+              <div class="status-label">Coaching Karir Terakhir</div>
+              <div class="status-badge badge-success">Maret 2026</div>
+            </div>
+            <div class="quick-status-item">
+              <div class="status-label">IDP 2026</div>
+              <div class="status-badge badge-info">Kuadran II</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ══ PAGE: PERFORMANCE REVIEW LANDING ══ -->
+      <div class="content" id="page-performance-review" style="display:none">
+
+        <div class="page-header">
+          <div class="page-breadcrumb">
+            <span class="breadcrumb-link" onclick="navigate('home')">Home</span>
+            <span class="breadcrumb-sep">›</span>
+            <span>Performance Review</span>
+          </div>
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <h2 class="page-title">Performance Review</h2>
+            <button class="btn btn-primary" onclick="navigate('performance-review-form')">+ Buat Baru</button>
+          </div>
+        </div>
+
+        <div class="list-card">
+          <div class="list-header">
+            <span class="list-col-head" style="flex:1">Tahun</span>
+            <span class="list-col-head" style="flex:1">Semester</span>
+            <span class="list-col-head" style="flex:2">Line Manager</span>
+            <span class="list-col-head" style="flex:0.3"></span>
+          </div>
+
+          <div class="list-item" onclick="navigate('performance-review-detail')">
+            <span class="list-col" style="flex:1">2026</span>
+            <span class="list-col" style="flex:1">1</span>
+            <span class="list-col" style="flex:2">Andi Pratama</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('performance-review-detail')">
+            <span class="list-col" style="flex:1">2025</span>
+            <span class="list-col" style="flex:1">2</span>
+            <span class="list-col" style="flex:2">Andi Pratama</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('performance-review-detail')">
+            <span class="list-col" style="flex:1">2025</span>
+            <span class="list-col" style="flex:1">1</span>
+            <span class="list-col" style="flex:2">Dewi Kusuma</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('performance-review-detail')">
+            <span class="list-col" style="flex:1">2024</span>
+            <span class="list-col" style="flex:1">2</span>
+            <span class="list-col" style="flex:2">Dewi Kusuma</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('performance-review-detail')">
+            <span class="list-col" style="flex:1">2024</span>
+            <span class="list-col" style="flex:1">1</span>
+            <span class="list-col" style="flex:2">Dewi Kusuma</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ══ PAGE: PERFORMANCE REVIEW FORM ══ -->
+      <div class="content" id="page-performance-review-form" style="display:none">
+
+        <div class="page-header">
+          <div class="page-breadcrumb">
+            <span class="breadcrumb-link" onclick="navigate('home')">Home</span>
+            <span class="breadcrumb-sep">›</span>
+            <span class="breadcrumb-link" onclick="navigate('performance-review')">Performance Review</span>
+            <span class="breadcrumb-sep">›</span>
+            <span>Buat Baru</span>
+          </div>
+          <h2 class="page-title">Form Performance Review</h2>
+        </div>
+
+        <div class="form-card">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Tanggal <span>*</span></label>
+              <input type="date" class="form-control" value="2026-04-29" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Semester <span>*</span></label>
+              <input type="number" class="form-control" value="1" min="1" max="2" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Line Manager <span>*</span></label>
+              <select class="form-control">
+                <option>-- Pilih Line Manager --</option>
+                <option selected>Andi Pratama</option>
+                <option>Dewi Kusuma</option>
+                <option>Rizky Firmansyah</option>
+                <option>Sari Wulandari</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grow-grid">
+            <div class="form-group">
+              <label class="form-label">Goal</label>
+              <textarea class="form-control" rows="3" placeholder="Tuliskan tujuan dan target yang ingin dicapai..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Reality</label>
+              <textarea class="form-control" rows="3" placeholder="Deskripsikan kondisi, pencapaian, dan tantangan saat ini..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Options</label>
+              <textarea class="form-control" rows="3" placeholder="Tuliskan alternatif solusi atau langkah yang memungkinkan..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Will</label>
+              <textarea class="form-control" rows="3" placeholder="Tuliskan komitmen dan rencana tindak lanjut yang konkret..."></textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Lampiran Foto</label>
+            <div class="attachment-box">
+              <div class="attachment-icon">🖼️</div>
+              <div class="attachment-text">Seret & lepas foto di sini, atau</div>
+              <div class="attachment-link">Pilih dari perangkat</div>
+              <div class="attachment-text" style="color:#a19f9d">PNG, JPG, maks. 5 MB</div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn btn-ghost" onclick="navigate('performance-review')">Batal</button>
+            <button class="btn btn-primary">Simpan</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ══ PAGE: PERFORMANCE REVIEW DETAIL ══ -->
+      <div class="content" id="page-performance-review-detail" style="display:none">
+
+        <div class="page-header">
+          <div class="page-breadcrumb">
+            <span class="breadcrumb-link" onclick="navigate('home')">Home</span>
+            <span class="breadcrumb-sep">›</span>
+            <span class="breadcrumb-link" onclick="navigate('performance-review')">Performance Review</span>
+            <span class="breadcrumb-sep">›</span>
+            <span>Detail</span>
+          </div>
+          <h2 class="page-title">Performance Review — 2025 Semester 2</h2>
+        </div>
+
+        <div class="form-card">
+
+          <!-- Meta strip -->
+          <div class="detail-meta">
+            <div class="detail-meta-item">
+              <div class="detail-meta-label">Nama Pegawai</div>
+              <div class="detail-meta-value">Bhaskoro Siddhi</div>
+            </div>
+            <div class="detail-meta-item">
+              <div class="detail-meta-label">Tanggal</div>
+              <div class="detail-meta-value">15 Desember 2025</div>
+            </div>
+            <div class="detail-meta-item">
+              <div class="detail-meta-label">Semester</div>
+              <div class="detail-meta-value">2</div>
+            </div>
+            <div class="detail-meta-item">
+              <div class="detail-meta-label">Line Manager</div>
+              <div class="detail-meta-value">Andi Pratama</div>
+            </div>
+          </div>
+
+          <!-- GROW 2-col grid -->
+          <div class="grow-grid detail-grow-grid">
+
+            <div class="form-group">
+              <label class="form-label">Goal</label>
+              <div class="detail-text-box detail-text-equal">Meningkatkan kemampuan presentasi dan komunikasi di hadapan stakeholder, serta menyelesaikan proyek digitalisasi dokumen divisi tepat waktu.</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Reality</label>
+              <div class="detail-text-box detail-text-equal">Sudah menyelesaikan 80% modul pelatihan presentasi. Proyek digitalisasi masih berjalan di tahap 2 dari 3. Hambatan utama adalah keterbatasan waktu karena beban operasional.</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Options</label>
+              <div class="detail-text-box detail-text-equal">Mengatur ulang prioritas pekerjaan harian, berkoordinasi dengan rekan tim untuk pembagian tugas, dan mengalokasikan 2 jam per minggu khusus untuk pelatihan.</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Will</label>
+              <div class="detail-text-box detail-text-equal">Akan menyelesaikan seluruh modul pelatihan pada akhir Januari 2026, dan melanjutkan tahap 3 proyek digitalisasi mulai minggu kedua Januari.</div>
+            </div>
+
+          </div>
+
+          <!-- Attachment -->
+          <div class="form-group" style="padding-top: 2%;">
+            <label class="form-label">Foto Bukti Pelaksanaan</label>
+            <div class="detail-photo">
+              <div class="detail-photo-placeholder">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="48" height="48" rx="4" fill="#e1dfdd"/>
+                  <circle cx="18" cy="18" r="5" fill="#a19f9d"/>
+                  <path d="M4 36l10-12 8 9 6-7 16 10H4z" fill="#c8c6c4"/>
+                </svg>
+                <span>bukti_review_des2025.jpg</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn btn-ghost" onclick="navigate('performance-review')">Kembali</button>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ══ PAGE: COACHING ══ -->
+      <div class="content" id="page-coaching" style="display:none">
+        <div class="page-header">
+          <div class="page-breadcrumb">
+            <span class="breadcrumb-link" onclick="navigate('home')">Home</span>
+            <span class="breadcrumb-sep">›</span>
+            <span>Coaching Karir</span>
+          </div>
+          <h2 class="page-title">Coaching Karir</h2>
+        </div>
+
+        <div class="list-card">
+          <div class="list-header">
+            <span class="list-col-head" style="flex:1.2">Tanggal</span>
+            <span class="list-col-head" style="flex:2">Nama Mentor</span>
+            <span class="list-col-head" style="flex:1.2">Action Items</span>
+            <span class="list-col-head" style="flex:0.3"></span>
+          </div>
+
+          <div class="list-item" onclick="navigate('coaching-detail')">
+            <span class="list-col" style="flex:1.2">14 Apr 2026</span>
+            <span class="list-col" style="flex:2">Andi Pratama</span>
+            <span class="list-col" style="flex:1.2">3 item</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('coaching-detail')">
+            <span class="list-col" style="flex:1.2">20 Mar 2026</span>
+            <span class="list-col" style="flex:2">Andi Pratama</span>
+            <span class="list-col" style="flex:1.2">5 item</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('coaching-detail')">
+            <span class="list-col" style="flex:1.2">5 Mar 2026</span>
+            <span class="list-col" style="flex:2">Andi Pratama</span>
+            <span class="list-col" style="flex:1.2">4 item</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('coaching-detail')">
+            <span class="list-col" style="flex:1.2">10 Feb 2026</span>
+            <span class="list-col" style="flex:2">Dewi Kusuma</span>
+            <span class="list-col" style="flex:1.2">2 item</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('coaching-detail')">
+            <span class="list-col" style="flex:1.2">22 Jan 2026</span>
+            <span class="list-col" style="flex:2">Dewi Kusuma</span>
+            <span class="list-col" style="flex:1.2">6 item</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('coaching-detail')">
+            <span class="list-col" style="flex:1.2">8 Jan 2026</span>
+            <span class="list-col" style="flex:2">Dewi Kusuma</span>
+            <span class="list-col" style="flex:1.2">3 item</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ══ PAGE: COACHING DETAIL ══ -->
+      <div class="content" id="page-coaching-detail" style="display:none">
+
+        <div class="page-header">
+          <div class="page-breadcrumb">
+            <span class="breadcrumb-link" onclick="navigate('home')">Home</span>
+            <span class="breadcrumb-sep">›</span>
+            <span class="breadcrumb-link" onclick="navigate('coaching')">Coaching Karir</span>
+            <span class="breadcrumb-sep">›</span>
+            <span>Detail</span>
+          </div>
+          <h2 class="page-title">Detail Coaching Karir</h2>
+        </div>
+
+        <div class="form-card">
+          <div class="detail-meta">
+            <div class="detail-meta-item">
+              <div class="detail-meta-label">Tanggal</div>
+              <div class="detail-meta-value">14 April 2026</div>
+            </div>
+            <div class="detail-meta-item">
+              <div class="detail-meta-label">Nama Mentor</div>
+              <div class="detail-meta-value">Andi Pratama</div>
+            </div>
+            <div class="detail-meta-item">
+              <div class="detail-meta-label">Nama Mentee</div>
+              <div class="detail-meta-value">Bhaskoro Siddhi</div>
+            </div>
+          </div>
+
+          <!-- Action Items -->
+          <div class="form-group" style="padding-top:2%">
+            <label class="form-label">Action Items</label>
+            <div class="action-items-list">
+
+              <div class="action-item">
+                <div class="action-item-meta">
+                  <span class="action-category-badge cat-pendidikan">Pendidikan (PTB)</span>
+                  <span class="action-type">S2</span>
+                </div>
+                <div class="action-freetext">Mendaftar program S2 di universitas terakreditasi A sebelum akhir tahun 2026. Sudah mengidentifikasi 2 universitas yang sesuai dengan bidang pekerjaan.</div>
+              </div>
+
+              <div class="action-item">
+                <div class="action-item-meta">
+                  <span class="action-category-badge cat-sertifikasi">Sertifikasi</span>
+                  <span class="action-type">Sertifikasi Tier 1</span>
+                </div>
+                <div class="action-freetext">Menyelesaikan modul ELP level B2 pada kuartal kedua 2026 dan mendaftar ujian sertifikasi Tier 1 internal.</div>
+              </div>
+
+              <div class="action-item">
+                <div class="action-item-meta">
+                  <span class="action-category-badge cat-exposure">Exposure</span>
+                  <span class="action-type">Kepanitiaan BI Wide</span>
+                </div>
+                <div class="action-freetext">Aktif berpartisipasi sebagai panitia dalam kegiatan BI Wide minimal 1 kali pada semester pertama 2026.</div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn btn-ghost" onclick="navigate('coaching')">Kembali</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ══ PAGE: LM PERFORMANCE REVIEW ══ -->
+      <div class="content" id="page-lm-performance-review" style="display:none">
+        <div class="page-header">
+          <div class="page-breadcrumb">
+            <span class="breadcrumb-link" onclick="navigate('home')">Home</span>
+            <span class="breadcrumb-sep">›</span>
+            <span>Performance Review</span>
+          </div>
+          <h2 class="page-title">Performance Review — Line Manager</h2>
+        </div>
+
+        <div class="list-card">
+          <div class="list-header">
+            <span class="list-col-head" style="flex:1">Tahun</span>
+            <span class="list-col-head" style="flex:1">Semester</span>
+            <span class="list-col-head" style="flex:2">Nama Pegawai</span>
+            <span class="list-col-head" style="flex:0.3"></span>
+          </div>
+
+          <div class="list-item" onclick="navigate('performance-review-detail')">
+            <span class="list-col" style="flex:1">2026</span>
+            <span class="list-col" style="flex:1">1</span>
+            <span class="list-col" style="flex:2">Bhaskoro Siddhi</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('performance-review-detail')">
+            <span class="list-col" style="flex:1">2025</span>
+            <span class="list-col" style="flex:1">2</span>
+            <span class="list-col" style="flex:2">Bhaskoro Siddhi</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('performance-review-detail')">
+            <span class="list-col" style="flex:1">2025</span>
+            <span class="list-col" style="flex:1">2</span>
+            <span class="list-col" style="flex:2">Ratna Dewi</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('performance-review-detail')">
+            <span class="list-col" style="flex:1">2025</span>
+            <span class="list-col" style="flex:1">1</span>
+            <span class="list-col" style="flex:2">Ratna Dewi</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('performance-review-detail')">
+            <span class="list-col" style="flex:1">2025</span>
+            <span class="list-col" style="flex:1">1</span>
+            <span class="list-col" style="flex:2">Bhaskoro Siddhi</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('performance-review-detail')">
+            <span class="list-col" style="flex:1">2024</span>
+            <span class="list-col" style="flex:1">2</span>
+            <span class="list-col" style="flex:2">Hendra Saputra</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ══ PAGE: MENTOR COACHING ══ -->
+      <div class="content" id="page-mentor-coaching" style="display:none">
+        <div class="page-header">
+          <div class="page-breadcrumb">
+            <span class="breadcrumb-link" onclick="navigate('home')">Home</span>
+            <span class="breadcrumb-sep">›</span>
+            <span>Coaching Karir</span>
+          </div>
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <h2 class="page-title">Coaching Karir — Mentor</h2>
+            <button class="btn btn-primary" onclick="navigate('mentor-coaching-form')">+ Buat Baru</button>
+          </div>
+        </div>
+
+        <div class="list-card">
+          <div class="list-header">
+            <span class="list-col-head" style="flex:1.2">Tanggal</span>
+            <span class="list-col-head" style="flex:2">Nama Pegawai</span>
+            <span class="list-col-head" style="flex:1.2">Action Items</span>
+            <span class="list-col-head" style="flex:0.3"></span>
+          </div>
+
+          <div class="list-item" onclick="navigate('coaching-detail')">
+            <span class="list-col" style="flex:1.2">14 Apr 2026</span>
+            <span class="list-col" style="flex:2">Bhaskoro Siddhi</span>
+            <span class="list-col" style="flex:1.2">3 item</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('coaching-detail')">
+            <span class="list-col" style="flex:1.2">20 Mar 2026</span>
+            <span class="list-col" style="flex:2">Bhaskoro Siddhi</span>
+            <span class="list-col" style="flex:1.2">5 item</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('coaching-detail')">
+            <span class="list-col" style="flex:1.2">5 Mar 2026</span>
+            <span class="list-col" style="flex:2">Ratna Dewi</span>
+            <span class="list-col" style="flex:1.2">4 item</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('coaching-detail')">
+            <span class="list-col" style="flex:1.2">10 Feb 2026</span>
+            <span class="list-col" style="flex:2">Ratna Dewi</span>
+            <span class="list-col" style="flex:1.2">2 item</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('coaching-detail')">
+            <span class="list-col" style="flex:1.2">22 Jan 2026</span>
+            <span class="list-col" style="flex:2">Hendra Saputra</span>
+            <span class="list-col" style="flex:1.2">6 item</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('coaching-detail')">
+            <span class="list-col" style="flex:1.2">8 Jan 2026</span>
+            <span class="list-col" style="flex:2">Hendra Saputra</span>
+            <span class="list-col" style="flex:1.2">3 item</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ══ PAGE: MENTOR COACHING FORM ══ -->
+      <div class="content" id="page-mentor-coaching-form" style="display:none">
+        <div class="page-header">
+          <div class="page-breadcrumb">
+            <span class="breadcrumb-link" onclick="navigate('home')">Home</span>
+            <span class="breadcrumb-sep">›</span>
+            <span class="breadcrumb-link" onclick="navigate('mentor-coaching')">Coaching Karir</span>
+            <span class="breadcrumb-sep">›</span>
+            <span>Buat Baru</span>
+          </div>
+          <h2 class="page-title">Form Coaching Karir Baru</h2>
+        </div>
+
+        <div class="form-card">
+
+          <!-- Row: Tanggal + Nama Mentee -->
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Tanggal <span>*</span></label>
+              <input type="date" class="form-control" value="2026-04-29" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nama Mentee <span>*</span></label>
+              <select class="form-control">
+                <option>-- Pilih Mentee --</option>
+                <option selected>Bhaskoro Siddhi</option>
+                <option>Ratna Dewi</option>
+                <option>Hendra Saputra</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Catatan -->
+          <div class="form-group">
+            <label class="form-label">Catatan</label>
+            <textarea class="form-control" rows="3" placeholder="Tuliskan catatan sesi coaching..."></textarea>
+          </div>
+
+          <!-- Foto Bukti -->
+          <div class="form-group">
+            <label class="form-label">Foto Bukti Pelaksanaan</label>
+            <div class="attachment-box">
+              <div class="attachment-icon">🖼️</div>
+              <div class="attachment-text">Seret & lepas foto di sini, atau</div>
+              <div class="attachment-link">Pilih dari perangkat</div>
+              <div class="attachment-text" style="color:#a19f9d">PNG, JPG, maks. 5 MB</div>
+            </div>
+          </div>
+
+          <!-- Action Items -->
+          <div class="form-group">
+            <label class="form-label">Action Items</label>
+            <div id="action-items-container" style="display:flex; flex-direction:column; gap:8px;"></div>
+            <button class="btn-add-action" onclick="addActionItem()">+ Tambah Action Item</button>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn btn-ghost" onclick="navigate('mentor-coaching')">Batal</button>
+            <button class="btn btn-primary">Simpan</button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ══ PAGE: IDP ══ -->
+      <div class="content" id="page-idp" style="display:none">
+        <div class="page-header">
+          <div class="page-breadcrumb">
+            <span class="breadcrumb-link" onclick="navigate('home')">Home</span>
+            <span class="breadcrumb-sep">›</span>
+            <span>IDP</span>
+          </div>
+          <h2 class="page-title">Individual Development Plan</h2>
+        </div>
+
+        <!-- ── Bagian 1: Action Items Dari Coaching Karir Terakhir ── -->
+        <div class="idp-section">
+          <div class="idp-section-header">
+            <div style="display:flex; flex-direction:column; gap:4px;">
+              <div class="idp-section-title">Action Items Dari Coaching Karir Terakhir</div>
+              <div style="font-size:0.72em; color:#605e5c;">Sesi 14 April 2026 &mdash; Mentor: Andi Pratama
+                <span class="breadcrumb-link" style="margin-left:8px;" onclick="navigate('coaching-detail')">Lihat detail ›</span>
+              </div>
+            </div>
+          </div>
+          <div class="action-items-list">
+            <div class="action-item">
+              <div class="action-item-meta">
+                <span class="action-category-badge cat-pendidikan">Pendidikan (PTB)</span>
+                <span class="action-type">S2</span>
+              </div>
+              <div class="action-freetext">Mendaftar program S2 di universitas terakreditasi A sebelum akhir tahun 2026. Sudah mengidentifikasi 2 universitas yang sesuai dengan bidang pekerjaan.</div>
+            </div>
+            <div class="action-item">
+              <div class="action-item-meta">
+                <span class="action-category-badge cat-sertifikasi">Sertifikasi</span>
+                <span class="action-type">Sertifikasi Tier 1</span>
+              </div>
+              <div class="action-freetext">Menyelesaikan modul ELP level B2 pada kuartal kedua 2026 dan mendaftar ujian sertifikasi Tier 1 internal.</div>
+            </div>
+            <div class="action-item">
+              <div class="action-item-meta">
+                <span class="action-category-badge cat-exposure">Exposure</span>
+                <span class="action-type">Kepanitiaan BI Wide</span>
+              </div>
+              <div class="action-freetext">Aktif berpartisipasi sebagai panitia dalam kegiatan BI Wide minimal 1 kali pada semester pertama 2026.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Bagian 2: Action Items Tahun Berjalan ── -->
+        <div class="idp-section">
+          <div class="idp-section-header">
+            <div class="idp-section-title">Action Items 2026</div>
+            <button class="btn btn-primary" style="font-size:0.75em; padding:5px 14px;" onclick="navigate('idp-edit')">Edit</button>
+          </div>
+          <div class="action-items-list">
+            <div class="action-item">
+              <div class="action-item-meta">
+                <span class="action-category-badge cat-pendidikan">Pendidikan (PTB)</span>
+                <span class="action-type">S2</span>
+                <span class="status-badge badge-info" style="font-size:0.72em;">TW2</span>
+                <select class="status-select st-rencana" onchange="updateStatusStyle(this)">
+                  <option value="rencana" selected>Rencana</option>
+                  <option value="proses">Proses</option>
+                  <option value="selesai">Selesai</option>
+                  <option value="tertunda">Tertunda</option>
+                  <option value="dibatalkan">Dibatalkan</option>
+                </select>
+              </div>
+              <div class="action-freetext">Mendaftar program S2 di universitas terakreditasi A sebelum akhir tahun 2026.</div>
+            </div>
+            <div class="action-item">
+              <div class="action-item-meta">
+                <span class="action-category-badge cat-sertifikasi">Sertifikasi</span>
+                <span class="action-type">Sertifikasi Tier 1</span>
+                <span class="status-badge badge-info" style="font-size:0.72em;">TW2</span>
+                <select class="status-select st-rencana" onchange="updateStatusStyle(this)">
+                  <option value="rencana" selected>Rencana</option>
+                  <option value="proses">Proses</option>
+                  <option value="selesai">Selesai</option>
+                  <option value="tertunda">Tertunda</option>
+                  <option value="dibatalkan">Dibatalkan</option>
+                </select>
+              </div>
+              <div class="action-freetext">Menyelesaikan modul ELP level B2 pada kuartal kedua 2026 dan mendaftar ujian sertifikasi Tier 1.</div>
+            </div>
+            <div class="action-item">
+              <div class="action-item-meta">
+                <span class="action-category-badge cat-exposure">Exposure</span>
+                <span class="action-type">Kepanitiaan BI Wide</span>
+                <span class="status-badge badge-info" style="font-size:0.72em;">TW1</span>
+                <select class="status-select st-rencana" onchange="updateStatusStyle(this)">
+                  <option value="rencana" selected>Rencana</option>
+                  <option value="proses">Proses</option>
+                  <option value="selesai">Selesai</option>
+                  <option value="tertunda">Tertunda</option>
+                  <option value="dibatalkan">Dibatalkan</option>
+                </select>
+              </div>
+              <div class="action-freetext">Aktif berpartisipasi sebagai panitia dalam kegiatan BI Wide minimal 1 kali pada semester pertama 2026.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Bagian 3: Riwayat Tahun Sebelumnya ── -->
+        <div class="idp-section">
+          <div class="idp-section-title">Riwayat Action Items</div>
+          <div class="list-card" style="margin-top:8px;">
+            <div class="list-header">
+              <span class="list-col-head" style="flex:0.6">Tahun</span>
+              <span class="list-col-head" style="flex:0.9">Kategori</span>
+              <span class="list-col-head" style="flex:1.6">Tipe</span>
+              <span class="list-col-head" style="flex:2">Deskripsi / Komitmen</span>
+              <span class="list-col-head" style="flex:0.7">Target</span>
+              <span class="list-col-head" style="flex:0.9">Status</span>
+            </div>
+            <div class="list-item" style="cursor:default;">
+              <span class="list-col" style="flex:0.6">2025</span>
+              <span class="list-col" style="flex:0.9"><span class="action-category-badge cat-pendidikan">Pendidikan (PTB)</span></span>
+              <span class="list-col" style="flex:1.6; font-size:0.75em;">S2</span>
+              <span class="list-col" style="flex:2; font-size:0.75em; color:#605e5c;">Menyelesaikan studi S1 tepat waktu dengan IPK minimal 3.00.</span>
+              <span class="list-col" style="flex:0.7"><span class="status-badge badge-info" style="font-size:0.72em;">TW4</span></span>
+              <span class="list-col" style="flex:0.9"><select class="status-select st-selesai" onchange="updateStatusStyle(this)"><option value="rencana">Rencana</option><option value="proses">Proses</option><option value="selesai" selected>Selesai</option><option value="tertunda">Tertunda</option><option value="dibatalkan">Dibatalkan</option></select></span>
+            </div>
+            <div class="list-item" style="cursor:default;">
+              <span class="list-col" style="flex:0.6">2025</span>
+              <span class="list-col" style="flex:0.9"><span class="action-category-badge cat-exposure">Exposure</span></span>
+              <span class="list-col" style="flex:1.6; font-size:0.75em;">Prestasi BI Wide atau lainnya</span>
+              <span class="list-col" style="flex:2; font-size:0.75em; color:#605e5c;">Meraih penghargaan pegawai terbaik unit pada semester 2.</span>
+              <span class="list-col" style="flex:0.7"><span class="status-badge badge-info" style="font-size:0.72em;">TW2</span></span>
+              <span class="list-col" style="flex:0.9"><select class="status-select st-selesai" onchange="updateStatusStyle(this)"><option value="rencana">Rencana</option><option value="proses">Proses</option><option value="selesai" selected>Selesai</option><option value="tertunda">Tertunda</option><option value="dibatalkan">Dibatalkan</option></select></span>
+            </div>
+            <div class="list-item" style="cursor:default;">
+              <span class="list-col" style="flex:0.6">2024</span>
+              <span class="list-col" style="flex:0.9"><span class="action-category-badge cat-sertifikasi">Sertifikasi</span></span>
+              <span class="list-col" style="flex:1.6; font-size:0.75em;">Sertifikasi Tier 1</span>
+              <span class="list-col" style="flex:2; font-size:0.75em; color:#605e5c;">Lulus ujian ELP level B1 dan menyelesaikan PMK modul dasar.</span>
+              <span class="list-col" style="flex:0.7"><span class="status-badge badge-info" style="font-size:0.72em;">TW3</span></span>
+              <span class="list-col" style="flex:0.9"><select class="status-select st-dibatalkan" onchange="updateStatusStyle(this)"><option value="rencana">Rencana</option><option value="proses">Proses</option><option value="selesai">Selesai</option><option value="tertunda">Tertunda</option><option value="dibatalkan" selected>Dibatalkan</option></select></span>
+            </div>
+            <div class="list-item" style="cursor:default;">
+              <span class="list-col" style="flex:0.6">2024</span>
+              <span class="list-col" style="flex:0.9"><span class="action-category-badge cat-exposure">Exposure</span></span>
+              <span class="list-col" style="flex:1.6; font-size:0.75em;">Kepanitiaan BI Wide</span>
+              <span class="list-col" style="flex:2; font-size:0.75em; color:#605e5c;">Terlibat sebagai panitia acara Dies Natalis BI tingkat nasional.</span>
+              <span class="list-col" style="flex:0.7"><span class="status-badge badge-info" style="font-size:0.72em;">TW1</span></span>
+              <span class="list-col" style="flex:0.9"><select class="status-select st-selesai" onchange="updateStatusStyle(this)"><option value="rencana">Rencana</option><option value="proses">Proses</option><option value="selesai" selected>Selesai</option><option value="tertunda">Tertunda</option><option value="dibatalkan">Dibatalkan</option></select></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ══ PAGE: IDP EDIT ══ -->
+      <div class="content" id="page-idp-edit" style="display:none">
+        <div class="page-header">
+          <div class="page-breadcrumb">
+            <span class="breadcrumb-link" onclick="navigate('home')">Home</span>
+            <span class="breadcrumb-sep">›</span>
+            <span class="breadcrumb-link" onclick="navigate('idp')">IDP</span>
+            <span class="breadcrumb-sep">›</span>
+            <span>Edit Action Items</span>
+          </div>
+          <h2 class="page-title">Edit Action Items 2026</h2>
+        </div>
+
+        <div class="form-card">
+          <div id="idp-action-items-container" style="display:flex; flex-direction:column; gap:8px;">
+
+            <div class="action-item-panel">
+              <div class="action-item-panel-header">
+                <span class="action-item-panel-title">Action Item #1</span>
+                <button class="btn-delete-action">✕ Hapus</button>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Tipe</label>
+                <select class="form-control">
+                  <optgroup label="Pendidikan (PTB)">
+                    <option selected>S2</option>
+                    <option>S3</option>
+                  </optgroup>
+                  <optgroup label="Sertifikasi">
+                    <option>Sertifikasi Tier 1</option>
+                    <option>Sertifikasi Tier 2</option>
+                    <option>PMK</option>
+                    <option>Kum Mengajar</option>
+                  </optgroup>
+                  <optgroup label="Exposure">
+                    <option>Penugasan DN/LN, Penugasan Strategis atau lainnya</option>
+                    <option>Prestasi BI Wide atau lainnya</option>
+                    <option>Kepanitiaan BI Wide</option>
+                    <option>Plt/Penunjukan/Rangkap Jabatan/Penugasan tetap</option>
+                  </optgroup>
+                </select>
+              </div>
+              <span class="action-category-badge cat-pendidikan" style="font-size:0.68em;">Pendidikan (PTB)</span>
+              <div class="form-group">
+                <label class="form-label">Detail</label>
+                <textarea class="form-control" rows="2">Mendaftar program S2 di universitas terakreditasi A sebelum akhir tahun 2026.</textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Target</label>
+                <select class="form-control">
+                  <option>-- Pilih Target --</option>
+                  <option>TW1</option>
+                  <option selected>TW2</option>
+                  <option>TW3</option>
+                  <option>TW4</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="action-item-panel">
+              <div class="action-item-panel-header">
+                <span class="action-item-panel-title">Action Item #2</span>
+                <button class="btn-delete-action">✕ Hapus</button>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Tipe</label>
+                <select class="form-control">
+                  <optgroup label="Pendidikan (PTB)">
+                    <option>S2</option>
+                    <option>S3</option>
+                  </optgroup>
+                  <optgroup label="Sertifikasi">
+                    <option selected>Sertifikasi Tier 1</option>
+                    <option>Sertifikasi Tier 2</option>
+                    <option>PMK</option>
+                    <option>Kum Mengajar</option>
+                  </optgroup>
+                  <optgroup label="Exposure">
+                    <option>Penugasan DN/LN, Penugasan Strategis atau lainnya</option>
+                    <option>Prestasi BI Wide atau lainnya</option>
+                    <option>Kepanitiaan BI Wide</option>
+                    <option>Plt/Penunjukan/Rangkap Jabatan/Penugasan tetap</option>
+                  </optgroup>
+                </select>
+              </div>
+              <span class="action-category-badge cat-sertifikasi" style="font-size:0.68em;">Sertifikasi</span>
+              <div class="form-group">
+                <label class="form-label">Detail</label>
+                <textarea class="form-control" rows="2">Menyelesaikan modul ELP level B2 pada kuartal kedua 2026 dan mendaftar ujian sertifikasi Tier 1.</textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Target</label>
+                <select class="form-control">
+                  <option>-- Pilih Target --</option>
+                  <option>TW1</option>
+                  <option selected>TW2</option>
+                  <option>TW3</option>
+                  <option>TW4</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="action-item-panel">
+              <div class="action-item-panel-header">
+                <span class="action-item-panel-title">Action Item #3</span>
+                <button class="btn-delete-action">✕ Hapus</button>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Tipe</label>
+                <select class="form-control">
+                  <optgroup label="Pendidikan (PTB)">
+                    <option>S2</option>
+                    <option>S3</option>
+                  </optgroup>
+                  <optgroup label="Sertifikasi">
+                    <option>Sertifikasi Tier 1</option>
+                    <option>Sertifikasi Tier 2</option>
+                    <option>PMK</option>
+                    <option>Kum Mengajar</option>
+                  </optgroup>
+                  <optgroup label="Exposure">
+                    <option>Penugasan DN/LN, Penugasan Strategis atau lainnya</option>
+                    <option>Prestasi BI Wide atau lainnya</option>
+                    <option selected>Kepanitiaan BI Wide</option>
+                    <option>Plt/Penunjukan/Rangkap Jabatan/Penugasan tetap</option>
+                  </optgroup>
+                </select>
+              </div>
+              <span class="action-category-badge cat-exposure" style="font-size:0.68em;">Exposure</span>
+              <div class="form-group">
+                <label class="form-label">Detail</label>
+                <textarea class="form-control" rows="2">Aktif berpartisipasi sebagai panitia dalam kegiatan BI Wide minimal 1 kali pada semester pertama 2026.</textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Target</label>
+                <select class="form-control">
+                  <option>-- Pilih Target --</option>
+                  <option selected>TW1</option>
+                  <option>TW2</option>
+                  <option>TW3</option>
+                  <option>TW4</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+
+          <button class="btn-add-action" onclick="addActionItemIdp()" style="margin-top:8px;">+ Tambah Action Item</button>
+
+          <div class="form-actions">
+            <button class="btn btn-ghost" onclick="navigate('idp')">Batal</button>
+            <button class="btn btn-primary">Simpan</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PAGE: CHECKLIST MENTORING LIST ══ -->
+      <div class="content" id="page-checklist-mentoring" style="display:none">
+        <div class="page-header">
+          <div class="page-breadcrumb">
+            <span class="breadcrumb-link" onclick="navigate('home')">Home</span>
+            <span class="breadcrumb-sep">›</span>
+            <span>Checklist Mentoring</span>
+          </div>
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <h2 class="page-title">Checklist Mentoring</h2>
+            <button class="btn btn-primary" onclick="navigate('checklist-mentoring-form')">+ Buat Baru</button>
+          </div>
+        </div>
+
+        <div class="list-card">
+          <div class="list-header">
+            <span class="list-col-head" style="flex:1">Tahun</span>
+            <span class="list-col-head" style="flex:1.5">Mentor</span>
+            <span class="list-col-head" style="flex:1">Status</span>
+            <span class="list-col-head" style="flex:0.3"></span>
+          </div>
+
+          <div class="list-item" onclick="navigate('checklist-mentoring-detail')">
+            <span class="list-col" style="flex:1">2026</span>
+            <span class="list-col" style="flex:1.5">Andi Pratama</span>
+            <span class="list-col" style="flex:1"><span class="status-badge badge-success">Lengkap</span></span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('checklist-mentoring-detail')">
+            <span class="list-col" style="flex:1">2025</span>
+            <span class="list-col" style="flex:1.5">Dewi Kusuma</span>
+            <span class="list-col" style="flex:1"><span class="status-badge badge-success">Lengkap</span></span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('checklist-mentoring-detail')">
+            <span class="list-col" style="flex:1">2024</span>
+            <span class="list-col" style="flex:1.5">Dewi Kusuma</span>
+            <span class="list-col" style="flex:1"><span class="status-badge badge-warning">Belum Lengkap</span></span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PAGE: CHECKLIST MENTORING FORM ══ -->
+      <div class="content" id="page-checklist-mentoring-form" style="display:none">
+        <div class="page-header">
+          <div class="page-breadcrumb">
+            <span class="breadcrumb-link" onclick="navigate('home')">Home</span>
+            <span class="breadcrumb-sep">›</span>
+            <span class="breadcrumb-link" onclick="navigate('checklist-mentoring')">Checklist Mentoring</span>
+            <span class="breadcrumb-sep">›</span>
+            <span>Buat Baru</span>
+          </div>
+          <h2 class="page-title">Form Checklist Mentoring</h2>
+        </div>
+
+        <div class="form-card">
+
+          <!-- Tahun -->
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Tahun <span style="color:#c50f1f">*</span></label>
+              <select class="form-control">
+                <option>-- Pilih Tahun --</option>
+                <option selected>2026</option>
+                <option>2025</option>
+                <option>2024</option>
+                <option>2023</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Mentor <span style="color:#c50f1f">*</span></label>
+              <select class="form-control">
+                <option>-- Pilih Mentor --</option>
+                <option selected>Andi Pratama</option>
+                <option>Dewi Kusuma</option>
+                <option>Rizky Firmansyah</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Personal Statement -->
+          <div class="form-group">
+            <label class="form-label">Personal Statement <span style="color:#c50f1f">*</span></label>
+            <div class="attachment-box" onclick="triggerUpload('upload-personal-statement')">
+              <input type="file" id="upload-personal-statement" accept="image/*" style="display:none" onchange="previewFileName(this, 'preview-personal-statement')" />
+              <div class="attachment-icon">🖼️</div>
+              <div class="attachment-text">Seret &amp; lepas foto di sini, atau</div>
+              <div class="attachment-link">Pilih dari perangkat</div>
+              <div class="attachment-text" style="color:#a19f9d">PNG, JPG, maks. 5 MB</div>
+            </div>
+            <div id="preview-personal-statement" class="file-preview-name" style="display:none"></div>
+          </div>
+
+          <!-- Career Plan -->
+          <div class="form-group">
+            <label class="form-label">Career Plan <span style="color:#c50f1f">*</span></label>
+            <div class="attachment-box" onclick="triggerUpload('upload-career-plan')">
+              <input type="file" id="upload-career-plan" accept="image/*" style="display:none" onchange="previewFileName(this, 'preview-career-plan')" />
+              <div class="attachment-icon">🖼️</div>
+              <div class="attachment-text">Seret &amp; lepas foto di sini, atau</div>
+              <div class="attachment-link">Pilih dari perangkat</div>
+              <div class="attachment-text" style="color:#a19f9d">PNG, JPG, maks. 5 MB</div>
+            </div>
+            <div id="preview-career-plan" class="file-preview-name" style="display:none"></div>
+          </div>
+
+          <!-- Tanggal & Foto Pelaksanaan -->
+          <div class="form-group">
+            <label class="form-label">Tanggal &amp; Pelaksanaan Mentoring <span style="color:#c50f1f">*</span>
+              <span style="font-size:0.78em; font-weight:400; color:#605e5c; margin-left:6px;">Minimal 4 sesi</span>
+            </label>
+            <div id="mentoring-sessions-container" style="display:flex; flex-direction:column; gap:10px; margin-top:4px;"></div>
+            <button class="btn-add-action" onclick="addMentoringSession()" style="margin-top:8px;" id="btn-add-session">+ Tambah Sesi</button>
+          </div>
+
+          <!-- Bukti Upload -->
+          <div class="form-group">
+            <label class="form-label">Bukti Sudah Melakukan Upload <span style="color:#c50f1f">*</span></label>
+            <div class="attachment-box" onclick="triggerUpload('upload-bukti')">
+              <input type="file" id="upload-bukti" accept="image/*" style="display:none" onchange="previewFileName(this, 'preview-bukti')" />
+              <div class="attachment-icon">🖼️</div>
+              <div class="attachment-text">Seret &amp; lepas foto di sini, atau</div>
+              <div class="attachment-link">Pilih dari perangkat</div>
+              <div class="attachment-text" style="color:#a19f9d">PNG, JPG, maks. 5 MB</div>
+            </div>
+            <div id="preview-bukti" class="file-preview-name" style="display:none"></div>
+          </div>
+
+          <!-- Progress bar -->
+          <div id="checklist-completion-bar" style="background:#f3f2f1; border-radius:6px; padding:10px 14px; display:flex; align-items:center; gap:12px; margin-top:4px;">
+            <span style="font-size:0.72em; color:#605e5c; flex:1;">Progres checklist</span>
+            <div class="progress-track" style="width:55%; margin:0;">
+              <div class="progress-fill" id="checklist-progress-fill" style="width:0%"></div>
+            </div>
+            <span id="checklist-progress-label" style="font-size:0.72em; font-weight:700; color:#0078d4; min-width:32px; text-align:right;">0/6</span>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn btn-ghost" onclick="navigate('checklist-mentoring')">Batal</button>
+            <button class="btn btn-primary">Simpan</button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ══ PAGE: CHECKLIST MENTORING DETAIL ══ -->
+      <div class="content" id="page-checklist-mentoring-detail" style="display:none">
+        <div class="page-header">
+          <div class="page-breadcrumb">
+            <span class="breadcrumb-link" onclick="navigate('home')">Home</span>
+            <span class="breadcrumb-sep">›</span>
+            <span class="breadcrumb-link" onclick="navigate('checklist-mentoring')">Checklist Mentoring</span>
+            <span class="breadcrumb-sep">›</span>
+            <span>Detail</span>
+          </div>
+          <h2 class="page-title">Detail Checklist Mentoring</h2>
+        </div>
+
+        <div class="form-card">
+
+          <!-- Meta strip -->
+          <div class="detail-meta">
+            <div class="detail-meta-item">
+              <div class="detail-meta-label">Tahun</div>
+              <div class="detail-meta-value">2026</div>
+            </div>
+            <div class="detail-meta-item">
+              <div class="detail-meta-label">Nama Pegawai</div>
+              <div class="detail-meta-value">Bhaskoro Siddhi</div>
+            </div>
+            <div class="detail-meta-item">
+              <div class="detail-meta-label">Mentor</div>
+              <div class="detail-meta-value">Andi Pratama</div>
+            </div>
+            <div class="detail-meta-item">
+              <div class="detail-meta-label">Status</div>
+              <div class="detail-meta-value"><span class="status-badge badge-success">Lengkap</span></div>
+            </div>
+          </div>
+
+          <!-- Personal Statement -->
+          <div class="form-group">
+            <label class="form-label">Personal Statement</label>
+            <div class="detail-photo" style="width:100%; max-width:260px;">
+              <div class="detail-photo-placeholder">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="48" height="48" rx="4" fill="#e1dfdd"/>
+                  <circle cx="18" cy="18" r="5" fill="#a19f9d"/>
+                  <path d="M4 36l10-12 8 9 6-7 16 10H4z" fill="#c8c6c4"/>
+                </svg>
+                <span>personal_statement_2026.jpg</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Career Plan -->
+          <div class="form-group">
+            <label class="form-label">Career Plan</label>
+            <div class="detail-photo" style="width:100%; max-width:260px;">
+              <div class="detail-photo-placeholder">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="48" height="48" rx="4" fill="#e1dfdd"/>
+                  <circle cx="18" cy="18" r="5" fill="#a19f9d"/>
+                  <path d="M4 36l10-12 8 9 6-7 16 10H4z" fill="#c8c6c4"/>
+                </svg>
+                <span>career_plan_2026.jpg</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sesi Mentoring -->
+          <div class="form-group">
+            <label class="form-label">Tanggal &amp; Pelaksanaan Mentoring</label>
+            <div style="display:flex; flex-direction:column; gap:10px; margin-top:4px;">
+
+              <div class="mentoring-session-panel">
+                <div class="mentoring-session-header">
+                  <span class="mentoring-session-title">Sesi Mentoring #1</span>
+                  <span class="session-required-badge">Wajib</span>
+                </div>
+                <div style="font-size:0.78em; color:#323130;"><strong>Tanggal:</strong> 10 Januari 2026</div>
+                <div class="detail-photo" style="width:100%; max-width:220px;">
+                  <div class="detail-photo-placeholder">
+                    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" rx="4" fill="#e1dfdd"/><circle cx="18" cy="18" r="5" fill="#a19f9d"/><path d="M4 36l10-12 8 9 6-7 16 10H4z" fill="#c8c6c4"/></svg>
+                    <span>sesi1_jan2026.jpg</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mentoring-session-panel">
+                <div class="mentoring-session-header">
+                  <span class="mentoring-session-title">Sesi Mentoring #2</span>
+                  <span class="session-required-badge">Wajib</span>
+                </div>
+                <div style="font-size:0.78em; color:#323130;"><strong>Tanggal:</strong> 14 Februari 2026</div>
+                <div class="detail-photo" style="width:100%; max-width:220px;">
+                  <div class="detail-photo-placeholder">
+                    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" rx="4" fill="#e1dfdd"/><circle cx="18" cy="18" r="5" fill="#a19f9d"/><path d="M4 36l10-12 8 9 6-7 16 10H4z" fill="#c8c6c4"/></svg>
+                    <span>sesi2_feb2026.jpg</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mentoring-session-panel">
+                <div class="mentoring-session-header">
+                  <span class="mentoring-session-title">Sesi Mentoring #3</span>
+                  <span class="session-required-badge">Wajib</span>
+                </div>
+                <div style="font-size:0.78em; color:#323130;"><strong>Tanggal:</strong> 5 Maret 2026</div>
+                <div class="detail-photo" style="width:100%; max-width:220px;">
+                  <div class="detail-photo-placeholder">
+                    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" rx="4" fill="#e1dfdd"/><circle cx="18" cy="18" r="5" fill="#a19f9d"/><path d="M4 36l10-12 8 9 6-7 16 10H4z" fill="#c8c6c4"/></svg>
+                    <span>sesi3_mar2026.jpg</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mentoring-session-panel">
+                <div class="mentoring-session-header">
+                  <span class="mentoring-session-title">Sesi Mentoring #4</span>
+                  <span class="session-required-badge">Wajib</span>
+                </div>
+                <div style="font-size:0.78em; color:#323130;"><strong>Tanggal:</strong> 20 April 2026</div>
+                <div class="detail-photo" style="width:100%; max-width:220px;">
+                  <div class="detail-photo-placeholder">
+                    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" rx="4" fill="#e1dfdd"/><circle cx="18" cy="18" r="5" fill="#a19f9d"/><path d="M4 36l10-12 8 9 6-7 16 10H4z" fill="#c8c6c4"/></svg>
+                    <span>sesi4_apr2026.jpg</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mentoring-session-panel">
+                <div class="mentoring-session-header">
+                  <span class="mentoring-session-title">Sesi Mentoring #5</span>
+                </div>
+                <div style="font-size:0.78em; color:#323130;"><strong>Tanggal:</strong> 8 Mei 2026</div>
+                <div class="detail-photo" style="width:100%; max-width:220px;">
+                  <div class="detail-photo-placeholder">
+                    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" rx="4" fill="#e1dfdd"/><circle cx="18" cy="18" r="5" fill="#a19f9d"/><path d="M4 36l10-12 8 9 6-7 16 10H4z" fill="#c8c6c4"/></svg>
+                    <span>sesi5_mei2026.jpg</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mentoring-session-panel">
+                <div class="mentoring-session-header">
+                  <span class="mentoring-session-title">Sesi Mentoring #6</span>
+                </div>
+                <div style="font-size:0.78em; color:#323130;"><strong>Tanggal:</strong> 2 Juni 2026</div>
+                <div class="detail-photo" style="width:100%; max-width:220px;">
+                  <div class="detail-photo-placeholder">
+                    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="48" height="48" rx="4" fill="#e1dfdd"/><circle cx="18" cy="18" r="5" fill="#a19f9d"/><path d="M4 36l10-12 8 9 6-7 16 10H4z" fill="#c8c6c4"/></svg>
+                    <span>sesi6_jun2026.jpg</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Bukti Upload -->
+          <div class="form-group">
+            <label class="form-label">Bukti Sudah Melakukan Upload</label>
+            <div class="detail-photo" style="width:100%; max-width:260px;">
+              <div class="detail-photo-placeholder">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="48" height="48" rx="4" fill="#e1dfdd"/>
+                  <circle cx="18" cy="18" r="5" fill="#a19f9d"/>
+                  <path d="M4 36l10-12 8 9 6-7 16 10H4z" fill="#c8c6c4"/>
+                </svg>
+                <span>bukti_upload_2026.jpg</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn btn-ghost" onclick="navigate('checklist-mentoring')">Kembali</button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ══ PAGE: COACHING TEMATIK LIST ══ -->
+      <div class="content" id="page-coaching-tematik" style="display:none">
+        <div class="page-header">
+          <div class="page-breadcrumb">
+            <span class="breadcrumb-link" onclick="navigate('home')">Home</span>
+            <span class="breadcrumb-sep">›</span>
+            <span>Coaching Tematik</span>
+          </div>
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <h2 class="page-title">Coaching Tematik</h2>
+            <button class="btn btn-primary" onclick="navigate('coaching-tematik-form')">+ Buat Baru</button>
+          </div>
+        </div>
+
+        <div class="list-card">
+          <div class="list-header">
+            <span class="list-col-head" style="flex:1.2">Tanggal</span>
+            <span class="list-col-head" style="flex:2">Topik</span>
+            <span class="list-col-head" style="flex:1.5">Mentor</span>
+            <span class="list-col-head" style="flex:0.3"></span>
+          </div>
+
+          <div class="list-item" onclick="navigate('coaching-tematik-detail')">
+            <span class="list-col" style="flex:1.2">20 Mei 2026</span>
+            <span class="list-col" style="flex:2">Manajemen Waktu dan Prioritas</span>
+            <span class="list-col" style="flex:1.5">Andi Pratama</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('coaching-tematik-detail')">
+            <span class="list-col" style="flex:1.2">3 Apr 2026</span>
+            <span class="list-col" style="flex:2">Komunikasi Efektif dengan Stakeholder</span>
+            <span class="list-col" style="flex:1.5">Dewi Kusuma</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('coaching-tematik-detail')">
+            <span class="list-col" style="flex:1.2">18 Feb 2026</span>
+            <span class="list-col" style="flex:2">Pengembangan Kepemimpinan</span>
+            <span class="list-col" style="flex:1.5">Andi Pratama</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('coaching-tematik-detail')">
+            <span class="list-col" style="flex:1.2">10 Jan 2026</span>
+            <span class="list-col" style="flex:2">Perencanaan Karir Jangka Panjang</span>
+            <span class="list-col" style="flex:1.5">Dewi Kusuma</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('coaching-tematik-detail')">
+            <span class="list-col" style="flex:1.2">5 Nov 2025</span>
+            <span class="list-col" style="flex:2">Adaptasi Perubahan Organisasi</span>
+            <span class="list-col" style="flex:1.5">Rizky Firmansyah</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PAGE: COACHING TEMATIK FORM ══ -->
+      <div class="content" id="page-coaching-tematik-form" style="display:none">
+        <div class="page-header">
+          <div class="page-breadcrumb">
+            <span class="breadcrumb-link" onclick="navigate('home')">Home</span>
+            <span class="breadcrumb-sep">›</span>
+            <span class="breadcrumb-link" onclick="navigate('coaching-tematik')">Coaching Tematik</span>
+            <span class="breadcrumb-sep">›</span>
+            <span>Buat Baru</span>
+          </div>
+          <h2 class="page-title">Form Coaching Tematik</h2>
+        </div>
+
+        <div class="form-card">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Tanggal <span style="color:#c50f1f">*</span></label>
+              <input type="date" class="form-control" value="2026-06-06" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Mentor <span style="color:#c50f1f">*</span></label>
+              <select class="form-control">
+                <option>-- Pilih Mentor --</option>
+                <option selected>Andi Pratama</option>
+                <option>Dewi Kusuma</option>
+                <option>Rizky Firmansyah</option>
+                <option>Sari Wulandari</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Topik <span style="color:#c50f1f">*</span></label>
+            <input type="text" class="form-control" placeholder="Tuliskan topik coaching tematik..." />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Hasil Coaching <span style="color:#c50f1f">*</span></label>
+            <textarea class="form-control" rows="5" placeholder="Tuliskan hasil, kesimpulan, dan poin-poin penting dari sesi coaching tematik ini..."></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn btn-ghost" onclick="navigate('coaching-tematik')">Batal</button>
+            <button class="btn btn-primary">Simpan</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PAGE: COACHING TEMATIK DETAIL ══ -->
+      <div class="content" id="page-coaching-tematik-detail" style="display:none">
+        <div class="page-header">
+          <div class="page-breadcrumb">
+            <span class="breadcrumb-link" onclick="navigate('home')">Home</span>
+            <span class="breadcrumb-sep">›</span>
+            <span class="breadcrumb-link" onclick="navigate('coaching-tematik')">Coaching Tematik</span>
+            <span class="breadcrumb-sep">›</span>
+            <span>Detail</span>
+          </div>
+          <h2 class="page-title">Detail Coaching Tematik</h2>
+        </div>
+
+        <div class="form-card">
+          <div class="detail-meta">
+            <div class="detail-meta-item">
+              <div class="detail-meta-label">Tanggal</div>
+              <div class="detail-meta-value">20 Mei 2026</div>
+            </div>
+            <div class="detail-meta-item">
+              <div class="detail-meta-label">Mentor</div>
+              <div class="detail-meta-value">Andi Pratama</div>
+            </div>
+            <div class="detail-meta-item">
+              <div class="detail-meta-label">Nama Pegawai</div>
+              <div class="detail-meta-value">Bhaskoro Siddhi</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Topik</label>
+            <div class="detail-text-box">Manajemen Waktu dan Prioritas</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Hasil Coaching</label>
+            <div class="detail-text-box">Dalam sesi ini, pegawai dan mentor membahas strategi pengelolaan waktu yang lebih efektif. Disepakati bahwa pegawai akan menggunakan metode time-blocking untuk membagi jam kerja harian, serta menerapkan matriks Eisenhower untuk memprioritaskan tugas berdasarkan urgensi dan kepentingannya. Pegawai berkomitmen untuk mengevaluasi efektivitas metode ini setiap akhir pekan dan melaporkan hasilnya pada sesi berikutnya.</div>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn btn-ghost" onclick="navigate('coaching-tematik')">Kembali</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PAGE: COACH - COACHING TEMATIK LIST ══ -->
+      <div class="content" id="page-coach-coaching-tematik" style="display:none">
+        <div class="page-header">
+          <div class="page-breadcrumb">
+            <span class="breadcrumb-link" onclick="navigate('home')">Home</span>
+            <span class="breadcrumb-sep">›</span>
+            <span>Coaching Tematik</span>
+          </div>
+          <h2 class="page-title">Coaching Tematik</h2>
+        </div>
+
+        <div class="list-card">
+          <div class="list-header">
+            <span class="list-col-head" style="flex:1.2">Tanggal</span>
+            <span class="list-col-head" style="flex:2">Topik</span>
+            <span class="list-col-head" style="flex:1.5">Nama Pegawai</span>
+            <span class="list-col-head" style="flex:0.3"></span>
+          </div>
+
+          <div class="list-item" onclick="navigate('coach-coaching-tematik-detail')">
+            <span class="list-col" style="flex:1.2">20 Mei 2026</span>
+            <span class="list-col" style="flex:2">Manajemen Waktu dan Prioritas</span>
+            <span class="list-col" style="flex:1.5">Bhaskoro Siddhi</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('coach-coaching-tematik-detail')">
+            <span class="list-col" style="flex:1.2">18 Feb 2026</span>
+            <span class="list-col" style="flex:2">Pengembangan Kepemimpinan</span>
+            <span class="list-col" style="flex:1.5">Bhaskoro Siddhi</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('coach-coaching-tematik-detail')">
+            <span class="list-col" style="flex:1.2">5 Nov 2025</span>
+            <span class="list-col" style="flex:2">Adaptasi Perubahan Organisasi</span>
+            <span class="list-col" style="flex:1.5">Ratna Dewi</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+
+          <div class="list-item" onclick="navigate('coach-coaching-tematik-detail')">
+            <span class="list-col" style="flex:1.2">12 Sep 2025</span>
+            <span class="list-col" style="flex:2">Peningkatan Kompetensi Teknis</span>
+            <span class="list-col" style="flex:1.5">Hendra Saputra</span>
+            <span class="list-col list-chevron" style="flex:0.3">›</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PAGE: COACH - COACHING TEMATIK DETAIL ══ -->
+      <div class="content" id="page-coach-coaching-tematik-detail" style="display:none">
+        <div class="page-header">
+          <div class="page-breadcrumb">
+            <span class="breadcrumb-link" onclick="navigate('home')">Home</span>
+            <span class="breadcrumb-sep">›</span>
+            <span class="breadcrumb-link" onclick="navigate('coach-coaching-tematik')">Coaching Tematik</span>
+            <span class="breadcrumb-sep">›</span>
+            <span>Detail</span>
+          </div>
+          <h2 class="page-title">Detail Coaching Tematik</h2>
+        </div>
+
+        <div class="form-card">
+          <div class="detail-meta">
+            <div class="detail-meta-item">
+              <div class="detail-meta-label">Tanggal</div>
+              <div class="detail-meta-value">20 Mei 2026</div>
+            </div>
+            <div class="detail-meta-item">
+              <div class="detail-meta-label">Nama Pegawai</div>
+              <div class="detail-meta-value">Bhaskoro Siddhi</div>
+            </div>
+            <div class="detail-meta-item">
+              <div class="detail-meta-label">Coach</div>
+              <div class="detail-meta-value">Andi Pratama</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Topik</label>
+            <div class="detail-text-box">Manajemen Waktu dan Prioritas</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Hasil Coaching</label>
+            <div class="detail-text-box">Dalam sesi ini, pegawai dan mentor membahas strategi pengelolaan waktu yang lebih efektif. Disepakati bahwa pegawai akan menggunakan metode time-blocking untuk membagi jam kerja harian, serta menerapkan matriks Eisenhower untuk memprioritaskan tugas berdasarkan urgensi dan kepentingannya. Pegawai berkomitmen untuk mengevaluasi efektivitas metode ini setiap akhir pekan dan melaporkan hasilnya pada sesi berikutnya.</div>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn btn-ghost" onclick="navigate('coach-coaching-tematik')">Kembali</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PAGE: PROFIL PEGAWAI ══ -->
+      <div class="content" id="page-profil-pegawai" style="display:none">
+        <div class="page-header">
+          <div class="page-breadcrumb">
+            <span class="breadcrumb-link" onclick="navigate('home')">Home</span>
+            <span class="breadcrumb-sep">›</span>
+            <span>Profil Pegawai</span>
+          </div>
+          <h2 class="page-title">Profil Pegawai</h2>
+        </div>
+
+        <!-- ── I. Identitas Pegawai ── -->
+        <div class="profil-section">
+          <div class="profil-section-title">
+            <span class="section-tag">I</span> Identitas Pegawai
+          </div>
+          <div class="grow-grid">
+            <div class="form-group">
+              <label class="form-label">Nama Pegawai</label>
+              <input type="text" class="form-control" value="Bhaskoro Siddhi" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Satuan Kerja</label>
+              <input type="text" class="form-control" value="DPID" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">NIP</label>
+              <input type="text" class="form-control" value="1234567890" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Jabatan</label>
+              <input type="text" class="form-control" value="Analis Muda" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Pangkat (Pkt)</label>
+              <input type="text" class="form-control" value="Pkt. 7" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tanggal Pengisian</label>
+              <input type="date" class="form-control" value="2026-06-06" />
+            </div>
+          </div>
+        </div>
+
+        <!-- ── II. Quantitative ── -->
+        <div class="profil-section">
+          <div class="profil-section-title">
+            <span class="section-tag">II</span> Quantitative
+          </div>
+
+          <!-- A & B -->
+          <div class="grow-grid">
+            <div class="form-group">
+              <label class="form-label">A. Nilai Kinerja Rata² 5 Tahun</label>
+              <input type="number" class="form-control" value="88.5" step="0.1" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">B. Masa Dinas Pangkat</label>
+              <input type="text" class="form-control" value="3 Tahun 2 Bulan" />
+            </div>
+          </div>
+
+          <!-- C. Pendidikan -->
+          <div>
+            <div class="profil-subsection-title">C. Pendidikan</div>
+            <div class="profil-table-wrap">
+            <table class="profil-table" id="tbl-pendidikan">
+              <thead>
+                <tr>
+                  <th class="no-col">No</th>
+                  <th style="width:15%">Jenjang</th>
+                  <th style="width:30%">Universitas / Institusi</th>
+                  <th style="width:30%">Program Studi / Bidang</th>
+                  <th style="width:15%">Tahun Lulus</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="no-col">1</td>
+                  <td><input type="text" value="S1" /></td>
+                  <td><input type="text" value="Universitas Indonesia" /></td>
+                  <td><input type="text" value="Ilmu Komputer" /></td>
+                  <td><input type="number" value="2022" /></td>
+                </tr>
+                <tr>
+                  <td class="no-col">2</td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="number" placeholder="—" /></td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+            <button class="profil-add-row" onclick="addRow('tbl-pendidikan', 4)">+ Tambah Baris</button>
+          </div>
+
+          <!-- D.1 Sertifikasi Tier 1 -->
+          <div>
+            <div class="profil-subsection-title">D.1. Sertifikasi Tier 1</div>
+            <div class="profil-table-wrap">
+            <table class="profil-table" id="tbl-tier1">
+              <thead>
+                <tr>
+                  <th class="no-col">No</th>
+                  <th style="width:28%">Nama Sertifikat</th>
+                  <th style="width:22%">Penerbit / Institusi</th>
+                  <th style="width:15%">Tanggal Terbit</th>
+                  <th style="width:15%">Tanggal Berakhir</th>
+                  <th>Bukti / No. Sertifikat</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="no-col">1</td>
+                  <td><input type="text" value="Certified Data Analyst" /></td>
+                  <td><input type="text" value="Bank Indonesia" /></td>
+                  <td><input type="date" value="2023-03-15" /></td>
+                  <td><input type="date" value="2026-03-15" /></td>
+                  <td><input type="text" value="BI/CDA/2023/001" /></td>
+                </tr>
+                <tr>
+                  <td class="no-col">2</td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="date" /></td>
+                  <td><input type="date" /></td>
+                  <td><input type="text" placeholder="—" /></td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+            <button class="profil-add-row" onclick="addRow('tbl-tier1', 5)">+ Tambah Baris</button>
+          </div>
+
+          <!-- D.2 Sertifikasi Tier 2 -->
+          <div>
+            <div class="profil-subsection-title">D.2. Sertifikasi Tier 2</div>
+            <div class="profil-table-wrap">
+            <table class="profil-table" id="tbl-tier2">
+              <thead>
+                <tr>
+                  <th class="no-col">No</th>
+                  <th style="width:28%">Nama Sertifikat</th>
+                  <th style="width:22%">Penerbit / Institusi</th>
+                  <th style="width:15%">Tanggal Terbit</th>
+                  <th style="width:15%">Tanggal Berakhir</th>
+                  <th>Bukti / No. Sertifikat</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="no-col">1</td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="date" /></td>
+                  <td><input type="date" /></td>
+                  <td><input type="text" placeholder="—" /></td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+            <button class="profil-add-row" onclick="addRow('tbl-tier2', 5)">+ Tambah Baris</button>
+          </div>
+
+          <!-- D.3 PMK -->
+          <div>
+            <div class="profil-subsection-title">D.3. PMK (Program Meningkatkan Kompetensi) — External Learning</div>
+            <div class="profil-table-wrap">
+            <table class="profil-table" id="tbl-pmk">
+              <thead>
+                <tr>
+                  <th class="no-col">No</th>
+                  <th style="width:24%">Training Name</th>
+                  <th style="width:18%">Penyelenggara</th>
+                  <th style="width:12%">Start Date</th>
+                  <th style="width:12%">Completion Date</th>
+                  <th style="width:14%">Jenis PMK</th>
+                  <th style="width:8%">Tipe</th>
+                  <th>Negara</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="no-col">1</td>
+                  <td><input type="text" value="Data Governance Training" /></td>
+                  <td><input type="text" value="BI Institute" /></td>
+                  <td><input type="date" value="2025-03-01" /></td>
+                  <td><input type="date" value="2025-03-05" /></td>
+                  <td><input type="text" value="In-house" /></td>
+                  <td><input type="text" value="DN" /></td>
+                  <td><input type="text" value="Indonesia" /></td>
+                </tr>
+                <tr>
+                  <td class="no-col">2</td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="date" /></td>
+                  <td><input type="date" /></td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="text" placeholder="—" /></td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+            <button class="profil-add-row" onclick="addRow('tbl-pmk', 7)">+ Tambah Baris</button>
+          </div>
+
+          <!-- D.4 Kum Mengajar -->
+          <div>
+            <div class="profil-subsection-title">D.4. Kum Mengajar <span style="font-weight:400; color:#a19f9d; font-size:0.9em;">(Maks. 10)</span></div>
+            <div class="profil-table-wrap">
+            <table class="profil-table" id="tbl-kum">
+              <thead>
+                <tr>
+                  <th class="no-col">No</th>
+                  <th style="width:60%">Nama IHT</th>
+                  <th>Tanggal Pelaksanaan</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="no-col">1</td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="date" /></td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+            <button class="profil-add-row" onclick="addRow('tbl-kum', 2, 10)">+ Tambah Baris</button>
+          </div>
+        </div>
+
+        <!-- ── III. Qualitative ── -->
+        <div class="profil-section">
+          <div class="profil-section-title">
+            <span class="section-tag">III</span> Qualitative — Exposure
+          </div>
+
+          <!-- E.1 Penugasan -->
+          <div>
+            <div class="profil-subsection-title">E.1. Penugasan DN/LN, Penugasan Strategis atau lainnya</div>
+            <div class="profil-table-wrap">
+            <table class="profil-table" id="tbl-penugasan">
+              <thead>
+                <tr>
+                  <th class="no-col">No</th>
+                  <th style="width:12%">Tgl Mulai</th>
+                  <th style="width:12%">Tgl Akhir</th>
+                  <th style="width:15%">PIC</th>
+                  <th style="width:25%">Nama Penugasan (sesuai SK)</th>
+                  <th>Deskripsi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="no-col">1</td>
+                  <td><input type="date" /></td>
+                  <td><input type="date" /></td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="text" placeholder="—" /></td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+            <button class="profil-add-row" onclick="addRow('tbl-penugasan', 5)">+ Tambah Baris</button>
+          </div>
+
+          <!-- E.2 Prestasi -->
+          <div>
+            <div class="profil-subsection-title">E.2. Prestasi BI Wide atau lainnya</div>
+            <div class="profil-table-wrap">
+            <table class="profil-table" id="tbl-prestasi">
+              <thead>
+                <tr>
+                  <th class="no-col">No</th>
+                  <th style="width:16%">Jenis</th>
+                  <th style="width:12%">Level</th>
+                  <th style="width:25%">Nama Prestasi</th>
+                  <th style="width:28%">Detail Prestasi</th>
+                  <th>Tanggal</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="no-col">1</td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="date" /></td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+            <button class="profil-add-row" onclick="addRow('tbl-prestasi', 5)">+ Tambah Baris</button>
+          </div>
+
+          <!-- E.3 Kepanitiaan -->
+          <div>
+            <div class="profil-subsection-title">E.3. Kepanitiaan / Proyek / Tim Kerja / Adhoc Lainnya</div>
+            <div class="profil-table-wrap">
+            <table class="profil-table" id="tbl-kepanitiaan">
+              <thead>
+                <tr>
+                  <th class="no-col">No</th>
+                  <th style="width:22%">Nama Kepanitiaan</th>
+                  <th style="width:14%">Posisi / Bidang</th>
+                  <th style="width:14%">Institusi</th>
+                  <th style="width:18%">Uraian Tugas</th>
+                  <th style="width:12%">Produk</th>
+                  <th style="width:10%">Start</th>
+                  <th>End</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="no-col">1</td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="date" /></td>
+                  <td><input type="date" /></td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+            <button class="profil-add-row" onclick="addRow('tbl-kepanitiaan', 7)">+ Tambah Baris</button>
+          </div>
+
+          <!-- E.4 Plt -->
+          <div>
+            <div class="profil-subsection-title">E.4. Plt / Penunjukan / Rangkap Jabatan / Penugasan Tetap</div>
+            <div class="profil-table-wrap">
+            <table class="profil-table" id="tbl-plt">
+              <thead>
+                <tr>
+                  <th class="no-col">No</th>
+                  <th style="width:20%">Jabatan Plt / Rangkap</th>
+                  <th style="width:16%">Unit Kerja</th>
+                  <th style="width:12%">Periode Mulai</th>
+                  <th style="width:12%">Periode Selesai</th>
+                  <th style="width:14%">No. SK</th>
+                  <th style="width:8%">Skor</th>
+                  <th>Catatan</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="no-col">1</td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="date" /></td>
+                  <td><input type="date" /></td>
+                  <td><input type="text" placeholder="—" /></td>
+                  <td><input type="number" placeholder="—" /></td>
+                  <td><input type="text" placeholder="—" /></td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+            <button class="profil-add-row" onclick="addRow('tbl-plt', 7)">+ Tambah Baris</button>
+          </div>
+        </div>
+
+        <!-- Save -->
+        <div class="form-actions" style="padding-top:0; border-top:none;">
+          <button class="btn btn-ghost" onclick="navigate('home')">Batal</button>
+          <button class="btn btn-primary">Simpan</button>
+        </div>
+
+      </div>
+
+      <!-- ══ PAGE: ADMIN - MONITORING MENTORING ══ -->
+      <div class="content" id="page-admin-monitoring-mentoring" style="display:none">
+        <div class="page-header">
+          <div class="page-breadcrumb">
+            <span class="breadcrumb-link" onclick="navigate('home')">Home</span>
+            <span class="breadcrumb-sep">›</span>
+            <span>Monitoring Mentoring</span>
+          </div>
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <h2 class="page-title">Monitoring Mentoring</h2>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <select class="form-control" style="width:auto; font-size:0.78em; padding:5px 10px;">
+                <option selected>Tahun: 2026</option>
+                <option>Tahun: 2025</option>
+                <option>Tahun: 2024</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="list-card">
+          <div class="list-header">
+            <span class="list-col-head" style="flex:0.4">No</span>
+            <span class="list-col-head" style="flex:2">Nama Pegawai</span>
+            <span class="list-col-head" style="flex:1.2">NIP</span>
+            <span class="list-col-head" style="flex:1.4">Checklist Mentoring 2026</span>
+          </div>
+
+          <div class="list-item" style="cursor:default;">
+            <span class="list-col" style="flex:0.4">1</span>
+            <span class="list-col" style="flex:2">Bhaskoro Siddhi</span>
+            <span class="list-col" style="flex:1.2">1234567890</span>
+            <span class="list-col" style="flex:1.4"><span class="status-badge badge-success">✓ Sudah Diisi</span></span>
+          </div>
+
+          <div class="list-item" style="cursor:default;">
+            <span class="list-col" style="flex:0.4">2</span>
+            <span class="list-col" style="flex:2">Ratna Dewi Kusuma</span>
+            <span class="list-col" style="flex:1.2">1234567891</span>
+            <span class="list-col" style="flex:1.4"><span class="status-badge badge-success">✓ Sudah Diisi</span></span>
+          </div>
+
+          <div class="list-item" style="cursor:default;">
+            <span class="list-col" style="flex:0.4">3</span>
+            <span class="list-col" style="flex:2">Hendra Saputra</span>
+            <span class="list-col" style="flex:1.2">1234567892</span>
+            <span class="list-col" style="flex:1.4"><span class="status-badge badge-warning">✗ Belum Diisi</span></span>
+          </div>
+
+          <div class="list-item" style="cursor:default;">
+            <span class="list-col" style="flex:0.4">4</span>
+            <span class="list-col" style="flex:2">Sari Wulandari</span>
+            <span class="list-col" style="flex:1.2">1234567893</span>
+            <span class="list-col" style="flex:1.4"><span class="status-badge badge-warning">✗ Belum Diisi</span></span>
+          </div>
+
+          <div class="list-item" style="cursor:default;">
+            <span class="list-col" style="flex:0.4">5</span>
+            <span class="list-col" style="flex:2">Rizky Firmansyah</span>
+            <span class="list-col" style="flex:1.2">1234567894</span>
+            <span class="list-col" style="flex:1.4"><span class="status-badge badge-success">✓ Sudah Diisi</span></span>
+          </div>
+
+          <div class="list-item" style="cursor:default;">
+            <span class="list-col" style="flex:0.4">6</span>
+            <span class="list-col" style="flex:2">Andi Pratama</span>
+            <span class="list-col" style="flex:1.2">1234567895</span>
+            <span class="list-col" style="flex:1.4"><span class="status-badge badge-warning">✗ Belum Diisi</span></span>
+          </div>
+
+          <div class="list-item" style="cursor:default;">
+            <span class="list-col" style="flex:0.4">7</span>
+            <span class="list-col" style="flex:2">Dewi Kusuma</span>
+            <span class="list-col" style="flex:1.2">1234567896</span>
+            <span class="list-col" style="flex:1.4"><span class="status-badge badge-success">✓ Sudah Diisi</span></span>
+          </div>
+
+          <div class="list-item" style="cursor:default;">
+            <span class="list-col" style="flex:0.4">8</span>
+            <span class="list-col" style="flex:2">Muhammad Fajar</span>
+            <span class="list-col" style="flex:1.2">1234567897</span>
+            <span class="list-col" style="flex:1.4"><span class="status-badge badge-warning">✗ Belum Diisi</span></span>
+          </div>
+        </div>
+
+        <!-- Summary strip -->
+        <div style="display:flex; gap:12px; margin-top:8px; flex-shrink:0;">
+          <div style="flex:1; background:white; border:1px solid #e1dfdd; border-radius:8px; padding:14px 18px; display:flex; flex-direction:column; gap:4px;">
+            <div style="font-size:0.68em; color:#605e5c; text-transform:uppercase; letter-spacing:0.05em;">Total Pegawai</div>
+            <div style="font-size:1.4em; font-weight:700; color:#1f3864;">8</div>
+          </div>
+          <div style="flex:1; background:white; border:1px solid #e1dfdd; border-radius:8px; padding:14px 18px; display:flex; flex-direction:column; gap:4px;">
+            <div style="font-size:0.68em; color:#605e5c; text-transform:uppercase; letter-spacing:0.05em;">Sudah Diisi</div>
+            <div style="font-size:1.4em; font-weight:700; color:#107c10;">4</div>
+          </div>
+          <div style="flex:1; background:white; border:1px solid #e1dfdd; border-radius:8px; padding:14px 18px; display:flex; flex-direction:column; gap:4px;">
+            <div style="font-size:0.68em; color:#605e5c; text-transform:uppercase; letter-spacing:0.05em;">Belum Diisi</div>
+            <div style="font-size:1.4em; font-weight:700; color:#c50f1f;">4</div>
+          </div>
+          <div style="flex:1; background:white; border:1px solid #e1dfdd; border-radius:8px; padding:14px 18px; display:flex; flex-direction:column; gap:4px;">
+            <div style="font-size:0.68em; color:#605e5c; text-transform:uppercase; letter-spacing:0.05em;">Completion Rate</div>
+            <div style="font-size:1.4em; font-weight:700; color:#0078d4;">50%</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ══ PAGE: PIMPINAN - DAFTAR PEGAWAI ══ -->
+      <div class="content" id="page-pimpinan-daftar-pegawai" style="display:none">
+        <div class="page-header">
+          <div class="page-breadcrumb">
+            <span class="breadcrumb-link" onclick="navigate('home')">Home</span>
+            <span class="breadcrumb-sep">›</span>
+            <span>Daftar Pegawai</span>
+          </div>
+          <h2 class="page-title">Daftar Pegawai</h2>
+        </div>
+
+        <!-- Pegawai Selector -->
+        <div class="pimpinan-select-bar">
+          <label>Pilih Pegawai:</label>
+          <select class="form-control" id="pimpinan-pegawai-select" onchange="selectPimpinanPegawai(this.value)">
+            <option value="">-- Pilih nama pegawai --</option>
+            <option value="bhaskoro">Bhaskoro Siddhi</option>
+            <option value="ratna">Ratna Dewi Kusuma</option>
+            <option value="hendra">Hendra Saputra</option>
+            <option value="sari">Sari Wulandari</option>
+            <option value="rizky">Rizky Firmansyah</option>
+            <option value="andi">Andi Pratama</option>
+            <option value="dewi">Dewi Kusuma</option>
+            <option value="fajar">Muhammad Fajar</option>
+          </select>
+        </div>
+
+        <!-- Empty state -->
+        <div class="pimpinan-empty-state" id="pimpinan-empty">
+          <div class="pimpinan-empty-icon">👤</div>
+          <div>Pilih nama pegawai untuk melihat data</div>
+        </div>
+
+        <!-- Tab area (hidden until pegawai selected) -->
+        <div class="pimpinan-tab-area" id="pimpinan-tab-area" style="display:none;">
+          <div class="tab-bar">
+            <div class="tab-item active" onclick="switchTab('profil')">Profil Pegawai</div>
+            <div class="tab-item" onclick="switchTab('idp')">IDP</div>
+            <div class="tab-item" onclick="switchTab('pr')">Performance Review</div>
+            <div class="tab-item" onclick="switchTab('coaching-karir')">Coaching Karir</div>
+            <div class="tab-item" onclick="switchTab('coaching-tematik')">Coaching Tematik</div>
+            <div class="tab-item" onclick="switchTab('checklist')">Checklist Mentoring</div>
+          </div>
+
+          <!-- ── TAB: Profil Pegawai ── -->
+          <div class="tab-panel active" id="tab-profil">
+
+            <!-- I. Identitas -->
+            <div class="profil-section">
+              <div class="profil-section-title"><span class="section-tag">I</span> Identitas Pegawai</div>
+              <div class="grow-grid">
+                <div class="form-group"><label class="form-label">Nama Pegawai</label><div class="detail-text-box" id="tp-nama">—</div></div>
+                <div class="form-group"><label class="form-label">Satuan Kerja</label><div class="detail-text-box" id="tp-satker">—</div></div>
+                <div class="form-group"><label class="form-label">NIP</label><div class="detail-text-box" id="tp-nip">—</div></div>
+                <div class="form-group"><label class="form-label">Jabatan</label><div class="detail-text-box" id="tp-jabatan">—</div></div>
+                <div class="form-group"><label class="form-label">Pangkat</label><div class="detail-text-box" id="tp-pangkat">—</div></div>
+                <div class="form-group"><label class="form-label">Tanggal Pengisian</label><div class="detail-text-box" id="tp-tgl">—</div></div>
+              </div>
+            </div>
+
+            <!-- II. Quantitative -->
+            <div class="profil-section">
+              <div class="profil-section-title"><span class="section-tag">II</span> Quantitative</div>
+
+              <div class="grow-grid">
+                <div class="form-group"><label class="form-label">A. Nilai Kinerja Rata² 5 Tahun</label><div class="detail-text-box" id="tp-kinerja">—</div></div>
+                <div class="form-group"><label class="form-label">B. Masa Dinas Pangkat</label><div class="detail-text-box" id="tp-masa-dinas">—</div></div>
+              </div>
+
+              <div class="profil-subsection-title">C. Pendidikan</div>
+              <div class="profil-table-wrap">
+                <table class="profil-table">
+                  <thead><tr><th class="no-col">No</th><th>Jenjang</th><th>Universitas / Institusi</th><th>Program Studi</th><th>Tahun Lulus</th></tr></thead>
+                  <tbody id="tp-pendidikan"></tbody>
+                </table>
+              </div>
+
+              <div class="profil-subsection-title">D.1. Sertifikasi Tier 1</div>
+              <div class="profil-table-wrap">
+                <table class="profil-table">
+                  <thead><tr><th class="no-col">No</th><th>Nama Sertifikat</th><th>Penerbit</th><th>Tanggal Terbit</th><th>Tanggal Berakhir</th><th>No. Sertifikat</th></tr></thead>
+                  <tbody id="tp-tier1"></tbody>
+                </table>
+              </div>
+
+              <div class="profil-subsection-title">D.2. Sertifikasi Tier 2</div>
+              <div class="profil-table-wrap">
+                <table class="profil-table">
+                  <thead><tr><th class="no-col">No</th><th>Nama Sertifikat</th><th>Penerbit</th><th>Tanggal Terbit</th><th>Tanggal Berakhir</th><th>No. Sertifikat</th></tr></thead>
+                  <tbody id="tp-tier2"></tbody>
+                </table>
+              </div>
+
+              <div class="profil-subsection-title">D.3. PMK (External Learning)</div>
+              <div class="profil-table-wrap">
+                <table class="profil-table">
+                  <thead><tr><th class="no-col">No</th><th>Training Name</th><th>Penyelenggara</th><th>Start Date</th><th>Completion Date</th><th>Jenis PMK</th><th>Tipe</th><th>Negara</th></tr></thead>
+                  <tbody id="tp-pmk"></tbody>
+                </table>
+              </div>
+
+              <div class="profil-subsection-title">D.4. Kum Mengajar <span style="font-weight:400;color:#a19f9d;font-size:0.9em;">(Maks. 10)</span></div>
+              <div class="profil-table-wrap">
+                <table class="profil-table">
+                  <thead><tr><th class="no-col">No</th><th>Nama IHT</th><th>Tanggal Pelaksanaan</th></tr></thead>
+                  <tbody id="tp-kum"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- III. Qualitative -->
+            <div class="profil-section">
+              <div class="profil-section-title"><span class="section-tag">III</span> Qualitative — Exposure</div>
+
+              <div class="profil-subsection-title">E.1. Penugasan DN/LN</div>
+              <div class="profil-table-wrap">
+                <table class="profil-table">
+                  <thead><tr><th class="no-col">No</th><th>Tgl Mulai</th><th>Tgl Akhir</th><th>PIC</th><th>Nama Penugasan</th><th>Deskripsi</th></tr></thead>
+                  <tbody id="tp-penugasan"></tbody>
+                </table>
+              </div>
+
+              <div class="profil-subsection-title">E.2. Prestasi BI Wide</div>
+              <div class="profil-table-wrap">
+                <table class="profil-table">
+                  <thead><tr><th class="no-col">No</th><th>Jenis</th><th>Level</th><th>Nama Prestasi</th><th>Detail</th><th>Tanggal</th></tr></thead>
+                  <tbody id="tp-prestasi"></tbody>
+                </table>
+              </div>
+
+              <div class="profil-subsection-title">E.3. Kepanitiaan / Proyek / Tim Kerja</div>
+              <div class="profil-table-wrap">
+                <table class="profil-table">
+                  <thead><tr><th class="no-col">No</th><th>Nama Kepanitiaan</th><th>Posisi</th><th>Institusi</th><th>Uraian Tugas</th><th>Produk</th><th>Start</th><th>End</th></tr></thead>
+                  <tbody id="tp-kepanitiaan"></tbody>
+                </table>
+              </div>
+
+              <div class="profil-subsection-title">E.4. Plt / Rangkap Jabatan</div>
+              <div class="profil-table-wrap">
+                <table class="profil-table">
+                  <thead><tr><th class="no-col">No</th><th>Jabatan Plt</th><th>Unit Kerja</th><th>Periode Mulai</th><th>Periode Selesai</th><th>No. SK</th><th>Skor</th><th>Catatan</th></tr></thead>
+                  <tbody id="tp-plt"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── TAB: IDP ── -->
+          <div class="tab-panel" id="tab-idp">
+
+            <!-- Bagian 1: Action Items Dari Coaching Karir Terakhir -->
+            <div class="idp-section">
+              <div class="idp-section-header">
+                <div style="display:flex; flex-direction:column; gap:4px;">
+                  <div class="idp-section-title">Action Items Dari Coaching Karir Terakhir</div>
+                  <div style="font-size:0.72em; color:#605e5c;">Sesi 14 April 2026 &mdash; Mentor: Andi Pratama</div>
+                </div>
+              </div>
+              <div class="action-items-list">
+                <div class="action-item">
+                  <div class="action-item-meta">
+                    <span class="action-category-badge cat-pendidikan">Pendidikan (PTB)</span>
+                    <span class="action-type">S2</span>
+                  </div>
+                  <div class="action-freetext">Mendaftar program S2 di universitas terakreditasi A sebelum akhir tahun 2026.</div>
+                </div>
+                <div class="action-item">
+                  <div class="action-item-meta">
+                    <span class="action-category-badge cat-sertifikasi">Sertifikasi</span>
+                    <span class="action-type">Sertifikasi Tier 1</span>
+                  </div>
+                  <div class="action-freetext">Menyelesaikan modul ELP level B2 dan mendaftar ujian sertifikasi Tier 1 internal.</div>
+                </div>
+                <div class="action-item">
+                  <div class="action-item-meta">
+                    <span class="action-category-badge cat-exposure">Exposure</span>
+                    <span class="action-type">Kepanitiaan BI Wide</span>
+                  </div>
+                  <div class="action-freetext">Aktif berpartisipasi sebagai panitia dalam kegiatan BI Wide minimal 1 kali pada semester pertama 2026.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bagian 2: Action Items 2026 -->
+            <div class="idp-section">
+              <div class="idp-section-header">
+                <div class="idp-section-title">Action Items 2026</div>
+              </div>
+              <div class="action-items-list" id="tp-idp-items"></div>
+            </div>
+
+            <!-- Bagian 3: Riwayat Action Items -->
+            <div class="idp-section">
+              <div class="idp-section-title">Riwayat Action Items</div>
+              <div class="list-card" style="margin-top:8px;">
+                <div class="list-header">
+                  <span class="list-col-head" style="flex:0.6">Tahun</span>
+                  <span class="list-col-head" style="flex:0.9">Kategori</span>
+                  <span class="list-col-head" style="flex:1.4">Tipe</span>
+                  <span class="list-col-head" style="flex:2">Deskripsi / Komitmen</span>
+                  <span class="list-col-head" style="flex:0.7">Target</span>
+                  <span class="list-col-head" style="flex:0.9">Status</span>
+                </div>
+                <div class="list-item" style="cursor:default;">
+                  <span class="list-col" style="flex:0.6">2025</span>
+                  <span class="list-col" style="flex:0.9"><span class="action-category-badge cat-pendidikan">Pendidikan (PTB)</span></span>
+                  <span class="list-col" style="flex:1.4; font-size:0.75em;">S2</span>
+                  <span class="list-col" style="flex:2; font-size:0.75em; color:#605e5c;">Menyelesaikan studi S1 tepat waktu dengan IPK minimal 3.00.</span>
+                  <span class="list-col" style="flex:0.7"><span class="status-badge badge-info" style="font-size:0.72em;">TW4</span></span>
+                  <span class="list-col" style="flex:0.9"><span class="status-badge badge-success">Selesai</span></span>
+                </div>
+                <div class="list-item" style="cursor:default;">
+                  <span class="list-col" style="flex:0.6">2025</span>
+                  <span class="list-col" style="flex:0.9"><span class="action-category-badge cat-exposure">Exposure</span></span>
+                  <span class="list-col" style="flex:1.4; font-size:0.75em;">Prestasi BI Wide atau lainnya</span>
+                  <span class="list-col" style="flex:2; font-size:0.75em; color:#605e5c;">Meraih penghargaan pegawai terbaik unit pada semester 2.</span>
+                  <span class="list-col" style="flex:0.7"><span class="status-badge badge-info" style="font-size:0.72em;">TW2</span></span>
+                  <span class="list-col" style="flex:0.9"><span class="status-badge badge-success">Selesai</span></span>
+                </div>
+                <div class="list-item" style="cursor:default;">
+                  <span class="list-col" style="flex:0.6">2024</span>
+                  <span class="list-col" style="flex:0.9"><span class="action-category-badge cat-sertifikasi">Sertifikasi</span></span>
+                  <span class="list-col" style="flex:1.4; font-size:0.75em;">Sertifikasi Tier 1</span>
+                  <span class="list-col" style="flex:2; font-size:0.75em; color:#605e5c;">Lulus ujian ELP level B1 dan menyelesaikan PMK modul dasar.</span>
+                  <span class="list-col" style="flex:0.7"><span class="status-badge badge-info" style="font-size:0.72em;">TW3</span></span>
+                  <span class="list-col" style="flex:0.9"><span class="status-badge badge-warning">Dibatalkan</span></span>
+                </div>
+                <div class="list-item" style="cursor:default;">
+                  <span class="list-col" style="flex:0.6">2024</span>
+                  <span class="list-col" style="flex:0.9"><span class="action-category-badge cat-exposure">Exposure</span></span>
+                  <span class="list-col" style="flex:1.4; font-size:0.75em;">Kepanitiaan BI Wide</span>
+                  <span class="list-col" style="flex:2; font-size:0.75em; color:#605e5c;">Terlibat sebagai panitia acara Dies Natalis BI tingkat nasional.</span>
+                  <span class="list-col" style="flex:0.7"><span class="status-badge badge-info" style="font-size:0.72em;">TW1</span></span>
+                  <span class="list-col" style="flex:0.9"><span class="status-badge badge-success">Selesai</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── TAB: Performance Review ── -->
+          <div class="tab-panel" id="tab-pr">
+            <div class="list-card" id="pr-list">
+              <div class="list-header">
+                <span class="list-col-head" style="flex:1">Tahun</span>
+                <span class="list-col-head" style="flex:1">Semester</span>
+                <span class="list-col-head" style="flex:2">Line Manager</span>
+                <span class="list-col-head" style="flex:0.3"></span>
+              </div>
+              <div class="list-item" onclick="openPimpinanDetail('pr-detail')">
+                <span class="list-col" style="flex:1">2026</span>
+                <span class="list-col" style="flex:1">1</span>
+                <span class="list-col" style="flex:2">Andi Pratama</span>
+                <span class="list-col list-chevron" style="flex:0.3">›</span>
+              </div>
+              <div class="list-item" onclick="openPimpinanDetail('pr-detail')">
+                <span class="list-col" style="flex:1">2025</span>
+                <span class="list-col" style="flex:1">2</span>
+                <span class="list-col" style="flex:2">Andi Pratama</span>
+                <span class="list-col list-chevron" style="flex:0.3">›</span>
+              </div>
+              <div class="list-item" onclick="openPimpinanDetail('pr-detail')">
+                <span class="list-col" style="flex:1">2025</span>
+                <span class="list-col" style="flex:1">1</span>
+                <span class="list-col" style="flex:2">Dewi Kusuma</span>
+                <span class="list-col list-chevron" style="flex:0.3">›</span>
+              </div>
+              <div class="list-item" onclick="openPimpinanDetail('pr-detail')">
+                <span class="list-col" style="flex:1">2024</span>
+                <span class="list-col" style="flex:1">2</span>
+                <span class="list-col" style="flex:2">Dewi Kusuma</span>
+                <span class="list-col list-chevron" style="flex:0.3">›</span>
+              </div>
+            </div>
+            <div id="pr-detail" style="display:none; flex-direction:column; gap:12px;">
+              <button class="btn btn-ghost" style="align-self:flex-start; font-size:0.75em;" onclick="closePimpinanDetail('pr-detail', 'pr-list')">‹ Kembali ke list</button>
+              <div class="detail-meta">
+                <div class="detail-meta-item"><div class="detail-meta-label">Tanggal</div><div class="detail-meta-value">29 April 2026</div></div>
+                <div class="detail-meta-item"><div class="detail-meta-label">Semester</div><div class="detail-meta-value">1</div></div>
+                <div class="detail-meta-item"><div class="detail-meta-label">Line Manager</div><div class="detail-meta-value">Andi Pratama</div></div>
+              </div>
+              <div class="panel-2col">
+                <div class="form-group"><label class="form-label">Goal</label><div class="detail-text-box detail-text-equal">Meningkatkan kompetensi analisis data dan menyelesaikan modul sertifikasi Tier 1 sebelum akhir semester.</div></div>
+                <div class="form-group"><label class="form-label">Reality</label><div class="detail-text-box detail-text-equal">Saat ini telah menyelesaikan 60% modul ELP dan aktif mengikuti pelatihan internal data governance.</div></div>
+                <div class="form-group"><label class="form-label">Options</label><div class="detail-text-box detail-text-equal">Mendaftar ujian sertifikasi di TW3, bergabung dengan tim proyek analitik untuk exposure langsung.</div></div>
+                <div class="form-group"><label class="form-label">Will</label><div class="detail-text-box detail-text-equal">Komitmen menyelesaikan ujian sertifikasi paling lambat akhir September 2026.</div></div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Foto Bukti Pelaksanaan</label>
+                <div class="detail-photo"><div class="detail-photo-placeholder"><svg viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="4" fill="#e1dfdd"/><circle cx="18" cy="18" r="5" fill="#a19f9d"/><path d="M4 36l10-12 8 9 6-7 16 10H4z" fill="#c8c6c4"/></svg><span>bukti_review_apr2026.jpg</span></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── TAB: Coaching Karir ── -->
+          <div class="tab-panel" id="tab-coaching-karir">
+            <div class="list-card" id="ck-list">
+              <div class="list-header">
+                <span class="list-col-head" style="flex:1.2">Tanggal</span>
+                <span class="list-col-head" style="flex:2">Nama Mentor</span>
+                <span class="list-col-head" style="flex:1.2">Action Items</span>
+                <span class="list-col-head" style="flex:0.3"></span>
+              </div>
+              <div class="list-item" onclick="openPimpinanDetail('ck-detail', 'ck-list')">
+                <span class="list-col" style="flex:1.2">14 Apr 2026</span>
+                <span class="list-col" style="flex:2">Andi Pratama</span>
+                <span class="list-col" style="flex:1.2">3 item</span>
+                <span class="list-col list-chevron" style="flex:0.3">›</span>
+              </div>
+              <div class="list-item" onclick="openPimpinanDetail('ck-detail', 'ck-list')">
+                <span class="list-col" style="flex:1.2">20 Mar 2026</span>
+                <span class="list-col" style="flex:2">Andi Pratama</span>
+                <span class="list-col" style="flex:1.2">5 item</span>
+                <span class="list-col list-chevron" style="flex:0.3">›</span>
+              </div>
+              <div class="list-item" onclick="openPimpinanDetail('ck-detail', 'ck-list')">
+                <span class="list-col" style="flex:1.2">10 Feb 2026</span>
+                <span class="list-col" style="flex:2">Dewi Kusuma</span>
+                <span class="list-col" style="flex:1.2">2 item</span>
+                <span class="list-col list-chevron" style="flex:0.3">›</span>
+              </div>
+              <div class="list-item" onclick="openPimpinanDetail('ck-detail', 'ck-list')">
+                <span class="list-col" style="flex:1.2">22 Jan 2026</span>
+                <span class="list-col" style="flex:2">Dewi Kusuma</span>
+                <span class="list-col" style="flex:1.2">6 item</span>
+                <span class="list-col list-chevron" style="flex:0.3">›</span>
+              </div>
+            </div>
+            <div id="ck-detail" style="display:none; flex-direction:column; gap:12px;">
+              <button class="btn btn-ghost" style="align-self:flex-start; font-size:0.75em;" onclick="closePimpinanDetail('ck-detail', 'ck-list')">‹ Kembali ke list</button>
+              <div class="detail-meta">
+                <div class="detail-meta-item"><div class="detail-meta-label">Tanggal</div><div class="detail-meta-value">14 April 2026</div></div>
+                <div class="detail-meta-item"><div class="detail-meta-label">Nama Mentor</div><div class="detail-meta-value">Andi Pratama</div></div>
+                <div class="detail-meta-item"><div class="detail-meta-label">Nama Mentee</div><div class="detail-meta-value" id="ck-mentee-name">—</div></div>
+              </div>
+              <div class="form-group" style="padding-top:2%">
+                <label class="form-label">Action Items</label>
+                <div class="action-items-list">
+                  <div class="action-item"><div class="action-item-meta"><span class="action-category-badge cat-pendidikan">Pendidikan (PTB)</span><span class="action-type">S2</span></div><div class="action-freetext">Mendaftar program S2 di universitas terakreditasi A sebelum akhir tahun 2026. Sudah mengidentifikasi 2 universitas yang sesuai dengan bidang pekerjaan.</div></div>
+                  <div class="action-item"><div class="action-item-meta"><span class="action-category-badge cat-sertifikasi">Sertifikasi</span><span class="action-type">Sertifikasi Tier 1</span></div><div class="action-freetext">Menyelesaikan modul ELP level B2 pada kuartal kedua 2026 dan mendaftar ujian sertifikasi Tier 1 internal.</div></div>
+                  <div class="action-item"><div class="action-item-meta"><span class="action-category-badge cat-exposure">Exposure</span><span class="action-type">Kepanitiaan BI Wide</span></div><div class="action-freetext">Aktif berpartisipasi sebagai panitia dalam kegiatan BI Wide minimal 1 kali pada semester pertama 2026.</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── TAB: Coaching Tematik ── -->
+          <div class="tab-panel" id="tab-coaching-tematik">
+            <div class="list-card" id="ct-list">
+              <div class="list-header">
+                <span class="list-col-head" style="flex:1.2">Tanggal</span>
+                <span class="list-col-head" style="flex:2.5">Topik</span>
+                <span class="list-col-head" style="flex:1.5">Mentor</span>
+                <span class="list-col-head" style="flex:0.3"></span>
+              </div>
+              <div class="list-item" onclick="openPimpinanDetail('ct-detail', 'ct-list')">
+                <span class="list-col" style="flex:1.2">20 Mei 2026</span>
+                <span class="list-col" style="flex:2.5">Manajemen Waktu dan Prioritas</span>
+                <span class="list-col" style="flex:1.5">Andi Pratama</span>
+                <span class="list-col list-chevron" style="flex:0.3">›</span>
+              </div>
+              <div class="list-item" onclick="openPimpinanDetail('ct-detail', 'ct-list')">
+                <span class="list-col" style="flex:1.2">18 Feb 2026</span>
+                <span class="list-col" style="flex:2.5">Pengembangan Kepemimpinan</span>
+                <span class="list-col" style="flex:1.5">Andi Pratama</span>
+                <span class="list-col list-chevron" style="flex:0.3">›</span>
+              </div>
+              <div class="list-item" onclick="openPimpinanDetail('ct-detail', 'ct-list')">
+                <span class="list-col" style="flex:1.2">10 Jan 2026</span>
+                <span class="list-col" style="flex:2.5">Perencanaan Karir Jangka Panjang</span>
+                <span class="list-col" style="flex:1.5">Dewi Kusuma</span>
+                <span class="list-col list-chevron" style="flex:0.3">›</span>
+              </div>
+            </div>
+            <div id="ct-detail" style="display:none; flex-direction:column; gap:12px;">
+              <button class="btn btn-ghost" style="align-self:flex-start; font-size:0.75em;" onclick="closePimpinanDetail('ct-detail', 'ct-list')">‹ Kembali ke list</button>
+              <div class="detail-meta">
+                <div class="detail-meta-item"><div class="detail-meta-label">Tanggal</div><div class="detail-meta-value">20 Mei 2026</div></div>
+                <div class="detail-meta-item"><div class="detail-meta-label">Mentor</div><div class="detail-meta-value">Andi Pratama</div></div>
+                <div class="detail-meta-item"><div class="detail-meta-label">Nama Pegawai</div><div class="detail-meta-value" id="ct-pegawai-name">—</div></div>
+              </div>
+              <div class="form-group"><label class="form-label">Topik</label><div class="detail-text-box">Manajemen Waktu dan Prioritas</div></div>
+              <div class="form-group"><label class="form-label">Hasil Coaching</label><div class="detail-text-box">Dalam sesi ini, pegawai dan mentor membahas strategi pengelolaan waktu yang lebih efektif. Disepakati bahwa pegawai akan menggunakan metode time-blocking untuk membagi jam kerja harian, serta menerapkan matriks Eisenhower untuk memprioritaskan tugas berdasarkan urgensi dan kepentingannya. Pegawai berkomitmen untuk mengevaluasi efektivitas metode ini setiap akhir pekan dan melaporkan hasilnya pada sesi berikutnya.</div></div>
+            </div>
+          </div>
+
+          <!-- ── TAB: Checklist Mentoring ── -->
+          <div class="tab-panel" id="tab-checklist">
+            <div class="list-card" id="cm-list">
+              <div class="list-header">
+                <span class="list-col-head" style="flex:1">Tahun</span>
+                <span class="list-col-head" style="flex:1.5">Mentor</span>
+                <span class="list-col-head" style="flex:1">Status</span>
+                <span class="list-col-head" style="flex:0.3"></span>
+              </div>
+              <div class="list-item" onclick="openPimpinanDetail('cm-detail', 'cm-list')">
+                <span class="list-col" style="flex:1">2026</span>
+                <span class="list-col" style="flex:1.5">Andi Pratama</span>
+                <span class="list-col" style="flex:1"><span class="status-badge badge-success">Lengkap</span></span>
+                <span class="list-col list-chevron" style="flex:0.3">›</span>
+              </div>
+              <div class="list-item" onclick="openPimpinanDetail('cm-detail', 'cm-list')">
+                <span class="list-col" style="flex:1">2025</span>
+                <span class="list-col" style="flex:1.5">Dewi Kusuma</span>
+                <span class="list-col" style="flex:1"><span class="status-badge badge-success">Lengkap</span></span>
+                <span class="list-col list-chevron" style="flex:0.3">›</span>
+              </div>
+              <div class="list-item" onclick="openPimpinanDetail('cm-detail', 'cm-list')">
+                <span class="list-col" style="flex:1">2024</span>
+                <span class="list-col" style="flex:1.5">Dewi Kusuma</span>
+                <span class="list-col" style="flex:1"><span class="status-badge badge-warning">Belum Lengkap</span></span>
+                <span class="list-col list-chevron" style="flex:0.3">›</span>
+              </div>
+            </div>
+            <div id="cm-detail" style="display:none; flex-direction:column; gap:12px;">
+              <button class="btn btn-ghost" style="align-self:flex-start; font-size:0.75em;" onclick="closePimpinanDetail('cm-detail', 'cm-list')">‹ Kembali ke list</button>
+              <div class="detail-meta">
+                <div class="detail-meta-item"><div class="detail-meta-label">Tahun</div><div class="detail-meta-value">2026</div></div>
+                <div class="detail-meta-item"><div class="detail-meta-label">Nama Pegawai</div><div class="detail-meta-value" id="cm-pegawai-name">—</div></div>
+                <div class="detail-meta-item"><div class="detail-meta-label">Mentor</div><div class="detail-meta-value">Andi Pratama</div></div>
+                <div class="detail-meta-item"><div class="detail-meta-label">Status</div><div class="detail-meta-value"><span class="status-badge badge-success">Lengkap</span></div></div>
+              </div>
+              <div class="form-group"><label class="form-label">Personal Statement</label>
+                <div class="detail-photo" style="max-width:260px;"><div class="detail-photo-placeholder"><svg viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="4" fill="#e1dfdd"/><circle cx="18" cy="18" r="5" fill="#a19f9d"/><path d="M4 36l10-12 8 9 6-7 16 10H4z" fill="#c8c6c4"/></svg><span>personal_statement_2026.jpg</span></div></div>
+              </div>
+              <div class="form-group"><label class="form-label">Career Plan</label>
+                <div class="detail-photo" style="max-width:260px;"><div class="detail-photo-placeholder"><svg viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="4" fill="#e1dfdd"/><circle cx="18" cy="18" r="5" fill="#a19f9d"/><path d="M4 36l10-12 8 9 6-7 16 10H4z" fill="#c8c6c4"/></svg><span>career_plan_2026.jpg</span></div></div>
+              </div>
+              <div class="form-group"><label class="form-label">Tanggal &amp; Pelaksanaan Mentoring</label>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                  <div class="mentoring-session-panel"><div class="mentoring-session-header"><span class="mentoring-session-title">Sesi Mentoring #1</span><span class="session-required-badge">Wajib</span></div><div style="font-size:0.78em;color:#323130;margin-top:6px;"><strong>Tanggal:</strong> 10 Januari 2026</div><div class="detail-photo" style="max-width:220px;margin-top:8px;"><div class="detail-photo-placeholder"><svg viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="4" fill="#e1dfdd"/><circle cx="18" cy="18" r="5" fill="#a19f9d"/><path d="M4 36l10-12 8 9 6-7 16 10H4z" fill="#c8c6c4"/></svg><span>sesi1_jan2026.jpg</span></div></div></div>
+                  <div class="mentoring-session-panel"><div class="mentoring-session-header"><span class="mentoring-session-title">Sesi Mentoring #2</span><span class="session-required-badge">Wajib</span></div><div style="font-size:0.78em;color:#323130;margin-top:6px;"><strong>Tanggal:</strong> 14 Februari 2026</div><div class="detail-photo" style="max-width:220px;margin-top:8px;"><div class="detail-photo-placeholder"><svg viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="4" fill="#e1dfdd"/><circle cx="18" cy="18" r="5" fill="#a19f9d"/><path d="M4 36l10-12 8 9 6-7 16 10H4z" fill="#c8c6c4"/></svg><span>sesi2_feb2026.jpg</span></div></div></div>
+                  <div class="mentoring-session-panel"><div class="mentoring-session-header"><span class="mentoring-session-title">Sesi Mentoring #3</span><span class="session-required-badge">Wajib</span></div><div style="font-size:0.78em;color:#323130;margin-top:6px;"><strong>Tanggal:</strong> 5 Maret 2026</div><div class="detail-photo" style="max-width:220px;margin-top:8px;"><div class="detail-photo-placeholder"><svg viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="4" fill="#e1dfdd"/><circle cx="18" cy="18" r="5" fill="#a19f9d"/><path d="M4 36l10-12 8 9 6-7 16 10H4z" fill="#c8c6c4"/></svg><span>sesi3_mar2026.jpg</span></div></div></div>
+                  <div class="mentoring-session-panel"><div class="mentoring-session-header"><span class="mentoring-session-title">Sesi Mentoring #4</span><span class="session-required-badge">Wajib</span></div><div style="font-size:0.78em;color:#323130;margin-top:6px;"><strong>Tanggal:</strong> 20 April 2026</div><div class="detail-photo" style="max-width:220px;margin-top:8px;"><div class="detail-photo-placeholder"><svg viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="4" fill="#e1dfdd"/><circle cx="18" cy="18" r="5" fill="#a19f9d"/><path d="M4 36l10-12 8 9 6-7 16 10H4z" fill="#c8c6c4"/></svg><span>sesi4_apr2026.jpg</span></div></div></div>
+                  <div class="mentoring-session-panel"><div class="mentoring-session-header"><span class="mentoring-session-title">Sesi Mentoring #5</span></div><div style="font-size:0.78em;color:#323130;margin-top:6px;"><strong>Tanggal:</strong> 8 Mei 2026</div><div class="detail-photo" style="max-width:220px;margin-top:8px;"><div class="detail-photo-placeholder"><svg viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="4" fill="#e1dfdd"/><circle cx="18" cy="18" r="5" fill="#a19f9d"/><path d="M4 36l10-12 8 9 6-7 16 10H4z" fill="#c8c6c4"/></svg><span>sesi5_mei2026.jpg</span></div></div></div>
+                  <div class="mentoring-session-panel"><div class="mentoring-session-header"><span class="mentoring-session-title">Sesi Mentoring #6</span></div><div style="font-size:0.78em;color:#323130;margin-top:6px;"><strong>Tanggal:</strong> 2 Juni 2026</div><div class="detail-photo" style="max-width:220px;margin-top:8px;"><div class="detail-photo-placeholder"><svg viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="4" fill="#e1dfdd"/><circle cx="18" cy="18" r="5" fill="#a19f9d"/><path d="M4 36l10-12 8 9 6-7 16 10H4z" fill="#c8c6c4"/></svg><span>sesi6_jun2026.jpg</span></div></div></div>
+                </div>
+              </div>
+              <div class="form-group"><label class="form-label">Bukti Sudah Melakukan Upload</label>
+                <div class="detail-photo" style="max-width:260px;"><div class="detail-photo-placeholder"><svg viewBox="0 0 48 48" fill="none"><rect width="48" height="48" rx="4" fill="#e1dfdd"/><circle cx="18" cy="18" r="5" fill="#a19f9d"/><path d="M4 36l10-12 8 9 6-7 16 10H4z" fill="#c8c6c4"/></svg><span>bukti_upload_2026.jpg</span></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  const actionTypeOptions = [
+    { category: 'Pendidikan (PTB)',   types: ['S2', 'S3'] },
+    { category: 'Sertifikasi',  types: ['Sertifikasi Tier 1', 'Sertifikasi Tier 2', 'PMK', 'Kum Mengajar'] },
+    { category: 'Exposure',     types: ['Penugasan DN/LN, Penugasan Strategis atau lainnya', 'Prestasi BI Wide atau lainnya', 'Kepanitiaan BI Wide', 'Plt/Penunjukan/Rangkap Jabatan/Penugasan tetap'] },
+  ];
+
+  let actionItemCount = 0;
+
+  function buildTypeOptions() {
+    return actionTypeOptions.map(group =>
+      `<optgroup label="${group.category}">${group.types.map(t => `<option value="${t}" data-category="${group.category}">${t}</option>`).join('')}</optgroup>`
+    ).join('');
+  }
+
+  let idpActionCount = 3;
+
+  function addActionItemIdp() {
+    idpActionCount++;
+    const id = 'idp-' + idpActionCount;
+    const container = document.getElementById('idp-action-items-container');
+    const panel = document.createElement('div');
+    panel.className = 'action-item-panel';
+    panel.id = 'action-item-' + id;
+    panel.innerHTML = `
+      <div class="action-item-panel-header">
+        <span class="action-item-panel-title">Action Item #${idpActionCount}</span>
+        <button class="btn-delete-action" onclick="removeActionItem('${id}')">✕ Hapus</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tipe</label>
+        <select class="form-control" onchange="updateCategoryBadge(this, '${id}')">
+          <option value="">-- Pilih Tipe --</option>
+          ${buildTypeOptions()}
+        </select>
+      </div>
+      <div id="category-badge-${id}"></div>
+      <div class="form-group">
+        <label class="form-label">Target</label>
+        <select class="form-control">
+          <option>-- Pilih Target --</option>
+          <option>TW1</option>
+          <option>TW2</option>
+          <option>TW3</option>
+          <option>TW4</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Detail</label>
+        <textarea class="form-control" rows="2" placeholder="Tuliskan detail action item..."></textarea>
+      </div>
+    `;
+    container.appendChild(panel);
+  }
+
+  function addActionItem() {
+    actionItemCount++;
+    const id = actionItemCount;
+    const container = document.getElementById('action-items-container');
+    const panel = document.createElement('div');
+    panel.className = 'action-item-panel';
+    panel.id = 'action-item-' + id;
+    panel.innerHTML = `
+      <div class="action-item-panel-header">
+        <span class="action-item-panel-title">Action Item #${id}</span>
+        <button class="btn-delete-action" onclick="removeActionItem(${id})">✕ Hapus</button>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tipe</label>
+        <select class="form-control" onchange="updateCategoryBadge(this, ${id})">
+          <option value="">-- Pilih Tipe --</option>
+          ${buildTypeOptions()}
+        </select>
+      </div>
+      <div id="category-badge-${id}"></div>
+      <div class="form-group">
+        <label class="form-label">Detail</label>
+        <textarea class="form-control" rows="2" placeholder="Tuliskan detail action item..."></textarea>
+      </div>
+    `;
+    container.appendChild(panel);
+  }
+
+  function removeActionItem(id) {
+    const el = document.getElementById('action-item-' + id);
+    if (el) el.remove();
+  }
+
+  function updateCategoryBadge(select, id) {
+    const selected = select.options[select.selectedIndex];
+    const category = selected.getAttribute('data-category');
+    const badge = document.getElementById('category-badge-' + id);
+    if (!category) { badge.innerHTML = ''; return; }
+    const cls = category === 'Pendidikan' ? 'cat-pendidikan' : category === 'Sertifikasi' ? 'cat-sertifikasi' : 'cat-exposure';
+    badge.innerHTML = `<span class="action-category-badge ${cls}" style="font-size:0.68em">${category}</span>`;
+  }
+
+  const pages = [
+    'home',
+    'profil-pegawai',
+    'performance-review',
+    'performance-review-form',
+    'performance-review-detail',
+    'coaching',
+    'coaching-detail',
+    'idp',
+    'lm-performance-review',
+    'mentor-coaching',
+    'mentor-coaching-form',
+    'idp-edit',
+    'checklist-mentoring',
+    'checklist-mentoring-form',
+    'checklist-mentoring-detail',
+    'coaching-tematik',
+    'coaching-tematik-form',
+    'coaching-tematik-detail',
+    'coach-coaching-tematik',
+    'coach-coaching-tematik-detail',
+    'admin-monitoring-mentoring',
+    'pimpinan-daftar-pegawai'
+  ];
+
+  const navMap = {
+    'home': 'home',
+    'profil-pegawai': 'profil-pegawai',
+    'performance-review': 'performance-review',
+    'performance-review-form': 'performance-review',
+    'performance-review-detail': 'performance-review',
+    'coaching': 'coaching',
+    'coaching-detail': 'coaching',
+    'idp': 'idp',
+    'idp-edit': 'idp',
+    'lm-performance-review': 'lm-performance-review',
+    'mentor-coaching': 'mentor-coaching',
+    'mentor-coaching-form': 'mentor-coaching',
+    'checklist-mentoring': 'checklist-mentoring',
+    'checklist-mentoring-form': 'checklist-mentoring',
+    'checklist-mentoring-detail': 'checklist-mentoring',
+    'coaching-tematik': 'coaching-tematik',
+    'coaching-tematik-form': 'coaching-tematik',
+    'coaching-tematik-detail': 'coaching-tematik',
+    'coach-coaching-tematik': 'coach-coaching-tematik',
+    'coach-coaching-tematik-detail': 'coach-coaching-tematik',
+    'admin-monitoring-mentoring': 'admin-monitoring-mentoring',
+    'pimpinan-daftar-pegawai': 'pimpinan-daftar-pegawai'
+  };
+
+  // ── Pimpinan: Pegawai Data ──
+  const pegawaiData = {
+    bhaskoro: {
+      nama:'Bhaskoro Siddhi', nip:'1234567890', satker:'DPID', jabatan:'Analis Muda', pangkat:'Pkt. 7', tgl:'06/06/2026',
+      kinerja:'88.5', masaDinas:'3 Tahun 2 Bulan',
+      pendidikan:[{no:1,jenjang:'S1',univ:'Universitas Indonesia',prodi:'Ilmu Komputer',lulus:2022}],
+      tier1:[{no:1,nama:'Certified Data Analyst',penerbit:'Bank Indonesia',terbit:'15/03/2023',berakhir:'15/03/2026',noSert:'BI/CDA/2023/001'}],
+      tier2:[],
+      pmk:[{no:1,training:'Data Governance Training',penyelenggara:'BI Institute',start:'01/03/2025',end:'05/03/2025',jenis:'In-house',tipe:'DN',negara:'Indonesia'}],
+      kum:[],penugasan:[],prestasi:[],
+      kepanitiaan:[{no:1,nama:'Dies Natalis BI',posisi:'Panitia',institusi:'Bank Indonesia',uraian:'Koordinasi acara nasional',produk:'Laporan',start:'01/04/2025',end:'30/04/2025'}],
+      plt:[],
+      idp:[
+        {kategori:'cat-pendidikan',label:'Pendidikan (PTB)',tipe:'S2',target:'TW2',status:'st-rencana',statusLabel:'Rencana',detail:'Mendaftar program S2 sebelum akhir tahun 2026.'},
+        {kategori:'cat-sertifikasi',label:'Sertifikasi',tipe:'Sertifikasi Tier 1',target:'TW2',status:'st-rencana',statusLabel:'Rencana',detail:'Menyelesaikan ELP B2 dan ujian Tier 1.'},
+        {kategori:'cat-exposure',label:'Exposure',tipe:'Kepanitiaan BI Wide',target:'TW1',status:'st-rencana',statusLabel:'Rencana',detail:'Aktif dalam kepanitiaan BI Wide semester 1.'}
+      ]
+    },
+    ratna:{nama:'Ratna Dewi Kusuma',nip:'1234567891',satker:'DPID',jabatan:'Analis',pangkat:'Pkt. 8',tgl:'06/06/2026',kinerja:'85.0',masaDinas:'5 Tahun 0 Bulan',pendidikan:[{no:1,jenjang:'S1',univ:'Universitas Gadjah Mada',prodi:'Manajemen',lulus:2020}],tier1:[],tier2:[],pmk:[],kum:[],penugasan:[],prestasi:[],kepanitiaan:[],plt:[],idp:[{kategori:'cat-sertifikasi',label:'Sertifikasi',tipe:'Sertifikasi Tier 2',target:'TW3',status:'st-proses',statusLabel:'Proses',detail:'Sedang mempersiapkan ujian Tier 2.'}]},
+    hendra:{nama:'Hendra Saputra',nip:'1234567892',satker:'DPKP',jabatan:'Staf',pangkat:'Pkt. 6',tgl:'06/06/2026',kinerja:'80.0',masaDinas:'2 Tahun 1 Bulan',pendidikan:[{no:1,jenjang:'S1',univ:'Universitas Brawijaya',prodi:'Ekonomi',lulus:2021}],tier1:[],tier2:[],pmk:[],kum:[],penugasan:[],prestasi:[],kepanitiaan:[],plt:[],idp:[{kategori:'cat-exposure',label:'Exposure',tipe:'Penugasan DN/LN',target:'TW4',status:'st-rencana',statusLabel:'Rencana',detail:'Rencana penugasan ke kantor perwakilan.'}]},
+    sari:{nama:'Sari Wulandari',nip:'1234567893',satker:'DPKP',jabatan:'Analis Muda',pangkat:'Pkt. 7',tgl:'06/06/2026',kinerja:'87.5',masaDinas:'1 Tahun 8 Bulan',pendidikan:[{no:1,jenjang:'S2',univ:'Universitas Indonesia',prodi:'Keuangan',lulus:2023}],tier1:[],tier2:[],pmk:[],kum:[],penugasan:[],prestasi:[],kepanitiaan:[],plt:[],idp:[{kategori:'cat-pendidikan',label:'Pendidikan (PTB)',tipe:'S3',target:'TW4',status:'st-rencana',statusLabel:'Rencana',detail:'Mencari program S3 yang relevan.'}]},
+    rizky:{nama:'Rizky Firmansyah',nip:'1234567894',satker:'DKEM',jabatan:'Staf',pangkat:'Pkt. 6',tgl:'06/06/2026',kinerja:'82.0',masaDinas:'2 Tahun 4 Bulan',pendidikan:[{no:1,jenjang:'S1',univ:'Universitas Padjadjaran',prodi:'Akuntansi',lulus:2022}],tier1:[],tier2:[],pmk:[],kum:[],penugasan:[],prestasi:[],kepanitiaan:[],plt:[],idp:[]},
+    andi:{nama:'Andi Pratama',nip:'1234567895',satker:'DKEM',jabatan:'Manajer',pangkat:'Pkt. 9',tgl:'06/06/2026',kinerja:'91.0',masaDinas:'8 Tahun 3 Bulan',pendidikan:[{no:1,jenjang:'S2',univ:'Universitas Indonesia',prodi:'Administrasi Bisnis',lulus:2018}],tier1:[],tier2:[],pmk:[],kum:[],penugasan:[],prestasi:[],kepanitiaan:[{no:1,nama:'Tim Kerja Transformasi Digital',posisi:'Ketua',institusi:'Bank Indonesia',uraian:'Memimpin program transformasi',produk:'Roadmap',start:'01/01/2025',end:'31/12/2025'}],plt:[{no:1,jabatan:'Plt. Kepala Divisi',unit:'DKEM',mulai:'01/03/2026',selesai:'31/05/2026',noSk:'SK/2026/012',skor:10,catatan:'—'}],idp:[{kategori:'cat-exposure',label:'Exposure',tipe:'Prestasi BI Wide',target:'TW2',status:'st-proses',statusLabel:'Proses',detail:'Mengikuti program rekognisi BI.'}]},
+    dewi:{nama:'Dewi Kusuma',nip:'1234567896',satker:'DPID',jabatan:'Analis Senior',pangkat:'Pkt. 8',tgl:'06/06/2026',kinerja:'89.0',masaDinas:'6 Tahun 5 Bulan',pendidikan:[{no:1,jenjang:'S2',univ:'Universitas Gadjah Mada',prodi:'Manajemen SDM',lulus:2019}],tier1:[],tier2:[],pmk:[],kum:[{no:1,nama:'IHT Kepemimpinan Dasar',tgl:'15/02/2026'}],penugasan:[],prestasi:[],kepanitiaan:[],plt:[],idp:[{kategori:'cat-sertifikasi',label:'Sertifikasi',tipe:'Kum Mengajar',target:'TW1',status:'st-selesai',statusLabel:'Selesai',detail:'Mengajar IHT internal Q1 2026.'}]},
+    fajar:{nama:'Muhammad Fajar',nip:'1234567897',satker:'DKEM',jabatan:'Staf',pangkat:'Pkt. 5',tgl:'06/06/2026',kinerja:'78.5',masaDinas:'0 Tahun 9 Bulan',pendidikan:[{no:1,jenjang:'S1',univ:'Universitas Diponegoro',prodi:'Teknik Informatika',lulus:2023}],tier1:[],tier2:[],pmk:[],kum:[],penugasan:[],prestasi:[],kepanitiaan:[],plt:[],idp:[]}
+  };
+
+  function renderTableRows(tbodyId, rows, emptyColCount) {
+    const tbody = document.getElementById(tbodyId);
+    if (!tbody) return;
+    if (!rows || rows.length === 0) {
+      tbody.innerHTML = `<tr><td class="no-col" style="color:#a19f9d;">—</td>${'<td style="color:#a19f9d;">—</td>'.repeat(emptyColCount)}</tr>`;
+      return;
+    }
+    tbody.innerHTML = rows.map(r => {
+      const vals = Object.values(r);
+      return '<tr>' + vals.map((v,i) => i===0 ? `<td class="no-col">${v}</td>` : `<td>${v}</td>`).join('') + '</tr>';
+    }).join('');
+  }
+
+  function selectPimpinanPegawai(val) {
+    const empty = document.getElementById('pimpinan-empty');
+    const area  = document.getElementById('pimpinan-tab-area');
+    if (!val) { empty.style.display='flex'; area.style.display='none'; return; }
+    empty.style.display='none'; area.style.display='flex';
+    document.querySelectorAll('#pimpinan-tab-area [id$="-detail"]').forEach(el => el.style.display='none');
+    document.querySelectorAll('#pimpinan-tab-area .list-card').forEach(el => el.style.display='block');
+    switchTab('profil');
+    const d = pegawaiData[val];
+    if (!d) return;
+    document.getElementById('tp-nama').textContent      = d.nama;
+    document.getElementById('tp-satker').textContent    = d.satker;
+    document.getElementById('tp-nip').textContent       = d.nip;
+    document.getElementById('tp-jabatan').textContent   = d.jabatan;
+    document.getElementById('tp-pangkat').textContent   = d.pangkat;
+    document.getElementById('tp-tgl').textContent       = d.tgl;
+    document.getElementById('tp-kinerja').textContent   = d.kinerja;
+    document.getElementById('tp-masa-dinas').textContent= d.masaDinas;
+    renderTableRows('tp-pendidikan', d.pendidikan, 4);
+    renderTableRows('tp-tier1',      d.tier1,      5);
+    renderTableRows('tp-tier2',      d.tier2,      5);
+    renderTableRows('tp-pmk',        d.pmk,        7);
+    renderTableRows('tp-kum',        d.kum,        2);
+    renderTableRows('tp-penugasan',  d.penugasan,  5);
+    renderTableRows('tp-prestasi',   d.prestasi,   5);
+    renderTableRows('tp-kepanitiaan',d.kepanitiaan,7);
+    renderTableRows('tp-plt',        d.plt,        7);
+    const idpEl = document.getElementById('tp-idp-items');
+    if (d.idp.length === 0) {
+      idpEl.innerHTML = '<div style="font-size:0.78em;color:#a19f9d;padding:8px 0;">Tidak ada action items.</div>';
+    } else {
+      idpEl.innerHTML = d.idp.map(i => `
+        <div class="action-item">
+          <div class="action-item-meta">
+            <span class="action-category-badge ${i.kategori}">${i.label}</span>
+            <span class="action-type">${i.tipe}</span>
+            <span class="status-badge badge-info" style="font-size:0.72em;">${i.target}</span>
+            <span class="status-select ${i.status}" style="font-size:0.72em;padding:2px 10px;border-radius:10px;font-weight:600;">${i.statusLabel}</span>
+          </div>
+          <div class="action-freetext">${i.detail}</div>
+        </div>`).join('');
+    }
+  }
+
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-item').forEach((el, i) => {
+      const tabs = ['profil','idp','pr','coaching-karir','coaching-tematik','checklist'];
+      el.classList.toggle('active', tabs[i] === tabId);
+    });
+    document.querySelectorAll('.tab-panel').forEach(el => el.classList.remove('active'));
+    const panel = document.getElementById('tab-' + tabId);
+    if (panel) panel.classList.add('active');
+  }
+
+  function openPimpinanDetail(detailId, listId) {
+    const activeTab = document.querySelector('.tab-panel.active');
+    if (!activeTab) return;
+    // hide the specific list
+    const list = listId ? document.getElementById(listId) : activeTab.querySelector('.list-card');
+    if (list) list.style.display = 'none';
+    const detail = document.getElementById(detailId);
+    if (detail) detail.style.display = 'flex';
+
+    // fill pegawai name in detail meta where applicable
+    const sel = document.getElementById('pimpinan-pegawai-select');
+    const d = sel && pegawaiData[sel.value];
+    if (d) {
+      ['ck-mentee-name','ct-pegawai-name','cm-pegawai-name'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = d.nama;
+      });
+    }
+  }
+
+  function closePimpinanDetail(detailId, listId) {
+    const activeTab = document.querySelector('.tab-panel.active');
+    if (!activeTab) return;
+    const list = listId ? document.getElementById(listId) : activeTab.querySelector('.list-card');
+    if (list) list.style.display = 'block';
+    const detail = document.getElementById(detailId);
+    if (detail) detail.style.display = 'none';
+  }
+
+
+  // ── Checklist Mentoring ──
+
+  let sessionCount = 0;
+  const MIN_SESSIONS = 4;
+  let checklistState = {
+    personalStatement: false,
+    careerPlan: false,
+    bukti: false,
+    sessions: {}
+  };
+
+  function triggerUpload(inputId) {
+    document.getElementById(inputId).click();
+  }
+
+  function previewFileName(input, previewId) {
+    const previewEl = document.getElementById(previewId);
+    if (input.files && input.files[0]) {
+      previewEl.textContent = input.files[0].name;
+      previewEl.style.display = 'flex';
+      // update state
+      if (previewId === 'preview-personal-statement') checklistState.personalStatement = true;
+      if (previewId === 'preview-career-plan') checklistState.careerPlan = true;
+      if (previewId === 'preview-bukti') checklistState.bukti = true;
+    }
+    updateChecklistProgress();
+  }
+
+  function previewSessionFileName(input, sessionId, previewId) {
+    const previewEl = document.getElementById(previewId);
+    if (input.files && input.files[0]) {
+      previewEl.textContent = input.files[0].name;
+      previewEl.style.display = 'flex';
+      if (!checklistState.sessions[sessionId]) checklistState.sessions[sessionId] = {};
+      checklistState.sessions[sessionId].foto = true;
+    }
+    updateChecklistProgress();
+  }
+
+  function updateSessionDateState(sessionId, hasValue) {
+    if (!checklistState.sessions[sessionId]) checklistState.sessions[sessionId] = {};
+    checklistState.sessions[sessionId].tanggal = hasValue;
+    updateChecklistProgress();
+  }
+
+  function updateChecklistProgress() {
+    // count: (a) personal stmt, (b) career plan, (d) bukti = 3 items
+    // (c) count sessions that have BOTH tanggal & foto, capped display at total items
+    let filled = 0;
+    if (checklistState.personalStatement) filled++;
+    if (checklistState.careerPlan) filled++;
+    if (checklistState.bukti) filled++;
+
+    // sessions completed = those with both tanggal & foto
+    const completedSessions = Object.values(checklistState.sessions)
+      .filter(s => s.tanggal && s.foto).length;
+    const totalSessions = sessionCount;
+    filled += completedSessions;
+
+    const total = 3 + totalSessions; // 3 fixed + N sessions
+    const pct = total > 0 ? Math.round((filled / total) * 100) : 0;
+
+    document.getElementById('checklist-progress-fill').style.width = pct + '%';
+    document.getElementById('checklist-progress-label').textContent = filled + '/' + total;
+
+    // visual warning if sessions < 4
+    const addBtn = document.getElementById('btn-add-session');
+    if (sessionCount < MIN_SESSIONS) {
+      addBtn.style.background = '#fff4ce';
+      addBtn.style.color = '#7a4600';
+    } else {
+      addBtn.style.background = '#deecf9';
+      addBtn.style.color = '#0078d4';
+    }
+  }
+
+  function addMentoringSession() {
+    sessionCount++;
+    const id = 'ms-' + sessionCount;
+    const num = sessionCount;
+    const isRequired = num <= MIN_SESSIONS;
+    const container = document.getElementById('mentoring-sessions-container');
+    const panel = document.createElement('div');
+    panel.className = 'mentoring-session-panel';
+    panel.id = 'session-panel-' + id;
+    panel.innerHTML = `
+      <div class="mentoring-session-header">
+        <span class="mentoring-session-title">Sesi Mentoring #${num}</span>
+        <div style="display:flex;align-items:center;gap:8px;">
+          ${isRequired ? '<span class="session-required-badge">Wajib</span>' : ''}
+          ${!isRequired ? `<button class="btn-delete-action" onclick="removeMentoringSession('${id}')">✕ Hapus</button>` : ''}
+        </div>
+      </div>
+      <div class="form-group" style="flex-direction:row; gap:3%; align-items:flex-end;">
+        <div style="flex:1;">
+          <label class="form-label">Tanggal <span style="color:#c50f1f">*</span></label>
+          <input type="date" class="form-control" id="date-${id}" onchange="updateSessionDateState('${id}', this.value !== '')" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Foto Pelaksanaan <span style="color:#c50f1f">*</span></label>
+        <div class="attachment-box" onclick="triggerUpload('upload-${id}')">
+          <input type="file" id="upload-${id}" accept="image/*" style="display:none"
+            onchange="previewSessionFileName(this, '${id}', 'preview-${id}')" />
+          <div class="attachment-icon">🖼️</div>
+          <div class="attachment-text">Seret &amp; lepas foto di sini, atau</div>
+          <div class="attachment-link">Pilih dari perangkat</div>
+          <div class="attachment-text" style="color:#a19f9d">PNG, JPG, maks. 5 MB</div>
+        </div>
+        <div id="preview-${id}" class="file-preview-name" style="display:none"></div>
+      </div>
+    `;
+    container.appendChild(panel);
+    updateChecklistProgress();
+  }
+
+  function removeMentoringSession(id) {
+    const el = document.getElementById('session-panel-' + id);
+    if (el) el.remove();
+    delete checklistState.sessions[id];
+    sessionCount--;
+    updateChecklistProgress();
+  }
+
+  // Auto-init 4 sessions on page load
+  (function initMentoringSessions() {
+    for (let i = 0; i < MIN_SESSIONS; i++) addMentoringSession();
+  })();
+
+  function updateStatusStyle(select) {
+    const classMap = {
+      rencana: 'st-rencana', proses: 'st-proses', selesai: 'st-selesai',
+      tertunda: 'st-tertunda', dibatalkan: 'st-dibatalkan'
+    };
+    select.className = 'status-select ' + (classMap[select.value] || '');
+  }
+
+  function addRow(tableId, colCount, maxRows) {
+    const tbody = document.querySelector('#' + tableId + ' tbody');
+    if (maxRows && tbody.rows.length >= maxRows) {
+      alert('Maksimal ' + maxRows + ' baris.');
+      return;
+    }
+    const rowNum = tbody.rows.length + 1;
+    const tr = document.createElement('tr');
+    let cells = `<td class="no-col">${rowNum}</td>`;
+    for (let i = 0; i < colCount; i++) {
+      const isDate = document.querySelector('#' + tableId + ' thead th:nth-child(' + (i + 2) + ')');
+      const headerText = isDate ? isDate.textContent.toLowerCase() : '';
+      const inputType = (headerText.includes('tgl') || headerText.includes('tanggal') || headerText.includes('date') || headerText.includes('start') || headerText.includes('end') || headerText.includes('mulai') || headerText.includes('akhir') || headerText.includes('terbit') || headerText.includes('berakhir') || headerText.includes('lulus') || headerText.includes('peraihan')) ? 'date' : 'text';
+      cells += `<td><input type="${inputType}" placeholder="—" /></td>`;
+    }
+    tr.innerHTML = cells;
+    tbody.appendChild(tr);
+  }
+
+  function navigate(pageId) {
+    pages.forEach(p => {
+      const el = document.getElementById('page-' + p);
+      if (el) el.style.display = (p === pageId) ? 'flex' : 'none';
+    });
+    const activeNav = navMap[pageId];
+    document.querySelectorAll('.nav-item[onclick]').forEach(item => {
+      const target = item.getAttribute('onclick').match(/'([^']+)'/)[1];
+      item.classList.toggle('active', target === activeNav);
+    });
+  }
+</script>
+
+</body>
+</html>

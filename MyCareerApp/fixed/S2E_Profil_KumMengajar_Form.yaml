@@ -1,0 +1,319 @@
+Screens:
+  S2E_Profil_KumMengajar_Form:
+    Properties:
+      Fill: =RGBA(245, 245, 245, 1)
+      LoadingSpinnerColor: =RGBA(31, 56, 100, 1)
+    Children:
+      - ScreenContainerKumMengajarForm:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(245, 245, 245, 1)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =0
+            Width: =Parent.Width
+          Children:
+            - HeaderKumMengajarForm:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  Fill: =RGBA(18, 38, 82, 1)
+                  FillPortions: =0
+                  Height: =64
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutMinHeight: =64
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  Width: =Parent.Width
+                Children:
+                  - BtnBackKumMengajarForm:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =64
+                        OnSelect: |-
+                          =Set(gblKumMengajarEditMode, false);
+                          Set(gblSelectedKumMengajar, Defaults(Profil_KumMengajar));
+                          Back()
+                        Size: =24
+                        Text: ="‹"
+                        Width: =44
+                  - LblAppNameKumMengajarForm:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        FillPortions: =1
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =64
+                        Size: =16
+                        Text: ="MyCareerApp"
+                  - HeaderSpacerKumMengajarForm:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =RGBA(0, 0, 0, 0)
+                        Height: =64
+                        Width: =44
+            - TopBarShadowKumMengajarForm:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderThickness: =0
+                  Fill: =RGBA(0, 0, 0, 0.08)
+                  Height: =5
+                  Width: =Parent.Width
+            - MainKumMengajarForm:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutMinHeight: =16
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                  PaddingBottom: =16
+                  PaddingLeft: =16
+                  PaddingRight: =16
+                  PaddingTop: =16
+                  Width: =Parent.Width
+                Children:
+                  - CardKumMengajarForm:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(225, 223, 221, 1)
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =488
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =18
+                        LayoutMinHeight: =488
+                        PaddingBottom: =28
+                        PaddingLeft: =28
+                        PaddingRight: =28
+                        PaddingTop: =24
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Width: =Parent.Width
+                      Children:
+                        - TitleKumMengajarForm:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(31, 56, 100, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Size: =20
+                              Text: =If(Coalesce(gblKumMengajarEditMode, false), "Edit Kum Mengajar", "Tambah Kum Mengajar")
+                              Width: =Parent.Width
+                        - SubtitleKumMengajarForm:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(96, 94, 92, 1)
+                              Font: =Font.'Open Sans'
+                              Size: =12
+                              Text: |-
+                                ="Pegawai: " &
+                                Coalesce(
+                                    LookUp(
+                                        Pegawai,
+                                        Title = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
+                                        Nama
+                                    ),
+                                    Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))
+                                )
+                              Width: =Parent.Width
+                        - DividerKumMengajarForm:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              Fill: =RGBA(225, 223, 221, 1)
+                              Height: =1
+                              Width: =Parent.Width
+                        - FieldNamaIHTKumMengajar:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblNamaIHTKumMengajar:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Nama IHT *"
+                                    Width: =Parent.Width
+                              - TxtNamaIHTKumMengajar:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Nama IHT"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Value: =If(Coalesce(gblKumMengajarEditMode, false), Coalesce(gblSelectedKumMengajar.NamaIHT, ""), "")
+                                    Width: =Parent.Width
+
+                        - FieldTanggalPelaksanaanKumMengajar:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblTanggalPelaksanaanKumMengajar:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Tanggal Pelaksanaan *"
+                                    Width: =Parent.Width
+                              - DateTanggalPelaksanaanKumMengajar:
+                                  Control: ModernDatePicker@1.0.0
+                                  Properties:
+                                    AccessibleLabel: ="Tanggal Pelaksanaan"
+                                    DefaultDate: =If(Coalesce(gblKumMengajarEditMode, false), Date(1899, 12, 30) + Value(gblSelectedKumMengajar.TanggalPelaksanaan), Today())
+                                    Format: ="dd/mm/yyyy"
+                                    Placeholder: ="Pilih tanggal"
+                                    Width: =Parent.Width
+
+
+                        - FormActionsKumMengajar:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =48
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =12
+                              LayoutJustifyContent: =LayoutJustifyContent.End
+                              LayoutMinHeight: =48
+                              Width: =Parent.Width
+                            Children:
+                              - BtnBatalKumMengajar:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =Set(gblKumMengajarEditMode, false);
+                                      Set(gblSelectedKumMengajar, Defaults(Profil_KumMengajar));
+                                      Back()
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="Batal"
+                                    Width: =110
+                              - BtnSimpanKumMengajar:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisplayMode: =If(Coalesce(gblKumMengajarSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Fill: =RGBA(18, 38, 82, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =If(
+                                          Or(
+                                              IsBlank(Trim(TxtNamaIHTKumMengajar.Value)),
+                                              IsBlank(DateTanggalPelaksanaanKumMengajar.SelectedDate)
+                                          ),
+                                          Notify(
+                                              "Lengkapi seluruh field Kum Mengajar.",
+                                              NotificationType.Warning
+                                          ),
+                                          !Coalesce(gblKumMengajarSubmitting, false),
+                                          Set(gblKumMengajarSubmitting, true);
+                                          IfError(
+                                              If(
+                                                  Coalesce(gblKumMengajarEditMode, false),
+                                                  Patch(
+                                                      Profil_KumMengajar,
+                                                      gblSelectedKumMengajar,
+                                                      {
+                                                          NIP: gblSelectedKumMengajar.NIP,
+                                                          NamaIHT: Trim(TxtNamaIHTKumMengajar.Value),
+                                                          TanggalPelaksanaan: DateDiff(Date(1899, 12, 30), DateTanggalPelaksanaanKumMengajar.SelectedDate, TimeUnit.Days)
+                                                      }
+                                                  ),
+                                                  With(
+                                                      {
+                                                          newRecord:
+                                                              Patch(
+                                                                  Profil_KumMengajar,
+                                                                  Defaults(Profil_KumMengajar),
+                                                                  {
+                                                                      Title: "TEMP_" & Text(GUID()),
+                                                                      NIP: Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
+                                                                      NamaIHT: Trim(TxtNamaIHTKumMengajar.Value),
+                                                                      TanggalPelaksanaan: DateDiff(Date(1899, 12, 30), DateTanggalPelaksanaanKumMengajar.SelectedDate, TimeUnit.Days)
+                                                                  }
+                                                              )
+                                                      },
+                                                      Patch(
+                                                          Profil_KumMengajar,
+                                                          newRecord,
+                                                          {Title: Text(newRecord.ID)}
+                                                      )
+                                                  )
+                                              );
+                                              Refresh(Profil_KumMengajar);
+                                              Notify(
+                                                  If(Coalesce(gblKumMengajarEditMode, false), "Data Kum Mengajar berhasil diperbarui.", "Data Kum Mengajar berhasil ditambahkan."),
+                                                  NotificationType.Success
+                                              );
+                                              Set(gblKumMengajarSubmitting, false);
+                                              Set(gblKumMengajarEditMode, false);
+                                              Set(gblSelectedKumMengajar, Defaults(Profil_KumMengajar));
+                                              Navigate(S2_ProfilPegawai, ScreenTransition.Fade),
+                                              Notify(
+                                                  "Gagal menyimpan data Kum Mengajar: " & FirstError.Message,
+                                                  NotificationType.Error
+                                              );
+                                              Set(gblKumMengajarSubmitting, false)
+                                          )
+                                      )
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: =If(Coalesce(gblKumMengajarSubmitting, false), "Menyimpan...", "Simpan")
+                                    Width: =130

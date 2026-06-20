@@ -1,0 +1,485 @@
+Screens:
+  S2D_Profil_PMK_Form:
+    Properties:
+      Fill: =RGBA(245, 245, 245, 1)
+      LoadingSpinnerColor: =RGBA(31, 56, 100, 1)
+    Children:
+      - ScreenContainerPMKForm:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(245, 245, 245, 1)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =0
+            Width: =Parent.Width
+          Children:
+            - HeaderPMKForm:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  Fill: =RGBA(18, 38, 82, 1)
+                  FillPortions: =0
+                  Height: =64
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutMinHeight: =64
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  Width: =Parent.Width
+                Children:
+                  - BtnBackPMKForm:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =64
+                        OnSelect: |-
+                          =Set(gblPMKEditMode, false);
+                          Set(gblSelectedPMK, Defaults(Profil_PMK));
+                          Back()
+                        Size: =24
+                        Text: ="‹"
+                        Width: =44
+                  - LblAppNamePMKForm:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        FillPortions: =1
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =64
+                        Size: =16
+                        Text: ="MyCareerApp"
+                  - HeaderSpacerPMKForm:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =RGBA(0, 0, 0, 0)
+                        Height: =64
+                        Width: =44
+            - TopBarShadowPMKForm:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderThickness: =0
+                  Fill: =RGBA(0, 0, 0, 0.08)
+                  Height: =5
+                  Width: =Parent.Width
+            - MainPMKForm:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutMinHeight: =16
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                  PaddingBottom: =16
+                  PaddingLeft: =16
+                  PaddingRight: =16
+                  PaddingTop: =16
+                  Width: =Parent.Width
+                Children:
+                  - CardPMKForm:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(225, 223, 221, 1)
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =958
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =18
+                        LayoutMinHeight: =958
+                        PaddingBottom: =28
+                        PaddingLeft: =28
+                        PaddingRight: =28
+                        PaddingTop: =24
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Width: =Parent.Width
+                      Children:
+                        - TitlePMKForm:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(31, 56, 100, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Size: =20
+                              Text: =If(Coalesce(gblPMKEditMode, false), "Edit PMK", "Tambah PMK")
+                              Width: =Parent.Width
+                        - SubtitlePMKForm:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(96, 94, 92, 1)
+                              Font: =Font.'Open Sans'
+                              Size: =12
+                              Text: |-
+                                ="Pegawai: " &
+                                Coalesce(
+                                    LookUp(
+                                        Pegawai,
+                                        Title = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
+                                        Nama
+                                    ),
+                                    Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))
+                                )
+                              Width: =Parent.Width
+                        - DividerPMKForm:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              Fill: =RGBA(225, 223, 221, 1)
+                              Height: =1
+                              Width: =Parent.Width
+                        - FieldTrainingNamePMK:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblTrainingNamePMK:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Nama Pelatihan *"
+                                    Width: =Parent.Width
+                              - TxtTrainingNamePMK:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Nama Pelatihan"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Value: =If(Coalesce(gblPMKEditMode, false), Coalesce(gblSelectedPMK.TrainingName, ""), "")
+                                    Width: =Parent.Width
+
+                        - FieldPenyelenggaraPMK:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblPenyelenggaraPMK:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Penyelenggara *"
+                                    Width: =Parent.Width
+                              - TxtPenyelenggaraPMK:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Penyelenggara"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Value: =If(Coalesce(gblPMKEditMode, false), Coalesce(gblSelectedPMK.Penyelenggara, ""), "")
+                                    Width: =Parent.Width
+
+                        - FieldStartDatePMK:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblStartDatePMK:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Tanggal Mulai *"
+                                    Width: =Parent.Width
+                              - DateStartDatePMK:
+                                  Control: ModernDatePicker@1.0.0
+                                  Properties:
+                                    AccessibleLabel: ="Tanggal Mulai"
+                                    DefaultDate: =If(Coalesce(gblPMKEditMode, false), Date(1899, 12, 30) + Value(gblSelectedPMK.StartDate), Today())
+                                    Format: ="dd/mm/yyyy"
+                                    Placeholder: ="Pilih tanggal"
+                                    Width: =Parent.Width
+
+                        - FieldCompletionDatePMK:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblCompletionDatePMK:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Tanggal Selesai *"
+                                    Width: =Parent.Width
+                              - DateCompletionDatePMK:
+                                  Control: ModernDatePicker@1.0.0
+                                  Properties:
+                                    AccessibleLabel: ="Tanggal Selesai"
+                                    DefaultDate: =If(Coalesce(gblPMKEditMode, false), Date(1899, 12, 30) + Value(gblSelectedPMK.CompletionDate), Today())
+                                    Format: ="dd/mm/yyyy"
+                                    Placeholder: ="Pilih tanggal"
+                                    Width: =Parent.Width
+
+                        - FieldJenisPMKPMK:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblJenisPMKPMK:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Jenis PMK *"
+                                    Width: =Parent.Width
+                              - TxtJenisPMKPMK:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Jenis PMK"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Value: =If(Coalesce(gblPMKEditMode, false), Coalesce(gblSelectedPMK.JenisPMK, ""), "")
+                                    Width: =Parent.Width
+
+                        - FieldTipePMK:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblTipePMK:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Tipe *"
+                                    Width: =Parent.Width
+                              - TxtTipePMK:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Tipe"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Value: =If(Coalesce(gblPMKEditMode, false), Coalesce(gblSelectedPMK.Tipe, ""), "")
+                                    Width: =Parent.Width
+
+                        - FieldNegaraPMK:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblNegaraPMK:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Negara *"
+                                    Width: =Parent.Width
+                              - TxtNegaraPMK:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Negara"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Value: =If(Coalesce(gblPMKEditMode, false), Coalesce(gblSelectedPMK.Negara, ""), "")
+                                    Width: =Parent.Width
+
+
+                        - FormActionsPMK:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =48
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =12
+                              LayoutJustifyContent: =LayoutJustifyContent.End
+                              LayoutMinHeight: =48
+                              Width: =Parent.Width
+                            Children:
+                              - BtnBatalPMK:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =Set(gblPMKEditMode, false);
+                                      Set(gblSelectedPMK, Defaults(Profil_PMK));
+                                      Back()
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="Batal"
+                                    Width: =110
+                              - BtnSimpanPMK:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisplayMode: =If(Coalesce(gblPMKSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Fill: =RGBA(18, 38, 82, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =If(
+                                          Or(
+                                              IsBlank(Trim(TxtTrainingNamePMK.Value)),
+                                              IsBlank(Trim(TxtPenyelenggaraPMK.Value)),
+                                              IsBlank(DateStartDatePMK.SelectedDate),
+                                              IsBlank(DateCompletionDatePMK.SelectedDate),
+                                              IsBlank(Trim(TxtJenisPMKPMK.Value)),
+                                              IsBlank(Trim(TxtTipePMK.Value)),
+                                              IsBlank(Trim(TxtNegaraPMK.Value))
+                                          ),
+                                          Notify(
+                                              "Lengkapi seluruh field PMK.",
+                                              NotificationType.Warning
+                                          ),
+                                          !Coalesce(gblPMKSubmitting, false),
+                                          Set(gblPMKSubmitting, true);
+                                          IfError(
+                                              If(
+                                                  Coalesce(gblPMKEditMode, false),
+                                                  Patch(
+                                                      Profil_PMK,
+                                                      gblSelectedPMK,
+                                                      {
+                                                          NIP: gblSelectedPMK.NIP,
+                                                          TrainingName: Trim(TxtTrainingNamePMK.Value),
+                                                          Penyelenggara: Trim(TxtPenyelenggaraPMK.Value),
+                                                          StartDate: DateDiff(Date(1899, 12, 30), DateStartDatePMK.SelectedDate, TimeUnit.Days),
+                                                          CompletionDate: DateDiff(Date(1899, 12, 30), DateCompletionDatePMK.SelectedDate, TimeUnit.Days),
+                                                          JenisPMK: Trim(TxtJenisPMKPMK.Value),
+                                                          Tipe: Trim(TxtTipePMK.Value),
+                                                          Negara: Trim(TxtNegaraPMK.Value)
+                                                      }
+                                                  ),
+                                                  With(
+                                                      {
+                                                          newRecord:
+                                                              Patch(
+                                                                  Profil_PMK,
+                                                                  Defaults(Profil_PMK),
+                                                                  {
+                                                                      Title: "TEMP_" & Text(GUID()),
+                                                                      NIP: Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
+                                                                      TrainingName: Trim(TxtTrainingNamePMK.Value),
+                                                                      Penyelenggara: Trim(TxtPenyelenggaraPMK.Value),
+                                                                      StartDate: DateDiff(Date(1899, 12, 30), DateStartDatePMK.SelectedDate, TimeUnit.Days),
+                                                                      CompletionDate: DateDiff(Date(1899, 12, 30), DateCompletionDatePMK.SelectedDate, TimeUnit.Days),
+                                                                      JenisPMK: Trim(TxtJenisPMKPMK.Value),
+                                                                      Tipe: Trim(TxtTipePMK.Value),
+                                                                      Negara: Trim(TxtNegaraPMK.Value)
+                                                                  }
+                                                              )
+                                                      },
+                                                      Patch(
+                                                          Profil_PMK,
+                                                          newRecord,
+                                                          {Title: Text(newRecord.ID)}
+                                                      )
+                                                  )
+                                              );
+                                              Refresh(Profil_PMK);
+                                              Notify(
+                                                  If(Coalesce(gblPMKEditMode, false), "Data PMK berhasil diperbarui.", "Data PMK berhasil ditambahkan."),
+                                                  NotificationType.Success
+                                              );
+                                              Set(gblPMKSubmitting, false);
+                                              Set(gblPMKEditMode, false);
+                                              Set(gblSelectedPMK, Defaults(Profil_PMK));
+                                              Navigate(S2_ProfilPegawai, ScreenTransition.Fade),
+                                              Notify(
+                                                  "Gagal menyimpan data PMK: " & FirstError.Message,
+                                                  NotificationType.Error
+                                              );
+                                              Set(gblPMKSubmitting, false)
+                                          )
+                                      )
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: =If(Coalesce(gblPMKSubmitting, false), "Menyimpan...", "Simpan")
+                                    Width: =130

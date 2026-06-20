@@ -1,0 +1,465 @@
+Screens:
+  S6B_ChecklistMentoring_Form:
+    Properties:
+      Fill: =RGBA(245, 245, 245, 1)
+      LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+    Children:
+      - ChecklistFormContainer:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(245, 245, 245, 1)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =0
+            Width: =Parent.Width
+          Children:
+            - ChecklistFormTopBar:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(18, 38, 82, 1)
+                  FillPortions: =0
+                  Height: =64
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutMinHeight: =64
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  Width: =Parent.Width
+                Children:
+                  - BtnBackChecklistForm:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =64
+                        OnSelect: |-
+                          =Set(gblChecklistEditMode, false);
+                          Set(gblSelectedChecklist, Defaults(ChecklistMentoring));
+                          Back()
+                        Size: =24
+                        Text: ="‹"
+                        Width: =44
+                  - LblAppNameChecklistForm:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        FillPortions: =1
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =64
+                        Size: =16
+                        Text: ="MyCareerApp"
+                  - ChecklistFormTopBarSpacer:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =RGBA(0, 0, 0, 0)
+                        Height: =64
+                        Width: =44
+            - ChecklistFormTopBarShadow:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderThickness: =0
+                  Fill: =RGBA(0, 0, 0, 0.08)
+                  Height: =5
+                  Width: =Parent.Width
+            - ChecklistFormMain:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutMinHeight: =16
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                  PaddingBottom: =16
+                  PaddingLeft: =16
+                  PaddingRight: =16
+                  PaddingTop: =16
+                  Width: =Parent.Width
+                Children:
+                  - ChecklistFormCard:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(225, 223, 221, 1)
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.Light
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =720
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =18
+                        LayoutMinHeight: =720
+                        PaddingBottom: =28
+                        PaddingLeft: =28
+                        PaddingRight: =28
+                        PaddingTop: =24
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Width: =Parent.Width
+                      Children:
+                        - ChecklistFormTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Color: =RGBA(31, 56, 100, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =34
+                              Size: =20
+                              Text: =If(Coalesce(gblChecklistEditMode, false), "Edit Checklist Mentoring", "Tambah Checklist Mentoring")
+                              Width: =Parent.Width
+                        - ChecklistFormSubtitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(96, 94, 92, 1)
+                              Font: =Font.'Open Sans'
+                              Size: =12
+                              Text: |-
+                                ="Pegawai: " &
+                                Coalesce(
+                                    LookUp(
+                                        Pegawai,
+                                        Title = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
+                                        Nama
+                                    ),
+                                    Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))
+                                )
+                              Width: =Parent.Width
+                        - ChecklistFormDivider:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              Fill: =RGBA(225, 223, 221, 1)
+                              Height: =1
+                              Width: =Parent.Width
+                        - FieldTahunChecklist:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblTahunChecklist:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Tahun *"
+                                    Width: =Parent.Width
+                              - NumTahunChecklist:
+                                  Control: NumberInput@2.9.12
+                                  Properties:
+                                    AccessibleLabel: ="Tahun"
+                                    Max: =Year(Today()) + 5
+                                    Min: =2000
+                                    Value: =If(Coalesce(gblChecklistEditMode, false), Value(gblSelectedChecklist.Tahun), Year(Today()))
+                                    Width: =Parent.Width
+                        - FieldMentorChecklist:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblMentorChecklist:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Mentor *"
+                                    Width: =Parent.Width
+                              - CmbMentorChecklist:
+                                  Control: ComboBox@0.0.51
+                                  Properties:
+                                    AccessibleLabel: ="Pilih mentor"
+                                    DefaultSelectedItems: |-
+                                      =If(
+                                          Coalesce(gblChecklistEditMode, false),
+                                          Filter(
+                                              ForAll(Pegawai, {Value: Nama, NIP: Title}),
+                                              NIP = gblSelectedChecklist.MentorNIP
+                                          ),
+                                          Blank()
+                                      )
+                                    InputTextPlaceholder: ="Cari mentor"
+                                    Items: |-
+                                      =ForAll(
+                                          Pegawai,
+                                          {
+                                              Value: Nama,
+                                              NIP: Title
+                                          }
+                                      )
+                                    SelectMultiple: =false
+                                    Width: =Parent.Width
+                        - FieldPersonalStatementChecklist:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblPersonalStatementChecklist:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Personal Statement"
+                                    Width: =Parent.Width
+                              - TxtPersonalStatementChecklist:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Nama file atau URL Personal Statement"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Value: =If(Coalesce(gblChecklistEditMode, false), Coalesce(gblSelectedChecklist.PersonalStatementFile, ""), "")
+                                    Width: =Parent.Width
+                        - FieldCareerPlanChecklist:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblCareerPlanChecklist:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Career Plan"
+                                    Width: =Parent.Width
+                              - TxtCareerPlanChecklist:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Nama file atau URL Career Plan"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Value: =If(Coalesce(gblChecklistEditMode, false), Coalesce(gblSelectedChecklist.CareerPlanFile, ""), "")
+                                    Width: =Parent.Width
+                        - FieldBuktiUploadChecklist:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblBuktiUploadChecklist:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Bukti Upload"
+                                    Width: =Parent.Width
+                              - TxtBuktiUploadChecklist:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Nama file atau URL Bukti Upload"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Value: =If(Coalesce(gblChecklistEditMode, false), Coalesce(gblSelectedChecklist.BuktiUploadFile, ""), "")
+                                    Width: =Parent.Width
+                        - ChecklistStatusPreview:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Color: |-
+                                =If(
+                                    And(
+                                        !IsBlank(Trim(TxtPersonalStatementChecklist.Value)),
+                                        !IsBlank(Trim(TxtCareerPlanChecklist.Value)),
+                                        !IsBlank(Trim(TxtBuktiUploadChecklist.Value))
+                                    ),
+                                    RGBA(16, 124, 16, 1),
+                                    RGBA(161, 98, 7, 1)
+                                )
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =30
+                              Text: |-
+                                ="Status: " &
+                                If(
+                                    And(
+                                        !IsBlank(Trim(TxtPersonalStatementChecklist.Value)),
+                                        !IsBlank(Trim(TxtCareerPlanChecklist.Value)),
+                                        !IsBlank(Trim(TxtBuktiUploadChecklist.Value))
+                                    ),
+                                    "Lengkap",
+                                    "Belum Lengkap"
+                                )
+                              Width: =Parent.Width
+                        - ChecklistFormActions:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =0
+                              Height: =48
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =12
+                              LayoutJustifyContent: =LayoutJustifyContent.End
+                              LayoutMinHeight: =48
+                              Width: =Parent.Width
+                            Children:
+                              - BtnBatalChecklist:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: =Back()
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Text: ="Batal"
+                                    Width: =110
+                              - BtnSimpanChecklist:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisplayMode: =If(Coalesce(gblChecklistSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Fill: =RGBA(18, 38, 82, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =If(
+                                          Or(
+                                              IsBlank(NumTahunChecklist.Value),
+                                              IsBlank(CmbMentorChecklist.Selected.NIP)
+                                          ),
+                                          Notify(
+                                              "Lengkapi Tahun dan Mentor.",
+                                              NotificationType.Warning
+                                          ),
+                                          And(
+                                              !Coalesce(gblChecklistEditMode, false),
+                                              !IsBlank(
+                                                  LookUp(
+                                                      ChecklistMentoring,
+                                                      NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)) &&
+                                                      Value(Tahun) = Value(NumTahunChecklist.Value)
+                                                  )
+                                              )
+                                          ),
+                                          Notify(
+                                              "Checklist untuk tahun tersebut sudah tersedia.",
+                                              NotificationType.Warning
+                                          ),
+                                          !Coalesce(gblChecklistSubmitting, false),
+                                          Set(gblChecklistSubmitting, true);
+                                          IfError(
+                                              If(
+                                                  Coalesce(gblChecklistEditMode, false),
+                                                  Patch(
+                                                      ChecklistMentoring,
+                                                      gblSelectedChecklist,
+                                                      {
+                                                          NIP: gblSelectedChecklist.NIP,
+                                                          Tahun: Value(NumTahunChecklist.Value),
+                                                          MentorNIP: CmbMentorChecklist.Selected.NIP,
+                                                          PersonalStatementFile: Trim(TxtPersonalStatementChecklist.Value),
+                                                          CareerPlanFile: Trim(TxtCareerPlanChecklist.Value),
+                                                          BuktiUploadFile: Trim(TxtBuktiUploadChecklist.Value),
+                                                          Status:
+                                                              If(
+                                                                  And(
+                                                                      !IsBlank(Trim(TxtPersonalStatementChecklist.Value)),
+                                                                      !IsBlank(Trim(TxtCareerPlanChecklist.Value)),
+                                                                      !IsBlank(Trim(TxtBuktiUploadChecklist.Value))
+                                                                  ),
+                                                                  "Lengkap",
+                                                                  "Belum Lengkap"
+                                                              )
+                                                      }
+                                                  ),
+                                                  With(
+                                                      {
+                                                          newChecklist:
+                                                              Patch(
+                                                                  ChecklistMentoring,
+                                                                  Defaults(ChecklistMentoring),
+                                                                  {
+                                                                      Title: "TEMP_" & Text(GUID()),
+                                                                      NIP: Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
+                                                                      Tahun: Value(NumTahunChecklist.Value),
+                                                                      MentorNIP: CmbMentorChecklist.Selected.NIP,
+                                                                      PersonalStatementFile: Trim(TxtPersonalStatementChecklist.Value),
+                                                                      CareerPlanFile: Trim(TxtCareerPlanChecklist.Value),
+                                                                      BuktiUploadFile: Trim(TxtBuktiUploadChecklist.Value),
+                                                                      Status:
+                                                                          If(
+                                                                              And(
+                                                                                  !IsBlank(Trim(TxtPersonalStatementChecklist.Value)),
+                                                                                  !IsBlank(Trim(TxtCareerPlanChecklist.Value)),
+                                                                                  !IsBlank(Trim(TxtBuktiUploadChecklist.Value))
+                                                                              ),
+                                                                              "Lengkap",
+                                                                              "Belum Lengkap"
+                                                                          )
+                                                                  }
+                                                              )
+                                                      },
+                                                      Patch(
+                                                          ChecklistMentoring,
+                                                          newChecklist,
+                                                          {Title: Text(newChecklist.ID)}
+                                                      )
+                                                  )
+                                              );
+                                              Refresh(ChecklistMentoring);
+                                              Notify(
+                                                  If(Coalesce(gblChecklistEditMode, false), "Checklist berhasil diperbarui.", "Checklist berhasil disimpan."),
+                                                  NotificationType.Success
+                                              );
+                                              Set(gblChecklistSubmitting, false);
+                                              Set(gblChecklistEditMode, false);
+                                              Set(gblSelectedChecklist, Defaults(ChecklistMentoring));
+                                              Navigate(S6A_ChecklistMentoring_List, ScreenTransition.Fade),
+                                              Notify(
+                                                  "Gagal menyimpan checklist: " & FirstError.Message,
+                                                  NotificationType.Error
+                                              );
+                                              Set(gblChecklistSubmitting, false)
+                                          )
+                                      )
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Text: =If(Coalesce(gblChecklistSubmitting, false), "Menyimpan...", "Simpan")
+                                    Width: =130

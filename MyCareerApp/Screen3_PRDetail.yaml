@@ -1,0 +1,818 @@
+Screens:
+  S3_PRDetail:
+    Properties:
+      LoadingSpinnerColor: =RGBA(31, 56, 100, 1)
+      OnVisible: =false
+    Children:
+      - GridPRD:
+          Control: GroupContainer@1.5.0
+          Variant: GridLayout
+          Properties:
+            Fill: =RGBA(243, 242, 241, 1)
+            Height: =Parent.Height
+            LayoutGap: =0
+            LayoutGridColumns: =10
+            LayoutGridRows: =8
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Width: =Parent.Width
+          Children:
+
+            # ═══════════════════════════════
+            # TOP BAR
+            # ═══════════════════════════════
+            - HeaderPRD:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(31, 56, 100, 1)
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGridColumnEnd: =-1
+                  LayoutGridColumnStart: =1
+                  LayoutGridRowEnd: =1
+                  LayoutGridRowStart: =1
+                  PaddingBottom: =10
+                  PaddingLeft: =20
+                  PaddingRight: =20
+                  PaddingTop: =10
+                Children:
+                  - AppTitlePRD:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(255, 255, 255, 1)
+                        FillPortions: =1
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        Size: =20
+                        Text: ="MyCareerApp"
+                  - HeaderUserPRD:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Right
+                        Color: =RGBA(199, 224, 244, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =36
+                        Size: =13
+                        Text: =User().FullName
+                        Width: =500
+
+            # ═══════════════════════════════
+            # SIDEBAR
+            # ═══════════════════════════════
+            - SidebarPRD:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  BorderColor: =RGBA(225, 223, 221, 1)
+                  BorderStyle: =BorderStyle.Solid
+                  BorderThickness: =1
+                  Fill: =RGBA(255, 255, 255, 1)
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =4
+                  LayoutGridColumnEnd: =3
+                  LayoutGridColumnStart: =1
+                  LayoutGridRowEnd: =9
+                  LayoutGridRowStart: =2
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                  PaddingBottom: =16
+                  PaddingLeft: =10
+                  PaddingRight: =10
+                  PaddingTop: =16
+                Children:
+
+                  # — Menu Pegawai —
+                  - LblPegawaiPRD:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(161, 159, 157, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        PaddingBottom: =4
+                        PaddingLeft: =10
+                        PaddingTop: =4
+                        Size: =10
+                        Text: ="MENU PEGAWAI"
+                        Width: =240
+
+                  - NavHomePRD:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(50, 49, 48, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =40
+                        OnSelect: =Navigate(S1_Homepage, ScreenTransition.Fade)
+                        PaddingLeft: =16
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =13
+                        Text: ="Homepage"
+                        Width: =240
+
+                  - NavProfilPRD:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(50, 49, 48, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =40
+                        OnSelect: =Navigate(Screen2_ProfilPegawai, ScreenTransition.Fade)
+                        PaddingLeft: =16
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =13
+                        Text: ="Profil Pegawai"
+                        Width: =240
+
+                  - NavMentoringPRD:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(50, 49, 48, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =40
+                        PaddingLeft: =16
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =13
+                        Text: ="Mentoring"
+                        Width: =240
+
+                  - NavPRActivePRD:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(0, 120, 212, 1)
+                        Fill: =RGBA(222, 236, 249, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =40
+                        OnSelect: =Navigate(S3_PerformanceReview, ScreenTransition.Fade)
+                        PaddingLeft: =16
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =13
+                        Text: ="Performance Review"
+                        Width: =240
+
+                  - NavCKPRD:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(50, 49, 48, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =40
+                        PaddingLeft: =16
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =13
+                        Text: ="Coaching Karir"
+                        Width: =240
+
+                  - NavCBPRD:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(50, 49, 48, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =40
+                        PaddingLeft: =16
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =13
+                        Text: ="Coaching Bebas"
+                        Width: =240
+
+                  - NavIDPPRD:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(50, 49, 48, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =40
+                        PaddingLeft: =16
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =13
+                        Text: ="IDP"
+                        Width: =240
+
+                  - DivLMPRD:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =RGBA(225, 223, 221, 1)
+                        Height: =1
+                        Width: =240
+
+                  # — Menu Line Manager —
+                  - LblLMPRD:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(161, 159, 157, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        PaddingBottom: =4
+                        PaddingLeft: =10
+                        PaddingTop: =8
+                        Size: =10
+                        Text: ="MENU LINE MANAGER"
+                        Width: =240
+
+                  - NavLMPRPRD:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(50, 49, 48, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =40
+                        PaddingLeft: =16
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =13
+                        Text: ="Performance Review"
+                        Width: =240
+
+                  - DivMentorPRD:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =RGBA(225, 223, 221, 1)
+                        Height: =1
+                        Width: =240
+
+                  # — Menu Mentor —
+                  - LblMentorPRD:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(161, 159, 157, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        PaddingBottom: =4
+                        PaddingLeft: =10
+                        PaddingTop: =8
+                        Size: =10
+                        Text: ="MENU MENTOR"
+                        Width: =240
+
+                  - NavMentorCKPRD:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(50, 49, 48, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =40
+                        PaddingLeft: =16
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =13
+                        Text: ="Coaching Karir"
+                        Width: =240
+
+                  - NavMentorCTPRD:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(50, 49, 48, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =40
+                        PaddingLeft: =16
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =13
+                        Text: ="Coaching Tematik"
+                        Width: =240
+
+                  - DivPimpinanPRD:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =RGBA(225, 223, 221, 1)
+                        Height: =1
+                        Width: =240
+
+                  # — Menu Pimpinan —
+                  - LblPimpinanPRD:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(161, 159, 157, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        PaddingBottom: =4
+                        PaddingLeft: =10
+                        PaddingTop: =8
+                        Size: =10
+                        Text: ="MENU PIMPINAN"
+                        Width: =240
+
+                  - NavDaftarPegawaiPRD:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(50, 49, 48, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =40
+                        PaddingLeft: =16
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =13
+                        Text: ="Daftar Pegawai"
+                        Width: =240
+
+                  - DivAdminPRD:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =RGBA(225, 223, 221, 1)
+                        Height: =1
+                        Width: =240
+
+                  # — Menu Admin —
+                  - LblAdminPRD:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(161, 159, 157, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        PaddingBottom: =4
+                        PaddingLeft: =10
+                        PaddingTop: =8
+                        Size: =10
+                        Text: ="MENU ADMIN"
+                        Width: =240
+
+                  - NavMonitoringPRD:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(50, 49, 48, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =40
+                        PaddingLeft: =16
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =13
+                        Text: ="Monitoring Mentoring"
+                        Width: =240
+
+            # ═══════════════════════════════
+            # MAIN CONTENT
+            # ═══════════════════════════════
+            - MainPRD:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(243, 242, 241, 1)
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =16
+                  LayoutGridColumnEnd: =11
+                  LayoutGridColumnStart: =3
+                  LayoutGridRowEnd: =9
+                  LayoutGridRowStart: =2
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                  PaddingBottom: =24
+                  PaddingLeft: =28
+                  PaddingRight: =28
+                  PaddingTop: =20
+                Children:
+
+                  # ── Breadcrumb & Title ──
+                  - BreadcrumbPRD:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =RGBA(161, 159, 157, 1)
+                        Font: =Font.'Open Sans'
+                        Size: =12
+                        Text: ="Home  ›  Performance Review  ›  Detail"
+                        Width: =Parent.Width
+
+                  - TitleRowPRD:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        FillPortions: =0
+                        Height: =40
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                      Children:
+                        - BtnBackPRD:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              Color: =RGBA(50, 49, 48, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =34
+                              OnSelect: =Navigate(S3_PerformanceReview, ScreenTransition.Fade)
+                              PaddingLeft: =14
+                              PaddingRight: =14
+                              RadiusBottomLeft: =6
+                              RadiusBottomRight: =6
+                              RadiusTopLeft: =6
+                              RadiusTopRight: =6
+                              Size: =13
+                              Text: ="← Kembali"
+                              Width: =110
+                        - PageTitlePRD:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(31, 56, 100, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Size: =18
+                              Text: ="Detail Performance Review"
+
+                  # ── Info Strip ──
+                  - InfoCard:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(225, 223, 221, 1)
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.Light
+                        Fill: =RGBA(255, 255, 255, 1)
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =0
+                        PaddingBottom: =20
+                        PaddingLeft: =24
+                        PaddingRight: =24
+                        PaddingTop: =20
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                      Children:
+                        - InfoNama:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =1
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                            Children:
+                              - LblNamaPRD:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(161, 159, 157, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Size: =10
+                                    Text: ="NAMA PEGAWAI"
+                                    Width: =Parent.Width
+                              - ValNamaPRD:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Size: =14
+                                    Text: =LookUp(Pegawai, Title = gblSelectedPR.NIP, Nama)
+                                    Width: =Parent.Width
+                        - InfoTanggal:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =1
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                            Children:
+                              - LblTanggalPRD:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(161, 159, 157, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Size: =10
+                                    Text: ="TANGGAL"
+                                    Width: =Parent.Width
+                              - ValTanggalPRD:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Size: =14
+                                    Text: =Text(gblSelectedPR.Tanggal, "dd mmmm yyyy")
+                                    Width: =Parent.Width
+                        - InfoSemester:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =1
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                            Children:
+                              - LblSemesterPRD:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(161, 159, 157, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Size: =10
+                                    Text: ="SEMESTER"
+                                    Width: =Parent.Width
+                              - ValSemesterPRD:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Size: =14
+                                    Text: =Text(gblSelectedPR.Semester)
+                                    Width: =Parent.Width
+                        - InfoLM:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =1
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                            Children:
+                              - LblLMPRD2:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(161, 159, 157, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Size: =10
+                                    Text: ="LINE MANAGER"
+                                    Width: =Parent.Width
+                              - ValLMPRD2:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Size: =14
+                                    Text: =LookUp(Pegawai, Title = gblSelectedPR.LineManagerNIP, Nama)
+                                    Width: =Parent.Width
+
+                  # ── GROW Card ──
+                  - GROWCard:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(225, 223, 221, 1)
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.Light
+                        Fill: =RGBA(255, 255, 255, 1)
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =24
+                        PaddingBottom: =24
+                        PaddingLeft: =24
+                        PaddingRight: =24
+                        PaddingTop: =24
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                      Children:
+                        - GROWLeft:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =1
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =20
+                            Children:
+                              - FldGoalPRD:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =8
+                                  Children:
+                                    - LblGoalPRD:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Size: =13
+                                          Text: ="Goal"
+                                          Width: =Parent.Width
+                                    - ValGoalPRD:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Font: =Font.'Open Sans'
+                                          Size: =13
+                                          Text: =gblSelectedPR.Goal
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Width: =Parent.Width
+                              - FldOptionsPRD:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =8
+                                  Children:
+                                    - LblOptionsPRD:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Size: =13
+                                          Text: ="Options"
+                                          Width: =Parent.Width
+                                    - ValOptionsPRD:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Font: =Font.'Open Sans'
+                                          Size: =13
+                                          Text: =gblSelectedPR.Options
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Width: =Parent.Width
+                        - GROWRight:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =1
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =20
+                            Children:
+                              - FldRealityPRD:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =8
+                                  Children:
+                                    - LblRealityPRD:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Size: =13
+                                          Text: ="Reality"
+                                          Width: =Parent.Width
+                                    - ValRealityPRD:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Font: =Font.'Open Sans'
+                                          Size: =13
+                                          Text: =gblSelectedPR.Reality
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Width: =Parent.Width
+                              - FldWillPRD:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =8
+                                  Children:
+                                    - LblWillPRD:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Size: =13
+                                          Text: ="Will"
+                                          Width: =Parent.Width
+                                    - ValWillPRD:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Font: =Font.'Open Sans'
+                                          Size: =13
+                                          Text: =gblSelectedPR.Will
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Width: =Parent.Width
+
+                  # ── Foto Bukti Card ──
+                  - FotoBuktiCard:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(225, 223, 221, 1)
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.Light
+                        Fill: =RGBA(255, 255, 255, 1)
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =12
+                        PaddingBottom: =24
+                        PaddingLeft: =24
+                        PaddingRight: =24
+                        PaddingTop: =24
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                      Children:
+                        - LblFotoBuktiPRD:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(50, 49, 48, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Size: =14
+                              Text: ="Foto Bukti Pelaksanaan"
+                              Width: =Parent.Width
+                        - ImgFotoBuktiPRD:
+                            Control: Image@2.2.3
+                            Properties:
+                              Fill: =RGBA(243, 242, 241, 1)
+                              Height: =180
+                              Image: =gblSelectedPR.FotoBukti
+                              RadiusBottomLeft: =6
+                              RadiusBottomRight: =6
+                              RadiusTopLeft: =6
+                              RadiusTopRight: =6
+                              Width: =260
+                        - ValFotoBuktiPRD:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(161, 159, 157, 1)
+                              Font: =Font.'Open Sans'
+                              Size: =12
+                              Text: =gblSelectedPR.FotoBukti
+                              Width: =Parent.Width
+                        - AksiRow:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =0
+                              Height: =36
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =12
+                            Children:
+                              - BtnEditPRD:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    Fill: =RGBA(31, 56, 100, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =36
+                                    PaddingLeft: =18
+                                    PaddingRight: =18
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =13
+                                    Text: ="Edit"
+                                    Width: =100
+                              - BtnDeletePRD:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(196, 43, 28, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =36
+                                    PaddingLeft: =18
+                                    PaddingRight: =18
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =13
+                                    Text: ="Hapus"
+                                    Width: =90
+

@@ -1,0 +1,373 @@
+Screens:
+  S9B_CoachingKarir_Coach_Form:
+    Properties:
+      Fill: =RGBA(245, 245, 245, 1)
+      LoadingSpinnerColor: =RGBA(9, 33, 98, 1)
+      OnVisible: =Set(gblCoachingKarirSubmitting, false)
+    Children:
+      - CKFormScreenContainer:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(245, 245, 245, 1)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =16
+            PaddingBottom: =16
+            PaddingLeft: =16
+            PaddingRight: =16
+            PaddingTop: =16
+            Width: =Parent.Width
+          Children:
+            - CKFormHeader:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(9, 33, 98, 1)
+                  FillPortions: =0
+                  Height: =75
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutMinHeight: =75
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                Children:
+                  - BtnBackCKForm:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        OnSelect: |-
+                          =Set(gblCoachingKarirSubmitting, false);
+                          Back()
+                        Size: =22
+                        Text: ="‹"
+                        Width: =40
+                  - LblAppNameCKForm:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        FillPortions: =1
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        Size: =18
+                        Text: ="MyCareerApp"
+                  - CKFormHeaderSpacer:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =RGBA(0, 0, 0, 0)
+                        Height: =40
+                        Width: =40
+            - CKFormScroll:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutMinHeight: =16
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                  PaddingBottom: =8
+                Children:
+                  - CKFormCard:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(225, 223, 221, 1)
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.Light
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =720
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =18
+                        LayoutMinHeight: =720
+                        PaddingBottom: =If(Parent.Width < 640, 18, 28)
+                        PaddingLeft: =If(Parent.Width < 640, 18, 28)
+                        PaddingRight: =If(Parent.Width < 640, 18, 28)
+                        PaddingTop: =If(Parent.Width < 640, 18, 24)
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                      Children:
+                        - CKFormTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Color: =RGBA(31, 56, 100, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =36
+                              Size: =20
+                              Text: =If(Coalesce(gblCoachingKarirCoachEditMode, false), "Edit Coaching Karir", "Buat Coaching Karir")
+                        - CKFormSubject:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(96, 94, 92, 1)
+                              Font: =Font.'Open Sans'
+                              Size: =12
+                              Text: '="Mentee: " & Coalesce(CmbMenteeCKForm.Selected.Value, "-")'
+                        - CKFormDivider:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              Fill: =RGBA(225, 223, 221, 1)
+                              Height: =1
+                              Width: =Parent.Width
+                        - FieldTanggalCKForm:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                            Children:
+                              - LblTanggalCKForm:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Tanggal *"
+                              - DateTanggalCKForm:
+                                  Control: ModernDatePicker@1.0.0
+                                  Properties:
+                                    AccessibleLabel: ="Tanggal coaching"
+                                    DefaultDate: |-
+                                      =If(
+                                          Coalesce(gblCoachingKarirCoachEditMode, false),
+                                          IfError(
+                                              Date(1899, 12, 30) + Value(gblSelectedCoachingKarir.Tanggal),
+                                              gblSelectedCoachingKarir.Tanggal
+                                          ),
+                                          Today()
+                                      )
+                                    Format: ="dd/mm/yyyy"
+                                    Placeholder: ="Pilih tanggal"
+                                    Width: =Parent.Width
+                        - FieldMentorCKForm:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                            Children:
+                              - LblMentorCKForm:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Mentee *"
+                              - CmbMenteeCKForm:
+                                  Control: ComboBox@0.0.51
+                                  Properties:
+                                    AccessibleLabel: ="Pilih mentee"
+                                    DefaultSelectedItems: |-
+                                      =If(
+                                          Coalesce(gblCoachingKarirCoachEditMode, false),
+                                          Filter(
+                                              ForAll(Pegawai, {Value: Nama, NIP: Title}),
+                                              NIP = gblSelectedCoachingKarir.MenteeNIP
+                                          ),
+                                          Blank()
+                                      )
+                                    InputTextPlaceholder: ="Cari nama mentee"
+                                    Items: |-
+                                      =ForAll(
+                                          Pegawai,
+                                          {
+                                              Value: Nama,
+                                              NIP: Title
+                                          }
+                                      )
+                                    SelectMultiple: =false
+                                    Width: =Parent.Width
+                        - FieldCatatanCKForm:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =96
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =96
+                            Children:
+                              - LblCatatanCKForm:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Catatan *"
+                              - TxtCatatanCKForm:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Catatan coaching"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Value: =If(Coalesce(gblCoachingKarirCoachEditMode, false), Coalesce(gblSelectedCoachingKarir.Catatan, ""), "")
+                                    Width: =Parent.Width
+                        - FieldHasilCKForm:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =190
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =190
+                            Children:
+                              - LblHasilCKForm:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Foto Bukti *"
+                              - TxtHasilCKForm:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Hasil coaching"
+                                    Height: =150
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeMultiLine"
+                                    Value: =If(Coalesce(gblCoachingKarirCoachEditMode, false), Coalesce(gblSelectedCoachingKarir.FotoBukti, ""), "")
+                                    Width: =Parent.Width
+                        - CKFormActions:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =48
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =12
+                              LayoutJustifyContent: =LayoutJustifyContent.End
+                              LayoutMinHeight: =48
+                            Children:
+                              - BtnCancelCKForm:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: =Back()
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Text: ="Batal"
+                                    Width: =110
+                              - BtnSaveCKForm:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisplayMode: =If(Coalesce(gblCoachingKarirSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Fill: =RGBA(9, 33, 98, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =If(
+                                          Or(
+                                              IsBlank(DateTanggalCKForm.SelectedDate),
+                                              IsBlank(CmbMenteeCKForm.Selected.NIP),
+                                              IsBlank(Trim(TxtCatatanCKForm.Value)),
+                                              IsBlank(Trim(TxtHasilCKForm.Value))
+                                          ),
+                                          Notify(
+                                              "Lengkapi Tanggal, Mentee, Catatan, dan Foto Bukti.",
+                                              NotificationType.Warning
+                                          ),
+                                          !Coalesce(gblCoachingKarirSubmitting, false),
+                                          Set(gblCoachingKarirSubmitting, true);
+                                          IfError(
+                                              If(
+                                                  Coalesce(gblCoachingKarirCoachEditMode, false),
+                                                  Patch(
+                                                      CoachingKarir,
+                                                      gblSelectedCoachingKarir,
+                                                      {
+                                                          MenteeNIP: CmbMenteeCKForm.Selected.NIP,
+                                                          MentorNIP: Text(gblCurrentNIP),
+                                                          Tanggal: DateDiff(Date(1899, 12, 30), DateTanggalCKForm.SelectedDate, TimeUnit.Days),
+                                                          Catatan: Trim(TxtCatatanCKForm.Value),
+                                                          FotoBukti: Trim(TxtHasilCKForm.Value)
+                                                      }
+                                                  ),
+                                                  With(
+                                                      {
+                                                          newCoachingKarir:
+                                                              Patch(
+                                                                  CoachingKarir,
+                                                                  Defaults(CoachingKarir),
+                                                                  {
+                                                                      Title: "TEMP_" & Text(GUID()),
+                                                                      MenteeNIP: CmbMenteeCKForm.Selected.NIP,
+                                                                      MentorNIP: Text(gblCurrentNIP),
+                                                                      Tanggal: DateDiff(Date(1899, 12, 30), DateTanggalCKForm.SelectedDate, TimeUnit.Days),
+                                                                      Catatan: Trim(TxtCatatanCKForm.Value),
+                                                                      FotoBukti: Trim(TxtHasilCKForm.Value)
+                                                                  }
+                                                              )
+                                                      },
+                                                      Patch(
+                                                          CoachingKarir,
+                                                          newCoachingKarir,
+                                                          {Title: Text(newCoachingKarir.ID)}
+                                                      )
+                                                  )
+                                              );
+                                              Refresh(CoachingKarir);
+                                              Notify(
+                                                  If(
+                                                      Coalesce(gblCoachingKarirCoachEditMode, false),
+                                                      "Coaching Karir berhasil diperbarui.",
+                                                      "Coaching Karir berhasil disimpan."
+                                                  ),
+                                                  NotificationType.Success
+                                              );
+                                              Set(gblCoachingKarirSubmitting, false);
+                                              Set(gblCoachingKarirCoachEditMode, false);
+                                              Set(gblSelectedCoachingKarir, Defaults(CoachingKarir));
+                                              Navigate(S9A_CoachingKarir_Coach_List, ScreenTransition.Fade),
+                                              Notify(
+                                                  "Gagal menyimpan Coaching Karir: " & FirstError.Message,
+                                                  NotificationType.Error
+                                              );
+                                              Set(gblCoachingKarirSubmitting, false)
+                                          )
+                                      )
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Text: =If(Coalesce(gblCoachingKarirSubmitting, false), "Menyimpan...", If(Coalesce(gblCoachingKarirCoachEditMode, false), "Simpan Perubahan", "Simpan"))
+                                    Width: =If(App.Width < 520, 145, 170)

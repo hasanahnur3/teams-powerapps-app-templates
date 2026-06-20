@@ -1,0 +1,2912 @@
+Screens:
+  S2_ProfilPegawai:
+    Properties:
+      Fill: =RGBA(255, 255, 255, 1)
+      LoadingSpinnerColor: =RGBA(31, 56, 100, 1)
+    Children:
+      - ScreenContainerS2:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Fill: =RGBA(245, 245, 245, 1)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =16
+            PaddingBottom: =16
+            PaddingLeft: =16
+            PaddingRight: =16
+            PaddingTop: =16
+            Width: =Parent.Width
+          Children:
+            - HeaderContainerS2:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  Fill: =RGBA(9, 33, 98, 1)
+                  FillPortions: =0
+                  Height: =75
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                Children:
+                  - BtnBackS2:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        AutoHeight: =true
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        OnSelect: =Back()
+                        PaddingLeft: =20
+                        Size: =22
+                        Text: ="‹"
+                        Width: =40
+                  - LblAppNameS2:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        FillPortions: =1
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        Size: =18
+                        Text: ="MyCareerApp"
+                  - HeaderSpacerS2:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =RGBA(0, 0, 0, 0)
+                        Height: =40
+                        Width: =40
+            - MainS2:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  Fill: =RGBA(245, 245, 245, 1)
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =16
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                Children:
+
+                  - PimpinanContextS2:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(225, 223, 221, 1)
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =If(Parent.Width < 620, 160, 82)
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =10
+                        LayoutMinHeight: =If(Parent.Width < 620, 160, 82)
+                        LayoutWrap: =true
+                        PaddingBottom: =12
+                        PaddingLeft: =16
+                        PaddingRight: =16
+                        PaddingTop: =12
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Visible: =Coalesce(gblPimpinanView, false)
+                        Width: =Parent.Width
+                      Children:
+                        - PimpinanEmployeeS2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Color: =RGBA(31, 56, 100, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =44
+                              OnSelect: =Navigate(S11_Pimpinan_DaftarPegawai, ScreenTransition.Fade)
+                              PaddingLeft: =8
+                              Size: =12
+                              Text: '="Pegawai: " & Coalesce(LookUp(Pegawai, Title = Text(gblSubjectNIP), Nama), Text(gblSubjectNIP))'
+                              Width: =If(Parent.Width < 620, Parent.Width - 32, Max(220, Parent.Width - 310))
+                        - PimpinanTabProfileS2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              Color: =RGBA(0, 120, 212, 1)
+                              Fill: =RGBA(222, 236, 249, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =44
+                              Size: =11
+                              Text: ="Profil"
+                              Width: =120
+                        - PimpinanTabPRS2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              Color: =RGBA(96, 94, 92, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =44
+                              OnSelect: =Navigate(S3A_PR_List, ScreenTransition.Fade)
+                              Size: =11
+                              Text: ="Performance Review"
+                              Width: =150
+
+                  # ════════════════════════════════
+                  # SECTION I — IDENTITAS PEGAWAI
+                  # ════════════════════════════════
+                  - SectionI:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        BorderColor: =RGBA(225, 223, 221, 1)
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: =1
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =If(Parent.Width < 620, 560, 350)
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =14
+                        LayoutMinHeight: =If(Parent.Width < 620, 560, 350)
+                        LayoutMinWidth: =0
+                        LayoutOverflowX: =LayoutOverflow.Hide
+                        LayoutOverflowY: =LayoutOverflow.Hide
+                        PaddingBottom: =22
+                        PaddingLeft: =28
+                        PaddingRight: =28
+                        PaddingTop: =22
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Width: =Parent.Width
+                      Children:
+                        - SIHeader:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =36
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =10
+                              LayoutMinHeight: =36
+                            Children:
+                              - TagI:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    Fill: =RGBA(31, 56, 100, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =22
+                                    RadiusBottomLeft: =4
+                                    RadiusBottomRight: =4
+                                    RadiusTopLeft: =4
+                                    RadiusTopRight: =4
+                                    Size: =11
+                                    Text: ="I"
+                                    Width: =28
+                              - TitleI:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(31, 56, 100, 1)
+                                    FillPortions: =1
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Size: =14
+                                    Text: ="Identitas Pegawai"
+                        - SIDivider:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              Fill: =RGBA(243, 242, 241, 1)
+                              Height: =1
+                        - SIRow1:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =If(Parent.Width < 564, 140, 70)
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =24
+                              LayoutMinHeight: =If(Parent.Width < 564, 140, 70)
+                              LayoutMinWidth: =0
+                              LayoutOverflowX: =LayoutOverflow.Hide
+                              LayoutOverflowY: =LayoutOverflow.Hide
+                              LayoutWrap: =true
+                              Width: =Parent.Width
+                            Children:
+                              - FldNama:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =1
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =4
+                                    LayoutMinWidth: =If(Parent.Width < 564, Parent.Width, 120)
+                                    Width: =If(Parent.Width < 564, Parent.Width, (Parent.Width - 24) / 2)
+                                  Children:
+                                    - LblNama:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(145, 145, 145, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Size: =11
+                                          Text: ="NAMA PEGAWAI"
+                                    - ValNama:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Size: =14
+                                          Text: =LookUp(Pegawai, Title = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)), Nama)
+                              - FldSatker:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =1
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =4
+                                    LayoutMinWidth: =If(Parent.Width < 564, Parent.Width, 120)
+                                    Width: =If(Parent.Width < 564, Parent.Width, (Parent.Width - 24) / 2)
+                                  Children:
+                                    - LblSatker:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(145, 145, 145, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Size: =11
+                                          Text: ="SATUAN KERJA"
+                                    - ValSatker:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Size: =14
+                                          Text: =LookUp(Pegawai, Title = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)), Satker)
+                        - SIRow2:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =If(Parent.Width < 564, 140, 70)
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =24
+                              LayoutMinHeight: =If(Parent.Width < 564, 140, 70)
+                              LayoutMinWidth: =0
+                              LayoutOverflowX: =LayoutOverflow.Hide
+                              LayoutOverflowY: =LayoutOverflow.Hide
+                              LayoutWrap: =true
+                              Width: =Parent.Width
+                            Children:
+                              - FldNIP:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =1
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =4
+                                    LayoutMinWidth: =If(Parent.Width < 564, Parent.Width, 120)
+                                    Width: =If(Parent.Width < 564, Parent.Width, (Parent.Width - 24) / 2)
+                                  Children:
+                                    - LblNIP:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(145, 145, 145, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Size: =11
+                                          Text: ="NIP"
+                                    - ValNIP:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Size: =14
+                                          Text: =Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))
+                              - FldJabatan:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =1
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =4
+                                    LayoutMinWidth: =If(Parent.Width < 564, Parent.Width, 120)
+                                    Width: =If(Parent.Width < 564, Parent.Width, (Parent.Width - 24) / 2)
+                                  Children:
+                                    - LblJabatan:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(145, 145, 145, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Size: =11
+                                          Text: ="JABATAN"
+                                    - ValJabatan:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Size: =14
+                                          Text: =LookUp(Pegawai, Title = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)), Jabatan)
+                        - SIRow3:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =If(Parent.Width < 564, 140, 70)
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =24
+                              LayoutMinHeight: =If(Parent.Width < 564, 140, 70)
+                              LayoutMinWidth: =0
+                              LayoutOverflowX: =LayoutOverflow.Hide
+                              LayoutOverflowY: =LayoutOverflow.Hide
+                              LayoutWrap: =true
+                              Width: =Parent.Width
+                            Children:
+                              - FldPangkat:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =1
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =4
+                                    LayoutMinWidth: =If(Parent.Width < 564, Parent.Width, 120)
+                                    Width: =If(Parent.Width < 564, Parent.Width, (Parent.Width - 24) / 2)
+                                  Children:
+                                    - LblPangkat:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(145, 145, 145, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Size: =11
+                                          Text: ="PANGKAT (PKT)"
+                                    - ValPangkat:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Size: =14
+                                          Text: ="Pkt. " & Text(LookUp(Pegawai, Title = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)), Pangkat), "0")
+                              - FldTglPengisian:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =1
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =4
+                                    LayoutMinWidth: =If(Parent.Width < 564, Parent.Width, 120)
+                                    Width: =If(Parent.Width < 564, Parent.Width, (Parent.Width - 24) / 2)
+                                  Children:
+                                    - LblTglPengisian:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(145, 145, 145, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Size: =11
+                                          Text: ="TANGGAL PENGISIAN"
+                                    - ValTglPengisian:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Size: =14
+                                          Text: =Text(LookUp(Pegawai, Title = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)), LastUpdated), "[$-id-ID]dd mmmm yyyy")
+
+                  # ════════════════════════════════
+                  # SECTION II — QUANTITATIVE
+                  # ════════════════════════════════
+                  - SectionII:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        BorderColor: =RGBA(225, 223, 221, 1)
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: =1
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =1300
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =14
+                        LayoutMinHeight: =1300
+                        LayoutMinWidth: =0
+                        LayoutOverflowX: =LayoutOverflow.Hide
+                        LayoutOverflowY: =LayoutOverflow.Hide
+                        PaddingBottom: =22
+                        PaddingLeft: =28
+                        PaddingRight: =28
+                        PaddingTop: =22
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Width: =Parent.Width
+                      Children:
+                        - SIIHeader:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =36
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =10
+                              LayoutMinHeight: =36
+                            Children:
+                              - TagII:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    Fill: =RGBA(31, 56, 100, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =22
+                                    RadiusBottomLeft: =4
+                                    RadiusBottomRight: =4
+                                    RadiusTopLeft: =4
+                                    RadiusTopRight: =4
+                                    Size: =11
+                                    Text: ="II"
+                                    Width: =32
+                              - TitleII:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(31, 56, 100, 1)
+                                    FillPortions: =1
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Size: =14
+                                    Text: ="Quantitative"
+                        - SIIDivider:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              Fill: =RGBA(243, 242, 241, 1)
+                              Height: =1
+
+                        # A & B
+                        - RowAB:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =70
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =24
+                              LayoutMinHeight: =70
+                            Children:
+                              - FldNilaiKinerja:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =1
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =4
+                                  Children:
+                                    - LblNilaiKinerja:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(145, 145, 145, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Size: =11
+                                          Text: ="A. NILAI KINERJA RATA² 5 TAHUN"
+                                    - ValNilaiKinerja:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Size: =14
+                                          Text: =Text(LookUp(Pegawai, Title = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)), NilaiKinerja), "0.0")
+                              - FldMasaDinas:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =1
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =4
+                                  Children:
+                                    - LblMasaDinas:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(145, 145, 145, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Size: =11
+                                          Text: ="B. MASA DINAS PANGKAT"
+                                    - ValMasaDinas:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Size: =14
+                                          Text: |-
+                                            =With(
+                                                {
+                                                    TanggalMulai:
+                                                        LookUp(
+                                                            Pegawai,
+                                                            Title = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
+                                                            TanggalAwalDinas
+                                                        )
+                                                },
+                                                DateDiff(TanggalMulai, Today(), TimeUnit.Years) & " Tahun " &
+                                                Mod(DateDiff(TanggalMulai, Today(), TimeUnit.Months), 12) & " Bulan"
+                                            )
+
+                        # ── C. Pendidikan ──
+                        - TitlePendidikan:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(0, 120, 212, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Size: =13
+                              Text: ="C. Pendidikan"
+                        - TblPendidikan:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =110
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =0
+                              LayoutMinHeight: =110
+                            Children:
+                              - PendidikanHead:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    Fill: =RGBA(243, 242, 241, 1)
+                                    FillPortions: =0
+                                    Height: =34
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMinHeight: =34
+                                  Children:
+                                    - PHNo:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.35
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="NO"
+                                    - PHJenjang:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.9
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="JENJANG"
+                                    - PHUniversitas:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =1.8
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="UNIVERSITAS / INSTITUSI"
+                                    - PHProgram:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =1.7
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="PROGRAM STUDI / BIDANG"
+                                    - PHTahun:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.8
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="TAHUN LULUS"
+                              - PendidikanRow1:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    BorderColor: =RGBA(225, 223, 221, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    FillPortions: =0
+                                    Height: =38
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMinHeight: =38
+                                  Children:
+                                    - PDNo1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Center
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.35
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =38
+                                          Size: =12
+                                          Text: ="1"
+                                    - PDJenjang1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =0.9
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =First(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).Jenjang
+                                    - PDUniversitas1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =1.8
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =First(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).Universitas
+                                    - PDProgram1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =1.7
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =First(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).ProgramStudi
+                                    - PDTahun1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =0.8
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Text(First(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).TahunLulus)
+                              - PendidikanRow2:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    BorderColor: =RGBA(225, 223, 221, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Fill: =RGBA(250, 249, 248, 1)
+                                    FillPortions: =0
+                                    Height: =38
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMinHeight: =38
+                                  Children:
+                                    - PDNo2:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Center
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.35
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =38
+                                          Size: =12
+                                          Text: ="2"
+                                    - PDJenjang2:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =0.9
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: |-
+                                            =If(
+                                                CountRows(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) >= 2,
+                                                Last(
+                                                    FirstN(
+                                                        Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))),
+                                                        2
+                                                    )
+                                                ).Jenjang,
+                                                "—"
+                                            )
+                                    - PDUniversitas2:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =1.8
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: |-
+                                            =If(
+                                                CountRows(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) >= 2,
+                                                Last(
+                                                    FirstN(
+                                                        Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))),
+                                                        2
+                                                    )
+                                                ).Universitas,
+                                                "—"
+                                            )
+                                    - PDProgram2:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =1.7
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: |-
+                                            =If(
+                                                CountRows(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) >= 2,
+                                                Last(
+                                                    FirstN(
+                                                        Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))),
+                                                        2
+                                                    )
+                                                ).ProgramStudi,
+                                                "—"
+                                            )
+                                    - PDTahun2:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =0.8
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: |-
+                                            =If(
+                                                CountRows(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) >= 2,
+                                                Text(
+                                                    Last(
+                                                        FirstN(
+                                                            Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))),
+                                                            2
+                                                        )
+                                                    ).TahunLulus
+                                                ),
+                                                "—"
+                                            )
+                        - PendidikanActions:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =32
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =10
+                              LayoutMinHeight: =32
+                            Children:
+                              - BtnTambahPendidikan:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Dashed
+                                    BorderThickness: =1
+                                    Color: =RGBA(0, 120, 212, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =32
+                                    OnSelect: |-
+                                      =Set(gblPendidikanEditMode, false);
+                                      Set(gblSelectedPendidikan, Defaults(Profil_Pendidikan));
+                                      Navigate(S2A_Profil_Pendidikan_Form, ScreenTransition.Fade)
+                                    PaddingLeft: =14
+                                    RadiusBottomLeft: =4
+                                    RadiusBottomRight: =4
+                                    RadiusTopLeft: =4
+                                    RadiusTopRight: =4
+                                    Size: =12
+                                    Text: ="+ Tambah Baris"
+                                    Width: =130
+                              - BtnEditPendidikan:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =32
+                                    OnSelect: |-
+                                      =Set(
+                                          gblSelectedPendidikan,
+                                          First(
+                                              Filter(
+                                                  Profil_Pendidikan,
+                                                  NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))
+                                              )
+                                          )
+                                      );
+                                      Set(gblPendidikanEditMode, true);
+                                      Navigate(S2A_Profil_Pendidikan_Form, ScreenTransition.Fade)
+                                    RadiusBottomLeft: =4
+                                    RadiusBottomRight: =4
+                                    RadiusTopLeft: =4
+                                    RadiusTopRight: =4
+                                    Size: =12
+                                    Text: ="Edit Baris 1"
+                                    Visible: |-
+                                      =!IsBlank(
+                                          First(
+                                              Filter(
+                                                  Profil_Pendidikan,
+                                                  NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))
+                                              )
+                                          )
+                                      )
+                                    Width: =120
+                              - BtnEditPendidikan2:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =32
+                                    OnSelect: |-
+                                      =Set(
+                                          gblSelectedPendidikan,
+                                          Last(
+                                              FirstN(
+                                                  Filter(
+                                                      Profil_Pendidikan,
+                                                      NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))
+                                                  ),
+                                                  2
+                                              )
+                                          )
+                                      );
+                                      Set(gblPendidikanEditMode, true);
+                                      Navigate(S2A_Profil_Pendidikan_Form, ScreenTransition.Fade)
+                                    RadiusBottomLeft: =4
+                                    RadiusBottomRight: =4
+                                    RadiusTopLeft: =4
+                                    RadiusTopRight: =4
+                                    Size: =12
+                                    Text: ="Edit Baris 2"
+                                    Visible: |-
+                                      =CountRows(
+                                          Filter(
+                                              Profil_Pendidikan,
+                                              NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))
+                                          )
+                                      ) >= 2
+                                    Width: =120
+
+                        # ── D.1 Sertifikasi Tier 1 ──
+                        - TitleTier1:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(0, 120, 212, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Size: =13
+                              Text: ="D.1. Sertifikasi Tier 1"
+                              Width: =Parent.Width
+                        - TblTier1:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =72
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =0
+                              LayoutMinHeight: =72
+                              LayoutMinWidth: =0
+                              LayoutOverflowX: =LayoutOverflow.Hide
+                              Width: =Parent.Width
+                            Children:
+                              - T1Head:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    Fill: =RGBA(243, 242, 241, 1)
+                                    FillPortions: =0
+                                    Height: =34
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMinHeight: =34
+                                    LayoutMinWidth: =0
+                                    LayoutOverflowX: =LayoutOverflow.Hide
+                                    Width: =Parent.Width
+                                  Children:
+                                    - T1HNo:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.35
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="NO"
+                                    - T1HNama:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =1.5
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="NAMA SERTIFIKAT"
+                                    - T1HPenerbit:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =1.1
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="PENERBIT / INSTITUSI"
+                                    - T1HTerbit:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.9
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="TGL TERBIT"
+                                    - T1HAkhir:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.9
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="TGL BERAKHIR"
+                                    - T1HBukti:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =1.1
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="NO. SERTIFIKAT"
+                              - T1Row1:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    BorderColor: =RGBA(225, 223, 221, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    FillPortions: =0
+                                    Height: =38
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMinHeight: =38
+                                    LayoutMinWidth: =0
+                                    LayoutOverflowX: =LayoutOverflow.Hide
+                                    Width: =Parent.Width
+                                  Children:
+                                    - T1No1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Center
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.35
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =38
+                                          Size: =12
+                                          Text: ="1"
+                                    - T1Nama1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =1.5
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =First(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).NamaSertifikat
+                                    - T1Penerbit1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =1.1
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =First(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).Penerbit
+                                    - T1Terbit1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =0.9
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Text(Date(1899, 12, 30) + Value(First(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).TanggalTerbit), "[$-id-ID]dd/mm/yyyy")
+                                    - T1Akhir1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =0.9
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Text(Date(1899, 12, 30) + Value(First(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).TanggalBerakhir), "[$-id-ID]dd/mm/yyyy")
+                                    - T1Bukti1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =1.1
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =First(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).NomorSertifikat
+                        - BtnTambahTier1:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              BorderColor: =RGBA(200, 198, 196, 1)
+                              BorderStyle: =BorderStyle.Dashed
+                              BorderThickness: =1
+                              Color: =RGBA(0, 120, 212, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =32
+                              OnSelect: |-
+                                =Set(gblSertifikasiTier1EditMode, false);
+                                Set(gblSelectedSertifikasiTier1, Defaults(Profil_SertifikasiTier1));
+                                Navigate(S2B_Profil_SertifikasiTier1_Form, ScreenTransition.Fade)
+                              PaddingLeft: =14
+                              RadiusBottomLeft: =4
+                              RadiusBottomRight: =4
+                              RadiusTopLeft: =4
+                              RadiusTopRight: =4
+                              Size: =12
+                              Text: ="+ Tambah Baris"
+                              Width: =130
+                        - BtnEditTier1:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Color: =RGBA(50, 49, 48, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =32
+                              OnSelect: |-
+                                =Set(
+                                    gblSelectedSertifikasiTier1,
+                                    First(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
+                                );
+                                Set(gblSertifikasiTier1EditMode, true);
+                                Navigate(S2B_Profil_SertifikasiTier1_Form, ScreenTransition.Fade)
+                              PaddingLeft: =14
+                              Size: =12
+                              Text: ="Edit Baris 1"
+                              Visible: =!IsBlank(First(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))))
+                              Width: =130
+
+                        # ── D.2 Sertifikasi Tier 2 ──
+                        - TitleTier2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(0, 120, 212, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Size: =13
+                              Text: ="D.2. Sertifikasi Tier 2"
+                              Width: =Parent.Width
+                        - TblTier2:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =72
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =0
+                              LayoutMinHeight: =72
+                              LayoutMinWidth: =0
+                              LayoutOverflowX: =LayoutOverflow.Hide
+                              Width: =Parent.Width
+                            Children:
+                              - T2Head:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    Fill: =RGBA(243, 242, 241, 1)
+                                    FillPortions: =0
+                                    Height: =34
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMinHeight: =34
+                                    LayoutMinWidth: =0
+                                    LayoutOverflowX: =LayoutOverflow.Hide
+                                    Width: =Parent.Width
+                                  Children:
+                                    - T2HNo:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.35
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="NO"
+                                    - T2HNama:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =1.5
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="NAMA SERTIFIKAT"
+                                    - T2HPenerbit:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =1.1
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="PENERBIT / INSTITUSI"
+                                    - T2HTerbit:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.9
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="TGL TERBIT"
+                                    - T2HAkhir:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.9
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="TGL BERAKHIR"
+                                    - T2HBukti:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =1.1
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="NO. SERTIFIKAT"
+                              - T2Row1:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    BorderColor: =RGBA(225, 223, 221, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Fill: =RGBA(250, 249, 248, 1)
+                                    FillPortions: =0
+                                    Height: =38
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMinHeight: =38
+                                    LayoutMinWidth: =0
+                                    LayoutOverflowX: =LayoutOverflow.Hide
+                                    Width: =Parent.Width
+                                  Children:
+                                    - T2No1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Center
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.35
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =38
+                                          Size: =12
+                                          Text: ="1"
+                                    - T2Nama1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(161, 159, 157, 1)
+                                          FillPortions: =1.5
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Coalesce(First(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).NamaSertifikat, "—")
+                                    - T2Penerbit1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(161, 159, 157, 1)
+                                          FillPortions: =1.1
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Coalesce(First(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).Penerbit, "—")
+                                    - T2Terbit1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(161, 159, 157, 1)
+                                          FillPortions: =0.9
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Coalesce(Text(Date(1899, 12, 30) + Value(First(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).TanggalTerbit), "[$-id-ID]dd/mm/yyyy"), "—")
+                                    - T2Akhir1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(161, 159, 157, 1)
+                                          FillPortions: =0.9
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Coalesce(Text(Date(1899, 12, 30) + Value(First(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).TanggalBerakhir), "[$-id-ID]dd/mm/yyyy"), "—")
+                                    - T2Nomor1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(161, 159, 157, 1)
+                                          FillPortions: =1.1
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Coalesce(First(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).NomorSertifikat, "—")
+                        - BtnTambahTier2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              BorderColor: =RGBA(200, 198, 196, 1)
+                              BorderStyle: =BorderStyle.Dashed
+                              BorderThickness: =1
+                              Color: =RGBA(0, 120, 212, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =32
+                              OnSelect: |-
+                                =Set(gblSertifikasiTier2EditMode, false);
+                                Set(gblSelectedSertifikasiTier2, Defaults(Profil_SertifikasiTier2));
+                                Navigate(S2C_Profil_SertifikasiTier2_Form, ScreenTransition.Fade)
+                              PaddingLeft: =14
+                              RadiusBottomLeft: =4
+                              RadiusBottomRight: =4
+                              RadiusTopLeft: =4
+                              RadiusTopRight: =4
+                              Size: =12
+                              Text: ="+ Tambah Baris"
+                              Width: =130
+                        - BtnEditTier2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Color: =RGBA(50, 49, 48, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =32
+                              OnSelect: |-
+                                =Set(
+                                    gblSelectedSertifikasiTier2,
+                                    First(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
+                                );
+                                Set(gblSertifikasiTier2EditMode, true);
+                                Navigate(S2C_Profil_SertifikasiTier2_Form, ScreenTransition.Fade)
+                              PaddingLeft: =14
+                              Size: =12
+                              Text: ="Edit Baris 1"
+                              Visible: =!IsBlank(First(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))))
+                              Width: =130
+
+                        # ── D.3 PMK ──
+                        - TitlePMK:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(0, 120, 212, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Size: =13
+                              Text: ="D.3. PMK (Program Meningkatkan Kompetensi) — External Learning"
+                              Width: =Parent.Width
+                        - TblPMK:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =72
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =0
+                              LayoutMinHeight: =72
+                              LayoutMinWidth: =0
+                              LayoutOverflowX: =LayoutOverflow.Hide
+                              Width: =Parent.Width
+                            Children:
+                              - PMKHead:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    Fill: =RGBA(243, 242, 241, 1)
+                                    FillPortions: =0
+                                    Height: =34
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMinHeight: =34
+                                    LayoutMinWidth: =0
+                                    LayoutOverflowX: =LayoutOverflow.Hide
+                                    Width: =Parent.Width
+                                  Children:
+                                    - PMKHNo:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.3
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="NO"
+                                    - PMKHNama:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =1.4
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="TRAINING NAME"
+                                    - PMKHPenyelenggara:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =1.0
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="PENYELENGGARA"
+                                    - PMKHStart:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.8
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="START DATE"
+                                    - PMKHEnd:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.8
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="COMPLETION DATE"
+                                    - PMKHJenis:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.7
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="JENIS PMK"
+                                    - PMKHTipe:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.5
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="TIPE"
+                                    - PMKHNegara:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.7
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="NEGARA"
+                              - PMKRow1:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    BorderColor: =RGBA(225, 223, 221, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    FillPortions: =0
+                                    Height: =38
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMinHeight: =38
+                                    LayoutMinWidth: =0
+                                    LayoutOverflowX: =LayoutOverflow.Hide
+                                    Width: =Parent.Width
+                                  Children:
+                                    - PMKNo1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Center
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.3
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =38
+                                          Size: =12
+                                          Text: ="1"
+                                    - PMKNama1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =1.4
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =First(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).TrainingName
+                                    - PMKPenyelenggara1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =1.0
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =First(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).Penyelenggara
+                                    - PMKStart1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =0.8
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Text(Date(1899, 12, 30) + Value(First(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).StartDate), "[$-id-ID]dd/mm/yyyy")
+                                    - PMKEnd1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =0.8
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Text(Date(1899, 12, 30) + Value(First(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).CompletionDate), "[$-id-ID]dd/mm/yyyy")
+                                    - PMKJenis1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =0.7
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =First(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).JenisPMK
+                                    - PMKTipe1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =0.5
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =First(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).Tipe
+                                    - PMKNegara1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =0.7
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =First(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).Negara
+                        - BtnTambahPMK:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              BorderColor: =RGBA(200, 198, 196, 1)
+                              BorderStyle: =BorderStyle.Dashed
+                              BorderThickness: =1
+                              Color: =RGBA(0, 120, 212, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =32
+                              OnSelect: |-
+                                =Set(gblPMKEditMode, false);
+                                Set(gblSelectedPMK, Defaults(Profil_PMK));
+                                Navigate(S2D_Profil_PMK_Form, ScreenTransition.Fade)
+                              PaddingLeft: =14
+                              RadiusBottomLeft: =4
+                              RadiusBottomRight: =4
+                              RadiusTopLeft: =4
+                              RadiusTopRight: =4
+                              Size: =12
+                              Text: ="+ Tambah Baris"
+                              Width: =130
+                        - BtnEditPMK:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Color: =RGBA(50, 49, 48, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =32
+                              OnSelect: |-
+                                =Set(
+                                    gblSelectedPMK,
+                                    First(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
+                                );
+                                Set(gblPMKEditMode, true);
+                                Navigate(S2D_Profil_PMK_Form, ScreenTransition.Fade)
+                              PaddingLeft: =14
+                              Size: =12
+                              Text: ="Edit Baris 1"
+                              Visible: =!IsBlank(First(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))))
+                              Width: =130
+
+                        # ── D.4 Kum Mengajar ──
+                        - TitleKum:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(0, 120, 212, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Size: =13
+                              Text: ="D.4. Kum Mengajar  (Maks. 10)"
+                              Width: =Parent.Width
+                        - TblKum:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =72
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =0
+                              LayoutMinHeight: =72
+                              LayoutMinWidth: =0
+                              LayoutOverflowX: =LayoutOverflow.Hide
+                              Width: =Parent.Width
+                            Children:
+                              - KumHead:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    Fill: =RGBA(243, 242, 241, 1)
+                                    FillPortions: =0
+                                    Height: =34
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMinHeight: =34
+                                    LayoutMinWidth: =0
+                                    LayoutOverflowX: =LayoutOverflow.Hide
+                                    Width: =Parent.Width
+                                  Children:
+                                    - KumHNo:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.4
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="NO"
+                                    - KumHNama:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =2.6
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="NAMA IHT"
+                                    - KumHTanggal:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =1.0
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="TANGGAL PELAKSANAAN"
+                              - KumRow1:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    BorderColor: =RGBA(225, 223, 221, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Fill: =RGBA(250, 249, 248, 1)
+                                    FillPortions: =0
+                                    Height: =38
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMinHeight: =38
+                                    LayoutMinWidth: =0
+                                    LayoutOverflowX: =LayoutOverflow.Hide
+                                    Width: =Parent.Width
+                                  Children:
+                                    - KumNo1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Center
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.4
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =38
+                                          Size: =12
+                                          Text: ="1"
+                                    - KumNama1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(161, 159, 157, 1)
+                                          FillPortions: =2.6
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Coalesce(First(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).NamaIHT, "—")
+                                    - KumTanggal1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(161, 159, 157, 1)
+                                          FillPortions: =1.0
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Coalesce(Text(Date(1899, 12, 30) + Value(First(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).TanggalPelaksanaan), "[$-id-ID]dd/mm/yyyy"), "—")
+                        - BtnTambahKum:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              BorderColor: =RGBA(200, 198, 196, 1)
+                              BorderStyle: =BorderStyle.Dashed
+                              BorderThickness: =1
+                              Color: =RGBA(0, 120, 212, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =32
+                              OnSelect: |-
+                                =Set(gblKumMengajarEditMode, false);
+                                Set(gblSelectedKumMengajar, Defaults(Profil_KumMengajar));
+                                Navigate(S2E_Profil_KumMengajar_Form, ScreenTransition.Fade)
+                              PaddingLeft: =14
+                              RadiusBottomLeft: =4
+                              RadiusBottomRight: =4
+                              RadiusTopLeft: =4
+                              RadiusTopRight: =4
+                              Size: =12
+                              Text: ="+ Tambah Baris"
+                              Width: =130
+                        - BtnEditKum:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Color: =RGBA(50, 49, 48, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =32
+                              OnSelect: |-
+                                =Set(
+                                    gblSelectedKumMengajar,
+                                    First(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
+                                );
+                                Set(gblKumMengajarEditMode, true);
+                                Navigate(S2E_Profil_KumMengajar_Form, ScreenTransition.Fade)
+                              PaddingLeft: =14
+                              Size: =12
+                              Text: ="Edit Baris 1"
+                              Visible: =!IsBlank(First(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))))
+                              Width: =130
+
+                  # ════════════════════════════════
+                  # SECTION III — QUALITATIVE
+                  # ════════════════════════════════
+                  - SectionIII:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        BorderColor: =RGBA(225, 223, 221, 1)
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: =1
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =990
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =14
+                        LayoutMinHeight: =990
+                        LayoutMinWidth: =0
+                        LayoutOverflowX: =LayoutOverflow.Hide
+                        LayoutOverflowY: =LayoutOverflow.Hide
+                        PaddingBottom: =22
+                        PaddingLeft: =28
+                        PaddingRight: =28
+                        PaddingTop: =22
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Width: =Parent.Width
+                      Children:
+                        - SIIIHeader:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =36
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =10
+                              LayoutMinHeight: =36
+                            Children:
+                              - TagIII:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    Fill: =RGBA(31, 56, 100, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =22
+                                    RadiusBottomLeft: =4
+                                    RadiusBottomRight: =4
+                                    RadiusTopLeft: =4
+                                    RadiusTopRight: =4
+                                    Size: =11
+                                    Text: ="III"
+                                    Width: =36
+                              - TitleIII:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(31, 56, 100, 1)
+                                    FillPortions: =1
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Size: =14
+                                    Text: ="Qualitative — Exposure"
+                        - SIIIDivider:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              Fill: =RGBA(243, 242, 241, 1)
+                              Height: =1
+
+                        # ── E.1 Penugasan ──
+                        - TitlePenugasan:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(0, 120, 212, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Size: =13
+                              Text: ="E.1. Penugasan DN/LN, Penugasan Strategis atau lainnya"
+                              Width: =Parent.Width
+                        - TblPenugasan:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =72
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =0
+                              LayoutMinHeight: =72
+                              LayoutMinWidth: =0
+                              LayoutOverflowX: =LayoutOverflow.Hide
+                              Width: =Parent.Width
+                            Children:
+                              - PenugasanHead:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    Fill: =RGBA(243, 242, 241, 1)
+                                    FillPortions: =0
+                                    Height: =34
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMinHeight: =34
+                                    LayoutMinWidth: =0
+                                    LayoutOverflowX: =LayoutOverflow.Hide
+                                    Width: =Parent.Width
+                                  Children:
+                                    - PenHNo:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.3
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="NO"
+                                    - PenHTglMulai:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.8
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="TGL MULAI"
+                                    - PenHTglAkhir:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.8
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="TGL AKHIR"
+                                    - PenHPIC:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =1.0
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="PIC"
+                                    - PenHNama:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =1.5
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="NAMA PENUGASAN (SESUAI SK)"
+                                    - PenHDeskripsi:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =1.6
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="DESKRIPSI"
+                              - PenugasanRow1:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    BorderColor: =RGBA(225, 223, 221, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Fill: =RGBA(250, 249, 248, 1)
+                                    FillPortions: =0
+                                    Height: =38
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMinHeight: =38
+                                    LayoutMinWidth: =0
+                                    LayoutOverflowX: =LayoutOverflow.Hide
+                                    Width: =Parent.Width
+                                  Children:
+                                    - PenNo1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Center
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.3
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =38
+                                          Size: =12
+                                          Text: ="1"
+                                    - PenTglMulai1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(161, 159, 157, 1)
+                                          FillPortions: =0.8
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Coalesce(Text(Date(1899, 12, 30) + Value(First(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).TglMulai), "[$-id-ID]dd/mm/yyyy"), "—")
+                                    - PenTglAkhir1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(161, 159, 157, 1)
+                                          FillPortions: =0.8
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Coalesce(Text(Date(1899, 12, 30) + Value(First(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).TglAkhir), "[$-id-ID]dd/mm/yyyy"), "—")
+                                    - PenPIC1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(161, 159, 157, 1)
+                                          FillPortions: =1.0
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Coalesce(First(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).PIC, "—")
+                                    - PenNama1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(161, 159, 157, 1)
+                                          FillPortions: =1.5
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Coalesce(First(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).NamaPenugasan, "—")
+                                    - PenDeskripsi1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(161, 159, 157, 1)
+                                          FillPortions: =1.6
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Coalesce(First(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).Deskripsi, "—")
+                        - BtnTambahPenugasan:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              BorderColor: =RGBA(200, 198, 196, 1)
+                              BorderStyle: =BorderStyle.Dashed
+                              BorderThickness: =1
+                              Color: =RGBA(0, 120, 212, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =32
+                              OnSelect: |-
+                                =Set(gblPenugasanEditMode, false);
+                                Set(gblSelectedPenugasan, Defaults(Profil_Penugasan));
+                                Navigate(S2F_Profil_Penugasan_Form, ScreenTransition.Fade)
+                              PaddingLeft: =14
+                              RadiusBottomLeft: =4
+                              RadiusBottomRight: =4
+                              RadiusTopLeft: =4
+                              RadiusTopRight: =4
+                              Size: =12
+                              Text: ="+ Tambah Baris"
+                              Width: =130
+                        - BtnEditPenugasan:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Color: =RGBA(50, 49, 48, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =32
+                              OnSelect: |-
+                                =Set(
+                                    gblSelectedPenugasan,
+                                    First(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
+                                );
+                                Set(gblPenugasanEditMode, true);
+                                Navigate(S2F_Profil_Penugasan_Form, ScreenTransition.Fade)
+                              PaddingLeft: =14
+                              Size: =12
+                              Text: ="Edit Baris 1"
+                              Visible: =!IsBlank(First(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))))
+                              Width: =130
+
+                        # ── E.2 Prestasi ──
+                        - TitlePrestasi:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(0, 120, 212, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Size: =13
+                              Text: ="E.2. Prestasi BI Wide atau lainnya"
+                              Width: =Parent.Width
+                        - TblPrestasi:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =72
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =0
+                              LayoutMinHeight: =72
+                              LayoutMinWidth: =0
+                              LayoutOverflowX: =LayoutOverflow.Hide
+                              Width: =Parent.Width
+                            Children:
+                              - PrestasiHead:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    Fill: =RGBA(243, 242, 241, 1)
+                                    FillPortions: =0
+                                    Height: =34
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMinHeight: =34
+                                    LayoutMinWidth: =0
+                                    LayoutOverflowX: =LayoutOverflow.Hide
+                                    Width: =Parent.Width
+                                  Children:
+                                    - PrHNo:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.3
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="NO"
+                                    - PrHJenis:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.9
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="JENIS"
+                                    - PrHLevel:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.7
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="LEVEL"
+                                    - PrHNama:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =1.4
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="NAMA PRESTASI"
+                                    - PrHDetail:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =1.7
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="DETAIL PRESTASI"
+                                    - PrHTanggal:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.8
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="TANGGAL"
+                              - PrestasiRow1:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    BorderColor: =RGBA(225, 223, 221, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    FillPortions: =0
+                                    Height: =38
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMinHeight: =38
+                                    LayoutMinWidth: =0
+                                    LayoutOverflowX: =LayoutOverflow.Hide
+                                    Width: =Parent.Width
+                                  Children:
+                                    - PrNo1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Center
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.3
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =38
+                                          Size: =12
+                                          Text: ="1"
+                                    - PrJenis1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =0.9
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =First(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).Jenis
+                                    - PrLevel1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =0.7
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =First(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).Level
+                                    - PrNama1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =1.4
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =First(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).NamaPrestasi
+                                    - PrDetail1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =1.7
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =First(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).DetailPrestasi
+                                    - PrTanggal1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =0.8
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Text(Date(1899, 12, 30) + Value(First(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).Tanggal), "[$-id-ID]dd/mm/yyyy")
+                        - BtnTambahPrestasi:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              BorderColor: =RGBA(200, 198, 196, 1)
+                              BorderStyle: =BorderStyle.Dashed
+                              BorderThickness: =1
+                              Color: =RGBA(0, 120, 212, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =32
+                              OnSelect: |-
+                                =Set(gblPrestasiEditMode, false);
+                                Set(gblSelectedPrestasi, Defaults(Profil_Prestasi));
+                                Navigate(S2G_Profil_Prestasi_Form, ScreenTransition.Fade)
+                              PaddingLeft: =14
+                              RadiusBottomLeft: =4
+                              RadiusBottomRight: =4
+                              RadiusTopLeft: =4
+                              RadiusTopRight: =4
+                              Size: =12
+                              Text: ="+ Tambah Baris"
+                              Width: =130
+                        - BtnEditPrestasi:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Color: =RGBA(50, 49, 48, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =32
+                              OnSelect: |-
+                                =Set(
+                                    gblSelectedPrestasi,
+                                    First(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
+                                );
+                                Set(gblPrestasiEditMode, true);
+                                Navigate(S2G_Profil_Prestasi_Form, ScreenTransition.Fade)
+                              PaddingLeft: =14
+                              Size: =12
+                              Text: ="Edit Baris 1"
+                              Visible: =!IsBlank(First(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))))
+                              Width: =130
+
+                        # ── E.3 Kepanitiaan ──
+                        - TitleKepanitiaan:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(0, 120, 212, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Size: =13
+                              Text: ="E.3. Kepanitiaan / Proyek / Tim Kerja / Adhoc Lainnya"
+                              Width: =Parent.Width
+                        - TblKepanitiaan:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =72
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =0
+                              LayoutMinHeight: =72
+                              LayoutMinWidth: =0
+                              LayoutOverflowX: =LayoutOverflow.Hide
+                              Width: =Parent.Width
+                            Children:
+                              - KepHead:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    Fill: =RGBA(243, 242, 241, 1)
+                                    FillPortions: =0
+                                    Height: =34
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMinHeight: =34
+                                    LayoutMinWidth: =0
+                                    LayoutOverflowX: =LayoutOverflow.Hide
+                                    Width: =Parent.Width
+                                  Children:
+                                    - KepHNo:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.3
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="NO"
+                                    - KepHNama:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =1.2
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="NAMA KEPANITIAAN"
+                                    - KepHPosisi:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.8
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="POSISI / BIDANG"
+                                    - KepHInstitusi:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.8
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="INSTITUSI"
+                                    - KepHUraian:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =1.0
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="URAIAN TUGAS"
+                                    - KepHProduk:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.7
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="PRODUK"
+                                    - KepHStart:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.7
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="START"
+                                    - KepHEnd:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.7
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="END"
+                              - KepRow1:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    BorderColor: =RGBA(225, 223, 221, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    FillPortions: =0
+                                    Height: =38
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMinHeight: =38
+                                    LayoutMinWidth: =0
+                                    LayoutOverflowX: =LayoutOverflow.Hide
+                                    Width: =Parent.Width
+                                  Children:
+                                    - KepNo1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Center
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.3
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =38
+                                          Size: =12
+                                          Text: ="1"
+                                    - KepNama1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =1.2
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =First(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).NamaKepanitiaan
+                                    - KepPosisi1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =0.8
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =First(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).Posisi
+                                    - KepInstitusi1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =0.8
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =First(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).Institusi
+                                    - KepUraian1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =1.0
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =First(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).UraianTugas
+                                    - KepProduk1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =0.7
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =First(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).Produk
+                                    - KepStart1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =0.7
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Text(Date(1899, 12, 30) + Value(First(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).StartDate), "[$-id-ID]dd/mm/yyyy")
+                                    - KepEnd1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          FillPortions: =0.7
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Text(Date(1899, 12, 30) + Value(First(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).EndDate), "[$-id-ID]dd/mm/yyyy")
+                        - BtnTambahKepanitiaan:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              BorderColor: =RGBA(200, 198, 196, 1)
+                              BorderStyle: =BorderStyle.Dashed
+                              BorderThickness: =1
+                              Color: =RGBA(0, 120, 212, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =32
+                              OnSelect: |-
+                                =Set(gblKepanitiaanEditMode, false);
+                                Set(gblSelectedKepanitiaan, Defaults(Profil_Kepanitiaan));
+                                Navigate(S2H_Profil_Kepanitiaan_Form, ScreenTransition.Fade)
+                              PaddingLeft: =14
+                              RadiusBottomLeft: =4
+                              RadiusBottomRight: =4
+                              RadiusTopLeft: =4
+                              RadiusTopRight: =4
+                              Size: =12
+                              Text: ="+ Tambah Baris"
+                              Width: =130
+                        - BtnEditKepanitiaan:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Color: =RGBA(50, 49, 48, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =32
+                              OnSelect: |-
+                                =Set(
+                                    gblSelectedKepanitiaan,
+                                    First(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
+                                );
+                                Set(gblKepanitiaanEditMode, true);
+                                Navigate(S2H_Profil_Kepanitiaan_Form, ScreenTransition.Fade)
+                              PaddingLeft: =14
+                              Size: =12
+                              Text: ="Edit Baris 1"
+                              Visible: =!IsBlank(First(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))))
+                              Width: =130
+
+                        # ── E.4 Plt ──
+                        - TitlePlt:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(0, 120, 212, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Size: =13
+                              Text: ="E.4. Plt / Penunjukan / Rangkap Jabatan / Penugasan Tetap"
+                              Width: =Parent.Width
+                        - TblPlt:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =72
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =0
+                              LayoutMinHeight: =72
+                              LayoutMinWidth: =0
+                              LayoutOverflowX: =LayoutOverflow.Hide
+                              Width: =Parent.Width
+                            Children:
+                              - PltHead:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    Fill: =RGBA(243, 242, 241, 1)
+                                    FillPortions: =0
+                                    Height: =34
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMinHeight: =34
+                                    LayoutMinWidth: =0
+                                    LayoutOverflowX: =LayoutOverflow.Hide
+                                    Width: =Parent.Width
+                                  Children:
+                                    - PltHNo:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.3
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="NO"
+                                    - PltHJabatan:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =1.1
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="JABATAN PLT / RANGKAP"
+                                    - PltHUnit:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.9
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="UNIT KERJA"
+                                    - PltHMulai:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.8
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="PERIODE MULAI"
+                                    - PltHSelesai:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.8
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="PERIODE SELESAI"
+                                    - PltHSK:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.8
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="NO. SK"
+                                    - PltHSkor:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.4
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="SKOR"
+                                    - PltHCatatan:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =1.0
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =34
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="CATATAN"
+                              - PltRow1:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    BorderColor: =RGBA(225, 223, 221, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Fill: =RGBA(250, 249, 248, 1)
+                                    FillPortions: =0
+                                    Height: =38
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutMinHeight: =38
+                                    LayoutMinWidth: =0
+                                    LayoutOverflowX: =LayoutOverflow.Hide
+                                    Width: =Parent.Width
+                                  Children:
+                                    - PltNo1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Center
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.3
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =38
+                                          Size: =12
+                                          Text: ="1"
+                                    - PltJabatan1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(161, 159, 157, 1)
+                                          FillPortions: =1.1
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Coalesce(First(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).JabatanPlt, "—")
+                                    - PltUnit1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(161, 159, 157, 1)
+                                          FillPortions: =0.9
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Coalesce(First(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).UnitKerja, "—")
+                                    - PltMulai1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(161, 159, 157, 1)
+                                          FillPortions: =0.8
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Coalesce(Text(Date(1899, 12, 30) + Value(First(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).PeriodeMulai), "[$-id-ID]dd/mm/yyyy"), "—")
+                                    - PltSelesai1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(161, 159, 157, 1)
+                                          FillPortions: =0.8
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Coalesce(Text(Date(1899, 12, 30) + Value(First(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).PeriodeSelesai), "[$-id-ID]dd/mm/yyyy"), "—")
+                                    - PltSK1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(161, 159, 157, 1)
+                                          FillPortions: =0.8
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Coalesce(First(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).NoSK, "—")
+                                    - PltSkor1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(161, 159, 157, 1)
+                                          FillPortions: =0.4
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Coalesce(Text(First(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).Skor), "—")
+                                    - PltCatatan1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(161, 159, 157, 1)
+                                          FillPortions: =1.0
+                                          Font: =Font.'Open Sans'
+                                          Height: =38
+                                          PaddingLeft: =10
+                                          Size: =12
+                                          Text: =Coalesce(First(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).Catatan, "—")
+                        - BtnTambahPlt:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              BorderColor: =RGBA(200, 198, 196, 1)
+                              BorderStyle: =BorderStyle.Dashed
+                              BorderThickness: =1
+                              Color: =RGBA(0, 120, 212, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =32
+                              OnSelect: |-
+                                =Set(gblPltEditMode, false);
+                                Set(gblSelectedPlt, Defaults(Profil_Plt));
+                                Navigate(S2I_Profil_Plt_Form, ScreenTransition.Fade)
+                              PaddingLeft: =14
+                              RadiusBottomLeft: =4
+                              RadiusBottomRight: =4
+                              RadiusTopLeft: =4
+                              RadiusTopRight: =4
+                              Size: =12
+                              Text: ="+ Tambah Baris"
+                              Width: =130
+                        - BtnEditPlt:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Color: =RGBA(50, 49, 48, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =32
+                              OnSelect: |-
+                                =Set(
+                                    gblSelectedPlt,
+                                    First(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
+                                );
+                                Set(gblPltEditMode, true);
+                                Navigate(S2I_Profil_Plt_Form, ScreenTransition.Fade)
+                              PaddingLeft: =14
+                              Size: =12
+                              Text: ="Edit Baris 1"
+                              Visible: =!IsBlank(First(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))))
+                              Width: =130

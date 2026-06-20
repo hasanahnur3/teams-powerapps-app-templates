@@ -1,0 +1,505 @@
+Screens:
+  S5B_IDP_Edit:
+    Properties:
+      Fill: =RGBA(245, 245, 245, 1)
+      LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+    Children:
+      - IDPEditContainer:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(245, 245, 245, 1)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =0
+            Width: =Parent.Width
+          Children:
+            - IDPEditTopBar:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(18, 38, 82, 1)
+                  FillPortions: =0
+                  Height: =64
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutMinHeight: =64
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  Width: =Parent.Width
+                Children:
+                  - BtnBackIDPEdit:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =64
+                        OnSelect: |-
+                          =Set(gblIDPEditMode, false);
+                          Set(gblSelectedIDP, Defaults(IDP));
+                          Back()
+                        Size: =24
+                        Text: ="‹"
+                        Width: =44
+                  - LblAppNameIDPEdit:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        FillPortions: =1
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =64
+                        Size: =16
+                        Text: ="MyCareerApp"
+                  - IDPEditTopBarSpacer:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =RGBA(0, 0, 0, 0)
+                        Height: =64
+                        Width: =44
+            - IDPEditTopBarShadow:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderThickness: =0
+                  Fill: =RGBA(0, 0, 0, 0.08)
+                  Height: =5
+                  Width: =Parent.Width
+            - IDPEditMain:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutMinHeight: =16
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                  PaddingBottom: =16
+                  PaddingLeft: =16
+                  PaddingRight: =16
+                  PaddingTop: =16
+                  Width: =Parent.Width
+                Children:
+                  - IDPEditCard:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(225, 223, 221, 1)
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.Light
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =860
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =18
+                        LayoutMinHeight: =860
+                        PaddingBottom: =28
+                        PaddingLeft: =28
+                        PaddingRight: =28
+                        PaddingTop: =24
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Width: =Parent.Width
+                      Children:
+                        - IDPEditTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Color: =RGBA(31, 56, 100, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =34
+                              Size: =20
+                              Text: =If(Coalesce(gblIDPEditMode, false), "Edit Individual Development Plan", "Tambah Individual Development Plan")
+                              Width: =Parent.Width
+                        - IDPEditSubtitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(96, 94, 92, 1)
+                              Font: =Font.'Open Sans'
+                              Size: =12
+                              Text: |-
+                                ="Pegawai: " &
+                                Coalesce(
+                                    LookUp(
+                                        Pegawai,
+                                        Title = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
+                                        Nama
+                                    ),
+                                    Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))
+                                )
+                              Width: =Parent.Width
+                        - IDPEditDivider:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              Fill: =RGBA(225, 223, 221, 1)
+                              Height: =1
+                              Width: =Parent.Width
+                        - FieldTahunIDP:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblTahunIDP:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Tahun *"
+                                    Width: =Parent.Width
+                              - NumTahunIDP:
+                                  Control: NumberInput@2.9.12
+                                  Properties:
+                                    AccessibleLabel: ="Tahun"
+                                    Max: =Year(Today()) + 5
+                                    Min: =2000
+                                    Value: =If(Coalesce(gblIDPEditMode, false), Value(gblSelectedIDP.Tahun), Year(Today()))
+                                    Width: =Parent.Width
+                        - FieldCoachingIDP:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblCoachingIDP:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Coaching ID"
+                                    Width: =Parent.Width
+                              - NumCoachingIDP:
+                                  Control: NumberInput@2.9.12
+                                  Properties:
+                                    AccessibleLabel: ="Coaching ID"
+                                    Min: =0
+                                    Value: =If(Coalesce(gblIDPEditMode, false), Value(Coalesce(gblSelectedIDP.CoachingID, 0)), 0)
+                                    Width: =Parent.Width
+                        - FieldKategoriIDP:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblKategoriIDP:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Kategori *"
+                                    Width: =Parent.Width
+                              - CmbKategoriIDP:
+                                  Control: ComboBox@0.0.51
+                                  Properties:
+                                    AccessibleLabel: ="Kategori IDP"
+                                    DefaultSelectedItems: |-
+                                      =If(
+                                          Coalesce(gblIDPEditMode, false),
+                                          Filter(
+                                              Table(
+                                                  {Value: "Pendidikan (PTB)"},
+                                                  {Value: "Sertifikasi"},
+                                                  {Value: "Exposure"}
+                                              ),
+                                              Value = gblSelectedIDP.Kategori
+                                          ),
+                                          Blank()
+                                      )
+                                    Items: |-
+                                      =Table(
+                                          {Value: "Pendidikan (PTB)"},
+                                          {Value: "Sertifikasi"},
+                                          {Value: "Exposure"}
+                                      )
+                                    SelectMultiple: =false
+                                    Width: =Parent.Width
+                        - FieldTipeIDP:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblTipeIDP:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Tipe *"
+                                    Width: =Parent.Width
+                              - TxtTipeIDP:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Tipe IDP"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Value: =If(Coalesce(gblIDPEditMode, false), Coalesce(gblSelectedIDP.Tipe, ""), "")
+                                    Width: =Parent.Width
+                        - FieldDetailIDP:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =0
+                              Height: =118
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =118
+                              Width: =Parent.Width
+                            Children:
+                              - LblDetailIDP:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Detail Rencana *"
+                                    Width: =Parent.Width
+                              - TxtDetailIDP:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Detail rencana pengembangan"
+                                    Height: =76
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeMultiline"
+                                    Value: =If(Coalesce(gblIDPEditMode, false), Coalesce(gblSelectedIDP.Detail, ""), "")
+                                    Width: =Parent.Width
+                        - FieldTargetIDP:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblTargetIDP:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Target *"
+                                    Width: =Parent.Width
+                              - CmbTargetIDP:
+                                  Control: ComboBox@0.0.51
+                                  Properties:
+                                    AccessibleLabel: ="Target triwulan"
+                                    DefaultSelectedItems: |-
+                                      =If(
+                                          Coalesce(gblIDPEditMode, false),
+                                          Filter(
+                                              Table(
+                                                  {Value: "TW1"},
+                                                  {Value: "TW2"},
+                                                  {Value: "TW3"},
+                                                  {Value: "TW4"}
+                                              ),
+                                              Value = gblSelectedIDP.Target
+                                          ),
+                                          Blank()
+                                      )
+                                    Items: |-
+                                      =Table(
+                                          {Value: "TW1"},
+                                          {Value: "TW2"},
+                                          {Value: "TW3"},
+                                          {Value: "TW4"}
+                                      )
+                                    SelectMultiple: =false
+                                    Width: =Parent.Width
+                        - FieldStatusIDP:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblStatusIDP:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Status *"
+                                    Width: =Parent.Width
+                              - CmbStatusIDP:
+                                  Control: ComboBox@0.0.51
+                                  Properties:
+                                    AccessibleLabel: ="Status IDP"
+                                    DefaultSelectedItems: |-
+                                      =If(
+                                          Coalesce(gblIDPEditMode, false),
+                                          Filter(
+                                              Table(
+                                                  {Value: "Rencana"},
+                                                  {Value: "Proses"},
+                                                  {Value: "Selesai"},
+                                                  {Value: "Dibatalkan"}
+                                              ),
+                                              Value = gblSelectedIDP.Status
+                                          ),
+                                          Table({Value: "Rencana"})
+                                      )
+                                    Items: |-
+                                      =Table(
+                                          {Value: "Rencana"},
+                                          {Value: "Proses"},
+                                          {Value: "Selesai"},
+                                          {Value: "Dibatalkan"}
+                                      )
+                                    SelectMultiple: =false
+                                    Width: =Parent.Width
+                        - IDPEditActions:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              FillPortions: =0
+                              Height: =48
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =12
+                              LayoutJustifyContent: =LayoutJustifyContent.End
+                              LayoutMinHeight: =48
+                              Width: =Parent.Width
+                            Children:
+                              - BtnBatalIDP:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: =Back()
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Text: ="Batal"
+                                    Width: =110
+                              - BtnSimpanIDP:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisplayMode: =If(Coalesce(gblIDPSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Fill: =RGBA(18, 38, 82, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =If(
+                                          Or(
+                                              IsBlank(NumTahunIDP.Value),
+                                              IsBlank(CmbKategoriIDP.Selected.Value),
+                                              IsBlank(Trim(TxtTipeIDP.Value)),
+                                              IsBlank(Trim(TxtDetailIDP.Value)),
+                                              IsBlank(CmbTargetIDP.Selected.Value),
+                                              IsBlank(CmbStatusIDP.Selected.Value)
+                                          ),
+                                          Notify(
+                                              "Lengkapi Tahun, Kategori, Tipe, Detail, Target, dan Status.",
+                                              NotificationType.Warning
+                                          ),
+                                          !Coalesce(gblIDPSubmitting, false),
+                                          Set(gblIDPSubmitting, true);
+                                          IfError(
+                                              If(
+                                                  Coalesce(gblIDPEditMode, false),
+                                                  Patch(
+                                                      IDP,
+                                                      gblSelectedIDP,
+                                                      {
+                                                          NIP: gblSelectedIDP.NIP,
+                                                          Tahun: Value(NumTahunIDP.Value),
+                                                          CoachingID: If(Value(NumCoachingIDP.Value) = 0, Blank(), Value(NumCoachingIDP.Value)),
+                                                          Kategori: CmbKategoriIDP.Selected.Value,
+                                                          Tipe: Trim(TxtTipeIDP.Value),
+                                                          Detail: Trim(TxtDetailIDP.Value),
+                                                          Target: CmbTargetIDP.Selected.Value,
+                                                          Status: CmbStatusIDP.Selected.Value
+                                                      }
+                                                  ),
+                                                  With(
+                                                      {
+                                                          newIDP:
+                                                              Patch(
+                                                                  IDP,
+                                                                  Defaults(IDP),
+                                                                  {
+                                                                      Title: "TEMP_" & Text(GUID()),
+                                                                      NIP: Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
+                                                                      Tahun: Value(NumTahunIDP.Value),
+                                                                      CoachingID: If(Value(NumCoachingIDP.Value) = 0, Blank(), Value(NumCoachingIDP.Value)),
+                                                                      Kategori: CmbKategoriIDP.Selected.Value,
+                                                                      Tipe: Trim(TxtTipeIDP.Value),
+                                                                      Detail: Trim(TxtDetailIDP.Value),
+                                                                      Target: CmbTargetIDP.Selected.Value,
+                                                                      Status: CmbStatusIDP.Selected.Value
+                                                                  }
+                                                              )
+                                                      },
+                                                      Patch(
+                                                          IDP,
+                                                          newIDP,
+                                                          {Title: Text(newIDP.ID)}
+                                                      )
+                                                  )
+                                              );
+                                              Refresh(IDP);
+                                              Notify(
+                                                  If(Coalesce(gblIDPEditMode, false), "IDP berhasil diperbarui.", "IDP berhasil ditambahkan."),
+                                                  NotificationType.Success
+                                              );
+                                              Set(gblIDPSubmitting, false);
+                                              Set(gblIDPEditMode, false);
+                                              Set(gblSelectedIDP, Defaults(IDP));
+                                              Navigate(S5A_IDP_View, ScreenTransition.Fade),
+                                              Notify(
+                                                  "Gagal menyimpan IDP: " & FirstError.Message,
+                                                  NotificationType.Error
+                                              );
+                                              Set(gblIDPSubmitting, false)
+                                          )
+                                      )
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Text: =If(Coalesce(gblIDPSubmitting, false), "Menyimpan...", "Simpan")
+                                    Width: =130

@@ -1,0 +1,419 @@
+Screens:
+  S2G_Profil_Prestasi_Form:
+    Properties:
+      Fill: =RGBA(245, 245, 245, 1)
+      LoadingSpinnerColor: =RGBA(31, 56, 100, 1)
+    Children:
+      - ScreenContainerPrestasiForm:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(245, 245, 245, 1)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =0
+            Width: =Parent.Width
+          Children:
+            - HeaderPrestasiForm:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  Fill: =RGBA(18, 38, 82, 1)
+                  FillPortions: =0
+                  Height: =64
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutMinHeight: =64
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  Width: =Parent.Width
+                Children:
+                  - BtnBackPrestasiForm:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =64
+                        OnSelect: |-
+                          =Set(gblPrestasiEditMode, false);
+                          Set(gblSelectedPrestasi, Defaults(Profil_Prestasi));
+                          Back()
+                        Size: =24
+                        Text: ="‹"
+                        Width: =44
+                  - LblAppNamePrestasiForm:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        FillPortions: =1
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =64
+                        Size: =16
+                        Text: ="MyCareerApp"
+                  - HeaderSpacerPrestasiForm:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =RGBA(0, 0, 0, 0)
+                        Height: =64
+                        Width: =44
+            - TopBarShadowPrestasiForm:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderThickness: =0
+                  Fill: =RGBA(0, 0, 0, 0.08)
+                  Height: =5
+                  Width: =Parent.Width
+            - MainPrestasiForm:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutMinHeight: =16
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                  PaddingBottom: =16
+                  PaddingLeft: =16
+                  PaddingRight: =16
+                  PaddingTop: =16
+                  Width: =Parent.Width
+                Children:
+                  - CardPrestasiForm:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(225, 223, 221, 1)
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =812
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =18
+                        LayoutMinHeight: =812
+                        PaddingBottom: =28
+                        PaddingLeft: =28
+                        PaddingRight: =28
+                        PaddingTop: =24
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Width: =Parent.Width
+                      Children:
+                        - TitlePrestasiForm:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(31, 56, 100, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Size: =20
+                              Text: =If(Coalesce(gblPrestasiEditMode, false), "Edit Prestasi", "Tambah Prestasi")
+                              Width: =Parent.Width
+                        - SubtitlePrestasiForm:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(96, 94, 92, 1)
+                              Font: =Font.'Open Sans'
+                              Size: =12
+                              Text: |-
+                                ="Pegawai: " &
+                                Coalesce(
+                                    LookUp(
+                                        Pegawai,
+                                        Title = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
+                                        Nama
+                                    ),
+                                    Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))
+                                )
+                              Width: =Parent.Width
+                        - DividerPrestasiForm:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              Fill: =RGBA(225, 223, 221, 1)
+                              Height: =1
+                              Width: =Parent.Width
+                        - FieldJenisPrestasi:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblJenisPrestasi:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Jenis *"
+                                    Width: =Parent.Width
+                              - TxtJenisPrestasi:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Jenis"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Value: =If(Coalesce(gblPrestasiEditMode, false), Coalesce(gblSelectedPrestasi.Jenis, ""), "")
+                                    Width: =Parent.Width
+
+                        - FieldLevelPrestasi:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblLevelPrestasi:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Level *"
+                                    Width: =Parent.Width
+                              - TxtLevelPrestasi:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Level"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Value: =If(Coalesce(gblPrestasiEditMode, false), Coalesce(gblSelectedPrestasi.Level, ""), "")
+                                    Width: =Parent.Width
+
+                        - FieldNamaPrestasiPrestasi:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblNamaPrestasiPrestasi:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Nama Prestasi *"
+                                    Width: =Parent.Width
+                              - TxtNamaPrestasiPrestasi:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Nama Prestasi"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                    Value: =If(Coalesce(gblPrestasiEditMode, false), Coalesce(gblSelectedPrestasi.NamaPrestasi, ""), "")
+                                    Width: =Parent.Width
+
+                        - FieldDetailPrestasiPrestasi:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =118
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =118
+                              Width: =Parent.Width
+                            Children:
+                              - LblDetailPrestasiPrestasi:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Detail Prestasi *"
+                                    Width: =Parent.Width
+                              - TxtDetailPrestasiPrestasi:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Detail Prestasi"
+                                    Height: =76
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeMultiline"
+                                    Value: =If(Coalesce(gblPrestasiEditMode, false), Coalesce(gblSelectedPrestasi.DetailPrestasi, ""), "")
+                                    Width: =Parent.Width
+
+                        - FieldTanggalPrestasi:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =76
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =76
+                              Width: =Parent.Width
+                            Children:
+                              - LblTanggalPrestasi:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Tanggal *"
+                                    Width: =Parent.Width
+                              - DateTanggalPrestasi:
+                                  Control: ModernDatePicker@1.0.0
+                                  Properties:
+                                    AccessibleLabel: ="Tanggal"
+                                    DefaultDate: =If(Coalesce(gblPrestasiEditMode, false), Date(1899, 12, 30) + Value(gblSelectedPrestasi.Tanggal), Today())
+                                    Format: ="dd/mm/yyyy"
+                                    Placeholder: ="Pilih tanggal"
+                                    Width: =Parent.Width
+
+
+                        - FormActionsPrestasi:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =48
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =12
+                              LayoutJustifyContent: =LayoutJustifyContent.End
+                              LayoutMinHeight: =48
+                              Width: =Parent.Width
+                            Children:
+                              - BtnBatalPrestasi:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =Set(gblPrestasiEditMode, false);
+                                      Set(gblSelectedPrestasi, Defaults(Profil_Prestasi));
+                                      Back()
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="Batal"
+                                    Width: =110
+                              - BtnSimpanPrestasi:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisplayMode: =If(Coalesce(gblPrestasiSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Fill: =RGBA(18, 38, 82, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =If(
+                                          Or(
+                                              IsBlank(Trim(TxtJenisPrestasi.Value)),
+                                              IsBlank(Trim(TxtLevelPrestasi.Value)),
+                                              IsBlank(Trim(TxtNamaPrestasiPrestasi.Value)),
+                                              IsBlank(Trim(TxtDetailPrestasiPrestasi.Value)),
+                                              IsBlank(DateTanggalPrestasi.SelectedDate)
+                                          ),
+                                          Notify(
+                                              "Lengkapi seluruh field Prestasi.",
+                                              NotificationType.Warning
+                                          ),
+                                          !Coalesce(gblPrestasiSubmitting, false),
+                                          Set(gblPrestasiSubmitting, true);
+                                          IfError(
+                                              If(
+                                                  Coalesce(gblPrestasiEditMode, false),
+                                                  Patch(
+                                                      Profil_Prestasi,
+                                                      gblSelectedPrestasi,
+                                                      {
+                                                          NIP: gblSelectedPrestasi.NIP,
+                                                          Jenis: Trim(TxtJenisPrestasi.Value),
+                                                          Level: Trim(TxtLevelPrestasi.Value),
+                                                          NamaPrestasi: Trim(TxtNamaPrestasiPrestasi.Value),
+                                                          DetailPrestasi: Trim(TxtDetailPrestasiPrestasi.Value),
+                                                          Tanggal: DateDiff(Date(1899, 12, 30), DateTanggalPrestasi.SelectedDate, TimeUnit.Days)
+                                                      }
+                                                  ),
+                                                  With(
+                                                      {
+                                                          newRecord:
+                                                              Patch(
+                                                                  Profil_Prestasi,
+                                                                  Defaults(Profil_Prestasi),
+                                                                  {
+                                                                      Title: "TEMP_" & Text(GUID()),
+                                                                      NIP: Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
+                                                                      Jenis: Trim(TxtJenisPrestasi.Value),
+                                                                      Level: Trim(TxtLevelPrestasi.Value),
+                                                                      NamaPrestasi: Trim(TxtNamaPrestasiPrestasi.Value),
+                                                                      DetailPrestasi: Trim(TxtDetailPrestasiPrestasi.Value),
+                                                                      Tanggal: DateDiff(Date(1899, 12, 30), DateTanggalPrestasi.SelectedDate, TimeUnit.Days)
+                                                                  }
+                                                              )
+                                                      },
+                                                      Patch(
+                                                          Profil_Prestasi,
+                                                          newRecord,
+                                                          {Title: Text(newRecord.ID)}
+                                                      )
+                                                  )
+                                              );
+                                              Refresh(Profil_Prestasi);
+                                              Notify(
+                                                  If(Coalesce(gblPrestasiEditMode, false), "Data Prestasi berhasil diperbarui.", "Data Prestasi berhasil ditambahkan."),
+                                                  NotificationType.Success
+                                              );
+                                              Set(gblPrestasiSubmitting, false);
+                                              Set(gblPrestasiEditMode, false);
+                                              Set(gblSelectedPrestasi, Defaults(Profil_Prestasi));
+                                              Navigate(S2_ProfilPegawai, ScreenTransition.Fade),
+                                              Notify(
+                                                  "Gagal menyimpan data Prestasi: " & FirstError.Message,
+                                                  NotificationType.Error
+                                              );
+                                              Set(gblPrestasiSubmitting, false)
+                                          )
+                                      )
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: =If(Coalesce(gblPrestasiSubmitting, false), "Menyimpan...", "Simpan")
+                                    Width: =130

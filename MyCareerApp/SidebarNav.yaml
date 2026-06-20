@@ -1,0 +1,329 @@
+ComponentDefinitions:
+  SidebarNav:
+    DefinitionType: CanvasComponent
+    Properties:
+      Height: =App.Height
+      Width: =260
+    Children:
+      - SidebarContainer:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            BorderColor: =RGBA(225, 223, 221, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =1
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =SidebarNav.Height
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =4
+            LayoutOverflowY: =LayoutOverflow.Scroll
+            PaddingBottom: =16
+            PaddingLeft: =10
+            PaddingRight: =10
+            PaddingTop: =16
+            Width: =SidebarNav.Width
+          Children:
+
+            # ── MENU PEGAWAI ──
+            - LblSectionPegawai:
+                Control: ModernText@1.0.0
+                Properties:
+                  Color: =RGBA(161, 159, 157, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Bold
+                  PaddingBottom: =4
+                  PaddingLeft: =10
+                  PaddingTop: =4
+                  Size: =10
+                  Text: ="MENU PEGAWAI"
+                  Width: =240
+
+            - NavHomepage:
+                Control: ModernText@1.0.0
+                Properties:
+                  Color: =If(App.ActiveScreen.Name = "S1_Homepage", RGBA(0, 120, 212, 1), RGBA(50, 49, 48, 1))
+                  Fill: =If(App.ActiveScreen.Name = "S1_Homepage", RGBA(222, 236, 249, 1), RGBA(0, 0, 0, 0))
+                  Font: =Font.'Open Sans'
+                  FontWeight: =If(App.ActiveScreen.Name = "S1_Homepage", FontWeight.Semibold, FontWeight.Normal)
+                  Height: =40
+                  OnSelect: =Navigate(S1_Homepage, ScreenTransition.Fade)
+                  PaddingLeft: =16
+                  RadiusBottomLeft: =5
+                  RadiusBottomRight: =5
+                  RadiusTopLeft: =5
+                  RadiusTopRight: =5
+                  Size: =13
+                  Text: ="Homepage"
+                  Width: =240
+
+            - NavProfilPegawai:
+                Control: ModernText@1.0.0
+                Properties:
+                  Color: =If(App.ActiveScreen.Name = "S2_ProfilPegawai", RGBA(0, 120, 212, 1), RGBA(50, 49, 48, 1))
+                  Fill: =If(App.ActiveScreen.Name = "S2_ProfilPegawai", RGBA(222, 236, 249, 1), RGBA(0, 0, 0, 0))
+                  Font: =Font.'Open Sans'
+                  FontWeight: =If(App.ActiveScreen.Name = "S2_ProfilPegawai", FontWeight.Semibold, FontWeight.Normal)
+                  Height: =40
+                  OnSelect: =Navigate(S2_ProfilPegawai, ScreenTransition.Fade)
+                  PaddingLeft: =16
+                  RadiusBottomLeft: =5
+                  RadiusBottomRight: =5
+                  RadiusTopLeft: =5
+                  RadiusTopRight: =5
+                  Size: =13
+                  Text: ="Profil Pegawai"
+                  Width: =240
+
+            - NavMentoring:
+                Control: ModernText@1.0.0
+                Properties:
+                  Color: =If(App.ActiveScreen.Name = "Mentoring", RGBA(0, 120, 212, 1), RGBA(50, 49, 48, 1))
+                  Fill: =If(App.ActiveScreen.Name = "Mentoring", RGBA(222, 236, 249, 1), RGBA(0, 0, 0, 0))
+                  Font: =Font.'Open Sans'
+                  FontWeight: =If(App.ActiveScreen.Name = "Mentoring", FontWeight.Semibold, FontWeight.Normal)
+                  Height: =40
+                  PaddingLeft: =16
+                  RadiusBottomLeft: =5
+                  RadiusBottomRight: =5
+                  RadiusTopLeft: =5
+                  RadiusTopRight: =5
+                  Size: =13
+                  Text: ="Mentoring"
+                  Width: =240
+
+            - NavPerformanceReview:
+                Control: ModernText@1.0.0
+                Properties:
+                  Color: =If(App.ActiveScreen.Name = "S3_PerformanceReview", RGBA(0, 120, 212, 1), RGBA(50, 49, 48, 1))
+                  Fill: =If(App.ActiveScreen.Name = "S3_PerformanceReview", RGBA(222, 236, 249, 1), RGBA(0, 0, 0, 0))
+                  Font: =Font.'Open Sans'
+                  FontWeight: =If(App.ActiveScreen.Name = "S3_PerformanceReview", FontWeight.Semibold, FontWeight.Normal)
+                  Height: =40
+                  PaddingLeft: =16
+                  RadiusBottomLeft: =5
+                  RadiusBottomRight: =5
+                  RadiusTopLeft: =5
+                  RadiusTopRight: =5
+                  Size: =13
+                  Text: ="Performance Review"
+                  Width: =240
+
+            - NavCoachingKarir:
+                Control: ModernText@1.0.0
+                Properties:
+                  Color: =If(App.ActiveScreen.Name = "CoachingKarir", RGBA(0, 120, 212, 1), RGBA(50, 49, 48, 1))
+                  Fill: =If(App.ActiveScreen.Name = "CoachingKarir", RGBA(222, 236, 249, 1), RGBA(0, 0, 0, 0))
+                  Font: =Font.'Open Sans'
+                  FontWeight: =If(App.ActiveScreen.Name = "CoachingKarir", FontWeight.Semibold, FontWeight.Normal)
+                  Height: =40
+                  PaddingLeft: =16
+                  RadiusBottomLeft: =5
+                  RadiusBottomRight: =5
+                  RadiusTopLeft: =5
+                  RadiusTopRight: =5
+                  Size: =13
+                  Text: ="Coaching Karir"
+                  Width: =240
+
+            - NavCoachingBebas:
+                Control: ModernText@1.0.0
+                Properties:
+                  Color: =If(App.ActiveScreen.Name = "CoachingBebas", RGBA(0, 120, 212, 1), RGBA(50, 49, 48, 1))
+                  Fill: =If(App.ActiveScreen.Name = "CoachingBebas", RGBA(222, 236, 249, 1), RGBA(0, 0, 0, 0))
+                  Font: =Font.'Open Sans'
+                  FontWeight: =If(App.ActiveScreen.Name = "CoachingBebas", FontWeight.Semibold, FontWeight.Normal)
+                  Height: =40
+                  PaddingLeft: =16
+                  RadiusBottomLeft: =5
+                  RadiusBottomRight: =5
+                  RadiusTopLeft: =5
+                  RadiusTopRight: =5
+                  Size: =13
+                  Text: ="Coaching Bebas"
+                  Width: =240
+
+            - NavIDP:
+                Control: ModernText@1.0.0
+                Properties:
+                  Color: =If(App.ActiveScreen.Name = "IDP", RGBA(0, 120, 212, 1), RGBA(50, 49, 48, 1))
+                  Fill: =If(App.ActiveScreen.Name = "IDP", RGBA(222, 236, 249, 1), RGBA(0, 0, 0, 0))
+                  Font: =Font.'Open Sans'
+                  FontWeight: =If(App.ActiveScreen.Name = "IDP", FontWeight.Semibold, FontWeight.Normal)
+                  Height: =40
+                  PaddingLeft: =16
+                  RadiusBottomLeft: =5
+                  RadiusBottomRight: =5
+                  RadiusTopLeft: =5
+                  RadiusTopRight: =5
+                  Size: =13
+                  Text: ="IDP"
+                  Width: =240
+
+            - DividerLM:
+                Control: Rectangle@1.8.1
+                Properties:
+                  Fill: =RGBA(225, 223, 221, 1)
+                  Height: =1
+                  Width: =240
+
+            # ── MENU LINE MANAGER ──
+            - LblSectionLM:
+                Control: ModernText@1.0.0
+                Properties:
+                  Color: =RGBA(161, 159, 157, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Bold
+                  PaddingBottom: =4
+                  PaddingLeft: =10
+                  PaddingTop: =8
+                  Size: =10
+                  Text: ="MENU LINE MANAGER"
+                  Width: =240
+
+            - NavLMPR:
+                Control: ModernText@1.0.0
+                Properties:
+                  Color: =If(App.ActiveScreen.Name = "LMPerformanceReview", RGBA(0, 120, 212, 1), RGBA(50, 49, 48, 1))
+                  Fill: =If(App.ActiveScreen.Name = "LMPerformanceReview", RGBA(222, 236, 249, 1), RGBA(0, 0, 0, 0))
+                  Font: =Font.'Open Sans'
+                  FontWeight: =If(App.ActiveScreen.Name = "LMPerformanceReview", FontWeight.Semibold, FontWeight.Normal)
+                  Height: =40
+                  PaddingLeft: =16
+                  RadiusBottomLeft: =5
+                  RadiusBottomRight: =5
+                  RadiusTopLeft: =5
+                  RadiusTopRight: =5
+                  Size: =13
+                  Text: ="Performance Review"
+                  Width: =240
+
+            - DividerMentor:
+                Control: Rectangle@1.8.1
+                Properties:
+                  Fill: =RGBA(225, 223, 221, 1)
+                  Height: =1
+                  Width: =240
+
+            # ── MENU MENTOR ──
+            - LblSectionMentor:
+                Control: ModernText@1.0.0
+                Properties:
+                  Color: =RGBA(161, 159, 157, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Bold
+                  PaddingBottom: =4
+                  PaddingLeft: =10
+                  PaddingTop: =8
+                  Size: =10
+                  Text: ="MENU MENTOR"
+                  Width: =240
+
+            - NavMentorCK:
+                Control: ModernText@1.0.0
+                Properties:
+                  Color: =If(App.ActiveScreen.Name = "MentorCoachingKarir", RGBA(0, 120, 212, 1), RGBA(50, 49, 48, 1))
+                  Fill: =If(App.ActiveScreen.Name = "MentorCoachingKarir", RGBA(222, 236, 249, 1), RGBA(0, 0, 0, 0))
+                  Font: =Font.'Open Sans'
+                  FontWeight: =If(App.ActiveScreen.Name = "MentorCoachingKarir", FontWeight.Semibold, FontWeight.Normal)
+                  Height: =40
+                  PaddingLeft: =16
+                  RadiusBottomLeft: =5
+                  RadiusBottomRight: =5
+                  RadiusTopLeft: =5
+                  RadiusTopRight: =5
+                  Size: =13
+                  Text: ="Coaching Karir"
+                  Width: =240
+
+            - NavMentorCT:
+                Control: ModernText@1.0.0
+                Properties:
+                  Color: =If(App.ActiveScreen.Name = "CoachingTematik", RGBA(0, 120, 212, 1), RGBA(50, 49, 48, 1))
+                  Fill: =If(App.ActiveScreen.Name = "CoachingTematik", RGBA(222, 236, 249, 1), RGBA(0, 0, 0, 0))
+                  Font: =Font.'Open Sans'
+                  FontWeight: =If(App.ActiveScreen.Name = "CoachingTematik", FontWeight.Semibold, FontWeight.Normal)
+                  Height: =40
+                  PaddingLeft: =16
+                  RadiusBottomLeft: =5
+                  RadiusBottomRight: =5
+                  RadiusTopLeft: =5
+                  RadiusTopRight: =5
+                  Size: =13
+                  Text: ="Coaching Tematik"
+                  Width: =240
+
+            - DividerPimpinan:
+                Control: Rectangle@1.8.1
+                Properties:
+                  Fill: =RGBA(225, 223, 221, 1)
+                  Height: =1
+                  Width: =240
+
+            # ── MENU PIMPINAN ──
+            - LblSectionPimpinan:
+                Control: ModernText@1.0.0
+                Properties:
+                  Color: =RGBA(161, 159, 157, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Bold
+                  PaddingBottom: =4
+                  PaddingLeft: =10
+                  PaddingTop: =8
+                  Size: =10
+                  Text: ="MENU PIMPINAN"
+                  Width: =240
+
+            - NavDaftarPegawai:
+                Control: ModernText@1.0.0
+                Properties:
+                  Color: =If(App.ActiveScreen.Name = "DaftarPegawai", RGBA(0, 120, 212, 1), RGBA(50, 49, 48, 1))
+                  Fill: =If(App.ActiveScreen.Name = "DaftarPegawai", RGBA(222, 236, 249, 1), RGBA(0, 0, 0, 0))
+                  Font: =Font.'Open Sans'
+                  FontWeight: =If(App.ActiveScreen.Name = "DaftarPegawai", FontWeight.Semibold, FontWeight.Normal)
+                  Height: =40
+                  PaddingLeft: =16
+                  RadiusBottomLeft: =5
+                  RadiusBottomRight: =5
+                  RadiusTopLeft: =5
+                  RadiusTopRight: =5
+                  Size: =13
+                  Text: ="Daftar Pegawai"
+                  Width: =240
+
+            - DividerAdmin:
+                Control: Rectangle@1.8.1
+                Properties:
+                  Fill: =RGBA(225, 223, 221, 1)
+                  Height: =1
+                  Width: =240
+
+            # ── MENU ADMIN ──
+            - LblSectionAdmin:
+                Control: ModernText@1.0.0
+                Properties:
+                  Color: =RGBA(161, 159, 157, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Bold
+                  PaddingBottom: =4
+                  PaddingLeft: =10
+                  PaddingTop: =8
+                  Size: =10
+                  Text: ="MENU ADMIN"
+                  Width: =240
+
+            - NavAdminMonitoring:
+                Control: ModernText@1.0.0
+                Properties:
+                  Color: =If(App.ActiveScreen.Name = "AdminMonitoring", RGBA(0, 120, 212, 1), RGBA(50, 49, 48, 1))
+                  Fill: =If(App.ActiveScreen.Name = "AdminMonitoring", RGBA(222, 236, 249, 1), RGBA(0, 0, 0, 0))
+                  Font: =Font.'Open Sans'
+                  FontWeight: =If(App.ActiveScreen.Name = "AdminMonitoring", FontWeight.Semibold, FontWeight.Normal)
+                  Height: =40
+                  PaddingLeft: =16
+                  RadiusBottomLeft: =5
+                  RadiusBottomRight: =5
+                  RadiusTopLeft: =5
+                  RadiusTopRight: =5
+                  Size: =13
+                  Text: ="Monitoring Mentoring"
+                  Width: =240

@@ -1,0 +1,359 @@
+Screens:
+  S11_Pimpinan_DaftarPegawai:
+    Properties:
+      Fill: =RGBA(245, 245, 245, 1)
+      LoadingSpinnerColor: =RGBA(9, 33, 98, 1)
+      OnVisible: |-
+        =Set(gblPimpinanView, false);
+        If(
+            IsBlank(gblSubjectNIP),
+            Set(gblSelectedEmployee, Blank())
+        )
+    Children:
+      - PimpinanScreenContainer:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(245, 245, 245, 1)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =16
+            PaddingBottom: =16
+            PaddingLeft: =16
+            PaddingRight: =16
+            PaddingTop: =16
+            Width: =Parent.Width
+          Children:
+            - PimpinanHeader:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(9, 33, 98, 1)
+                  FillPortions: =0
+                  Height: =75
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                Children:
+                  - BtnBackPimpinan:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        AutoHeight: =true
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        OnSelect: |-
+                          =Set(gblPimpinanView, false);
+                          Set(gblSubjectNIP, Blank());
+                          Set(gblSelectedEmployee, Blank());
+                          Back()
+                        PaddingLeft: =20
+                        Size: =22
+                        Text: ="‹"
+                        Width: =40
+                  - LblAppNamePimpinan:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        FillPortions: =1
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        Size: =18
+                        Text: ="MyCareerApp"
+                  - HeaderSpacerPimpinan:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =RGBA(0, 0, 0, 0)
+                        Height: =40
+                        Width: =40
+            - PimpinanContent:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =16
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                  PaddingBottom: =8
+                Children:
+                  - PimpinanPageTitle:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =RGBA(31, 56, 100, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Size: =18
+                        Text: ="Daftar Pegawai"
+                  - EmployeeSelectorCard:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(225, 223, 221, 1)
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =If(Parent.Width < 620, 150, 100)
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =20
+                        LayoutMinHeight: =If(Parent.Width < 620, 150, 100)
+                        LayoutWrap: =true
+                        PaddingBottom: =20
+                        PaddingLeft: =24
+                        PaddingRight: =24
+                        PaddingTop: =20
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                      Children:
+                        - LblSelectEmployee:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Color: =RGBA(31, 56, 100, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =40
+                              Size: =14
+                              Text: ="Pilih Pegawai:"
+                              Width: =If(Parent.Width < 620, Parent.Width - 48, 180)
+                        - CmbPimpinanEmployee:
+                            Control: ComboBox@0.0.51
+                            Properties:
+                              AccessibleLabel: ="Pilih Pegawai"
+                              DefaultSelectedItems: |-
+                                =If(
+                                    IsBlank(gblSubjectNIP),
+                                    Blank(),
+                                    Filter(
+                                        ForAll(Pegawai, {Value: Nama, NIP: Title}),
+                                        NIP = Text(gblSubjectNIP)
+                                    )
+                                )
+                              InputTextPlaceholder: ="-- Pilih nama pegawai --"
+                              Items: |-
+                                =SortByColumns(
+                                    ForAll(
+                                        Pegawai,
+                                        {
+                                            Value: Nama,
+                                            NIP: Title
+                                        }
+                                    ),
+                                    "Value",
+                                    SortOrder.Ascending
+                                )
+                              OnChange: |-
+                                =Set(gblSelectedEmployee, Self.Selected);
+                                Set(gblSubjectNIP, Self.Selected.NIP)
+                              SelectMultiple: =false
+                              Width: =If(Parent.Width < 620, Parent.Width - 48, Min(640, Parent.Width - 250))
+                  - PimpinanTabCard:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(225, 223, 221, 1)
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =If(Parent.Width < 620, 216, If(Parent.Width < 1000, 136, 88))
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutMinHeight: =If(Parent.Width < 620, 216, If(Parent.Width < 1000, 136, 88))
+                        LayoutWrap: =true
+                        PaddingBottom: =16
+                        PaddingLeft: =16
+                        PaddingRight: =16
+                        PaddingTop: =16
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Visible: =!IsBlank(gblSubjectNIP)
+                      Children:
+                        - TabProfilePimpinan:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              Color: =RGBA(255, 255, 255, 1)
+                              Fill: =RGBA(0, 120, 212, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =48
+                              LayoutMinWidth: =140
+                              OnSelect: |-
+                                =Set(gblPimpinanView, true);
+                                Navigate(S2_ProfilPegawai, ScreenTransition.Fade)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =13
+                              Text: ="Profil Pegawai"
+                        - TabIDPPimpinan:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              Color: =RGBA(255, 255, 255, 1)
+                              Fill: =RGBA(0, 120, 212, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =48
+                              LayoutMinWidth: =140
+                              OnSelect: |-
+                                =Set(gblPimpinanView, true);
+                                Navigate(S5A_IDP_View, ScreenTransition.Fade)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =13
+                              Text: ="IDP"
+                        - TabPRPimpinan:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              Color: =RGBA(255, 255, 255, 1)
+                              Fill: =RGBA(0, 120, 212, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =48
+                              LayoutMinWidth: =140
+                              OnSelect: |-
+                                =Set(gblPimpinanView, true);
+                                Navigate(S3A_PR_List, ScreenTransition.Fade)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =13
+                              Text: ="Performance Review"
+                        - TabCareerPimpinan:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              Color: =RGBA(255, 255, 255, 1)
+                              Fill: =RGBA(0, 120, 212, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =48
+                              LayoutMinWidth: =140
+                              OnSelect: |-
+                                =Set(gblPimpinanView, true);
+                                Navigate(S4A_CoachingKarir_List, ScreenTransition.Fade)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =13
+                              Text: ="Coaching Karir"
+                        - TabThematicPimpinan:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              Color: =RGBA(255, 255, 255, 1)
+                              Fill: =RGBA(0, 120, 212, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =48
+                              LayoutMinWidth: =140
+                              OnSelect: |-
+                                =Set(gblPimpinanView, true);
+                                Navigate(S7A_CoachingTematik_List, ScreenTransition.Fade)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =13
+                              Text: ="Coaching Tematik"
+                        - TabMentoringPimpinan:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              Color: =RGBA(255, 255, 255, 1)
+                              Fill: =RGBA(0, 120, 212, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =48
+                              LayoutMinWidth: =140
+                              OnSelect: |-
+                                =Set(gblPimpinanView, true);
+                                Navigate(S6A_ChecklistMentoring_List, ScreenTransition.Fade)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =13
+                              Text: ="Checklist Mentoring"
+                  - PimpinanEmptyState:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(225, 223, 221, 1)
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =280
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =12
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        LayoutMinHeight: =280
+                        PaddingBottom: =24
+                        PaddingLeft: =24
+                        PaddingRight: =24
+                        PaddingTop: =24
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Visible: =IsBlank(gblSubjectNIP)
+                      Children:
+                        - EmptyEmployeeIcon:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              Color: =RGBA(161, 159, 157, 1)
+                              Font: =Font.'Open Sans'
+                              Height: =70
+                              Size: =42
+                              Text: ="◯"
+                              Width: =80
+                        - EmptyEmployeeMessage:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              Color: =RGBA(96, 94, 92, 1)
+                              Font: =Font.'Open Sans'
+                              AutoHeight: =true
+                              Size: =13
+                              Text: ="Pilih nama pegawai untuk melihat data"
+                              Width: =Parent.Width - 48

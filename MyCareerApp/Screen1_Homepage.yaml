@@ -1,0 +1,605 @@
+Screens:
+  S1_Homepage:
+    Properties:
+      LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
+    Children:
+      - Grid2:
+          Control: GroupContainer@1.5.0
+          Variant: GridLayout
+          Properties:
+            Fill: =RGBA(243, 242, 241, 1)
+            Height: =Parent.Height
+            LayoutGap: =0
+            LayoutGridColumns: =10
+            LayoutGridRows: =8
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Width: =Parent.Width
+          Children:
+            - HeaderContainer1:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(31, 56, 100, 1)
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGridColumnEnd: =-1
+                  LayoutGridColumnStart: =1
+                  LayoutGridRowEnd: =1
+                  LayoutGridRowStart: =1
+                  PaddingBottom: =10
+                  PaddingLeft: =20
+                  PaddingRight: =20
+                  PaddingTop: =10
+                Children:
+                  - AppTitle:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(255, 255, 255, 1)
+                        FillPortions: =1
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        Size: =20
+                        Text: ="MyCareerApp"
+                  - HeaderUserName:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: |
+                          =Align.Right
+                        Color: =RGBA(199, 224, 244, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =36
+                        Size: =13
+                        Text: =User().FullName
+                        Width: =500
+            - SidebarContainer3_2:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  BorderColor: =RGBA(225, 223, 221, 1)
+                  BorderThickness: =1
+                  Fill: =RGBA(255, 255, 255, 1)
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =4
+                  LayoutGridColumnEnd: =3
+                  LayoutGridColumnStart: =1
+                  LayoutGridRowEnd: =9
+                  LayoutGridRowStart: =2
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                  PaddingBottom: =16
+                  PaddingLeft: =10
+                  PaddingRight: =10
+                  PaddingTop: =16
+                Children:
+                  - LblSectionPegawai:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(161, 159, 157, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        PaddingBottom: =4
+                        PaddingLeft: =10
+                        PaddingTop: =4
+                        Size: =10
+                        Text: ="MENU PEGAWAI"
+                        Width: =240
+                  - NavHomepage:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(0, 120, 212, 1)
+                        Fill: =RGBA(222, 236, 249, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =40
+                        PaddingLeft: =16
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =13
+                        Text: ="Homepage"
+                        Width: =240
+                  - NavProfilPegawai:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(50, 49, 48, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =40
+                        OnSelect: =Navigate(S2_ProfilPegawai, ScreenTransition.Fade)
+                        PaddingLeft: =16
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =13
+                        Text: ="Profil Pegawai"
+                        Width: =240
+                  - NavMentoring:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(50, 49, 48, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =40
+                        OnSelect: =Navigate(S4_Mentoring, ScreenTransition.Fade)
+                        PaddingLeft: =16
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =13
+                        Text: ="Mentoring"
+                        Width: =240
+                  - NavPerformanceReview:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(50, 49, 48, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =40
+                        OnSelect: =Navigate(S3_PRDetail, ScreenTransition.Fade)
+                        PaddingLeft: =16
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =13
+                        Text: ="Performance Review"
+                        Width: =240
+                  - NavCoachingKarir:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(50, 49, 48, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =40
+                        OnSelect: =Navigate(S5_CoachingKarir, ScreenTransition.Fade)
+                        PaddingLeft: =16
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =13
+                        Text: ="Coaching Karir"
+                        Width: =240
+                  - NavCoachingBebas:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(50, 49, 48, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =40
+                        OnSelect: =Navigate(S6_CoachingBebas, ScreenTransition.Fade)
+                        PaddingLeft: =16
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =13
+                        Text: ="Coaching Bebas"
+                        Width: =240
+                  - NavIDP:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(50, 49, 48, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =40
+                        OnSelect: =Navigate(S7_IDP, ScreenTransition.Fade)
+                        PaddingLeft: =16
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =13
+                        Text: ="IDP"
+                        Width: =240
+                  - DividerLM:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =RGBA(225, 223, 221, 1)
+                        Height: =1
+                        Width: =240
+                  - LblSectionLM:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(161, 159, 157, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        PaddingBottom: =4
+                        PaddingLeft: =10
+                        PaddingTop: =8
+                        Size: =10
+                        Text: ="MENU LINE MANAGER"
+                        Width: =240
+                  - NavLMPR:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(50, 49, 48, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =40
+                        OnSelect: =Navigate(S8_LM_PRDetail, ScreenTransition.Fade)
+                        PaddingLeft: =16
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =13
+                        Text: ="Performance Review"
+                        Width: =240
+                  - DividerMentor:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =RGBA(225, 223, 221, 1)
+                        Height: =1
+                        Width: =240
+                  - LblSectionMentor:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(161, 159, 157, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        PaddingBottom: =4
+                        PaddingLeft: =10
+                        PaddingTop: =8
+                        Size: =10
+                        Text: ="MENU MENTOR"
+                        Width: =240
+                  - NavMentorCoachingKarir:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(50, 49, 48, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =40
+                        OnSelect: =Navigate(S9_Mentor_CoachingKarir, ScreenTransition.Fade)
+                        PaddingLeft: =16
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =13
+                        Text: ="Coaching Karir"
+                        Width: =240
+                  - NavMentorCoachingTematik:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(50, 49, 48, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =40
+                        OnSelect: =Navigate(S10_Mentor_CoachingTematik, ScreenTransition.Fade)
+                        PaddingLeft: =16
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =13
+                        Text: ="Coaching Tematik"
+                        Width: =240
+                  - DividerPimpinan:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =RGBA(225, 223, 221, 1)
+                        Height: =1
+                        Width: =240
+                  - LblSectionPimpinan:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(161, 159, 157, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        PaddingBottom: =4
+                        PaddingLeft: =10
+                        PaddingTop: =8
+                        Size: =10
+                        Text: ="MENU PIMPINAN"
+                        Width: =240
+                  - NavPimpinanDaftarPegawai:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(50, 49, 48, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =40
+                        OnSelect: =Navigate(S11_Pimpinan_DaftarPegawai, ScreenTransition.Fade)
+                        PaddingLeft: =16
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =13
+                        Text: ="Daftar Pegawai"
+                        Width: =240
+                  - DividerAdmin:
+                      Control: Rectangle@2.3.0
+                      Properties:
+                        Fill: =RGBA(225, 223, 221, 1)
+                        Height: =1
+                        Width: =240
+                  - LblSectionAdmin:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(161, 159, 157, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        PaddingBottom: =4
+                        PaddingLeft: =10
+                        PaddingTop: =8
+                        Size: =10
+                        Text: ="MENU ADMIN"
+                        Width: =240
+                  - NavAdminMonitoring:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(50, 49, 48, 1)
+                        Font: =Font.'Open Sans'
+                        Height: =40
+                        OnSelect: =Navigate(S12_Admin_Monitoring, ScreenTransition.Fade)
+                        PaddingLeft: =16
+                        RadiusBottomLeft: =5
+                        RadiusBottomRight: =5
+                        RadiusTopLeft: =5
+                        RadiusTopRight: =5
+                        Size: =13
+                        Text: ="Monitoring Mentoring"
+                        Width: =240
+            - MainContainer1:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =16
+                  LayoutGridColumnEnd: =11
+                  LayoutGridColumnStart: =3
+                  LayoutGridRowEnd: =9
+                  LayoutGridRowStart: =2
+                  PaddingBottom: =20
+                  PaddingLeft: =20
+                  PaddingRight: =20
+                  PaddingTop: =20
+                Children:
+                  - StatusRow:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =16
+                      Children:
+                        - AnnouncementsPanel:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =RGBA(225, 223, 221, 1)
+                              BorderThickness: =1
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =1.4
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              PaddingBottom: =16
+                              PaddingLeft: =18
+                              PaddingRight: =18
+                              PaddingTop: =16
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                            Children:
+                              - AnnTitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =40
+                                    PaddingBottom: =10
+                                    Size: =14
+                                    Text: ="Pengumuman"
+                              - Ann1Date:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(161, 159, 157, 1)
+                                    Font: =Font.'Open Sans'
+                                    PaddingTop: =8
+                                    Size: =11
+                                    Text: ="29 Apr 2026"
+                              - Ann1Text:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    PaddingBottom: =10
+                                    Size: =13
+                                    Text: ="Periode pengisian Performance Review Semester 1 telah dimulai. Harap segera melengkapi formulir sebelum batas waktu yang ditentukan."
+                              - Ann1Divider:
+                                  Control: Rectangle@2.3.0
+                                  Properties:
+                                    Fill: =RGBA(243, 242, 241, 1)
+                                    Height: =1
+                              - Ann2Date:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(161, 159, 157, 1)
+                                    Font: =Font.'Open Sans'
+                                    PaddingTop: =8
+                                    Size: =11
+                                    Text: ="20 Apr 2026"
+                              - Ann2Text:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    PaddingBottom: =10
+                                    Size: =13
+                                    Text: ="Sesi Coaching Karir wajib dijadwalkan minimal 2 kali per bulan. Koordinasikan jadwal dengan atasan langsung Anda."
+                              - Ann2Divider:
+                                  Control: Rectangle@2.3.0
+                                  Properties:
+                                    Fill: =RGBA(243, 242, 241, 1)
+                                    Height: =1
+                              - Ann3Date:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(161, 159, 157, 1)
+                                    Font: =Font.'Open Sans'
+                                    PaddingTop: =8
+                                    Size: =11
+                                    Text: ="10 Apr 2026"
+                              - Ann3Text:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    Size: =13
+                                    Text: ="Individual Development Plan tahun 2026 telah dibuka. Segera susun target pengembangan kompetensi Anda."
+                        - StatusPanel:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =RGBA(225, 223, 221, 1)
+                              BorderThickness: =1
+                              Fill: =RGBA(255, 255, 255, 1)
+                              LayoutAlignItems: =LayoutAlignItems.Stretch
+                              LayoutDirection: =LayoutDirection.Vertical
+                              PaddingBottom: =16
+                              PaddingLeft: =18
+                              PaddingRight: =18
+                              PaddingTop: =16
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                            Children:
+                              - StatusTitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =40
+                                    PaddingBottom: =8
+                                    Size: =14
+                                    Text: ="Status Kamu"
+                              - St1Divider:
+                                  Control: Rectangle@2.3.0
+                                  Properties:
+                                    Fill: =RGBA(225, 223, 221, 1)
+                                    Height: =1
+                              - St1Label:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    PaddingBottom: =4
+                                    PaddingTop: =10
+                                    Size: =12
+                                    Text: ="Performance Review Q1"
+                              - St1Badge:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(122, 70, 0, 1)
+                                    Fill: =RGBA(255, 244, 206, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    PaddingBottom: =10
+                                    PaddingLeft: =10
+                                    PaddingRight: =10
+                                    PaddingTop: =4
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =11
+                                    Text: ="Perlu Diisi"
+                              - St2Divider:
+                                  Control: Rectangle@2.3.0
+                                  Properties:
+                                    Fill: =RGBA(225, 223, 221, 1)
+                                    Height: =1
+                              - St2Label:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    PaddingBottom: =4
+                                    PaddingTop: =10
+                                    Size: =12
+                                    Text: ="Performance Review Q2"
+                              - St2Badge:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Fill: =RGBA(243, 242, 241, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    PaddingBottom: =10
+                                    PaddingLeft: =10
+                                    PaddingRight: =10
+                                    PaddingTop: =4
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =11
+                                    Text: ="Belum Dimulai"
+                              - St3Divider:
+                                  Control: Rectangle@2.3.0
+                                  Properties:
+                                    Fill: =RGBA(225, 223, 221, 1)
+                                    Height: =1
+                              - St3Label:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    PaddingBottom: =4
+                                    PaddingTop: =10
+                                    Size: =12
+                                    Text: ="Coaching Karir Terakhir"
+                              - St3Badge:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(16, 124, 16, 1)
+                                    Fill: =RGBA(223, 246, 221, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    PaddingBottom: =10
+                                    PaddingLeft: =10
+                                    PaddingRight: =10
+                                    PaddingTop: =4
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =11
+                                    Text: ="Maret 2026"
+                              - St4Divider:
+                                  Control: Rectangle@2.3.0
+                                  Properties:
+                                    Fill: =RGBA(225, 223, 221, 1)
+                                    Height: =1
+                              - St4Label:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    PaddingBottom: =4
+                                    PaddingTop: =10
+                                    Size: =12
+                                    Text: ="IDP 2026"
+                              - St4Badge:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(0, 78, 140, 1)
+                                    Fill: =RGBA(222, 236, 249, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    PaddingBottom: =10
+                                    PaddingLeft: =10
+                                    PaddingRight: =10
+                                    PaddingTop: =4
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =11
+                                    Text: ="Kuadran II"
