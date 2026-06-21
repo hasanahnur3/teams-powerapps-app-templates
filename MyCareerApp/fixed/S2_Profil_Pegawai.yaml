@@ -467,10 +467,10 @@ Screens:
                         BorderThickness: =1
                         Fill: =RGBA(255, 255, 255, 1)
                         FillPortions: =0
-                        Height: =1300
+                        Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 2460, 1300)
                         LayoutDirection: =LayoutDirection.Vertical
                         LayoutGap: =14
-                        LayoutMinHeight: =1300
+                        LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 2460, 1300)
                         LayoutMinWidth: =0
                         LayoutOverflowX: =LayoutOverflow.Hide
                         LayoutOverflowY: =LayoutOverflow.Hide
@@ -623,10 +623,11 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =110
-                              LayoutDirection: =LayoutDirection.Vertical
-                              LayoutGap: =0
-                              LayoutMinHeight: =110
+                              Height: =If(IsEmpty(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))), 64, If(S2_ProfilPegawai.Size <= ScreenSize.Medium, If(CountRows(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) >= 2, 410, 200), 110))
+                              LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Horizontal, LayoutDirection.Vertical)
+                              LayoutGap: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 10, 0)
+                              LayoutMinHeight: =If(IsEmpty(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))), 64, If(S2_ProfilPegawai.Size <= ScreenSize.Medium, If(CountRows(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) >= 2, 410, 200), 110))
+                              LayoutWrap: =S2_ProfilPegawai.Size <= ScreenSize.Medium
                             Children:
                               - PendidikanHead:
                                   Control: GroupContainer@1.5.0
@@ -635,9 +636,11 @@ Screens:
                                     DropShadow: =DropShadow.None
                                     Fill: =RGBA(243, 242, 241, 1)
                                     FillPortions: =0
-                                    Height: =34
-                                    LayoutDirection: =LayoutDirection.Horizontal
-                                    LayoutMinHeight: =34
+                                    Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 34)
+                                    LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                                    LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 34)
+                                    Visible: =!IsEmpty(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
+                                    Width: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, (Parent.Width - 10) * 0.38, Parent.Width)
                                   Children:
                                     - PHNo:
                                         Control: ModernText@1.0.0
@@ -703,14 +706,25 @@ Screens:
                                     BorderStyle: =BorderStyle.Solid
                                     BorderThickness: =1
                                     FillPortions: =0
-                                    Height: =38
-                                    LayoutDirection: =LayoutDirection.Horizontal
-                                    LayoutMinHeight: =38
+                                    Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 38)
+                                    LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                                    LayoutGap: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 2, 0)
+                                    LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 38)
+                                    PaddingBottom: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 10, 0)
+                                    PaddingLeft: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 12, 0)
+                                    PaddingRight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 12, 0)
+                                    PaddingTop: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 10, 0)
+                                    RadiusBottomLeft: =8
+                                    RadiusBottomRight: =8
+                                    RadiusTopLeft: =8
+                                    RadiusTopRight: =8
+                                    Visible: =!IsEmpty(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
+                                    Width: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, (Parent.Width - 10) * 0.62, Parent.Width)
                                   Children:
                                     - PDNo1:
                                         Control: ModernText@1.0.0
                                         Properties:
-                                          Align: =Align.Center
+                                          Align: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Align.Left, Align.Center)
                                           Color: =RGBA(96, 94, 92, 1)
                                           FillPortions: =0.35
                                           Font: =Font.'Open Sans'
@@ -758,6 +772,69 @@ Screens:
                                           PaddingLeft: =10
                                           Size: =12
                                           Text: =Text(First(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).TahunLulus)
+                              - PendidikanHead2:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    Fill: =RGBA(243, 242, 241, 1)
+                                    FillPortions: =0
+                                    Height: =200
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutMinHeight: =200
+                                    Visible: =S2_ProfilPegawai.Size <= ScreenSize.Medium && CountRows(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) >= 2
+                                    Width: =(Parent.Width - 10) * 0.38
+                                  Children:
+                                    - PH2No:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.35
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="NO"
+                                    - PH2Jenjang:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.9
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="JENJANG"
+                                    - PH2Universitas:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =1.8
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="UNIVERSITAS / INSTITUSI"
+                                    - PH2Program:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =1.7
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="PROGRAM STUDI / BIDANG"
+                                    - PH2Tahun:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          FillPortions: =0.8
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          PaddingLeft: =10
+                                          Size: =11
+                                          Text: ="TAHUN LULUS"
                               - PendidikanRow2:
                                   Control: GroupContainer@1.5.0
                                   Variant: AutoLayout
@@ -768,14 +845,25 @@ Screens:
                                     BorderThickness: =1
                                     Fill: =RGBA(250, 249, 248, 1)
                                     FillPortions: =0
-                                    Height: =38
-                                    LayoutDirection: =LayoutDirection.Horizontal
-                                    LayoutMinHeight: =38
+                                    Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 38)
+                                    LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                                    LayoutGap: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 2, 0)
+                                    LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 38)
+                                    PaddingBottom: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 10, 0)
+                                    PaddingLeft: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 12, 0)
+                                    PaddingRight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 12, 0)
+                                    PaddingTop: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 10, 0)
+                                    RadiusBottomLeft: =8
+                                    RadiusBottomRight: =8
+                                    RadiusTopLeft: =8
+                                    RadiusTopRight: =8
+                                    Visible: =CountRows(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) >= 2
+                                    Width: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, (Parent.Width - 10) * 0.62, Parent.Width)
                                   Children:
                                     - PDNo2:
                                         Control: ModernText@1.0.0
                                         Properties:
-                                          Align: =Align.Center
+                                          Align: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Align.Left, Align.Center)
                                           Color: =RGBA(96, 94, 92, 1)
                                           FillPortions: =0.35
                                           Font: =Font.'Open Sans'
@@ -865,6 +953,17 @@ Screens:
                                                 ),
                                                 "—"
                                             )
+                              - PendidikanEmpty:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    FillPortions: =1
+                                    Font: =Font.'Open Sans'
+                                    Height: =64
+                                    Size: =12
+                                    Text: ="Belum ada data"
+                                    Visible: =IsEmpty(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
                         - PendidikanActions:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
@@ -888,6 +987,7 @@ Screens:
                                     Height: =32
                                     OnSelect: |-
                                       =Set(gblPendidikanEditMode, false);
+                                      Set(gblPendidikanDetailMode, false);
                                       Set(gblSelectedPendidikan, Defaults(Profil_Pendidikan));
                                       Navigate(S2A_Profil_Pendidikan_Form, ScreenTransition.Fade)
                                     PaddingLeft: =14
@@ -898,45 +998,6 @@ Screens:
                                     Size: =12
                                     Text: ="+ Tambah Baris"
                                     Width: =130
-                              - BtnEditPendidikan:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    Align: =Align.Center
-                                    BorderColor: =RGBA(200, 198, 196, 1)
-                                    BorderStyle: =BorderStyle.Solid
-                                    BorderThickness: =1
-                                    Color: =RGBA(50, 49, 48, 1)
-                                    Font: =Font.'Open Sans'
-                                    FontWeight: =FontWeight.Semibold
-                                    Height: =32
-                                    OnSelect: |-
-                                      =Set(
-                                          gblSelectedPendidikan,
-                                          First(
-                                              Filter(
-                                                  Profil_Pendidikan,
-                                                  NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))
-                                              )
-                                          )
-                                      );
-                                      Set(gblPendidikanEditMode, true);
-                                      Navigate(S2A_Profil_Pendidikan_Form, ScreenTransition.Fade)
-                                    RadiusBottomLeft: =4
-                                    RadiusBottomRight: =4
-                                    RadiusTopLeft: =4
-                                    RadiusTopRight: =4
-                                    Size: =12
-                                    Text: ="Edit Baris 1"
-                                    Visible: |-
-                                      =!IsBlank(
-                                          First(
-                                              Filter(
-                                                  Profil_Pendidikan,
-                                                  NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))
-                                              )
-                                          )
-                                      )
-                                    Width: =120
                               - BtnEditPendidikan2:
                                   Control: ModernText@1.0.0
                                   Properties:
@@ -949,7 +1010,8 @@ Screens:
                                     FontWeight: =FontWeight.Semibold
                                     Height: =32
                                     OnSelect: |-
-                                      =Set(
+                                      =Set(gblPendidikanDetailMode, false);
+                                      Set(
                                           gblSelectedPendidikan,
                                           Last(
                                               FirstN(
@@ -995,12 +1057,19 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =72
-                              LayoutDirection: =LayoutDirection.Vertical
+                              BorderColor: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, RGBA(225, 223, 221, 1), RGBA(0, 0, 0, 0))
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 1, 0)
+                              Height: =If(IsEmpty(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))), 64, If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 228, 72))
+                              LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Horizontal, LayoutDirection.Vertical)
                               LayoutGap: =0
-                              LayoutMinHeight: =72
+                              LayoutMinHeight: =If(IsEmpty(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))), 64, If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 228, 72))
                               LayoutMinWidth: =0
                               LayoutOverflowX: =LayoutOverflow.Hide
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
                               Width: =Parent.Width
                             Children:
                               - T1Head:
@@ -1010,12 +1079,13 @@ Screens:
                                     DropShadow: =DropShadow.None
                                     Fill: =RGBA(243, 242, 241, 1)
                                     FillPortions: =0
-                                    Height: =34
-                                    LayoutDirection: =LayoutDirection.Horizontal
-                                    LayoutMinHeight: =34
+                                    Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 34)
+                                    LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                                    LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 34)
                                     LayoutMinWidth: =0
                                     LayoutOverflowX: =LayoutOverflow.Hide
-                                    Width: =Parent.Width
+                                    Width: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Width * 0.38, Parent.Width)
+                                    Visible: =!IsEmpty(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
                                   Children:
                                     - T1HNo:
                                         Control: ModernText@1.0.0
@@ -1092,12 +1162,13 @@ Screens:
                                     BorderStyle: =BorderStyle.Solid
                                     BorderThickness: =1
                                     FillPortions: =0
-                                    Height: =38
-                                    LayoutDirection: =LayoutDirection.Horizontal
-                                    LayoutMinHeight: =38
+                                    Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 38)
+                                    LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                                    LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 38)
                                     LayoutMinWidth: =0
                                     LayoutOverflowX: =LayoutOverflow.Hide
-                                    Width: =Parent.Width
+                                    Visible: =!IsEmpty(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
+                                    Width: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Width * 0.62, Parent.Width)
                                   Children:
                                     - T1No1:
                                         Control: ModernText@1.0.0
@@ -1160,6 +1231,17 @@ Screens:
                                           PaddingLeft: =10
                                           Size: =12
                                           Text: =First(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).NomorSertifikat
+                              - T1Empty:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    FillPortions: =1
+                                    Font: =Font.'Open Sans'
+                                    Height: =64
+                                    Size: =12
+                                    Text: ="Belum ada data"
+                                    Visible: =IsEmpty(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
                         - BtnTambahTier1:
                             Control: ModernText@1.0.0
                             Properties:
@@ -1172,6 +1254,7 @@ Screens:
                               Height: =32
                               OnSelect: |-
                                 =Set(gblSertifikasiTier1EditMode, false);
+                                Set(gblSertifikasiTier1DetailMode, false);
                                 Set(gblSelectedSertifikasiTier1, Defaults(Profil_SertifikasiTier1));
                                 Navigate(S2B_Profil_SertifikasiTier1_Form, ScreenTransition.Fade)
                               PaddingLeft: =14
@@ -1181,25 +1264,6 @@ Screens:
                               RadiusTopRight: =4
                               Size: =12
                               Text: ="+ Tambah Baris"
-                              Width: =130
-                        - BtnEditTier1:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              Color: =RGBA(50, 49, 48, 1)
-                              Font: =Font.'Open Sans'
-                              FontWeight: =FontWeight.Semibold
-                              Height: =32
-                              OnSelect: |-
-                                =Set(
-                                    gblSelectedSertifikasiTier1,
-                                    First(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
-                                );
-                                Set(gblSertifikasiTier1EditMode, true);
-                                Navigate(S2B_Profil_SertifikasiTier1_Form, ScreenTransition.Fade)
-                              PaddingLeft: =14
-                              Size: =12
-                              Text: ="Edit Baris 1"
-                              Visible: =!IsBlank(First(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))))
                               Width: =130
 
                         # ── D.2 Sertifikasi Tier 2 ──
@@ -1219,12 +1283,19 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =72
-                              LayoutDirection: =LayoutDirection.Vertical
+                              BorderColor: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, RGBA(225, 223, 221, 1), RGBA(0, 0, 0, 0))
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 1, 0)
+                              Height: =If(IsEmpty(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))), 64, If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 228, 72))
+                              LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Horizontal, LayoutDirection.Vertical)
                               LayoutGap: =0
-                              LayoutMinHeight: =72
+                              LayoutMinHeight: =If(IsEmpty(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))), 64, If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 228, 72))
                               LayoutMinWidth: =0
                               LayoutOverflowX: =LayoutOverflow.Hide
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
                               Width: =Parent.Width
                             Children:
                               - T2Head:
@@ -1234,12 +1305,13 @@ Screens:
                                     DropShadow: =DropShadow.None
                                     Fill: =RGBA(243, 242, 241, 1)
                                     FillPortions: =0
-                                    Height: =34
-                                    LayoutDirection: =LayoutDirection.Horizontal
-                                    LayoutMinHeight: =34
+                                    Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 34)
+                                    LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                                    LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 34)
                                     LayoutMinWidth: =0
                                     LayoutOverflowX: =LayoutOverflow.Hide
-                                    Width: =Parent.Width
+                                    Width: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Width * 0.38, Parent.Width)
+                                    Visible: =!IsEmpty(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
                                   Children:
                                     - T2HNo:
                                         Control: ModernText@1.0.0
@@ -1317,12 +1389,13 @@ Screens:
                                     BorderThickness: =1
                                     Fill: =RGBA(250, 249, 248, 1)
                                     FillPortions: =0
-                                    Height: =38
-                                    LayoutDirection: =LayoutDirection.Horizontal
-                                    LayoutMinHeight: =38
+                                    Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 38)
+                                    LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                                    LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 38)
                                     LayoutMinWidth: =0
                                     LayoutOverflowX: =LayoutOverflow.Hide
-                                    Width: =Parent.Width
+                                    Visible: =!IsEmpty(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
+                                    Width: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Width * 0.62, Parent.Width)
                                   Children:
                                     - T2No1:
                                         Control: ModernText@1.0.0
@@ -1385,6 +1458,17 @@ Screens:
                                           PaddingLeft: =10
                                           Size: =12
                                           Text: =Coalesce(First(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).NomorSertifikat, "—")
+                              - T2Empty:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    FillPortions: =1
+                                    Font: =Font.'Open Sans'
+                                    Height: =64
+                                    Size: =12
+                                    Text: ="Belum ada data"
+                                    Visible: =IsEmpty(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
                         - BtnTambahTier2:
                             Control: ModernText@1.0.0
                             Properties:
@@ -1397,6 +1481,7 @@ Screens:
                               Height: =32
                               OnSelect: |-
                                 =Set(gblSertifikasiTier2EditMode, false);
+                                Set(gblSertifikasiTier2DetailMode, false);
                                 Set(gblSelectedSertifikasiTier2, Defaults(Profil_SertifikasiTier2));
                                 Navigate(S2C_Profil_SertifikasiTier2_Form, ScreenTransition.Fade)
                               PaddingLeft: =14
@@ -1406,25 +1491,6 @@ Screens:
                               RadiusTopRight: =4
                               Size: =12
                               Text: ="+ Tambah Baris"
-                              Width: =130
-                        - BtnEditTier2:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              Color: =RGBA(50, 49, 48, 1)
-                              Font: =Font.'Open Sans'
-                              FontWeight: =FontWeight.Semibold
-                              Height: =32
-                              OnSelect: |-
-                                =Set(
-                                    gblSelectedSertifikasiTier2,
-                                    First(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
-                                );
-                                Set(gblSertifikasiTier2EditMode, true);
-                                Navigate(S2C_Profil_SertifikasiTier2_Form, ScreenTransition.Fade)
-                              PaddingLeft: =14
-                              Size: =12
-                              Text: ="Edit Baris 1"
-                              Visible: =!IsBlank(First(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))))
                               Width: =130
 
                         # ── D.3 PMK ──
@@ -1444,12 +1510,19 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =72
-                              LayoutDirection: =LayoutDirection.Vertical
+                              BorderColor: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, RGBA(225, 223, 221, 1), RGBA(0, 0, 0, 0))
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 1, 0)
+                              Height: =If(IsEmpty(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))), 64, If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 304, 72))
+                              LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Horizontal, LayoutDirection.Vertical)
                               LayoutGap: =0
-                              LayoutMinHeight: =72
+                              LayoutMinHeight: =If(IsEmpty(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))), 64, If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 304, 72))
                               LayoutMinWidth: =0
                               LayoutOverflowX: =LayoutOverflow.Hide
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
                               Width: =Parent.Width
                             Children:
                               - PMKHead:
@@ -1459,12 +1532,13 @@ Screens:
                                     DropShadow: =DropShadow.None
                                     Fill: =RGBA(243, 242, 241, 1)
                                     FillPortions: =0
-                                    Height: =34
-                                    LayoutDirection: =LayoutDirection.Horizontal
-                                    LayoutMinHeight: =34
+                                    Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 34)
+                                    LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                                    LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 34)
                                     LayoutMinWidth: =0
                                     LayoutOverflowX: =LayoutOverflow.Hide
-                                    Width: =Parent.Width
+                                    Width: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Width * 0.38, Parent.Width)
+                                    Visible: =!IsEmpty(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
                                   Children:
                                     - PMKHNo:
                                         Control: ModernText@1.0.0
@@ -1563,12 +1637,13 @@ Screens:
                                     BorderStyle: =BorderStyle.Solid
                                     BorderThickness: =1
                                     FillPortions: =0
-                                    Height: =38
-                                    LayoutDirection: =LayoutDirection.Horizontal
-                                    LayoutMinHeight: =38
+                                    Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 38)
+                                    LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                                    LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 38)
                                     LayoutMinWidth: =0
                                     LayoutOverflowX: =LayoutOverflow.Hide
-                                    Width: =Parent.Width
+                                    Visible: =!IsEmpty(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
+                                    Width: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Width * 0.62, Parent.Width)
                                   Children:
                                     - PMKNo1:
                                         Control: ModernText@1.0.0
@@ -1651,6 +1726,17 @@ Screens:
                                           PaddingLeft: =10
                                           Size: =12
                                           Text: =First(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).Negara
+                              - PMKEmpty:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    FillPortions: =1
+                                    Font: =Font.'Open Sans'
+                                    Height: =64
+                                    Size: =12
+                                    Text: ="Belum ada data"
+                                    Visible: =IsEmpty(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
                         - BtnTambahPMK:
                             Control: ModernText@1.0.0
                             Properties:
@@ -1663,6 +1749,7 @@ Screens:
                               Height: =32
                               OnSelect: |-
                                 =Set(gblPMKEditMode, false);
+                                Set(gblPMKDetailMode, false);
                                 Set(gblSelectedPMK, Defaults(Profil_PMK));
                                 Navigate(S2D_Profil_PMK_Form, ScreenTransition.Fade)
                               PaddingLeft: =14
@@ -1672,25 +1759,6 @@ Screens:
                               RadiusTopRight: =4
                               Size: =12
                               Text: ="+ Tambah Baris"
-                              Width: =130
-                        - BtnEditPMK:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              Color: =RGBA(50, 49, 48, 1)
-                              Font: =Font.'Open Sans'
-                              FontWeight: =FontWeight.Semibold
-                              Height: =32
-                              OnSelect: |-
-                                =Set(
-                                    gblSelectedPMK,
-                                    First(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
-                                );
-                                Set(gblPMKEditMode, true);
-                                Navigate(S2D_Profil_PMK_Form, ScreenTransition.Fade)
-                              PaddingLeft: =14
-                              Size: =12
-                              Text: ="Edit Baris 1"
-                              Visible: =!IsBlank(First(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))))
                               Width: =130
 
                         # ── D.4 Kum Mengajar ──
@@ -1710,12 +1778,19 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =72
-                              LayoutDirection: =LayoutDirection.Vertical
+                              BorderColor: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, RGBA(225, 223, 221, 1), RGBA(0, 0, 0, 0))
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 1, 0)
+                              Height: =If(IsEmpty(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))), 64, If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 114, 72))
+                              LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Horizontal, LayoutDirection.Vertical)
                               LayoutGap: =0
-                              LayoutMinHeight: =72
+                              LayoutMinHeight: =If(IsEmpty(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))), 64, If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 114, 72))
                               LayoutMinWidth: =0
                               LayoutOverflowX: =LayoutOverflow.Hide
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
                               Width: =Parent.Width
                             Children:
                               - KumHead:
@@ -1725,12 +1800,13 @@ Screens:
                                     DropShadow: =DropShadow.None
                                     Fill: =RGBA(243, 242, 241, 1)
                                     FillPortions: =0
-                                    Height: =34
-                                    LayoutDirection: =LayoutDirection.Horizontal
-                                    LayoutMinHeight: =34
+                                    Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 34)
+                                    LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                                    LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 34)
                                     LayoutMinWidth: =0
                                     LayoutOverflowX: =LayoutOverflow.Hide
-                                    Width: =Parent.Width
+                                    Width: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Width * 0.38, Parent.Width)
+                                    Visible: =!IsEmpty(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
                                   Children:
                                     - KumHNo:
                                         Control: ModernText@1.0.0
@@ -1775,12 +1851,13 @@ Screens:
                                     BorderThickness: =1
                                     Fill: =RGBA(250, 249, 248, 1)
                                     FillPortions: =0
-                                    Height: =38
-                                    LayoutDirection: =LayoutDirection.Horizontal
-                                    LayoutMinHeight: =38
+                                    Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 38)
+                                    LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                                    LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 38)
                                     LayoutMinWidth: =0
                                     LayoutOverflowX: =LayoutOverflow.Hide
-                                    Width: =Parent.Width
+                                    Visible: =!IsEmpty(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
+                                    Width: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Width * 0.62, Parent.Width)
                                   Children:
                                     - KumNo1:
                                         Control: ModernText@1.0.0
@@ -1813,6 +1890,17 @@ Screens:
                                           PaddingLeft: =10
                                           Size: =12
                                           Text: =Coalesce(Text(Date(1899, 12, 30) + Value(First(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).TanggalPelaksanaan), "[$-id-ID]dd/mm/yyyy"), "—")
+                              - KumEmpty:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    FillPortions: =1
+                                    Font: =Font.'Open Sans'
+                                    Height: =64
+                                    Size: =12
+                                    Text: ="Belum ada data"
+                                    Visible: =IsEmpty(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
                         - BtnTambahKum:
                             Control: ModernText@1.0.0
                             Properties:
@@ -1825,6 +1913,7 @@ Screens:
                               Height: =32
                               OnSelect: |-
                                 =Set(gblKumMengajarEditMode, false);
+                                Set(gblKumMengajarDetailMode, false);
                                 Set(gblSelectedKumMengajar, Defaults(Profil_KumMengajar));
                                 Navigate(S2E_Profil_KumMengajar_Form, ScreenTransition.Fade)
                               PaddingLeft: =14
@@ -1834,25 +1923,6 @@ Screens:
                               RadiusTopRight: =4
                               Size: =12
                               Text: ="+ Tambah Baris"
-                              Width: =130
-                        - BtnEditKum:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              Color: =RGBA(50, 49, 48, 1)
-                              Font: =Font.'Open Sans'
-                              FontWeight: =FontWeight.Semibold
-                              Height: =32
-                              OnSelect: |-
-                                =Set(
-                                    gblSelectedKumMengajar,
-                                    First(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
-                                );
-                                Set(gblKumMengajarEditMode, true);
-                                Navigate(S2E_Profil_KumMengajar_Form, ScreenTransition.Fade)
-                              PaddingLeft: =14
-                              Size: =12
-                              Text: ="Edit Baris 1"
-                              Visible: =!IsBlank(First(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))))
                               Width: =130
 
                   # ════════════════════════════════
@@ -1868,10 +1938,10 @@ Screens:
                         BorderThickness: =1
                         Fill: =RGBA(255, 255, 255, 1)
                         FillPortions: =0
-                        Height: =990
+                        Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 1900, 990)
                         LayoutDirection: =LayoutDirection.Vertical
                         LayoutGap: =14
-                        LayoutMinHeight: =990
+                        LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 1900, 990)
                         LayoutMinWidth: =0
                         LayoutOverflowX: =LayoutOverflow.Hide
                         LayoutOverflowY: =LayoutOverflow.Hide
@@ -1946,12 +2016,19 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =72
-                              LayoutDirection: =LayoutDirection.Vertical
+                              BorderColor: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, RGBA(225, 223, 221, 1), RGBA(0, 0, 0, 0))
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 1, 0)
+                              Height: =If(IsEmpty(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))), 64, If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 228, 72))
+                              LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Horizontal, LayoutDirection.Vertical)
                               LayoutGap: =0
-                              LayoutMinHeight: =72
+                              LayoutMinHeight: =If(IsEmpty(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))), 64, If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 228, 72))
                               LayoutMinWidth: =0
                               LayoutOverflowX: =LayoutOverflow.Hide
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
                               Width: =Parent.Width
                             Children:
                               - PenugasanHead:
@@ -1961,12 +2038,13 @@ Screens:
                                     DropShadow: =DropShadow.None
                                     Fill: =RGBA(243, 242, 241, 1)
                                     FillPortions: =0
-                                    Height: =34
-                                    LayoutDirection: =LayoutDirection.Horizontal
-                                    LayoutMinHeight: =34
+                                    Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 34)
+                                    LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                                    LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 34)
                                     LayoutMinWidth: =0
                                     LayoutOverflowX: =LayoutOverflow.Hide
-                                    Width: =Parent.Width
+                                    Width: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Width * 0.38, Parent.Width)
+                                    Visible: =!IsEmpty(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
                                   Children:
                                     - PenHNo:
                                         Control: ModernText@1.0.0
@@ -2044,12 +2122,13 @@ Screens:
                                     BorderThickness: =1
                                     Fill: =RGBA(250, 249, 248, 1)
                                     FillPortions: =0
-                                    Height: =38
-                                    LayoutDirection: =LayoutDirection.Horizontal
-                                    LayoutMinHeight: =38
+                                    Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 38)
+                                    LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                                    LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 38)
                                     LayoutMinWidth: =0
                                     LayoutOverflowX: =LayoutOverflow.Hide
-                                    Width: =Parent.Width
+                                    Visible: =!IsEmpty(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
+                                    Width: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Width * 0.62, Parent.Width)
                                   Children:
                                     - PenNo1:
                                         Control: ModernText@1.0.0
@@ -2112,6 +2191,17 @@ Screens:
                                           PaddingLeft: =10
                                           Size: =12
                                           Text: =Coalesce(First(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).Deskripsi, "—")
+                              - PenugasanEmpty:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    FillPortions: =1
+                                    Font: =Font.'Open Sans'
+                                    Height: =64
+                                    Size: =12
+                                    Text: ="Belum ada data"
+                                    Visible: =IsEmpty(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
                         - BtnTambahPenugasan:
                             Control: ModernText@1.0.0
                             Properties:
@@ -2124,6 +2214,7 @@ Screens:
                               Height: =32
                               OnSelect: |-
                                 =Set(gblPenugasanEditMode, false);
+                                Set(gblPenugasanDetailMode, false);
                                 Set(gblSelectedPenugasan, Defaults(Profil_Penugasan));
                                 Navigate(S2F_Profil_Penugasan_Form, ScreenTransition.Fade)
                               PaddingLeft: =14
@@ -2133,25 +2224,6 @@ Screens:
                               RadiusTopRight: =4
                               Size: =12
                               Text: ="+ Tambah Baris"
-                              Width: =130
-                        - BtnEditPenugasan:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              Color: =RGBA(50, 49, 48, 1)
-                              Font: =Font.'Open Sans'
-                              FontWeight: =FontWeight.Semibold
-                              Height: =32
-                              OnSelect: |-
-                                =Set(
-                                    gblSelectedPenugasan,
-                                    First(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
-                                );
-                                Set(gblPenugasanEditMode, true);
-                                Navigate(S2F_Profil_Penugasan_Form, ScreenTransition.Fade)
-                              PaddingLeft: =14
-                              Size: =12
-                              Text: ="Edit Baris 1"
-                              Visible: =!IsBlank(First(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))))
                               Width: =130
 
                         # ── E.2 Prestasi ──
@@ -2171,12 +2243,19 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =72
-                              LayoutDirection: =LayoutDirection.Vertical
+                              BorderColor: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, RGBA(225, 223, 221, 1), RGBA(0, 0, 0, 0))
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 1, 0)
+                              Height: =If(IsEmpty(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))), 64, If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 228, 72))
+                              LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Horizontal, LayoutDirection.Vertical)
                               LayoutGap: =0
-                              LayoutMinHeight: =72
+                              LayoutMinHeight: =If(IsEmpty(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))), 64, If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 228, 72))
                               LayoutMinWidth: =0
                               LayoutOverflowX: =LayoutOverflow.Hide
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
                               Width: =Parent.Width
                             Children:
                               - PrestasiHead:
@@ -2186,12 +2265,13 @@ Screens:
                                     DropShadow: =DropShadow.None
                                     Fill: =RGBA(243, 242, 241, 1)
                                     FillPortions: =0
-                                    Height: =34
-                                    LayoutDirection: =LayoutDirection.Horizontal
-                                    LayoutMinHeight: =34
+                                    Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 34)
+                                    LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                                    LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 34)
                                     LayoutMinWidth: =0
                                     LayoutOverflowX: =LayoutOverflow.Hide
-                                    Width: =Parent.Width
+                                    Width: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Width * 0.38, Parent.Width)
+                                    Visible: =!IsEmpty(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
                                   Children:
                                     - PrHNo:
                                         Control: ModernText@1.0.0
@@ -2268,12 +2348,13 @@ Screens:
                                     BorderStyle: =BorderStyle.Solid
                                     BorderThickness: =1
                                     FillPortions: =0
-                                    Height: =38
-                                    LayoutDirection: =LayoutDirection.Horizontal
-                                    LayoutMinHeight: =38
+                                    Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 38)
+                                    LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                                    LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 38)
                                     LayoutMinWidth: =0
                                     LayoutOverflowX: =LayoutOverflow.Hide
-                                    Width: =Parent.Width
+                                    Visible: =!IsEmpty(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
+                                    Width: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Width * 0.62, Parent.Width)
                                   Children:
                                     - PrNo1:
                                         Control: ModernText@1.0.0
@@ -2336,6 +2417,17 @@ Screens:
                                           PaddingLeft: =10
                                           Size: =12
                                           Text: =Text(Date(1899, 12, 30) + Value(First(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).Tanggal), "[$-id-ID]dd/mm/yyyy")
+                              - PrestasiEmpty:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    FillPortions: =1
+                                    Font: =Font.'Open Sans'
+                                    Height: =64
+                                    Size: =12
+                                    Text: ="Belum ada data"
+                                    Visible: =IsEmpty(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
                         - BtnTambahPrestasi:
                             Control: ModernText@1.0.0
                             Properties:
@@ -2348,6 +2440,7 @@ Screens:
                               Height: =32
                               OnSelect: |-
                                 =Set(gblPrestasiEditMode, false);
+                                Set(gblPrestasiDetailMode, false);
                                 Set(gblSelectedPrestasi, Defaults(Profil_Prestasi));
                                 Navigate(S2G_Profil_Prestasi_Form, ScreenTransition.Fade)
                               PaddingLeft: =14
@@ -2357,25 +2450,6 @@ Screens:
                               RadiusTopRight: =4
                               Size: =12
                               Text: ="+ Tambah Baris"
-                              Width: =130
-                        - BtnEditPrestasi:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              Color: =RGBA(50, 49, 48, 1)
-                              Font: =Font.'Open Sans'
-                              FontWeight: =FontWeight.Semibold
-                              Height: =32
-                              OnSelect: |-
-                                =Set(
-                                    gblSelectedPrestasi,
-                                    First(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
-                                );
-                                Set(gblPrestasiEditMode, true);
-                                Navigate(S2G_Profil_Prestasi_Form, ScreenTransition.Fade)
-                              PaddingLeft: =14
-                              Size: =12
-                              Text: ="Edit Baris 1"
-                              Visible: =!IsBlank(First(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))))
                               Width: =130
 
                         # ── E.3 Kepanitiaan ──
@@ -2395,12 +2469,19 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =72
-                              LayoutDirection: =LayoutDirection.Vertical
+                              BorderColor: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, RGBA(225, 223, 221, 1), RGBA(0, 0, 0, 0))
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 1, 0)
+                              Height: =If(IsEmpty(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))), 64, If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 304, 72))
+                              LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Horizontal, LayoutDirection.Vertical)
                               LayoutGap: =0
-                              LayoutMinHeight: =72
+                              LayoutMinHeight: =If(IsEmpty(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))), 64, If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 304, 72))
                               LayoutMinWidth: =0
                               LayoutOverflowX: =LayoutOverflow.Hide
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
                               Width: =Parent.Width
                             Children:
                               - KepHead:
@@ -2410,12 +2491,13 @@ Screens:
                                     DropShadow: =DropShadow.None
                                     Fill: =RGBA(243, 242, 241, 1)
                                     FillPortions: =0
-                                    Height: =34
-                                    LayoutDirection: =LayoutDirection.Horizontal
-                                    LayoutMinHeight: =34
+                                    Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 34)
+                                    LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                                    LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 34)
                                     LayoutMinWidth: =0
                                     LayoutOverflowX: =LayoutOverflow.Hide
-                                    Width: =Parent.Width
+                                    Width: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Width * 0.38, Parent.Width)
+                                    Visible: =!IsEmpty(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
                                   Children:
                                     - KepHNo:
                                         Control: ModernText@1.0.0
@@ -2514,12 +2596,13 @@ Screens:
                                     BorderStyle: =BorderStyle.Solid
                                     BorderThickness: =1
                                     FillPortions: =0
-                                    Height: =38
-                                    LayoutDirection: =LayoutDirection.Horizontal
-                                    LayoutMinHeight: =38
+                                    Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 38)
+                                    LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                                    LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 38)
                                     LayoutMinWidth: =0
                                     LayoutOverflowX: =LayoutOverflow.Hide
-                                    Width: =Parent.Width
+                                    Visible: =!IsEmpty(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
+                                    Width: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Width * 0.62, Parent.Width)
                                   Children:
                                     - KepNo1:
                                         Control: ModernText@1.0.0
@@ -2602,6 +2685,17 @@ Screens:
                                           PaddingLeft: =10
                                           Size: =12
                                           Text: =Text(Date(1899, 12, 30) + Value(First(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).EndDate), "[$-id-ID]dd/mm/yyyy")
+                              - KepanitiaanEmpty:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    FillPortions: =1
+                                    Font: =Font.'Open Sans'
+                                    Height: =64
+                                    Size: =12
+                                    Text: ="Belum ada data"
+                                    Visible: =IsEmpty(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
                         - BtnTambahKepanitiaan:
                             Control: ModernText@1.0.0
                             Properties:
@@ -2614,6 +2708,7 @@ Screens:
                               Height: =32
                               OnSelect: |-
                                 =Set(gblKepanitiaanEditMode, false);
+                                Set(gblKepanitiaanDetailMode, false);
                                 Set(gblSelectedKepanitiaan, Defaults(Profil_Kepanitiaan));
                                 Navigate(S2H_Profil_Kepanitiaan_Form, ScreenTransition.Fade)
                               PaddingLeft: =14
@@ -2623,25 +2718,6 @@ Screens:
                               RadiusTopRight: =4
                               Size: =12
                               Text: ="+ Tambah Baris"
-                              Width: =130
-                        - BtnEditKepanitiaan:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              Color: =RGBA(50, 49, 48, 1)
-                              Font: =Font.'Open Sans'
-                              FontWeight: =FontWeight.Semibold
-                              Height: =32
-                              OnSelect: |-
-                                =Set(
-                                    gblSelectedKepanitiaan,
-                                    First(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
-                                );
-                                Set(gblKepanitiaanEditMode, true);
-                                Navigate(S2H_Profil_Kepanitiaan_Form, ScreenTransition.Fade)
-                              PaddingLeft: =14
-                              Size: =12
-                              Text: ="Edit Baris 1"
-                              Visible: =!IsBlank(First(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))))
                               Width: =130
 
                         # ── E.4 Plt ──
@@ -2661,12 +2737,19 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =72
-                              LayoutDirection: =LayoutDirection.Vertical
+                              BorderColor: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, RGBA(225, 223, 221, 1), RGBA(0, 0, 0, 0))
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 1, 0)
+                              Height: =If(IsEmpty(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))), 64, If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 304, 72))
+                              LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Horizontal, LayoutDirection.Vertical)
                               LayoutGap: =0
-                              LayoutMinHeight: =72
+                              LayoutMinHeight: =If(IsEmpty(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))), 64, If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 304, 72))
                               LayoutMinWidth: =0
                               LayoutOverflowX: =LayoutOverflow.Hide
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
                               Width: =Parent.Width
                             Children:
                               - PltHead:
@@ -2676,12 +2759,13 @@ Screens:
                                     DropShadow: =DropShadow.None
                                     Fill: =RGBA(243, 242, 241, 1)
                                     FillPortions: =0
-                                    Height: =34
-                                    LayoutDirection: =LayoutDirection.Horizontal
-                                    LayoutMinHeight: =34
+                                    Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 34)
+                                    LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                                    LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 34)
                                     LayoutMinWidth: =0
                                     LayoutOverflowX: =LayoutOverflow.Hide
-                                    Width: =Parent.Width
+                                    Width: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Width * 0.38, Parent.Width)
+                                    Visible: =!IsEmpty(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
                                   Children:
                                     - PltHNo:
                                         Control: ModernText@1.0.0
@@ -2781,12 +2865,13 @@ Screens:
                                     BorderThickness: =1
                                     Fill: =RGBA(250, 249, 248, 1)
                                     FillPortions: =0
-                                    Height: =38
-                                    LayoutDirection: =LayoutDirection.Horizontal
-                                    LayoutMinHeight: =38
+                                    Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 38)
+                                    LayoutDirection: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                                    LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Height, 38)
                                     LayoutMinWidth: =0
                                     LayoutOverflowX: =LayoutOverflow.Hide
-                                    Width: =Parent.Width
+                                    Visible: =!IsEmpty(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
+                                    Width: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, Parent.Width * 0.62, Parent.Width)
                                   Children:
                                     - PltNo1:
                                         Control: ModernText@1.0.0
@@ -2869,6 +2954,17 @@ Screens:
                                           PaddingLeft: =10
                                           Size: =12
                                           Text: =Coalesce(First(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).Catatan, "—")
+                              - PltEmpty:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    FillPortions: =1
+                                    Font: =Font.'Open Sans'
+                                    Height: =64
+                                    Size: =12
+                                    Text: ="Belum ada data"
+                                    Visible: =IsEmpty(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
                         - BtnTambahPlt:
                             Control: ModernText@1.0.0
                             Properties:
@@ -2881,6 +2977,7 @@ Screens:
                               Height: =32
                               OnSelect: |-
                                 =Set(gblPltEditMode, false);
+                                Set(gblPltDetailMode, false);
                                 Set(gblSelectedPlt, Defaults(Profil_Plt));
                                 Navigate(S2I_Profil_Plt_Form, ScreenTransition.Fade)
                               PaddingLeft: =14
@@ -2890,23 +2987,4 @@ Screens:
                               RadiusTopRight: =4
                               Size: =12
                               Text: ="+ Tambah Baris"
-                              Width: =130
-                        - BtnEditPlt:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              Color: =RGBA(50, 49, 48, 1)
-                              Font: =Font.'Open Sans'
-                              FontWeight: =FontWeight.Semibold
-                              Height: =32
-                              OnSelect: |-
-                                =Set(
-                                    gblSelectedPlt,
-                                    First(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
-                                );
-                                Set(gblPltEditMode, true);
-                                Navigate(S2I_Profil_Plt_Form, ScreenTransition.Fade)
-                              PaddingLeft: =14
-                              Size: =12
-                              Text: ="Edit Baris 1"
-                              Visible: =!IsBlank(First(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))))
                               Width: =130

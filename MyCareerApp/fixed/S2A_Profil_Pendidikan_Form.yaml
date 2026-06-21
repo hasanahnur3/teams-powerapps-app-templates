@@ -3,6 +3,7 @@ Screens:
     Properties:
       Fill: =RGBA(255, 255, 255, 1)
       LoadingSpinnerColor: =RGBA(31, 56, 100, 1)
+      OnVisible: =Set(gblPendidikanSubmitting, false)
     Children:
       - ScreenContainerPendidikanForm:
           Control: GroupContainer@1.5.0
@@ -124,7 +125,7 @@ Screens:
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Bold
                               Size: =20
-                              Text: =If(Coalesce(gblPendidikanEditMode, false), "Edit Pendidikan", "Tambah Pendidikan")
+                              Text: =If(Coalesce(gblPendidikanDetailMode, false), "Detail Pendidikan", If(Coalesce(gblPendidikanEditMode, false), "Edit Pendidikan", "Tambah Pendidikan"))
                               Width: =Parent.Width
                         - SubtitlePendidikanForm:
                             Control: ModernText@1.0.0
@@ -176,6 +177,7 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Jenjang pendidikan"
+                                    DisplayMode: =If(Coalesce(gblPendidikanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
                                     Value: =If(Coalesce(gblPendidikanEditMode, false), Coalesce(gblSelectedPendidikan.Jenjang, ""), "")
                                     Width: =Parent.Width
@@ -205,6 +207,7 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Universitas atau institusi"
+                                    DisplayMode: =If(Coalesce(gblPendidikanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
                                     Value: =If(Coalesce(gblPendidikanEditMode, false), Coalesce(gblSelectedPendidikan.Universitas, ""), "")
                                     Width: =Parent.Width
@@ -234,6 +237,7 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Program studi atau bidang"
+                                    DisplayMode: =If(Coalesce(gblPendidikanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
                                     Value: =If(Coalesce(gblPendidikanEditMode, false), Coalesce(gblSelectedPendidikan.ProgramStudi, ""), "")
                                     Width: =Parent.Width
@@ -263,6 +267,7 @@ Screens:
                                   Control: NumberInput@2.9.12
                                   Properties:
                                     AccessibleLabel: ="Tahun lulus"
+                                    DisplayMode: =If(Coalesce(gblPendidikanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Max: =Year(Today()) + 10
                                     Min: =1900
                                     Value: =If(Coalesce(gblPendidikanEditMode, false), Value(gblSelectedPendidikan.TahunLulus), Year(Today()))
@@ -278,6 +283,7 @@ Screens:
                               LayoutGap: =12
                               LayoutJustifyContent: =LayoutJustifyContent.End
                               LayoutMinHeight: =48
+                              Visible: =!Coalesce(gblPendidikanDetailMode, false)
                               Width: =Parent.Width
                             Children:
                               - BtnBatalPendidikan:
@@ -348,29 +354,20 @@ Screens:
                                                           TahunLulus: Value(NumTahunLulusPendidikan.Value)
                                                       }
                                                   ),
-                                                  With(
+                                                  Patch(
+                                                      Profil_Pendidikan,
+                                                      Defaults(Profil_Pendidikan),
                                                       {
-                                                          newPendidikan:
-                                                              Patch(
-                                                                  Profil_Pendidikan,
-                                                                  Defaults(Profil_Pendidikan),
-                                                                  {
-                                                                      Title: "TEMP_" & Text(GUID()),
-                                                                      NIP: Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
-                                                                      Jenjang: Trim(TxtJenjangPendidikan.Value),
-                                                                      Universitas: Trim(TxtUniversitasPendidikan.Value),
-                                                                      ProgramStudi: Trim(TxtProgramStudiPendidikan.Value),
-                                                                      TahunLulus: Value(NumTahunLulusPendidikan.Value)
-                                                                  }
-                                                              )
-                                                      },
-                                                      Patch(
-                                                          Profil_Pendidikan,
-                                                          newPendidikan,
-                                                          {
-                                                              Title: Text(newPendidikan.ID)
-                                                          }
-                                                      )
+                                                          Title:
+                                                              Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)) &
+                                                              "_" & Trim(TxtJenjangPendidikan.Value) &
+                                                              "_" & Text(Now(), "yyyymmddhhmmss"),
+                                                          NIP: Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
+                                                          Jenjang: Trim(TxtJenjangPendidikan.Value),
+                                                          Universitas: Trim(TxtUniversitasPendidikan.Value),
+                                                          ProgramStudi: Trim(TxtProgramStudiPendidikan.Value),
+                                                          TahunLulus: Value(NumTahunLulusPendidikan.Value)
+                                                      }
                                                   )
                                               );
                                               Refresh(Profil_Pendidikan);
@@ -384,6 +381,7 @@ Screens:
                                               );
                                               Set(gblPendidikanSubmitting, false);
                                               Set(gblPendidikanEditMode, false);
+                                              Set(gblPendidikanDetailMode, false);
                                               Set(gblSelectedPendidikan, Defaults(Profil_Pendidikan));
                                               Navigate(S2_ProfilPegawai, ScreenTransition.Fade),
                                               Notify(

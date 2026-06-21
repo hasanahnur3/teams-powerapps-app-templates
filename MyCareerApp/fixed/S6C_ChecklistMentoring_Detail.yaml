@@ -145,10 +145,26 @@ Screens:
                         DropShadow: =DropShadow.Light
                         Fill: =RGBA(255, 255, 255, 1)
                         FillPortions: =0
-                        Height: =620
+                        Height: |-
+                          =Max(
+                              620,
+                              ChecklistDetailInfo.Height +
+                                  ChecklistDetailDivider.Height +
+                                  ChecklistDocumentTitle.Height +
+                                  ChecklistDocumentGrid.Height +
+                                  160
+                          )
                         LayoutDirection: =LayoutDirection.Vertical
                         LayoutGap: =20
-                        LayoutMinHeight: =620
+                        LayoutMinHeight: |-
+                          =Max(
+                              620,
+                              ChecklistDetailInfo.Height +
+                                  ChecklistDetailDivider.Height +
+                                  ChecklistDocumentTitle.Height +
+                                  ChecklistDocumentGrid.Height +
+                                  160
+                          )
                         PaddingBottom: =28
                         PaddingLeft: =28
                         PaddingRight: =28
@@ -164,44 +180,72 @@ Screens:
                             Variant: AutoLayout
                             Properties:
                               FillPortions: =0
-                              Height: =If(Parent.Width < 640, 300, 78)
+                              Height: |-
+                                =If(
+                                    Parent.Width < 640,
+                                    InfoEmployeeChecklist.Height +
+                                        InfoYearChecklist.Height +
+                                        InfoMentorChecklist.Height +
+                                        InfoStatusChecklist.Height +
+                                        48,
+                                    Max(
+                                        InfoEmployeeChecklist.Height,
+                                        InfoYearChecklist.Height,
+                                        InfoMentorChecklist.Height,
+                                        InfoStatusChecklist.Height
+                                    )
+                                )
                               LayoutDirection: =LayoutDirection.Horizontal
                               LayoutGap: =16
-                              LayoutMinHeight: =If(Parent.Width < 640, 300, 78)
+                              LayoutMinHeight: |-
+                                =If(
+                                    Parent.Width < 640,
+                                    InfoEmployeeChecklist.Height +
+                                        InfoYearChecklist.Height +
+                                        InfoMentorChecklist.Height +
+                                        InfoStatusChecklist.Height +
+                                        48,
+                                    Max(
+                                        InfoEmployeeChecklist.Height,
+                                        InfoYearChecklist.Height,
+                                        InfoMentorChecklist.Height,
+                                        InfoStatusChecklist.Height
+                                    )
+                                )
                               LayoutWrap: =true
                               Width: =Parent.Width
                             Children:
                               - InfoEmployeeChecklist:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Font: =Font.'Open Sans'
-                                    Height: =70
                                     Size: =12
                                     Text: '="PEGAWAI" & Char(10) & Coalesce(LookUp(Pegawai, Title = gblSelectedChecklist.NIP, Nama), gblSelectedChecklist.NIP, "-")'
                                     Width: =If(Parent.Width < 640, Parent.Width, (Parent.Width - 48) / 4)
                               - InfoYearChecklist:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Font: =Font.'Open Sans'
-                                    Height: =70
                                     Size: =12
                                     Text: '="TAHUN" & Char(10) & Coalesce(Text(gblSelectedChecklist.Tahun), "-")'
                                     Width: =If(Parent.Width < 640, Parent.Width, (Parent.Width - 48) / 4)
                               - InfoMentorChecklist:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Font: =Font.'Open Sans'
-                                    Height: =70
                                     Size: =12
                                     Text: '="MENTOR" & Char(10) & Coalesce(LookUp(Pegawai, Title = gblSelectedChecklist.MentorNIP, Nama), gblSelectedChecklist.MentorNIP, "-")'
                                     Width: =If(Parent.Width < 640, Parent.Width, (Parent.Width - 48) / 4)
                               - InfoStatusChecklist:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Color: =If(gblSelectedChecklist.Status = "Lengkap", RGBA(16, 124, 16, 1), RGBA(161, 98, 7, 1))
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Bold
-                                    Height: =70
                                     Size: =12
                                     Text: '="STATUS" & Char(10) & Coalesce(gblSelectedChecklist.Status, "Belum Lengkap")'
                                     Width: =If(Parent.Width < 640, Parent.Width, (Parent.Width - 48) / 4)
@@ -226,22 +270,46 @@ Screens:
                             Variant: AutoLayout
                             Properties:
                               FillPortions: =0
-                              Height: =If(Parent.Width < 700, 300, 150)
+                              Height: |-
+                                =If(
+                                    Parent.Width < 700,
+                                    PersonalStatementDetail.Height +
+                                        CareerPlanDetail.Height +
+                                        BuktiUploadDetail.Height +
+                                        32,
+                                    Max(
+                                        PersonalStatementDetail.Height,
+                                        CareerPlanDetail.Height,
+                                        BuktiUploadDetail.Height
+                                    )
+                                )
                               LayoutDirection: =LayoutDirection.Horizontal
                               LayoutGap: =16
-                              LayoutMinHeight: =If(Parent.Width < 700, 300, 150)
+                              LayoutMinHeight: |-
+                                =If(
+                                    Parent.Width < 700,
+                                    PersonalStatementDetail.Height +
+                                        CareerPlanDetail.Height +
+                                        BuktiUploadDetail.Height +
+                                        32,
+                                    Max(
+                                        PersonalStatementDetail.Height,
+                                        CareerPlanDetail.Height,
+                                        BuktiUploadDetail.Height
+                                    )
+                                )
                               LayoutWrap: =true
                               Width: =Parent.Width
                             Children:
                               - PersonalStatementDetail:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     BorderColor: =RGBA(225, 223, 221, 1)
                                     BorderStyle: =BorderStyle.Solid
                                     BorderThickness: =1
                                     Color: =If(IsBlank(gblSelectedChecklist.PersonalStatementFile), RGBA(161, 98, 7, 1), RGBA(16, 124, 16, 1))
                                     Font: =Font.'Open Sans'
-                                    Height: =140
                                     PaddingBottom: =14
                                     PaddingLeft: =14
                                     PaddingRight: =14
@@ -252,12 +320,12 @@ Screens:
                               - CareerPlanDetail:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     BorderColor: =RGBA(225, 223, 221, 1)
                                     BorderStyle: =BorderStyle.Solid
                                     BorderThickness: =1
                                     Color: =If(IsBlank(gblSelectedChecklist.CareerPlanFile), RGBA(161, 98, 7, 1), RGBA(16, 124, 16, 1))
                                     Font: =Font.'Open Sans'
-                                    Height: =140
                                     PaddingBottom: =14
                                     PaddingLeft: =14
                                     PaddingRight: =14
@@ -268,12 +336,12 @@ Screens:
                               - BuktiUploadDetail:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     BorderColor: =RGBA(225, 223, 221, 1)
                                     BorderStyle: =BorderStyle.Solid
                                     BorderThickness: =1
                                     Color: =If(IsBlank(gblSelectedChecklist.BuktiUploadFile), RGBA(161, 98, 7, 1), RGBA(16, 124, 16, 1))
                                     Font: =Font.'Open Sans'
-                                    Height: =140
                                     PaddingBottom: =14
                                     PaddingLeft: =14
                                     PaddingRight: =14
@@ -327,11 +395,12 @@ Screens:
                       Control: ModernText@1.0.0
                       Properties:
                         Align: =Align.Center
+                        AutoHeight: =true
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
-                        Height: =32
                         Size: =16
                         Text: ="Hapus Checklist Mentoring?"
+                        Width: =Parent.Width
                   - DeleteChecklistMessage:
                       Control: ModernText@1.0.0
                       Properties:

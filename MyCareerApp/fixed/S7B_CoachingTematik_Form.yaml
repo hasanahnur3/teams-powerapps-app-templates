@@ -109,10 +109,10 @@ Screens:
                         - CTFormTitle:
                             Control: ModernText@1.0.0
                             Properties:
+                              AutoHeight: =true
                               Color: =RGBA(31, 56, 100, 1)
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Bold
-                              Height: =36
                               Size: =20
                               Text: =If(Coalesce(gblCoachingTematikEditMode, false), "Edit Coaching Tematik", "Buat Coaching Tematik")
                               Width: =Parent.Width
@@ -167,10 +167,12 @@ Screens:
                               - LblTanggalCTForm:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
                                     Size: =12
                                     Text: ="Tanggal *"
+                                    Width: =Parent.Width
                               - DateTanggalCTForm:
                                   Control: ModernDatePicker@1.0.0
                                   Properties:
@@ -178,10 +180,7 @@ Screens:
                                     DefaultDate: |-
                                       =If(
                                           Coalesce(gblCoachingTematikEditMode, false),
-                                          IfError(
-                                              Date(1899, 12, 30) + Value(gblSelectedCoachingTematik.Tanggal),
-                                              gblSelectedCoachingTematik.Tanggal
-                                          ),
+                                          gblSelectedCoachingTematik.Tanggal,
                                           Today()
                                       )
                                     Format: ="dd/mm/yyyy"
@@ -201,10 +200,12 @@ Screens:
                               - LblMentorCTForm:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
                                     Size: =12
                                     Text: ="Mentor *"
+                                    Width: =Parent.Width
                               - CmbMentorCTForm:
                                   Control: ComboBox@0.0.51
                                   Properties:
@@ -243,10 +244,12 @@ Screens:
                               - LblTopikCTForm:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
                                     Size: =12
                                     Text: ="Topik *"
+                                    Width: =Parent.Width
                               - TxtTopikCTForm:
                                   Control: TextInput@0.0.54
                                   Properties:
@@ -268,10 +271,12 @@ Screens:
                               - LblHasilCTForm:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
                                     Size: =12
                                     Text: ="Hasil Coaching *"
+                                    Width: =Parent.Width
                               - TxtHasilCTForm:
                                   Control: TextInput@0.0.54
                                   Properties:
@@ -342,7 +347,7 @@ Screens:
                                                       gblSelectedCoachingTematik,
                                                       {
                                                           MenteeNIP: gblSelectedCoachingTematik.MenteeNIP,
-                                                          Tanggal: DateDiff(Date(1899, 12, 30), DateTanggalCTForm.SelectedDate, TimeUnit.Days),
+                                                          Tanggal: DateTanggalCTForm.SelectedDate,
                                                           MentorNIP: CmbMentorCTForm.Selected.NIP,
                                                           Topik: Trim(TxtTopikCTForm.Value),
                                                           HasilCoaching: Trim(TxtHasilCTForm.Value)
@@ -357,7 +362,7 @@ Screens:
                                                                   {
                                                                       Title: "TEMP_" & Text(GUID()),
                                                                       MenteeNIP: Text(gblCurrentNIP),
-                                                                      Tanggal: DateDiff(Date(1899, 12, 30), DateTanggalCTForm.SelectedDate, TimeUnit.Days),
+                                                                      Tanggal: DateTanggalCTForm.SelectedDate,
                                                                       MentorNIP: CmbMentorCTForm.Selected.NIP,
                                                                       Topik: Trim(TxtTopikCTForm.Value),
                                                                       HasilCoaching: Trim(TxtHasilCTForm.Value)

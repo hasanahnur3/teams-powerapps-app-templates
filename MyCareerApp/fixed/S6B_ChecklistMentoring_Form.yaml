@@ -109,10 +109,10 @@ Screens:
                         - ChecklistFormTitle:
                             Control: ModernText@1.0.0
                             Properties:
+                              AutoHeight: =true
                               Color: =RGBA(31, 56, 100, 1)
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Bold
-                              Height: =34
                               Size: =20
                               Text: =If(Coalesce(gblChecklistEditMode, false), "Edit Checklist Mentoring", "Tambah Checklist Mentoring")
                               Width: =Parent.Width
@@ -154,6 +154,7 @@ Screens:
                               - LblTahunChecklist:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
                                     Size: =12
@@ -181,6 +182,7 @@ Screens:
                               - LblMentorChecklist:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
                                     Size: =12
@@ -224,6 +226,7 @@ Screens:
                               - LblPersonalStatementChecklist:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
                                     Size: =12
@@ -250,6 +253,7 @@ Screens:
                               - LblCareerPlanChecklist:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
                                     Size: =12
@@ -276,6 +280,7 @@ Screens:
                               - LblBuktiUploadChecklist:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
                                     Size: =12
@@ -291,6 +296,7 @@ Screens:
                         - ChecklistStatusPreview:
                             Control: ModernText@1.0.0
                             Properties:
+                              AutoHeight: =true
                               Color: |-
                                 =If(
                                     And(
@@ -303,7 +309,6 @@ Screens:
                                 )
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Semibold
-                              Height: =30
                               Text: |-
                                 ="Status: " &
                                 If(

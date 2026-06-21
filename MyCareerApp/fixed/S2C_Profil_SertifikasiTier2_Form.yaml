@@ -116,7 +116,7 @@ Screens:
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Bold
                               Size: =20
-                              Text: =If(Coalesce(gblSertifikasiTier2EditMode, false), "Edit Sertifikasi Tier 2", "Tambah Sertifikasi Tier 2")
+                              Text: =If(Coalesce(gblSertifikasiTier2DetailMode, false), "Detail Sertifikasi Tier 2", If(Coalesce(gblSertifikasiTier2EditMode, false), "Edit Sertifikasi Tier 2", "Tambah Sertifikasi Tier 2"))
                               Width: =Parent.Width
                         - SubtitleSertifikasiTier2Form:
                             Control: ModernText@1.0.0
@@ -168,6 +168,7 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Nama Sertifikat"
+                                    DisplayMode: =If(Coalesce(gblSertifikasiTier2DetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
                                     Value: =If(Coalesce(gblSertifikasiTier2EditMode, false), Coalesce(gblSelectedSertifikasiTier2.NamaSertifikat, ""), "")
                                     Width: =Parent.Width
@@ -198,6 +199,7 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Penerbit"
+                                    DisplayMode: =If(Coalesce(gblSertifikasiTier2DetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
                                     Value: =If(Coalesce(gblSertifikasiTier2EditMode, false), Coalesce(gblSelectedSertifikasiTier2.Penerbit, ""), "")
                                     Width: =Parent.Width
@@ -228,6 +230,7 @@ Screens:
                                   Control: ModernDatePicker@1.0.0
                                   Properties:
                                     AccessibleLabel: ="Tanggal Terbit"
+                                    DisplayMode: =If(Coalesce(gblSertifikasiTier2DetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     DefaultDate: =If(Coalesce(gblSertifikasiTier2EditMode, false), Date(1899, 12, 30) + Value(gblSelectedSertifikasiTier2.TanggalTerbit), Today())
                                     Format: ="dd/mm/yyyy"
                                     Placeholder: ="Pilih tanggal"
@@ -259,6 +262,7 @@ Screens:
                                   Control: ModernDatePicker@1.0.0
                                   Properties:
                                     AccessibleLabel: ="Tanggal Berakhir"
+                                    DisplayMode: =If(Coalesce(gblSertifikasiTier2DetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     DefaultDate: =If(Coalesce(gblSertifikasiTier2EditMode, false), Date(1899, 12, 30) + Value(gblSelectedSertifikasiTier2.TanggalBerakhir), Today())
                                     Format: ="dd/mm/yyyy"
                                     Placeholder: ="Pilih tanggal"
@@ -290,6 +294,7 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Nomor Sertifikat"
+                                    DisplayMode: =If(Coalesce(gblSertifikasiTier2DetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
                                     Value: =If(Coalesce(gblSertifikasiTier2EditMode, false), Coalesce(gblSelectedSertifikasiTier2.NomorSertifikat, ""), "")
                                     Width: =Parent.Width
@@ -306,6 +311,7 @@ Screens:
                               LayoutGap: =12
                               LayoutJustifyContent: =LayoutJustifyContent.End
                               LayoutMinHeight: =48
+                              Visible: =!Coalesce(gblSertifikasiTier2DetailMode, false)
                               Width: =Parent.Width
                             Children:
                               - BtnBatalSertifikasiTier2:

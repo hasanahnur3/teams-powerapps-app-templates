@@ -40,16 +40,18 @@ Screens:
                   RadiusTopRight: =8
                 Children:
                   - BtnBackCTDetail:
-                      Control: ModernText@1.0.0
+                      Control: Classic/Icon@2.5.0
                       Properties:
-                        Align: =Align.Center
+                        AccessibleLabel: ="Kembali"
                         Color: =RGBA(255, 255, 255, 1)
-                        Font: =Font.'Open Sans'
-                        FontWeight: =FontWeight.Bold
                         Height: =40
+                        Icon: =Icon.ChevronLeft
                         OnSelect: =Back()
-                        Size: =22
-                        Text: ="‹"
+                        PaddingBottom: =10
+                        PaddingLeft: =10
+                        PaddingRight: =10
+                        PaddingTop: =10
+                        Tooltip: ="Kembali"
                         Width: =40
                   - LblAppNameCTDetail:
                       Control: ModernText@1.0.0
@@ -153,10 +155,30 @@ Screens:
                         DropShadow: =DropShadow.Light
                         Fill: =RGBA(255, 255, 255, 1)
                         FillPortions: =0
-                        Height: =If(Parent.Width < 640, 680, 500)
+                        Height: |-
+                          =Max(
+                              If(Parent.Width < 640, 680, 500),
+                              CTDetailInfoRow.Height +
+                                  CTDetailDivider.Height +
+                                  CTDetailTopikLabel.Height +
+                                  CTDetailTopik.Height +
+                                  CTDetailResultLabel.Height +
+                                  CTDetailResult.Height +
+                                  If(Parent.Width < 640, 170, 210)
+                          )
                         LayoutDirection: =LayoutDirection.Vertical
                         LayoutGap: =20
-                        LayoutMinHeight: =If(Parent.Width < 640, 680, 500)
+                        LayoutMinHeight: |-
+                          =Max(
+                              If(Parent.Width < 640, 680, 500),
+                              CTDetailInfoRow.Height +
+                                  CTDetailDivider.Height +
+                                  CTDetailTopikLabel.Height +
+                                  CTDetailTopik.Height +
+                                  CTDetailResultLabel.Height +
+                                  CTDetailResult.Height +
+                                  If(Parent.Width < 640, 170, 210)
+                          )
                         PaddingBottom: =If(Parent.Width < 640, 18, 28)
                         PaddingLeft: =If(Parent.Width < 640, 18, 28)
                         PaddingRight: =If(Parent.Width < 640, 18, 28)
@@ -172,42 +194,49 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =If(Parent.Width < 640, 252, 78)
+                              Height: |-
+                                =If(
+                                    Parent.Width < 640,
+                                    CTDetailMentee.Height + CTDetailDate.Height + CTDetailMentor.Height + 32,
+                                    Max(CTDetailMentee.Height, CTDetailDate.Height, CTDetailMentor.Height)
+                                )
                               LayoutDirection: =LayoutDirection.Horizontal
                               LayoutGap: =16
-                              LayoutMinHeight: =If(Parent.Width < 640, 252, 78)
+                              LayoutMinHeight: |-
+                                =If(
+                                    Parent.Width < 640,
+                                    CTDetailMentee.Height + CTDetailDate.Height + CTDetailMentor.Height + 32,
+                                    Max(CTDetailMentee.Height, CTDetailDate.Height, CTDetailMentor.Height)
+                                )
                               LayoutWrap: =true
                             Children:
                               - CTDetailMentee:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Font: =Font.'Open Sans'
-                                    Height: =70
                                     Size: =12
                                     Text: '="MENTEE" & Char(10) & Coalesce(LookUp(Pegawai, Title = gblSelectedCoachingTematik.MenteeNIP, Nama), gblSelectedCoachingTematik.MenteeNIP, "-")'
                                     Width: =If(Parent.Width < 640, Parent.Width, (Parent.Width - 32) / 3)
                               - CTDetailDate:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Font: =Font.'Open Sans'
-                                    Height: =70
                                     Size: =12
                                     Text: |-
                                       ="TANGGAL" & Char(10) &
                                       If(
                                           IsBlank(gblSelectedCoachingTematik.Tanggal),
                                           "-",
-                                          IfError(
-                                              Text(gblSelectedCoachingTematik.Tanggal, "[$-id-ID]dd mmmm yyyy"),
-                                              Text(Date(1899, 12, 30) + Value(gblSelectedCoachingTematik.Tanggal), "[$-id-ID]dd mmmm yyyy")
-                                          )
+                                          Text(gblSelectedCoachingTematik.Tanggal, "[$-id-ID]dd mmmm yyyy")
                                       )
                                     Width: =If(Parent.Width < 640, Parent.Width, (Parent.Width - 32) / 3)
                               - CTDetailMentor:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Font: =Font.'Open Sans'
-                                    Height: =70
                                     Size: =12
                                     Text: '="MENTOR" & Char(10) & Coalesce(LookUp(Pegawai, Title = gblSelectedCoachingTematik.MentorNIP, Nama), gblSelectedCoachingTematik.MentorNIP, "-")'
                                     Width: =If(Parent.Width < 640, Parent.Width, (Parent.Width - 32) / 3)
@@ -250,14 +279,13 @@ Screens:
                         - CTDetailResult:
                             Control: ModernText@1.0.0
                             Properties:
+                              AutoHeight: =true
                               BorderColor: =RGBA(225, 223, 221, 1)
                               BorderStyle: =BorderStyle.Solid
                               BorderThickness: =1
                               Color: =RGBA(50, 49, 48, 1)
                               Fill: =RGBA(250, 250, 250, 1)
-                              FillPortions: =1
                               Font: =Font.'Open Sans'
-                              Height: =180
                               PaddingBottom: =16
                               PaddingLeft: =16
                               PaddingRight: =16
@@ -312,11 +340,12 @@ Screens:
                       Control: ModernText@1.0.0
                       Properties:
                         Align: =Align.Center
+                        AutoHeight: =true
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
-                        Height: =32
                         Size: =16
                         Text: ="Hapus Coaching Tematik?"
+                        Width: =Parent.Width
                   - CTDeleteMessage:
                       Control: ModernText@1.0.0
                       Properties:

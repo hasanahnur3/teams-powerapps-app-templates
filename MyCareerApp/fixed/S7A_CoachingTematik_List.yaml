@@ -44,18 +44,18 @@ Screens:
                   RadiusTopRight: =8
                 Children:
                   - BtnBackCTList:
-                      Control: ModernText@1.0.0
+                      Control: Classic/Icon@2.5.0
                       Properties:
-                        Align: =Align.Center
-                        AutoHeight: =true
+                        AccessibleLabel: ="Kembali"
                         Color: =RGBA(255, 255, 255, 1)
-                        Font: =Font.'Open Sans'
-                        FontWeight: =FontWeight.Bold
                         Height: =40
+                        Icon: =Icon.ChevronLeft
                         OnSelect: =Back()
-                        PaddingLeft: =20
-                        Size: =22
-                        Text: ="‹"
+                        PaddingBottom: =10
+                        PaddingLeft: =10
+                        PaddingRight: =10
+                        PaddingTop: =10
+                        Tooltip: ="Kembali"
                         Width: =40
                   - LblAppNameCTList:
                       Control: ModernText@1.0.0
@@ -330,15 +330,9 @@ Screens:
                                       =If(
                                           IsBlank(ThisItem.Tanggal),
                                           "-",
-                                          IfError(
-                                              Text(
-                                                  ThisItem.Tanggal,
-                                                  "[$-id-ID]dd mmmm yyyy"
-                                              ),
-                                              Text(
-                                                  Date(1899, 12, 30) + Value(ThisItem.Tanggal),
-                                                  "[$-id-ID]dd mmmm yyyy"
-                                              )
+                                          Text(
+                                              ThisItem.Tanggal,
+                                              "[$-id-ID]dd mmmm yyyy"
                                           )
                                       )
                                     Width: =If(App.Width < 1200, Parent.TemplateWidth - 120, (Parent.TemplateWidth - 24) * 0.20)
@@ -422,3 +416,4 @@ Screens:
                         Size: =13
                         Text: ="Belum ada data Coaching Tematik."
                         Visible: =IsEmpty(GalleryCTList.AllItems)
+                        Width: =Parent.Width

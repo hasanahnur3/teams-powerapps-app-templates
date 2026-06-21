@@ -497,7 +497,7 @@ Screens:
                               FontWeight: =FontWeight.Semibold
                               Height: =48
                               LayoutMinWidth: =140
-                              OnSelect: =Navigate(S8_PR_LineManager, ScreenTransition.Fade)
+                              OnSelect: =Navigate(S3D_PR_LM_List, ScreenTransition.Fade)
                               RadiusBottomLeft: =8
                               RadiusBottomRight: =8
                               RadiusTopLeft: =8

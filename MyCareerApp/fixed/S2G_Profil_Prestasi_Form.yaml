@@ -116,7 +116,7 @@ Screens:
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Bold
                               Size: =20
-                              Text: =If(Coalesce(gblPrestasiEditMode, false), "Edit Prestasi", "Tambah Prestasi")
+                              Text: =If(Coalesce(gblPrestasiDetailMode, false), "Detail Prestasi", If(Coalesce(gblPrestasiEditMode, false), "Edit Prestasi", "Tambah Prestasi"))
                               Width: =Parent.Width
                         - SubtitlePrestasiForm:
                             Control: ModernText@1.0.0
@@ -168,6 +168,7 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Jenis"
+                                    DisplayMode: =If(Coalesce(gblPrestasiDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
                                     Value: =If(Coalesce(gblPrestasiEditMode, false), Coalesce(gblSelectedPrestasi.Jenis, ""), "")
                                     Width: =Parent.Width
@@ -198,6 +199,7 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Level"
+                                    DisplayMode: =If(Coalesce(gblPrestasiDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
                                     Value: =If(Coalesce(gblPrestasiEditMode, false), Coalesce(gblSelectedPrestasi.Level, ""), "")
                                     Width: =Parent.Width
@@ -228,6 +230,7 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Nama Prestasi"
+                                    DisplayMode: =If(Coalesce(gblPrestasiDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
                                     Value: =If(Coalesce(gblPrestasiEditMode, false), Coalesce(gblSelectedPrestasi.NamaPrestasi, ""), "")
                                     Width: =Parent.Width
@@ -258,6 +261,7 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Detail Prestasi"
+                                    DisplayMode: =If(Coalesce(gblPrestasiDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Height: =76
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeMultiline"
                                     Value: =If(Coalesce(gblPrestasiEditMode, false), Coalesce(gblSelectedPrestasi.DetailPrestasi, ""), "")
@@ -289,6 +293,7 @@ Screens:
                                   Control: ModernDatePicker@1.0.0
                                   Properties:
                                     AccessibleLabel: ="Tanggal"
+                                    DisplayMode: =If(Coalesce(gblPrestasiDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     DefaultDate: =If(Coalesce(gblPrestasiEditMode, false), Date(1899, 12, 30) + Value(gblSelectedPrestasi.Tanggal), Today())
                                     Format: ="dd/mm/yyyy"
                                     Placeholder: ="Pilih tanggal"
@@ -306,6 +311,7 @@ Screens:
                               LayoutGap: =12
                               LayoutJustifyContent: =LayoutJustifyContent.End
                               LayoutMinHeight: =48
+                              Visible: =!Coalesce(gblPrestasiDetailMode, false)
                               Width: =Parent.Width
                             Children:
                               - BtnBatalPrestasi:

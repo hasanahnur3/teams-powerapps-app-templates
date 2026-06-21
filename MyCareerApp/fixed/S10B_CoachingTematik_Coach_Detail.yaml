@@ -189,10 +189,7 @@ Screens:
                                       If(
                                           IsBlank(gblSelectedCoachingTematik.Tanggal),
                                           "-",
-                                          IfError(
-                                              Text(gblSelectedCoachingTematik.Tanggal, "[$-id-ID]dd mmmm yyyy"),
-                                              Text(Date(1899, 12, 30) + Value(gblSelectedCoachingTematik.Tanggal), "[$-id-ID]dd mmmm yyyy")
-                                          )
+                                          Text(gblSelectedCoachingTematik.Tanggal, "[$-id-ID]dd mmmm yyyy")
                                       )
                                     Width: =If(Parent.Width < 640, Parent.Width, (Parent.Width - 32) / 3)
                               - CTDetailMentor:

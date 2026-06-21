@@ -116,7 +116,7 @@ Screens:
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Bold
                               Size: =20
-                              Text: =If(Coalesce(gblPenugasanEditMode, false), "Edit Penugasan", "Tambah Penugasan")
+                              Text: =If(Coalesce(gblPenugasanDetailMode, false), "Detail Penugasan", If(Coalesce(gblPenugasanEditMode, false), "Edit Penugasan", "Tambah Penugasan"))
                               Width: =Parent.Width
                         - SubtitlePenugasanForm:
                             Control: ModernText@1.0.0
@@ -168,6 +168,7 @@ Screens:
                                   Control: ModernDatePicker@1.0.0
                                   Properties:
                                     AccessibleLabel: ="Tanggal Mulai"
+                                    DisplayMode: =If(Coalesce(gblPenugasanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     DefaultDate: =If(Coalesce(gblPenugasanEditMode, false), Date(1899, 12, 30) + Value(gblSelectedPenugasan.TglMulai), Today())
                                     Format: ="dd/mm/yyyy"
                                     Placeholder: ="Pilih tanggal"
@@ -199,6 +200,7 @@ Screens:
                                   Control: ModernDatePicker@1.0.0
                                   Properties:
                                     AccessibleLabel: ="Tanggal Akhir"
+                                    DisplayMode: =If(Coalesce(gblPenugasanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     DefaultDate: =If(Coalesce(gblPenugasanEditMode, false), Date(1899, 12, 30) + Value(gblSelectedPenugasan.TglAkhir), Today())
                                     Format: ="dd/mm/yyyy"
                                     Placeholder: ="Pilih tanggal"
@@ -230,6 +232,7 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="PIC"
+                                    DisplayMode: =If(Coalesce(gblPenugasanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
                                     Value: =If(Coalesce(gblPenugasanEditMode, false), Coalesce(gblSelectedPenugasan.PIC, ""), "")
                                     Width: =Parent.Width
@@ -260,6 +263,7 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Nama Penugasan"
+                                    DisplayMode: =If(Coalesce(gblPenugasanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
                                     Value: =If(Coalesce(gblPenugasanEditMode, false), Coalesce(gblSelectedPenugasan.NamaPenugasan, ""), "")
                                     Width: =Parent.Width
@@ -290,6 +294,7 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Deskripsi"
+                                    DisplayMode: =If(Coalesce(gblPenugasanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Height: =76
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeMultiline"
                                     Value: =If(Coalesce(gblPenugasanEditMode, false), Coalesce(gblSelectedPenugasan.Deskripsi, ""), "")
@@ -307,6 +312,7 @@ Screens:
                               LayoutGap: =12
                               LayoutJustifyContent: =LayoutJustifyContent.End
                               LayoutMinHeight: =48
+                              Visible: =!Coalesce(gblPenugasanDetailMode, false)
                               Width: =Parent.Width
                             Children:
                               - BtnBatalPenugasan:

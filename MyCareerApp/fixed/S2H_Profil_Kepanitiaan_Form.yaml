@@ -116,7 +116,7 @@ Screens:
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Bold
                               Size: =20
-                              Text: =If(Coalesce(gblKepanitiaanEditMode, false), "Edit Kepanitiaan", "Tambah Kepanitiaan")
+                              Text: =If(Coalesce(gblKepanitiaanDetailMode, false), "Detail Kepanitiaan", If(Coalesce(gblKepanitiaanEditMode, false), "Edit Kepanitiaan", "Tambah Kepanitiaan"))
                               Width: =Parent.Width
                         - SubtitleKepanitiaanForm:
                             Control: ModernText@1.0.0
@@ -168,6 +168,7 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Nama Kepanitiaan"
+                                    DisplayMode: =If(Coalesce(gblKepanitiaanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
                                     Value: =If(Coalesce(gblKepanitiaanEditMode, false), Coalesce(gblSelectedKepanitiaan.NamaKepanitiaan, ""), "")
                                     Width: =Parent.Width
@@ -198,6 +199,7 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Posisi"
+                                    DisplayMode: =If(Coalesce(gblKepanitiaanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
                                     Value: =If(Coalesce(gblKepanitiaanEditMode, false), Coalesce(gblSelectedKepanitiaan.Posisi, ""), "")
                                     Width: =Parent.Width
@@ -228,6 +230,7 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Institusi"
+                                    DisplayMode: =If(Coalesce(gblKepanitiaanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
                                     Value: =If(Coalesce(gblKepanitiaanEditMode, false), Coalesce(gblSelectedKepanitiaan.Institusi, ""), "")
                                     Width: =Parent.Width
@@ -258,6 +261,7 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Uraian Tugas"
+                                    DisplayMode: =If(Coalesce(gblKepanitiaanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Height: =76
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeMultiline"
                                     Value: =If(Coalesce(gblKepanitiaanEditMode, false), Coalesce(gblSelectedKepanitiaan.UraianTugas, ""), "")
@@ -289,6 +293,7 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Produk"
+                                    DisplayMode: =If(Coalesce(gblKepanitiaanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
                                     Value: =If(Coalesce(gblKepanitiaanEditMode, false), Coalesce(gblSelectedKepanitiaan.Produk, ""), "")
                                     Width: =Parent.Width
@@ -319,6 +324,7 @@ Screens:
                                   Control: ModernDatePicker@1.0.0
                                   Properties:
                                     AccessibleLabel: ="Tanggal Mulai"
+                                    DisplayMode: =If(Coalesce(gblKepanitiaanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     DefaultDate: =If(Coalesce(gblKepanitiaanEditMode, false), Date(1899, 12, 30) + Value(gblSelectedKepanitiaan.StartDate), Today())
                                     Format: ="dd/mm/yyyy"
                                     Placeholder: ="Pilih tanggal"
@@ -350,6 +356,7 @@ Screens:
                                   Control: ModernDatePicker@1.0.0
                                   Properties:
                                     AccessibleLabel: ="Tanggal Selesai"
+                                    DisplayMode: =If(Coalesce(gblKepanitiaanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     DefaultDate: =If(Coalesce(gblKepanitiaanEditMode, false), Date(1899, 12, 30) + Value(gblSelectedKepanitiaan.EndDate), Today())
                                     Format: ="dd/mm/yyyy"
                                     Placeholder: ="Pilih tanggal"
@@ -367,6 +374,7 @@ Screens:
                               LayoutGap: =12
                               LayoutJustifyContent: =LayoutJustifyContent.End
                               LayoutMinHeight: =48
+                              Visible: =!Coalesce(gblKepanitiaanDetailMode, false)
                               Width: =Parent.Width
                             Children:
                               - BtnBatalKepanitiaan:

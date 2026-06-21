@@ -324,15 +324,9 @@ Screens:
                                       =If(
                                           IsBlank(ThisItem.Tanggal),
                                           "-",
-                                          IfError(
-                                              Text(
-                                                  ThisItem.Tanggal,
-                                                  "[$-id-ID]dd mmmm yyyy"
-                                              ),
-                                              Text(
-                                                  Date(1899, 12, 30) + Value(ThisItem.Tanggal),
-                                                  "[$-id-ID]dd mmmm yyyy"
-                                              )
+                                          Text(
+                                              ThisItem.Tanggal,
+                                              "[$-id-ID]dd mmmm yyyy"
                                           )
                                       )
                                     Width: =If(App.Width < 1200, Parent.TemplateWidth - 120, (Parent.TemplateWidth - 24) * 0.20)
@@ -474,15 +468,9 @@ Screens:
                                       =If(
                                           IsBlank(gblSelectedCoachingTematik.Tanggal),
                                           "-",
-                                          IfError(
-                                              Text(
-                                                  gblSelectedCoachingTematik.Tanggal,
-                                                  "[$-id-ID]dd mmmm yyyy"
-                                              ),
-                                              Text(
-                                                  Date(1899, 12, 30) + Value(gblSelectedCoachingTematik.Tanggal),
-                                                  "[$-id-ID]dd mmmm yyyy"
-                                              )
+                                          Text(
+                                              gblSelectedCoachingTematik.Tanggal,
+                                              "[$-id-ID]dd mmmm yyyy"
                                           )
                                       ) &
                                           " • Mentor: " &

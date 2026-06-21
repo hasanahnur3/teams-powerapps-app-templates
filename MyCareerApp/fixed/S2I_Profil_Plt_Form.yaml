@@ -116,7 +116,7 @@ Screens:
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Bold
                               Size: =20
-                              Text: =If(Coalesce(gblPltEditMode, false), "Edit PLT", "Tambah PLT")
+                              Text: =If(Coalesce(gblPltDetailMode, false), "Detail PLT", If(Coalesce(gblPltEditMode, false), "Edit PLT", "Tambah PLT"))
                               Width: =Parent.Width
                         - SubtitlePltForm:
                             Control: ModernText@1.0.0
@@ -168,6 +168,7 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Jabatan PLT"
+                                    DisplayMode: =If(Coalesce(gblPltDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
                                     Value: =If(Coalesce(gblPltEditMode, false), Coalesce(gblSelectedPlt.JabatanPlt, ""), "")
                                     Width: =Parent.Width
@@ -198,6 +199,7 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Unit Kerja"
+                                    DisplayMode: =If(Coalesce(gblPltDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
                                     Value: =If(Coalesce(gblPltEditMode, false), Coalesce(gblSelectedPlt.UnitKerja, ""), "")
                                     Width: =Parent.Width
@@ -228,6 +230,7 @@ Screens:
                                   Control: ModernDatePicker@1.0.0
                                   Properties:
                                     AccessibleLabel: ="Periode Mulai"
+                                    DisplayMode: =If(Coalesce(gblPltDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     DefaultDate: =If(Coalesce(gblPltEditMode, false), Date(1899, 12, 30) + Value(gblSelectedPlt.PeriodeMulai), Today())
                                     Format: ="dd/mm/yyyy"
                                     Placeholder: ="Pilih tanggal"
@@ -259,6 +262,7 @@ Screens:
                                   Control: ModernDatePicker@1.0.0
                                   Properties:
                                     AccessibleLabel: ="Periode Selesai"
+                                    DisplayMode: =If(Coalesce(gblPltDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     DefaultDate: =If(Coalesce(gblPltEditMode, false), Date(1899, 12, 30) + Value(gblSelectedPlt.PeriodeSelesai), Today())
                                     Format: ="dd/mm/yyyy"
                                     Placeholder: ="Pilih tanggal"
@@ -290,6 +294,7 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Nomor SK"
+                                    DisplayMode: =If(Coalesce(gblPltDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
                                     Value: =If(Coalesce(gblPltEditMode, false), Coalesce(gblSelectedPlt.NoSK, ""), "")
                                     Width: =Parent.Width
@@ -320,6 +325,7 @@ Screens:
                                   Control: NumberInput@2.9.12
                                   Properties:
                                     AccessibleLabel: ="Skor"
+                                    DisplayMode: =If(Coalesce(gblPltDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Value: =If(Coalesce(gblPltEditMode, false), Value(gblSelectedPlt.Skor), 0)
                                     Width: =Parent.Width
 
@@ -349,6 +355,7 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Catatan"
+                                    DisplayMode: =If(Coalesce(gblPltDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Height: =76
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeMultiline"
                                     Value: =If(Coalesce(gblPltEditMode, false), Coalesce(gblSelectedPlt.Catatan, ""), "")
@@ -366,6 +373,7 @@ Screens:
                               LayoutGap: =12
                               LayoutJustifyContent: =LayoutJustifyContent.End
                               LayoutMinHeight: =48
+                              Visible: =!Coalesce(gblPltDetailMode, false)
                               Width: =Parent.Width
                             Children:
                               - BtnBatalPlt:
