@@ -3,6 +3,9 @@ Screens:
     Properties:
       Fill: =RGBA(245, 245, 245, 1)
       LoadingSpinnerColor: =RGBA(31, 56, 100, 1)
+      OnVisible: |-
+        =Set(gblKepanitiaanSubmitting, false);
+        UpdateContext({locConfirmDeleteKepanitiaan: false})
     Children:
       - ScreenContainerKepanitiaanForm:
           Control: GroupContainer@1.5.0
@@ -40,6 +43,8 @@ Screens:
                         Height: =64
                         OnSelect: |-
                           =Set(gblKepanitiaanEditMode, false);
+                          Set(gblKepanitiaanDetailMode, false);
+                          UpdateContext({locConfirmDeleteKepanitiaan: false});
                           Set(gblSelectedKepanitiaan, Defaults(Profil_Kepanitiaan));
                           Back()
                         Size: =24
@@ -325,7 +330,15 @@ Screens:
                                   Properties:
                                     AccessibleLabel: ="Tanggal Mulai"
                                     DisplayMode: =If(Coalesce(gblKepanitiaanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
-                                    DefaultDate: =If(Coalesce(gblKepanitiaanEditMode, false), Date(1899, 12, 30) + Value(gblSelectedKepanitiaan.StartDate), Today())
+                                    DefaultDate: |-
+                                      =If(
+                                          Coalesce(gblKepanitiaanEditMode, false) && !IsBlank(gblSelectedKepanitiaan.StartDate),
+                                          IfError(
+                                              Date(1899, 12, 30) + Value(gblSelectedKepanitiaan.StartDate),
+                                              gblSelectedKepanitiaan.StartDate
+                                          ),
+                                          Today()
+                                      )
                                     Format: ="dd/mm/yyyy"
                                     Placeholder: ="Pilih tanggal"
                                     Width: =Parent.Width
@@ -357,7 +370,15 @@ Screens:
                                   Properties:
                                     AccessibleLabel: ="Tanggal Selesai"
                                     DisplayMode: =If(Coalesce(gblKepanitiaanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
-                                    DefaultDate: =If(Coalesce(gblKepanitiaanEditMode, false), Date(1899, 12, 30) + Value(gblSelectedKepanitiaan.EndDate), Today())
+                                    DefaultDate: |-
+                                      =If(
+                                          Coalesce(gblKepanitiaanEditMode, false) && !IsBlank(gblSelectedKepanitiaan.EndDate),
+                                          IfError(
+                                              Date(1899, 12, 30) + Value(gblSelectedKepanitiaan.EndDate),
+                                              gblSelectedKepanitiaan.EndDate
+                                          ),
+                                          Today()
+                                      )
                                     Format: ="dd/mm/yyyy"
                                     Placeholder: ="Pilih tanggal"
                                     Width: =Parent.Width
@@ -369,11 +390,12 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =48
+                              Height: =If(Coalesce(locConfirmDeleteKepanitiaan, false), 104, 48)
                               LayoutDirection: =LayoutDirection.Horizontal
                               LayoutGap: =12
                               LayoutJustifyContent: =LayoutJustifyContent.End
-                              LayoutMinHeight: =48
+                              LayoutMinHeight: =If(Coalesce(locConfirmDeleteKepanitiaan, false), 104, 48)
+                              LayoutWrap: =true
                               Visible: =!Coalesce(gblKepanitiaanDetailMode, false)
                               Width: =Parent.Width
                             Children:
@@ -390,6 +412,8 @@ Screens:
                                     Height: =44
                                     OnSelect: |-
                                       =Set(gblKepanitiaanEditMode, false);
+                                      Set(gblKepanitiaanDetailMode, false);
+                                      UpdateContext({locConfirmDeleteKepanitiaan: false});
                                       Set(gblSelectedKepanitiaan, Defaults(Profil_Kepanitiaan));
                                       Back()
                                     RadiusBottomLeft: =6
@@ -399,6 +423,84 @@ Screens:
                                     Size: =12
                                     Text: ="Batal"
                                     Width: =110
+                              - BtnHapusKepanitiaan:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(196, 43, 28, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(196, 43, 28, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =UpdateContext({locConfirmDeleteKepanitiaan: true})
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="Hapus"
+                                    Visible: =Coalesce(gblKepanitiaanEditMode, false) && !Coalesce(locConfirmDeleteKepanitiaan, false)
+                                    Width: =110
+                              - BtnBatalHapusKepanitiaan:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =UpdateContext({locConfirmDeleteKepanitiaan: false})
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="Batal Hapus"
+                                    Visible: =Coalesce(gblKepanitiaanEditMode, false) && Coalesce(locConfirmDeleteKepanitiaan, false)
+                                    Width: =120
+                              - BtnKonfirmasiHapusKepanitiaan:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisplayMode: =If(Coalesce(gblKepanitiaanSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Fill: =RGBA(196, 43, 28, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =If(
+                                          !Coalesce(gblKepanitiaanSubmitting, false),
+                                          Set(gblKepanitiaanSubmitting, true);
+                                          IfError(
+                                              Remove(Profil_Kepanitiaan, gblSelectedKepanitiaan);
+                                              Refresh(Profil_Kepanitiaan);
+                                              Notify("Data Kepanitiaan berhasil dihapus.", NotificationType.Success);
+                                              Set(gblKepanitiaanSubmitting, false);
+                                              Set(gblKepanitiaanEditMode, false);
+                                              Set(gblKepanitiaanDetailMode, false);
+                                              UpdateContext({locConfirmDeleteKepanitiaan: false});
+                                              Set(gblSelectedKepanitiaan, Defaults(Profil_Kepanitiaan));
+                                              Navigate(S2_ProfilPegawai, ScreenTransition.Fade),
+                                              Notify("Gagal menghapus data Kepanitiaan: " & FirstError.Message, NotificationType.Error);
+                                              Set(gblKepanitiaanSubmitting, false)
+                                          )
+                                      )
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: =If(Coalesce(gblKepanitiaanSubmitting, false), "Menghapus...", "Ya, Hapus")
+                                    Visible: =Coalesce(gblKepanitiaanEditMode, false) && Coalesce(locConfirmDeleteKepanitiaan, false)
+                                    Width: =120
                               - BtnSimpanKepanitiaan:
                                   Control: ModernText@1.0.0
                                   Properties:
@@ -439,8 +541,8 @@ Screens:
                                                           Institusi: Trim(TxtInstitusiKepanitiaan.Value),
                                                           UraianTugas: Trim(TxtUraianTugasKepanitiaan.Value),
                                                           Produk: Trim(TxtProdukKepanitiaan.Value),
-                                                          StartDate: DateDiff(Date(1899, 12, 30), DateStartDateKepanitiaan.SelectedDate, TimeUnit.Days),
-                                                          EndDate: DateDiff(Date(1899, 12, 30), DateEndDateKepanitiaan.SelectedDate, TimeUnit.Days)
+                                                          StartDate: DateStartDateKepanitiaan.SelectedDate,
+                                                          EndDate: DateEndDateKepanitiaan.SelectedDate
                                                       }
                                                   ),
                                                   With(
@@ -457,8 +559,8 @@ Screens:
                                                                       Institusi: Trim(TxtInstitusiKepanitiaan.Value),
                                                                       UraianTugas: Trim(TxtUraianTugasKepanitiaan.Value),
                                                                       Produk: Trim(TxtProdukKepanitiaan.Value),
-                                                                      StartDate: DateDiff(Date(1899, 12, 30), DateStartDateKepanitiaan.SelectedDate, TimeUnit.Days),
-                                                                      EndDate: DateDiff(Date(1899, 12, 30), DateEndDateKepanitiaan.SelectedDate, TimeUnit.Days)
+                                                                      StartDate: DateStartDateKepanitiaan.SelectedDate,
+                                                                      EndDate: DateEndDateKepanitiaan.SelectedDate
                                                                   }
                                                               )
                                                       },
@@ -476,6 +578,8 @@ Screens:
                                               );
                                               Set(gblKepanitiaanSubmitting, false);
                                               Set(gblKepanitiaanEditMode, false);
+                                              Set(gblKepanitiaanDetailMode, false);
+                                              UpdateContext({locConfirmDeleteKepanitiaan: false});
                                               Set(gblSelectedKepanitiaan, Defaults(Profil_Kepanitiaan));
                                               Navigate(S2_ProfilPegawai, ScreenTransition.Fade),
                                               Notify(
@@ -491,4 +595,5 @@ Screens:
                                     RadiusTopRight: =6
                                     Size: =12
                                     Text: =If(Coalesce(gblKepanitiaanSubmitting, false), "Menyimpan...", "Simpan")
+                                    Visible: =!Coalesce(locConfirmDeleteKepanitiaan, false)
                                     Width: =130

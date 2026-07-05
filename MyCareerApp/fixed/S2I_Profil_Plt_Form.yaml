@@ -3,6 +3,9 @@ Screens:
     Properties:
       Fill: =RGBA(245, 245, 245, 1)
       LoadingSpinnerColor: =RGBA(31, 56, 100, 1)
+      OnVisible: |-
+        =Set(gblPltSubmitting, false);
+        UpdateContext({locConfirmDeletePlt: false})
     Children:
       - ScreenContainerPltForm:
           Control: GroupContainer@1.5.0
@@ -40,6 +43,8 @@ Screens:
                         Height: =64
                         OnSelect: |-
                           =Set(gblPltEditMode, false);
+                          Set(gblPltDetailMode, false);
+                          UpdateContext({locConfirmDeletePlt: false});
                           Set(gblSelectedPlt, Defaults(Profil_Plt));
                           Back()
                         Size: =24
@@ -231,7 +236,15 @@ Screens:
                                   Properties:
                                     AccessibleLabel: ="Periode Mulai"
                                     DisplayMode: =If(Coalesce(gblPltDetailMode, false), DisplayMode.View, DisplayMode.Edit)
-                                    DefaultDate: =If(Coalesce(gblPltEditMode, false), Date(1899, 12, 30) + Value(gblSelectedPlt.PeriodeMulai), Today())
+                                    DefaultDate: |-
+                                      =If(
+                                          Coalesce(gblPltEditMode, false) && !IsBlank(gblSelectedPlt.PeriodeMulai),
+                                          IfError(
+                                              Date(1899, 12, 30) + Value(gblSelectedPlt.PeriodeMulai),
+                                              gblSelectedPlt.PeriodeMulai
+                                          ),
+                                          Today()
+                                      )
                                     Format: ="dd/mm/yyyy"
                                     Placeholder: ="Pilih tanggal"
                                     Width: =Parent.Width
@@ -263,7 +276,15 @@ Screens:
                                   Properties:
                                     AccessibleLabel: ="Periode Selesai"
                                     DisplayMode: =If(Coalesce(gblPltDetailMode, false), DisplayMode.View, DisplayMode.Edit)
-                                    DefaultDate: =If(Coalesce(gblPltEditMode, false), Date(1899, 12, 30) + Value(gblSelectedPlt.PeriodeSelesai), Today())
+                                    DefaultDate: |-
+                                      =If(
+                                          Coalesce(gblPltEditMode, false) && !IsBlank(gblSelectedPlt.PeriodeSelesai),
+                                          IfError(
+                                              Date(1899, 12, 30) + Value(gblSelectedPlt.PeriodeSelesai),
+                                              gblSelectedPlt.PeriodeSelesai
+                                          ),
+                                          Today()
+                                      )
                                     Format: ="dd/mm/yyyy"
                                     Placeholder: ="Pilih tanggal"
                                     Width: =Parent.Width
@@ -368,11 +389,12 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =48
+                              Height: =If(Coalesce(locConfirmDeletePlt, false), 104, 48)
                               LayoutDirection: =LayoutDirection.Horizontal
                               LayoutGap: =12
                               LayoutJustifyContent: =LayoutJustifyContent.End
-                              LayoutMinHeight: =48
+                              LayoutMinHeight: =If(Coalesce(locConfirmDeletePlt, false), 104, 48)
+                              LayoutWrap: =true
                               Visible: =!Coalesce(gblPltDetailMode, false)
                               Width: =Parent.Width
                             Children:
@@ -389,6 +411,8 @@ Screens:
                                     Height: =44
                                     OnSelect: |-
                                       =Set(gblPltEditMode, false);
+                                      Set(gblPltDetailMode, false);
+                                      UpdateContext({locConfirmDeletePlt: false});
                                       Set(gblSelectedPlt, Defaults(Profil_Plt));
                                       Back()
                                     RadiusBottomLeft: =6
@@ -398,6 +422,84 @@ Screens:
                                     Size: =12
                                     Text: ="Batal"
                                     Width: =110
+                              - BtnHapusPlt:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(196, 43, 28, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(196, 43, 28, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =UpdateContext({locConfirmDeletePlt: true})
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="Hapus"
+                                    Visible: =Coalesce(gblPltEditMode, false) && !Coalesce(locConfirmDeletePlt, false)
+                                    Width: =110
+                              - BtnBatalHapusPlt:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =UpdateContext({locConfirmDeletePlt: false})
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="Batal Hapus"
+                                    Visible: =Coalesce(gblPltEditMode, false) && Coalesce(locConfirmDeletePlt, false)
+                                    Width: =120
+                              - BtnKonfirmasiHapusPlt:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisplayMode: =If(Coalesce(gblPltSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Fill: =RGBA(196, 43, 28, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =If(
+                                          !Coalesce(gblPltSubmitting, false),
+                                          Set(gblPltSubmitting, true);
+                                          IfError(
+                                              Remove(Profil_Plt, gblSelectedPlt);
+                                              Refresh(Profil_Plt);
+                                              Notify("Data PLT berhasil dihapus.", NotificationType.Success);
+                                              Set(gblPltSubmitting, false);
+                                              Set(gblPltEditMode, false);
+                                              Set(gblPltDetailMode, false);
+                                              UpdateContext({locConfirmDeletePlt: false});
+                                              Set(gblSelectedPlt, Defaults(Profil_Plt));
+                                              Navigate(S2_ProfilPegawai, ScreenTransition.Fade),
+                                              Notify("Gagal menghapus data PLT: " & FirstError.Message, NotificationType.Error);
+                                              Set(gblPltSubmitting, false)
+                                          )
+                                      )
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: =If(Coalesce(gblPltSubmitting, false), "Menghapus...", "Ya, Hapus")
+                                    Visible: =Coalesce(gblPltEditMode, false) && Coalesce(locConfirmDeletePlt, false)
+                                    Width: =120
                               - BtnSimpanPlt:
                                   Control: ModernText@1.0.0
                                   Properties:
@@ -435,8 +537,8 @@ Screens:
                                                           NIP: gblSelectedPlt.NIP,
                                                           JabatanPlt: Trim(TxtJabatanPltPlt.Value),
                                                           UnitKerja: Trim(TxtUnitKerjaPlt.Value),
-                                                          PeriodeMulai: DateDiff(Date(1899, 12, 30), DatePeriodeMulaiPlt.SelectedDate, TimeUnit.Days),
-                                                          PeriodeSelesai: DateDiff(Date(1899, 12, 30), DatePeriodeSelesaiPlt.SelectedDate, TimeUnit.Days),
+                                                          PeriodeMulai: DatePeriodeMulaiPlt.SelectedDate,
+                                                          PeriodeSelesai: DatePeriodeSelesaiPlt.SelectedDate,
                                                           NoSK: Trim(TxtNoSKPlt.Value),
                                                           Skor: Value(NumSkorPlt.Value),
                                                           Catatan: Trim(TxtCatatanPlt.Value)
@@ -453,8 +555,8 @@ Screens:
                                                                       NIP: Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
                                                                       JabatanPlt: Trim(TxtJabatanPltPlt.Value),
                                                                       UnitKerja: Trim(TxtUnitKerjaPlt.Value),
-                                                                      PeriodeMulai: DateDiff(Date(1899, 12, 30), DatePeriodeMulaiPlt.SelectedDate, TimeUnit.Days),
-                                                                      PeriodeSelesai: DateDiff(Date(1899, 12, 30), DatePeriodeSelesaiPlt.SelectedDate, TimeUnit.Days),
+                                                                      PeriodeMulai: DatePeriodeMulaiPlt.SelectedDate,
+                                                                      PeriodeSelesai: DatePeriodeSelesaiPlt.SelectedDate,
                                                                       NoSK: Trim(TxtNoSKPlt.Value),
                                                                       Skor: Value(NumSkorPlt.Value),
                                                                       Catatan: Trim(TxtCatatanPlt.Value)
@@ -475,6 +577,8 @@ Screens:
                                               );
                                               Set(gblPltSubmitting, false);
                                               Set(gblPltEditMode, false);
+                                              Set(gblPltDetailMode, false);
+                                              UpdateContext({locConfirmDeletePlt: false});
                                               Set(gblSelectedPlt, Defaults(Profil_Plt));
                                               Navigate(S2_ProfilPegawai, ScreenTransition.Fade),
                                               Notify(
@@ -490,4 +594,5 @@ Screens:
                                     RadiusTopRight: =6
                                     Size: =12
                                     Text: =If(Coalesce(gblPltSubmitting, false), "Menyimpan...", "Simpan")
+                                    Visible: =!Coalesce(locConfirmDeletePlt, false)
                                     Width: =130

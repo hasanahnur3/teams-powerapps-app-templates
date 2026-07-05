@@ -3,7 +3,9 @@ Screens:
     Properties:
       Fill: =RGBA(245, 245, 245, 1)
       LoadingSpinnerColor: =RGBA(9, 33, 98, 1)
-      OnVisible: =Set(gblCoachingTematikSubmitting, false)
+      OnVisible: |-
+        =Set(gblCoachingTematikSubmitting, false);
+        UpdateContext({locShowDeleteCTForm: false})
     Children:
       - CTFormScreenContainer:
           Control: GroupContainer@1.5.0
@@ -48,6 +50,7 @@ Screens:
                         Icon: =Icon.ChevronLeft
                         OnSelect: |-
                           =Set(gblCoachingTematikSubmitting, false);
+                          UpdateContext({locShowDeleteCTForm: false});
                           Back()
                         PaddingBottom: =10
                         PaddingLeft: =10
@@ -282,7 +285,7 @@ Screens:
                                   Properties:
                                     AccessibleLabel: ="Hasil coaching"
                                     Height: =150
-                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeMultiLine"
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeMultiline"
                                     Value: =If(Coalesce(gblCoachingTematikEditMode, false), Coalesce(gblSelectedCoachingTematik.HasilCoaching, ""), "")
                                     Width: =Parent.Width
                         - CTFormActions:
@@ -297,6 +300,19 @@ Screens:
                               LayoutJustifyContent: =LayoutJustifyContent.End
                               LayoutMinHeight: =48
                             Children:
+                              - BtnDeleteCTForm:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(196, 43, 28, 1)
+                                    DisplayMode: =If(Coalesce(gblCoachingTematikSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: '=UpdateContext({locShowDeleteCTForm: true})'
+                                    Text: ="Hapus"
+                                    Visible: =Coalesce(gblCoachingTematikEditMode, false)
+                                    Width: =110
                               - BtnCancelCTForm:
                                   Control: ModernText@1.0.0
                                   Properties:
@@ -386,6 +402,7 @@ Screens:
                                                   NotificationType.Success
                                               );
                                               Set(gblCoachingTematikSubmitting, false);
+                                              UpdateContext({locShowDeleteCTForm: false});
                                               Set(gblCoachingTematikEditMode, false);
                                               Set(gblSelectedCoachingTematik, Defaults(CoachingTematik));
                                               Navigate(S7A_CoachingTematik_List, ScreenTransition.Fade),
@@ -402,3 +419,121 @@ Screens:
                                     RadiusTopRight: =6
                                     Text: =If(Coalesce(gblCoachingTematikSubmitting, false), "Menyimpan...", If(Coalesce(gblCoachingTematikEditMode, false), "Simpan Perubahan", "Simpan"))
                                     Width: =If(App.Width < 520, 145, 170)
+      - CTFormDeleteOverlay:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(0, 0, 0, 0.45)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutJustifyContent: =LayoutJustifyContent.Center
+            PaddingBottom: =24
+            PaddingLeft: =24
+            PaddingRight: =24
+            PaddingTop: =24
+            Visible: =Coalesce(locShowDeleteCTForm, false)
+            Width: =Parent.Width
+          Children:
+            - CTFormDeleteDialog:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  BorderColor: =RGBA(225, 223, 221, 1)
+                  BorderStyle: =BorderStyle.Solid
+                  BorderThickness: =1
+                  DropShadow: =DropShadow.Bold
+                  Fill: =RGBA(255, 255, 255, 1)
+                  FillPortions: =0
+                  Height: =220
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =14
+                  LayoutMinHeight: =220
+                  LayoutMinWidth: =0
+                  LayoutOverflowY: =LayoutOverflow.Hide
+                  PaddingBottom: =24
+                  PaddingLeft: =24
+                  PaddingRight: =24
+                  PaddingTop: =24
+                  RadiusBottomLeft: =10
+                  RadiusBottomRight: =10
+                  RadiusTopLeft: =10
+                  RadiusTopRight: =10
+                  Width: =Min(480, Parent.Width - Parent.PaddingLeft - Parent.PaddingRight)
+                Children:
+                  - CTFormDeleteTitle:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        AutoHeight: =true
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Size: =16
+                        Text: ="Hapus Coaching Tematik?"
+                        Width: =Parent.Width
+                  - CTFormDeleteMessage:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        AutoHeight: =true
+                        Color: =RGBA(96, 94, 92, 1)
+                        Font: =Font.'Open Sans'
+                        Size: =12
+                        Text: ="Data yang sudah dihapus tidak dapat dikembalikan."
+                        Width: =Parent.Width
+                  - CTFormDeleteActions:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        FillPortions: =0
+                        Height: =46
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        LayoutMinHeight: =46
+                      Children:
+                        - BtnCancelDeleteCTForm:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(200, 198, 196, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              Font: =Font.'Open Sans'
+                              Height: =42
+                              OnSelect: |-
+                                =UpdateContext({locShowDeleteCTForm: false})
+                              Text: ="Batal"
+                              Width: =If(Parent.Width < 280, (Parent.Width - 12) / 2, 120)
+                        - BtnConfirmDeleteCTForm:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              Color: =RGBA(255, 255, 255, 1)
+                              DisplayMode: =If(Coalesce(gblCoachingTematikSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                              Fill: =RGBA(196, 43, 28, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =42
+                              OnSelect: |-
+                                =If(
+                                    !Coalesce(gblCoachingTematikSubmitting, false),
+                                    Set(gblCoachingTematikSubmitting, true);
+                                    IfError(
+                                        Remove(CoachingTematik, gblSelectedCoachingTematik);
+                                        Refresh(CoachingTematik);
+                                        UpdateContext({locShowDeleteCTForm: false});
+                                        Notify("Coaching Tematik berhasil dihapus.", NotificationType.Success);
+                                        Set(gblSelectedCoachingTematik, Defaults(CoachingTematik));
+                                        Set(gblCoachingTematikEditMode, false);
+                                        Set(gblCoachingTematikSubmitting, false);
+                                        Navigate(S7A_CoachingTematik_List, ScreenTransition.Fade),
+                                        Notify(
+                                            "Gagal menghapus Coaching Tematik: " & FirstError.Message,
+                                            NotificationType.Error
+                                        );
+                                        Set(gblCoachingTematikSubmitting, false)
+                                    )
+                                )
+                              Text: =If(Coalesce(gblCoachingTematikSubmitting, false), "Menghapus...", "Ya, Hapus")
+                              Width: =If(Parent.Width < 280, (Parent.Width - 12) / 2, 120)

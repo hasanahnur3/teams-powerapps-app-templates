@@ -89,7 +89,7 @@ Screens:
                         LayoutAlignItems: =LayoutAlignItems.Center
                         LayoutDirection: =LayoutDirection.Horizontal
                         LayoutMinHeight: =48
-                        Width: =Parent.Width
+                        Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                       Children:
                         - ChecklistListTitle:
                             Control: ModernText@1.0.0
@@ -145,7 +145,7 @@ Screens:
                         RadiusTopLeft: =8
                         RadiusTopRight: =8
                         Visible: =Coalesce(gblPimpinanView, false)
-                        Width: =Parent.Width
+                        Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                       Children:
                         - ChecklistContextEmployee:
                             Control: ModernText@1.0.0
@@ -192,7 +192,7 @@ Screens:
                         RadiusBottomRight: =8
                         RadiusTopLeft: =8
                         RadiusTopRight: =8
-                        Width: =Parent.Width
+                        Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                       Children:
                         - ChecklistColumnHeader:
                             Control: GroupContainer@1.5.0
@@ -386,4 +386,4 @@ Screens:
                               Size: =12
                               Text: ="Belum ada checklist mentoring."
                               Visible: =IsEmpty(GalleryChecklistMentoring.AllItems)
-                              Width: =Parent.Width
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight

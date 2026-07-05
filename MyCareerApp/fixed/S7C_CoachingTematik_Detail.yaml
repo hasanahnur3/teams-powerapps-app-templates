@@ -3,7 +3,8 @@ Screens:
     Properties:
       Fill: =RGBA(245, 245, 245, 1)
       LoadingSpinnerColor: =RGBA(9, 33, 98, 1)
-      OnVisible: '=UpdateContext({locShowDeleteCT: false})'
+      OnVisible: |-
+        =UpdateContext({locShowDeleteCT: false})
     Children:
       - CTDetailScreenContainer:
           Control: GroupContainer@1.5.0
@@ -137,7 +138,8 @@ Screens:
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Semibold
                               Height: =40
-                              OnSelect: '=UpdateContext({locShowDeleteCT: true})'
+                              OnSelect: |-
+                                =UpdateContext({locShowDeleteCT: true})
                               Text: ="Hapus"
                               Visible: |-
                                 =And(
@@ -150,9 +152,7 @@ Screens:
                       Variant: AutoLayout
                       Properties:
                         BorderColor: =RGBA(225, 223, 221, 1)
-                        BorderStyle: =BorderStyle.Solid
                         BorderThickness: =1
-                        DropShadow: =DropShadow.Light
                         Fill: =RGBA(255, 255, 255, 1)
                         FillPortions: =0
                         Height: |-
@@ -190,102 +190,142 @@ Screens:
                       Children:
                         - CTDetailInfoRow:
                             Control: GroupContainer@1.5.0
-                            Variant: AutoLayout
+                            Variant: ManualLayout
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: |-
-                                =If(
-                                    Parent.Width < 640,
-                                    CTDetailMentee.Height + CTDetailDate.Height + CTDetailMentor.Height + 32,
-                                    Max(CTDetailMentee.Height, CTDetailDate.Height, CTDetailMentor.Height)
-                                )
-                              LayoutDirection: =LayoutDirection.Horizontal
-                              LayoutGap: =16
-                              LayoutMinHeight: |-
-                                =If(
-                                    Parent.Width < 640,
-                                    CTDetailMentee.Height + CTDetailDate.Height + CTDetailMentor.Height + 32,
-                                    Max(CTDetailMentee.Height, CTDetailDate.Height, CTDetailMentor.Height)
-                                )
-                              LayoutWrap: =true
+                              Height: =If(Parent.Width < 640, 270, 92)
+                              LayoutMinHeight: =If(Parent.Width < 640, 270, 92)
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                             Children:
-                              - CTDetailMentee:
+                              - CTDetailMenteeLabel:
                                   Control: ModernText@1.0.0
                                   Properties:
-                                    AutoHeight: =true
+                                    Color: =RGBA(145, 145, 145, 1)
                                     Font: =Font.'Open Sans'
-                                    Size: =12
-                                    Text: '="MENTEE" & Char(10) & Coalesce(LookUp(Pegawai, Title = gblSelectedCoachingTematik.MenteeNIP, Nama), gblSelectedCoachingTematik.MenteeNIP, "-")'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =24
+                                    Size: =13
+                                    Text: ="MENTEE"
                                     Width: =If(Parent.Width < 640, Parent.Width, (Parent.Width - 32) / 3)
-                              - CTDetailDate:
+                              - CTDetailMenteeValue:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =52
+                                    Size: =19
+                                    Text: =Coalesce(LookUp(Pegawai, Title = gblSelectedCoachingTematik.MenteeNIP, Nama), gblSelectedCoachingTematik.MenteeNIP, "-")
+                                    VerticalAlign: =VerticalAlign.Top
+                                    Width: =If(Parent.Width < 640, Parent.Width, (Parent.Width - 32) / 3)
+                                    Y: =32
+                              - CTDetailDateLabel:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     AutoHeight: =true
+                                    Color: =RGBA(145, 145, 145, 1)
                                     Font: =Font.'Open Sans'
-                                    Size: =12
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =24
+                                    Size: =13
+                                    Text: ="TANGGAL"
+                                    Width: =If(Parent.Width < 640, Parent.Width, (Parent.Width - 32) / 3)
+                                    X: =If(Parent.Width < 640, 0, ((Parent.Width - 32) / 3) + 16)
+                                    Y: =If(Parent.Width < 640, 90, 0)
+                              - CTDetailDateValue:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =52
+                                    Size: =19
                                     Text: |-
-                                      ="TANGGAL" & Char(10) &
-                                      If(
+                                      =If(
                                           IsBlank(gblSelectedCoachingTematik.Tanggal),
                                           "-",
                                           Text(gblSelectedCoachingTematik.Tanggal, "[$-id-ID]dd mmmm yyyy")
                                       )
+                                    VerticalAlign: =VerticalAlign.Top
                                     Width: =If(Parent.Width < 640, Parent.Width, (Parent.Width - 32) / 3)
-                              - CTDetailMentor:
+                                    X: =If(Parent.Width < 640, 0, ((Parent.Width - 32) / 3) + 16)
+                                    Y: =If(Parent.Width < 640, 122, 32)
+                              - CTDetailMentorLabel:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     AutoHeight: =true
+                                    Color: =RGBA(145, 145, 145, 1)
                                     Font: =Font.'Open Sans'
-                                    Size: =12
-                                    Text: '="MENTOR" & Char(10) & Coalesce(LookUp(Pegawai, Title = gblSelectedCoachingTematik.MentorNIP, Nama), gblSelectedCoachingTematik.MentorNIP, "-")'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =24
+                                    Size: =13
+                                    Text: ="MENTOR"
                                     Width: =If(Parent.Width < 640, Parent.Width, (Parent.Width - 32) / 3)
+                                    X: =If(Parent.Width < 640, 0, (((Parent.Width - 32) / 3) + 16) * 2)
+                                    Y: =If(Parent.Width < 640, 180, 0)
+                              - CTDetailMentorValue:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =72
+                                    Size: =19
+                                    Text: =Coalesce(LookUp(Pegawai, Title = gblSelectedCoachingTematik.MentorNIP, Nama), gblSelectedCoachingTematik.MentorNIP, "-")
+                                    VerticalAlign: =VerticalAlign.Top
+                                    Width: =If(Parent.Width < 640, Parent.Width, (Parent.Width - 32) / 3)
+                                    X: =If(Parent.Width < 640, 0, (((Parent.Width - 32) / 3) + 16) * 2)
+                                    Y: =If(Parent.Width < 640, 212, 32)
                         - CTDetailDivider:
                             Control: Rectangle@2.3.0
                             Properties:
                               Fill: =RGBA(235, 235, 235, 1)
                               Height: =1
-                              Width: =Parent.Width
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                         - CTDetailTopikLabel:
                             Control: ModernText@1.0.0
                             Properties:
+                              AutoHeight: =true
                               Color: =RGBA(145, 145, 145, 1)
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Bold
                               Height: =24
                               Size: =11
                               Text: ="TOPIK"
-                              Width: =Parent.Width
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                         - CTDetailTopik:
                             Control: ModernText@1.0.0
                             Properties:
-                              AutoHeight: =true
                               Color: =RGBA(31, 56, 100, 1)
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Bold
+                              Height: =56
                               Size: =16
                               Text: =Coalesce(gblSelectedCoachingTematik.Topik, "-")
-                              Width: =Parent.Width
+                              VerticalAlign: =VerticalAlign.Top
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                         - CTDetailResultLabel:
                             Control: ModernText@1.0.0
                             Properties:
+                              AutoHeight: =true
                               Color: =RGBA(145, 145, 145, 1)
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Bold
                               Height: =24
                               Size: =11
                               Text: ="HASIL COACHING"
-                              Width: =Parent.Width
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                         - CTDetailResult:
                             Control: ModernText@1.0.0
                             Properties:
-                              AutoHeight: =true
                               BorderColor: =RGBA(225, 223, 221, 1)
                               BorderStyle: =BorderStyle.Solid
                               BorderThickness: =1
                               Color: =RGBA(50, 49, 48, 1)
                               Fill: =RGBA(250, 250, 250, 1)
                               Font: =Font.'Open Sans'
+                              Height: =If(Parent.Width < 640, 180, 120)
                               PaddingBottom: =16
                               PaddingLeft: =16
                               PaddingRight: =16
@@ -293,7 +333,7 @@ Screens:
                               Size: =13
                               Text: =Coalesce(gblSelectedCoachingTematik.HasilCoaching, "-")
                               VerticalAlign: =VerticalAlign.Top
-                              Width: =Parent.Width
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
       - CTDeleteOverlay:
           Control: GroupContainer@1.5.0
           Variant: AutoLayout
@@ -315,7 +355,6 @@ Screens:
                 Variant: AutoLayout
                 Properties:
                   BorderColor: =RGBA(225, 223, 221, 1)
-                  BorderStyle: =BorderStyle.Solid
                   BorderThickness: =1
                   DropShadow: =DropShadow.Bold
                   Fill: =RGBA(255, 255, 255, 1)
@@ -325,7 +364,6 @@ Screens:
                   LayoutGap: =14
                   LayoutMinHeight: =220
                   LayoutMinWidth: =0
-                  LayoutOverflowY: =LayoutOverflow.Hide
                   PaddingBottom: =24
                   PaddingLeft: =24
                   PaddingRight: =24
@@ -376,7 +414,8 @@ Screens:
                               BorderThickness: =1
                               Font: =Font.'Open Sans'
                               Height: =42
-                              OnSelect: '=UpdateContext({locShowDeleteCT: false})'
+                              OnSelect: |-
+                                =UpdateContext({locShowDeleteCT: false})
                               Text: ="Batal"
                               Width: =If(Parent.Width < 280, (Parent.Width - 12) / 2, 120)
                         - BtnConfirmDeleteCT:

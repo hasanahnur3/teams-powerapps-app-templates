@@ -3,6 +3,9 @@ Screens:
     Properties:
       Fill: =RGBA(245, 245, 245, 1)
       LoadingSpinnerColor: =RGBA(31, 56, 100, 1)
+      OnVisible: |-
+        =Set(gblPMKSubmitting, false);
+        UpdateContext({locConfirmDeletePMK: false})
     Children:
       - ScreenContainerPMKForm:
           Control: GroupContainer@1.5.0
@@ -40,6 +43,8 @@ Screens:
                         Height: =64
                         OnSelect: |-
                           =Set(gblPMKEditMode, false);
+                          Set(gblPMKDetailMode, false);
+                          UpdateContext({locConfirmDeletePMK: false});
                           Set(gblSelectedPMK, Defaults(Profil_PMK));
                           Back()
                         Size: =24
@@ -231,7 +236,15 @@ Screens:
                                   Properties:
                                     AccessibleLabel: ="Tanggal Mulai"
                                     DisplayMode: =If(Coalesce(gblPMKDetailMode, false), DisplayMode.View, DisplayMode.Edit)
-                                    DefaultDate: =If(Coalesce(gblPMKEditMode, false), Date(1899, 12, 30) + Value(gblSelectedPMK.StartDate), Today())
+                                    DefaultDate: |-
+                                      =If(
+                                          Coalesce(gblPMKEditMode, false) && !IsBlank(gblSelectedPMK.StartDate),
+                                          IfError(
+                                              Date(1899, 12, 30) + Value(gblSelectedPMK.StartDate),
+                                              gblSelectedPMK.StartDate
+                                          ),
+                                          Today()
+                                      )
                                     Format: ="dd/mm/yyyy"
                                     Placeholder: ="Pilih tanggal"
                                     Width: =Parent.Width
@@ -263,7 +276,15 @@ Screens:
                                   Properties:
                                     AccessibleLabel: ="Tanggal Selesai"
                                     DisplayMode: =If(Coalesce(gblPMKDetailMode, false), DisplayMode.View, DisplayMode.Edit)
-                                    DefaultDate: =If(Coalesce(gblPMKEditMode, false), Date(1899, 12, 30) + Value(gblSelectedPMK.CompletionDate), Today())
+                                    DefaultDate: |-
+                                      =If(
+                                          Coalesce(gblPMKEditMode, false) && !IsBlank(gblSelectedPMK.CompletionDate),
+                                          IfError(
+                                              Date(1899, 12, 30) + Value(gblSelectedPMK.CompletionDate),
+                                              gblSelectedPMK.CompletionDate
+                                          ),
+                                          Today()
+                                      )
                                     Format: ="dd/mm/yyyy"
                                     Placeholder: ="Pilih tanggal"
                                     Width: =Parent.Width
@@ -368,11 +389,12 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =48
+                              Height: =If(Coalesce(locConfirmDeletePMK, false), 104, 48)
                               LayoutDirection: =LayoutDirection.Horizontal
                               LayoutGap: =12
                               LayoutJustifyContent: =LayoutJustifyContent.End
-                              LayoutMinHeight: =48
+                              LayoutMinHeight: =If(Coalesce(locConfirmDeletePMK, false), 104, 48)
+                              LayoutWrap: =true
                               Visible: =!Coalesce(gblPMKDetailMode, false)
                               Width: =Parent.Width
                             Children:
@@ -389,6 +411,8 @@ Screens:
                                     Height: =44
                                     OnSelect: |-
                                       =Set(gblPMKEditMode, false);
+                                      Set(gblPMKDetailMode, false);
+                                      UpdateContext({locConfirmDeletePMK: false});
                                       Set(gblSelectedPMK, Defaults(Profil_PMK));
                                       Back()
                                     RadiusBottomLeft: =6
@@ -398,6 +422,84 @@ Screens:
                                     Size: =12
                                     Text: ="Batal"
                                     Width: =110
+                              - BtnHapusPMK:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(196, 43, 28, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(196, 43, 28, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =UpdateContext({locConfirmDeletePMK: true})
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="Hapus"
+                                    Visible: =Coalesce(gblPMKEditMode, false) && !Coalesce(locConfirmDeletePMK, false)
+                                    Width: =110
+                              - BtnBatalHapusPMK:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =UpdateContext({locConfirmDeletePMK: false})
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="Batal Hapus"
+                                    Visible: =Coalesce(gblPMKEditMode, false) && Coalesce(locConfirmDeletePMK, false)
+                                    Width: =120
+                              - BtnKonfirmasiHapusPMK:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisplayMode: =If(Coalesce(gblPMKSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Fill: =RGBA(196, 43, 28, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =If(
+                                          !Coalesce(gblPMKSubmitting, false),
+                                          Set(gblPMKSubmitting, true);
+                                          IfError(
+                                              Remove(Profil_PMK, gblSelectedPMK);
+                                              Refresh(Profil_PMK);
+                                              Notify("Data PMK berhasil dihapus.", NotificationType.Success);
+                                              Set(gblPMKSubmitting, false);
+                                              Set(gblPMKEditMode, false);
+                                              Set(gblPMKDetailMode, false);
+                                              UpdateContext({locConfirmDeletePMK: false});
+                                              Set(gblSelectedPMK, Defaults(Profil_PMK));
+                                              Navigate(S2_ProfilPegawai, ScreenTransition.Fade),
+                                              Notify("Gagal menghapus data PMK: " & FirstError.Message, NotificationType.Error);
+                                              Set(gblPMKSubmitting, false)
+                                          )
+                                      )
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: =If(Coalesce(gblPMKSubmitting, false), "Menghapus...", "Ya, Hapus")
+                                    Visible: =Coalesce(gblPMKEditMode, false) && Coalesce(locConfirmDeletePMK, false)
+                                    Width: =120
                               - BtnSimpanPMK:
                                   Control: ModernText@1.0.0
                                   Properties:
@@ -435,8 +537,8 @@ Screens:
                                                           NIP: gblSelectedPMK.NIP,
                                                           TrainingName: Trim(TxtTrainingNamePMK.Value),
                                                           Penyelenggara: Trim(TxtPenyelenggaraPMK.Value),
-                                                          StartDate: DateDiff(Date(1899, 12, 30), DateStartDatePMK.SelectedDate, TimeUnit.Days),
-                                                          CompletionDate: DateDiff(Date(1899, 12, 30), DateCompletionDatePMK.SelectedDate, TimeUnit.Days),
+                                                          StartDate: DateStartDatePMK.SelectedDate,
+                                                          CompletionDate: DateCompletionDatePMK.SelectedDate,
                                                           JenisPMK: Trim(TxtJenisPMKPMK.Value),
                                                           Tipe: Trim(TxtTipePMK.Value),
                                                           Negara: Trim(TxtNegaraPMK.Value)
@@ -453,8 +555,8 @@ Screens:
                                                                       NIP: Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
                                                                       TrainingName: Trim(TxtTrainingNamePMK.Value),
                                                                       Penyelenggara: Trim(TxtPenyelenggaraPMK.Value),
-                                                                      StartDate: DateDiff(Date(1899, 12, 30), DateStartDatePMK.SelectedDate, TimeUnit.Days),
-                                                                      CompletionDate: DateDiff(Date(1899, 12, 30), DateCompletionDatePMK.SelectedDate, TimeUnit.Days),
+                                                                      StartDate: DateStartDatePMK.SelectedDate,
+                                                                      CompletionDate: DateCompletionDatePMK.SelectedDate,
                                                                       JenisPMK: Trim(TxtJenisPMKPMK.Value),
                                                                       Tipe: Trim(TxtTipePMK.Value),
                                                                       Negara: Trim(TxtNegaraPMK.Value)
@@ -475,6 +577,8 @@ Screens:
                                               );
                                               Set(gblPMKSubmitting, false);
                                               Set(gblPMKEditMode, false);
+                                              Set(gblPMKDetailMode, false);
+                                              UpdateContext({locConfirmDeletePMK: false});
                                               Set(gblSelectedPMK, Defaults(Profil_PMK));
                                               Navigate(S2_ProfilPegawai, ScreenTransition.Fade),
                                               Notify(
@@ -490,4 +594,5 @@ Screens:
                                     RadiusTopRight: =6
                                     Size: =12
                                     Text: =If(Coalesce(gblPMKSubmitting, false), "Menyimpan...", "Simpan")
+                                    Visible: =!Coalesce(locConfirmDeletePMK, false)
                                     Width: =130

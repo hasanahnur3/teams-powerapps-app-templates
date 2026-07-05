@@ -3,7 +3,9 @@ Screens:
     Properties:
       Fill: =RGBA(255, 255, 255, 1)
       LoadingSpinnerColor: =RGBA(31, 56, 100, 1)
-      OnVisible: =Set(gblPendidikanSubmitting, false)
+      OnVisible: |-
+        =Set(gblPendidikanSubmitting, false);
+        UpdateContext({locConfirmDeletePendidikan: false})
     Children:
       - ScreenContainerPendidikanForm:
           Control: GroupContainer@1.5.0
@@ -13,11 +15,6 @@ Screens:
             Height: =Parent.Height
             LayoutAlignItems: =LayoutAlignItems.Stretch
             LayoutDirection: =LayoutDirection.Vertical
-            LayoutGap: =0
-            PaddingBottom: =0
-            PaddingLeft: =0
-            PaddingRight: =0
-            PaddingTop: =0
             Width: =Parent.Width
           Children:
             - HeaderPendidikanForm:
@@ -74,7 +71,6 @@ Screens:
             - TopBarShadowPendidikanForm:
                 Control: Rectangle@2.3.0
                 Properties:
-                  BorderThickness: =0
                   Fill: =RGBA(0, 0, 0, 0.08)
                   Height: =5
                   Width: =Parent.Width
@@ -98,7 +94,6 @@ Screens:
                       Variant: AutoLayout
                       Properties:
                         BorderColor: =RGBA(225, 223, 221, 1)
-                        BorderStyle: =BorderStyle.Solid
                         BorderThickness: =1
                         DropShadow: =DropShadow.None
                         Fill: =RGBA(255, 255, 255, 1)
@@ -125,7 +120,7 @@ Screens:
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Bold
                               Size: =20
-                              Text: =If(Coalesce(gblPendidikanDetailMode, false), "Detail Pendidikan", If(Coalesce(gblPendidikanEditMode, false), "Edit Pendidikan", "Tambah Pendidikan"))
+                              Text: =If(Coalesce(gblPendidikanEditMode, false), "Edit Pendidikan", "Tambah Pendidikan")
                               Width: =Parent.Width
                         - SubtitlePendidikanForm:
                             Control: ModernText@1.0.0
@@ -177,7 +172,6 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Jenjang pendidikan"
-                                    DisplayMode: =If(Coalesce(gblPendidikanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
                                     Value: =If(Coalesce(gblPendidikanEditMode, false), Coalesce(gblSelectedPendidikan.Jenjang, ""), "")
                                     Width: =Parent.Width
@@ -207,7 +201,6 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Universitas atau institusi"
-                                    DisplayMode: =If(Coalesce(gblPendidikanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
                                     Value: =If(Coalesce(gblPendidikanEditMode, false), Coalesce(gblSelectedPendidikan.Universitas, ""), "")
                                     Width: =Parent.Width
@@ -237,7 +230,6 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Program studi atau bidang"
-                                    DisplayMode: =If(Coalesce(gblPendidikanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
                                     Value: =If(Coalesce(gblPendidikanEditMode, false), Coalesce(gblSelectedPendidikan.ProgramStudi, ""), "")
                                     Width: =Parent.Width
@@ -267,7 +259,6 @@ Screens:
                                   Control: NumberInput@2.9.12
                                   Properties:
                                     AccessibleLabel: ="Tahun lulus"
-                                    DisplayMode: =If(Coalesce(gblPendidikanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Max: =Year(Today()) + 10
                                     Min: =1900
                                     Value: =If(Coalesce(gblPendidikanEditMode, false), Value(gblSelectedPendidikan.TahunLulus), Year(Today()))
@@ -278,12 +269,12 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =48
+                              Height: =If(Coalesce(locConfirmDeletePendidikan, false), 104, 48)
                               LayoutDirection: =LayoutDirection.Horizontal
                               LayoutGap: =12
                               LayoutJustifyContent: =LayoutJustifyContent.End
-                              LayoutMinHeight: =48
-                              Visible: =!Coalesce(gblPendidikanDetailMode, false)
+                              LayoutMinHeight: =If(Coalesce(locConfirmDeletePendidikan, false), 104, 48)
+                              LayoutWrap: =true
                               Width: =Parent.Width
                             Children:
                               - BtnBatalPendidikan:
@@ -299,6 +290,8 @@ Screens:
                                     Height: =44
                                     OnSelect: |-
                                       =Set(gblPendidikanEditMode, false);
+                                      Set(gblPendidikanDetailMode, false);
+                                      UpdateContext({locConfirmDeletePendidikan: false});
                                       Set(gblSelectedPendidikan, Defaults(Profil_Pendidikan));
                                       Back()
                                     RadiusBottomLeft: =6
@@ -308,6 +301,84 @@ Screens:
                                     Size: =12
                                     Text: ="Batal"
                                     Width: =110
+                              - BtnHapusPendidikan:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(196, 43, 28, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(196, 43, 28, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =UpdateContext({locConfirmDeletePendidikan: true})
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="Hapus"
+                                    Visible: =Coalesce(gblPendidikanEditMode, false) && !Coalesce(locConfirmDeletePendidikan, false)
+                                    Width: =110
+                              - BtnBatalHapusPendidikan:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =UpdateContext({locConfirmDeletePendidikan: false})
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="Batal Hapus"
+                                    Visible: =Coalesce(gblPendidikanEditMode, false) && Coalesce(locConfirmDeletePendidikan, false)
+                                    Width: =120
+                              - BtnKonfirmasiHapusPendidikan:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisplayMode: =If(Coalesce(gblPendidikanSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Fill: =RGBA(196, 43, 28, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =If(
+                                          !Coalesce(gblPendidikanSubmitting, false),
+                                          Set(gblPendidikanSubmitting, true);
+                                          IfError(
+                                              Remove(Profil_Pendidikan, gblSelectedPendidikan);
+                                              Refresh(Profil_Pendidikan);
+                                              Notify("Data pendidikan berhasil dihapus.", NotificationType.Success);
+                                              Set(gblPendidikanSubmitting, false);
+                                              Set(gblPendidikanEditMode, false);
+                                              Set(gblPendidikanDetailMode, false);
+                                              UpdateContext({locConfirmDeletePendidikan: false});
+                                              Set(gblSelectedPendidikan, Defaults(Profil_Pendidikan));
+                                              Navigate(S2_ProfilPegawai, ScreenTransition.Fade),
+                                              Notify("Gagal menghapus data pendidikan: " & FirstError.Message, NotificationType.Error);
+                                              Set(gblPendidikanSubmitting, false)
+                                          )
+                                      )
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: =If(Coalesce(gblPendidikanSubmitting, false), "Menghapus...", "Ya, Hapus")
+                                    Visible: =Coalesce(gblPendidikanEditMode, false) && Coalesce(locConfirmDeletePendidikan, false)
+                                    Width: =120
                               - BtnSimpanPendidikan:
                                   Control: ModernText@1.0.0
                                   Properties:
@@ -354,20 +425,29 @@ Screens:
                                                           TahunLulus: Value(NumTahunLulusPendidikan.Value)
                                                       }
                                                   ),
-                                                  Patch(
-                                                      Profil_Pendidikan,
-                                                      Defaults(Profil_Pendidikan),
+                                                  With(
                                                       {
-                                                          Title:
-                                                              Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)) &
-                                                              "_" & Trim(TxtJenjangPendidikan.Value) &
-                                                              "_" & Text(Now(), "yyyymmddhhmmss"),
-                                                          NIP: Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
-                                                          Jenjang: Trim(TxtJenjangPendidikan.Value),
-                                                          Universitas: Trim(TxtUniversitasPendidikan.Value),
-                                                          ProgramStudi: Trim(TxtProgramStudiPendidikan.Value),
-                                                          TahunLulus: Value(NumTahunLulusPendidikan.Value)
-                                                      }
+                                                          newPendidikan:
+                                                              Patch(
+                                                                  Profil_Pendidikan,
+                                                                  Defaults(Profil_Pendidikan),
+                                                                  {
+                                                                      Title: "TEMP_" & Text(GUID()),
+                                                                      NIP: Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
+                                                                      Jenjang: Trim(TxtJenjangPendidikan.Value),
+                                                                      Universitas: Trim(TxtUniversitasPendidikan.Value),
+                                                                      ProgramStudi: Trim(TxtProgramStudiPendidikan.Value),
+                                                                      TahunLulus: Value(NumTahunLulusPendidikan.Value)
+                                                                  }
+                                                              )
+                                                      },
+                                                      Patch(
+                                                          Profil_Pendidikan,
+                                                          newPendidikan,
+                                                          {
+                                                              Title: Text(newPendidikan.ID)
+                                                          }
+                                                      )
                                                   )
                                               );
                                               Refresh(Profil_Pendidikan);
@@ -382,6 +462,7 @@ Screens:
                                               Set(gblPendidikanSubmitting, false);
                                               Set(gblPendidikanEditMode, false);
                                               Set(gblPendidikanDetailMode, false);
+                                              UpdateContext({locConfirmDeletePendidikan: false});
                                               Set(gblSelectedPendidikan, Defaults(Profil_Pendidikan));
                                               Navigate(S2_ProfilPegawai, ScreenTransition.Fade),
                                               Notify(
@@ -397,4 +478,5 @@ Screens:
                                     RadiusTopRight: =6
                                     Size: =12
                                     Text: =If(Coalesce(gblPendidikanSubmitting, false), "Menyimpan...", "Simpan")
+                                    Visible: =!Coalesce(locConfirmDeletePendidikan, false)
                                     Width: =130

@@ -3,6 +3,9 @@ Screens:
     Properties:
       Fill: =RGBA(245, 245, 245, 1)
       LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+      OnVisible: |-
+        =Set(gblChecklistSubmitting, false);
+        UpdateContext({locConfirmDeleteChecklistForm: false})
     Children:
       - ChecklistFormContainer:
           Control: GroupContainer@1.5.0
@@ -104,24 +107,24 @@ Screens:
                         RadiusBottomRight: =8
                         RadiusTopLeft: =8
                         RadiusTopRight: =8
-                        Width: =Parent.Width
+                        Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                       Children:
                         - ChecklistFormTitle:
                             Control: ModernText@1.0.0
                             Properties:
-                              AutoHeight: =true
                               Color: =RGBA(31, 56, 100, 1)
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Bold
+                              Height: =34
                               Size: =20
                               Text: =If(Coalesce(gblChecklistEditMode, false), "Edit Checklist Mentoring", "Tambah Checklist Mentoring")
-                              Width: =Parent.Width
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                         - ChecklistFormSubtitle:
                             Control: ModernText@1.0.0
                             Properties:
-                              AutoHeight: =true
                               Color: =RGBA(96, 94, 92, 1)
                               Font: =Font.'Open Sans'
+                              Height: =44
                               Size: =12
                               Text: |-
                                 ="Pegawai: " &
@@ -133,13 +136,14 @@ Screens:
                                     ),
                                     Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))
                                 )
-                              Width: =Parent.Width
+                              VerticalAlign: =VerticalAlign.Top
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                         - ChecklistFormDivider:
                             Control: Rectangle@2.3.0
                             Properties:
                               Fill: =RGBA(225, 223, 221, 1)
                               Height: =1
-                              Width: =Parent.Width
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                         - FieldTahunChecklist:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
@@ -149,7 +153,7 @@ Screens:
                               LayoutDirection: =LayoutDirection.Vertical
                               LayoutGap: =6
                               LayoutMinHeight: =76
-                              Width: =Parent.Width
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                             Children:
                               - LblTahunChecklist:
                                   Control: ModernText@1.0.0
@@ -177,7 +181,7 @@ Screens:
                               LayoutDirection: =LayoutDirection.Vertical
                               LayoutGap: =6
                               LayoutMinHeight: =76
-                              Width: =Parent.Width
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                             Children:
                               - LblMentorChecklist:
                                   Control: ModernText@1.0.0
@@ -221,7 +225,7 @@ Screens:
                               LayoutDirection: =LayoutDirection.Vertical
                               LayoutGap: =6
                               LayoutMinHeight: =76
-                              Width: =Parent.Width
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                             Children:
                               - LblPersonalStatementChecklist:
                                   Control: ModernText@1.0.0
@@ -248,7 +252,7 @@ Screens:
                               LayoutDirection: =LayoutDirection.Vertical
                               LayoutGap: =6
                               LayoutMinHeight: =76
-                              Width: =Parent.Width
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                             Children:
                               - LblCareerPlanChecklist:
                                   Control: ModernText@1.0.0
@@ -275,7 +279,7 @@ Screens:
                               LayoutDirection: =LayoutDirection.Vertical
                               LayoutGap: =6
                               LayoutMinHeight: =76
-                              Width: =Parent.Width
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                             Children:
                               - LblBuktiUploadChecklist:
                                   Control: ModernText@1.0.0
@@ -296,7 +300,6 @@ Screens:
                         - ChecklistStatusPreview:
                             Control: ModernText@1.0.0
                             Properties:
-                              AutoHeight: =true
                               Color: |-
                                 =If(
                                     And(
@@ -309,6 +312,7 @@ Screens:
                                 )
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Semibold
+                              Height: =32
                               Text: |-
                                 ="Status: " &
                                 If(
@@ -320,7 +324,7 @@ Screens:
                                     "Lengkap",
                                     "Belum Lengkap"
                                 )
-                              Width: =Parent.Width
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                         - ChecklistFormActions:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
@@ -331,7 +335,7 @@ Screens:
                               LayoutGap: =12
                               LayoutJustifyContent: =LayoutJustifyContent.End
                               LayoutMinHeight: =48
-                              Width: =Parent.Width
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                             Children:
                               - BtnBatalChecklist:
                                   Control: ModernText@1.0.0
@@ -344,13 +348,79 @@ Screens:
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
                                     Height: =44
-                                    OnSelect: =Back()
+                                    OnSelect: |-
+                                      =UpdateContext({locConfirmDeleteChecklistForm: false});
+                                      Back()
                                     RadiusBottomLeft: =6
                                     RadiusBottomRight: =6
                                     RadiusTopLeft: =6
                                     RadiusTopRight: =6
                                     Text: ="Batal"
+                                    Visible: =!Coalesce(locConfirmDeleteChecklistForm, false)
                                     Width: =110
+                              - BtnDeleteChecklistForm:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(196, 43, 28, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: '=UpdateContext({locConfirmDeleteChecklistForm: true})'
+                                    Text: ="Hapus"
+                                    Visible: |-
+                                      =And(
+                                          Coalesce(gblChecklistEditMode, false),
+                                          Value(gblSelectedChecklist.Tahun) = Year(Today()),
+                                          !Coalesce(locConfirmDeleteChecklistForm, false)
+                                      )
+                                    Width: =110
+                              - BtnCancelDeleteChecklistForm:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: '=UpdateContext({locConfirmDeleteChecklistForm: false})'
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Text: ="Batal Hapus"
+                                    Visible: =Coalesce(locConfirmDeleteChecklistForm, false)
+                                    Width: =120
+                              - BtnConfirmDeleteChecklistForm:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    Fill: =RGBA(196, 43, 28, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =IfError(
+                                          Remove(ChecklistMentoring, gblSelectedChecklist);
+                                          Refresh(ChecklistMentoring);
+                                          UpdateContext({locConfirmDeleteChecklistForm: false});
+                                          Notify("Checklist Mentoring berhasil dihapus.", NotificationType.Success);
+                                          Set(gblChecklistEditMode, false);
+                                          Set(gblSelectedChecklist, Defaults(ChecklistMentoring));
+                                          Navigate(S6A_ChecklistMentoring_List, ScreenTransition.Fade),
+                                          Notify("Gagal menghapus checklist: " & FirstError.Message, NotificationType.Error)
+                                      )
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Text: ="Ya, Hapus"
+                                    Visible: =Coalesce(locConfirmDeleteChecklistForm, false)
+                                    Width: =120
                               - BtnSimpanChecklist:
                                   Control: ModernText@1.0.0
                                   Properties:
@@ -467,4 +537,5 @@ Screens:
                                     RadiusTopLeft: =6
                                     RadiusTopRight: =6
                                     Text: =If(Coalesce(gblChecklistSubmitting, false), "Menyimpan...", "Simpan")
+                                    Visible: =!Coalesce(locConfirmDeleteChecklistForm, false)
                                     Width: =130

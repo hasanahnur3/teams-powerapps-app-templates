@@ -3,6 +3,9 @@ Screens:
     Properties:
       Fill: =RGBA(245, 245, 245, 1)
       LoadingSpinnerColor: =RGBA(31, 56, 100, 1)
+      OnVisible: |-
+        =Set(gblPenugasanSubmitting, false);
+        UpdateContext({locConfirmDeletePenugasan: false})
     Children:
       - ScreenContainerPenugasanForm:
           Control: GroupContainer@1.5.0
@@ -40,6 +43,8 @@ Screens:
                         Height: =64
                         OnSelect: |-
                           =Set(gblPenugasanEditMode, false);
+                          Set(gblPenugasanDetailMode, false);
+                          UpdateContext({locConfirmDeletePenugasan: false});
                           Set(gblSelectedPenugasan, Defaults(Profil_Penugasan));
                           Back()
                         Size: =24
@@ -169,7 +174,15 @@ Screens:
                                   Properties:
                                     AccessibleLabel: ="Tanggal Mulai"
                                     DisplayMode: =If(Coalesce(gblPenugasanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
-                                    DefaultDate: =If(Coalesce(gblPenugasanEditMode, false), Date(1899, 12, 30) + Value(gblSelectedPenugasan.TglMulai), Today())
+                                    DefaultDate: |-
+                                      =If(
+                                          Coalesce(gblPenugasanEditMode, false) && !IsBlank(gblSelectedPenugasan.TglMulai),
+                                          IfError(
+                                              Date(1899, 12, 30) + Value(gblSelectedPenugasan.TglMulai),
+                                              gblSelectedPenugasan.TglMulai
+                                          ),
+                                          Today()
+                                      )
                                     Format: ="dd/mm/yyyy"
                                     Placeholder: ="Pilih tanggal"
                                     Width: =Parent.Width
@@ -201,7 +214,15 @@ Screens:
                                   Properties:
                                     AccessibleLabel: ="Tanggal Akhir"
                                     DisplayMode: =If(Coalesce(gblPenugasanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
-                                    DefaultDate: =If(Coalesce(gblPenugasanEditMode, false), Date(1899, 12, 30) + Value(gblSelectedPenugasan.TglAkhir), Today())
+                                    DefaultDate: |-
+                                      =If(
+                                          Coalesce(gblPenugasanEditMode, false) && !IsBlank(gblSelectedPenugasan.TglAkhir),
+                                          IfError(
+                                              Date(1899, 12, 30) + Value(gblSelectedPenugasan.TglAkhir),
+                                              gblSelectedPenugasan.TglAkhir
+                                          ),
+                                          Today()
+                                      )
                                     Format: ="dd/mm/yyyy"
                                     Placeholder: ="Pilih tanggal"
                                     Width: =Parent.Width
@@ -307,11 +328,12 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =48
+                              Height: =If(Coalesce(locConfirmDeletePenugasan, false), 104, 48)
                               LayoutDirection: =LayoutDirection.Horizontal
                               LayoutGap: =12
                               LayoutJustifyContent: =LayoutJustifyContent.End
-                              LayoutMinHeight: =48
+                              LayoutMinHeight: =If(Coalesce(locConfirmDeletePenugasan, false), 104, 48)
+                              LayoutWrap: =true
                               Visible: =!Coalesce(gblPenugasanDetailMode, false)
                               Width: =Parent.Width
                             Children:
@@ -328,6 +350,8 @@ Screens:
                                     Height: =44
                                     OnSelect: |-
                                       =Set(gblPenugasanEditMode, false);
+                                      Set(gblPenugasanDetailMode, false);
+                                      UpdateContext({locConfirmDeletePenugasan: false});
                                       Set(gblSelectedPenugasan, Defaults(Profil_Penugasan));
                                       Back()
                                     RadiusBottomLeft: =6
@@ -337,6 +361,84 @@ Screens:
                                     Size: =12
                                     Text: ="Batal"
                                     Width: =110
+                              - BtnHapusPenugasan:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(196, 43, 28, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(196, 43, 28, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =UpdateContext({locConfirmDeletePenugasan: true})
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="Hapus"
+                                    Visible: =Coalesce(gblPenugasanEditMode, false) && !Coalesce(locConfirmDeletePenugasan, false)
+                                    Width: =110
+                              - BtnBatalHapusPenugasan:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =UpdateContext({locConfirmDeletePenugasan: false})
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="Batal Hapus"
+                                    Visible: =Coalesce(gblPenugasanEditMode, false) && Coalesce(locConfirmDeletePenugasan, false)
+                                    Width: =120
+                              - BtnKonfirmasiHapusPenugasan:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisplayMode: =If(Coalesce(gblPenugasanSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Fill: =RGBA(196, 43, 28, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =If(
+                                          !Coalesce(gblPenugasanSubmitting, false),
+                                          Set(gblPenugasanSubmitting, true);
+                                          IfError(
+                                              Remove(Profil_Penugasan, gblSelectedPenugasan);
+                                              Refresh(Profil_Penugasan);
+                                              Notify("Data Penugasan berhasil dihapus.", NotificationType.Success);
+                                              Set(gblPenugasanSubmitting, false);
+                                              Set(gblPenugasanEditMode, false);
+                                              Set(gblPenugasanDetailMode, false);
+                                              UpdateContext({locConfirmDeletePenugasan: false});
+                                              Set(gblSelectedPenugasan, Defaults(Profil_Penugasan));
+                                              Navigate(S2_ProfilPegawai, ScreenTransition.Fade),
+                                              Notify("Gagal menghapus data Penugasan: " & FirstError.Message, NotificationType.Error);
+                                              Set(gblPenugasanSubmitting, false)
+                                          )
+                                      )
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: =If(Coalesce(gblPenugasanSubmitting, false), "Menghapus...", "Ya, Hapus")
+                                    Visible: =Coalesce(gblPenugasanEditMode, false) && Coalesce(locConfirmDeletePenugasan, false)
+                                    Width: =120
                               - BtnSimpanPenugasan:
                                   Control: ModernText@1.0.0
                                   Properties:
@@ -370,8 +472,8 @@ Screens:
                                                       gblSelectedPenugasan,
                                                       {
                                                           NIP: gblSelectedPenugasan.NIP,
-                                                          TglMulai: DateDiff(Date(1899, 12, 30), DateTglMulaiPenugasan.SelectedDate, TimeUnit.Days),
-                                                          TglAkhir: DateDiff(Date(1899, 12, 30), DateTglAkhirPenugasan.SelectedDate, TimeUnit.Days),
+                                                          TglMulai: DateTglMulaiPenugasan.SelectedDate,
+                                                          TglAkhir: DateTglAkhirPenugasan.SelectedDate,
                                                           PIC: Trim(TxtPICPenugasan.Value),
                                                           NamaPenugasan: Trim(TxtNamaPenugasanPenugasan.Value),
                                                           Deskripsi: Trim(TxtDeskripsiPenugasan.Value)
@@ -386,8 +488,8 @@ Screens:
                                                                   {
                                                                       Title: "TEMP_" & Text(GUID()),
                                                                       NIP: Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
-                                                                      TglMulai: DateDiff(Date(1899, 12, 30), DateTglMulaiPenugasan.SelectedDate, TimeUnit.Days),
-                                                                      TglAkhir: DateDiff(Date(1899, 12, 30), DateTglAkhirPenugasan.SelectedDate, TimeUnit.Days),
+                                                                      TglMulai: DateTglMulaiPenugasan.SelectedDate,
+                                                                      TglAkhir: DateTglAkhirPenugasan.SelectedDate,
                                                                       PIC: Trim(TxtPICPenugasan.Value),
                                                                       NamaPenugasan: Trim(TxtNamaPenugasanPenugasan.Value),
                                                                       Deskripsi: Trim(TxtDeskripsiPenugasan.Value)
@@ -408,6 +510,8 @@ Screens:
                                               );
                                               Set(gblPenugasanSubmitting, false);
                                               Set(gblPenugasanEditMode, false);
+                                              Set(gblPenugasanDetailMode, false);
+                                              UpdateContext({locConfirmDeletePenugasan: false});
                                               Set(gblSelectedPenugasan, Defaults(Profil_Penugasan));
                                               Navigate(S2_ProfilPegawai, ScreenTransition.Fade),
                                               Notify(
@@ -423,4 +527,5 @@ Screens:
                                     RadiusTopRight: =6
                                     Size: =12
                                     Text: =If(Coalesce(gblPenugasanSubmitting, false), "Menyimpan...", "Simpan")
+                                    Visible: =!Coalesce(locConfirmDeletePenugasan, false)
                                     Width: =130

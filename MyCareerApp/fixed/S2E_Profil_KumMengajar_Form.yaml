@@ -3,6 +3,9 @@ Screens:
     Properties:
       Fill: =RGBA(245, 245, 245, 1)
       LoadingSpinnerColor: =RGBA(31, 56, 100, 1)
+      OnVisible: |-
+        =Set(gblKumMengajarSubmitting, false);
+        UpdateContext({locConfirmDeleteKumMengajar: false})
     Children:
       - ScreenContainerKumMengajarForm:
           Control: GroupContainer@1.5.0
@@ -40,6 +43,8 @@ Screens:
                         Height: =64
                         OnSelect: |-
                           =Set(gblKumMengajarEditMode, false);
+                          Set(gblKumMengajarDetailMode, false);
+                          UpdateContext({locConfirmDeleteKumMengajar: false});
                           Set(gblSelectedKumMengajar, Defaults(Profil_KumMengajar));
                           Back()
                         Size: =24
@@ -200,7 +205,15 @@ Screens:
                                   Properties:
                                     AccessibleLabel: ="Tanggal Pelaksanaan"
                                     DisplayMode: =If(Coalesce(gblKumMengajarDetailMode, false), DisplayMode.View, DisplayMode.Edit)
-                                    DefaultDate: =If(Coalesce(gblKumMengajarEditMode, false), Date(1899, 12, 30) + Value(gblSelectedKumMengajar.TanggalPelaksanaan), Today())
+                                    DefaultDate: |-
+                                      =If(
+                                          Coalesce(gblKumMengajarEditMode, false) && !IsBlank(gblSelectedKumMengajar.TanggalPelaksanaan),
+                                          IfError(
+                                              Date(1899, 12, 30) + Value(gblSelectedKumMengajar.TanggalPelaksanaan),
+                                              gblSelectedKumMengajar.TanggalPelaksanaan
+                                          ),
+                                          Today()
+                                      )
                                     Format: ="dd/mm/yyyy"
                                     Placeholder: ="Pilih tanggal"
                                     Width: =Parent.Width
@@ -212,11 +225,12 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =48
+                              Height: =If(Coalesce(locConfirmDeleteKumMengajar, false), 104, 48)
                               LayoutDirection: =LayoutDirection.Horizontal
                               LayoutGap: =12
                               LayoutJustifyContent: =LayoutJustifyContent.End
-                              LayoutMinHeight: =48
+                              LayoutMinHeight: =If(Coalesce(locConfirmDeleteKumMengajar, false), 104, 48)
+                              LayoutWrap: =true
                               Visible: =!Coalesce(gblKumMengajarDetailMode, false)
                               Width: =Parent.Width
                             Children:
@@ -233,6 +247,8 @@ Screens:
                                     Height: =44
                                     OnSelect: |-
                                       =Set(gblKumMengajarEditMode, false);
+                                      Set(gblKumMengajarDetailMode, false);
+                                      UpdateContext({locConfirmDeleteKumMengajar: false});
                                       Set(gblSelectedKumMengajar, Defaults(Profil_KumMengajar));
                                       Back()
                                     RadiusBottomLeft: =6
@@ -242,6 +258,84 @@ Screens:
                                     Size: =12
                                     Text: ="Batal"
                                     Width: =110
+                              - BtnHapusKumMengajar:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(196, 43, 28, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(196, 43, 28, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =UpdateContext({locConfirmDeleteKumMengajar: true})
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="Hapus"
+                                    Visible: =Coalesce(gblKumMengajarEditMode, false) && !Coalesce(locConfirmDeleteKumMengajar, false)
+                                    Width: =110
+                              - BtnBatalHapusKumMengajar:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =UpdateContext({locConfirmDeleteKumMengajar: false})
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="Batal Hapus"
+                                    Visible: =Coalesce(gblKumMengajarEditMode, false) && Coalesce(locConfirmDeleteKumMengajar, false)
+                                    Width: =120
+                              - BtnKonfirmasiHapusKumMengajar:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisplayMode: =If(Coalesce(gblKumMengajarSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Fill: =RGBA(196, 43, 28, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =If(
+                                          !Coalesce(gblKumMengajarSubmitting, false),
+                                          Set(gblKumMengajarSubmitting, true);
+                                          IfError(
+                                              Remove(Profil_KumMengajar, gblSelectedKumMengajar);
+                                              Refresh(Profil_KumMengajar);
+                                              Notify("Data Kum Mengajar berhasil dihapus.", NotificationType.Success);
+                                              Set(gblKumMengajarSubmitting, false);
+                                              Set(gblKumMengajarEditMode, false);
+                                              Set(gblKumMengajarDetailMode, false);
+                                              UpdateContext({locConfirmDeleteKumMengajar: false});
+                                              Set(gblSelectedKumMengajar, Defaults(Profil_KumMengajar));
+                                              Navigate(S2_ProfilPegawai, ScreenTransition.Fade),
+                                              Notify("Gagal menghapus data Kum Mengajar: " & FirstError.Message, NotificationType.Error);
+                                              Set(gblKumMengajarSubmitting, false)
+                                          )
+                                      )
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: =If(Coalesce(gblKumMengajarSubmitting, false), "Menghapus...", "Ya, Hapus")
+                                    Visible: =Coalesce(gblKumMengajarEditMode, false) && Coalesce(locConfirmDeleteKumMengajar, false)
+                                    Width: =120
                               - BtnSimpanKumMengajar:
                                   Control: ModernText@1.0.0
                                   Properties:
@@ -273,7 +367,7 @@ Screens:
                                                       {
                                                           NIP: gblSelectedKumMengajar.NIP,
                                                           NamaIHT: Trim(TxtNamaIHTKumMengajar.Value),
-                                                          TanggalPelaksanaan: DateDiff(Date(1899, 12, 30), DateTanggalPelaksanaanKumMengajar.SelectedDate, TimeUnit.Days)
+                                                          TanggalPelaksanaan: DateTanggalPelaksanaanKumMengajar.SelectedDate
                                                       }
                                                   ),
                                                   With(
@@ -286,7 +380,7 @@ Screens:
                                                                       Title: "TEMP_" & Text(GUID()),
                                                                       NIP: Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
                                                                       NamaIHT: Trim(TxtNamaIHTKumMengajar.Value),
-                                                                      TanggalPelaksanaan: DateDiff(Date(1899, 12, 30), DateTanggalPelaksanaanKumMengajar.SelectedDate, TimeUnit.Days)
+                                                                      TanggalPelaksanaan: DateTanggalPelaksanaanKumMengajar.SelectedDate
                                                                   }
                                                               )
                                                       },
@@ -304,6 +398,8 @@ Screens:
                                               );
                                               Set(gblKumMengajarSubmitting, false);
                                               Set(gblKumMengajarEditMode, false);
+                                              Set(gblKumMengajarDetailMode, false);
+                                              UpdateContext({locConfirmDeleteKumMengajar: false});
                                               Set(gblSelectedKumMengajar, Defaults(Profil_KumMengajar));
                                               Navigate(S2_ProfilPegawai, ScreenTransition.Fade),
                                               Notify(
@@ -319,4 +415,5 @@ Screens:
                                     RadiusTopRight: =6
                                     Size: =12
                                     Text: =If(Coalesce(gblKumMengajarSubmitting, false), "Menyimpan...", "Simpan")
+                                    Visible: =!Coalesce(locConfirmDeleteKumMengajar, false)
                                     Width: =130

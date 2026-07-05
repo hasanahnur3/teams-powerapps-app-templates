@@ -3,6 +3,9 @@ Screens:
     Properties:
       Fill: =RGBA(245, 245, 245, 1)
       LoadingSpinnerColor: =RGBA(31, 56, 100, 1)
+      OnVisible: |-
+        =Set(gblPrestasiSubmitting, false);
+        UpdateContext({locConfirmDeletePrestasi: false})
     Children:
       - ScreenContainerPrestasiForm:
           Control: GroupContainer@1.5.0
@@ -40,6 +43,8 @@ Screens:
                         Height: =64
                         OnSelect: |-
                           =Set(gblPrestasiEditMode, false);
+                          Set(gblPrestasiDetailMode, false);
+                          UpdateContext({locConfirmDeletePrestasi: false});
                           Set(gblSelectedPrestasi, Defaults(Profil_Prestasi));
                           Back()
                         Size: =24
@@ -294,7 +299,15 @@ Screens:
                                   Properties:
                                     AccessibleLabel: ="Tanggal"
                                     DisplayMode: =If(Coalesce(gblPrestasiDetailMode, false), DisplayMode.View, DisplayMode.Edit)
-                                    DefaultDate: =If(Coalesce(gblPrestasiEditMode, false), Date(1899, 12, 30) + Value(gblSelectedPrestasi.Tanggal), Today())
+                                    DefaultDate: |-
+                                      =If(
+                                          Coalesce(gblPrestasiEditMode, false) && !IsBlank(gblSelectedPrestasi.Tanggal),
+                                          IfError(
+                                              Date(1899, 12, 30) + Value(gblSelectedPrestasi.Tanggal),
+                                              gblSelectedPrestasi.Tanggal
+                                          ),
+                                          Today()
+                                      )
                                     Format: ="dd/mm/yyyy"
                                     Placeholder: ="Pilih tanggal"
                                     Width: =Parent.Width
@@ -306,11 +319,12 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =48
+                              Height: =If(Coalesce(locConfirmDeletePrestasi, false), 104, 48)
                               LayoutDirection: =LayoutDirection.Horizontal
                               LayoutGap: =12
                               LayoutJustifyContent: =LayoutJustifyContent.End
-                              LayoutMinHeight: =48
+                              LayoutMinHeight: =If(Coalesce(locConfirmDeletePrestasi, false), 104, 48)
+                              LayoutWrap: =true
                               Visible: =!Coalesce(gblPrestasiDetailMode, false)
                               Width: =Parent.Width
                             Children:
@@ -327,6 +341,8 @@ Screens:
                                     Height: =44
                                     OnSelect: |-
                                       =Set(gblPrestasiEditMode, false);
+                                      Set(gblPrestasiDetailMode, false);
+                                      UpdateContext({locConfirmDeletePrestasi: false});
                                       Set(gblSelectedPrestasi, Defaults(Profil_Prestasi));
                                       Back()
                                     RadiusBottomLeft: =6
@@ -336,6 +352,84 @@ Screens:
                                     Size: =12
                                     Text: ="Batal"
                                     Width: =110
+                              - BtnHapusPrestasi:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(196, 43, 28, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(196, 43, 28, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =UpdateContext({locConfirmDeletePrestasi: true})
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="Hapus"
+                                    Visible: =Coalesce(gblPrestasiEditMode, false) && !Coalesce(locConfirmDeletePrestasi, false)
+                                    Width: =110
+                              - BtnBatalHapusPrestasi:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =UpdateContext({locConfirmDeletePrestasi: false})
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="Batal Hapus"
+                                    Visible: =Coalesce(gblPrestasiEditMode, false) && Coalesce(locConfirmDeletePrestasi, false)
+                                    Width: =120
+                              - BtnKonfirmasiHapusPrestasi:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisplayMode: =If(Coalesce(gblPrestasiSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Fill: =RGBA(196, 43, 28, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =If(
+                                          !Coalesce(gblPrestasiSubmitting, false),
+                                          Set(gblPrestasiSubmitting, true);
+                                          IfError(
+                                              Remove(Profil_Prestasi, gblSelectedPrestasi);
+                                              Refresh(Profil_Prestasi);
+                                              Notify("Data Prestasi berhasil dihapus.", NotificationType.Success);
+                                              Set(gblPrestasiSubmitting, false);
+                                              Set(gblPrestasiEditMode, false);
+                                              Set(gblPrestasiDetailMode, false);
+                                              UpdateContext({locConfirmDeletePrestasi: false});
+                                              Set(gblSelectedPrestasi, Defaults(Profil_Prestasi));
+                                              Navigate(S2_ProfilPegawai, ScreenTransition.Fade),
+                                              Notify("Gagal menghapus data Prestasi: " & FirstError.Message, NotificationType.Error);
+                                              Set(gblPrestasiSubmitting, false)
+                                          )
+                                      )
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: =If(Coalesce(gblPrestasiSubmitting, false), "Menghapus...", "Ya, Hapus")
+                                    Visible: =Coalesce(gblPrestasiEditMode, false) && Coalesce(locConfirmDeletePrestasi, false)
+                                    Width: =120
                               - BtnSimpanPrestasi:
                                   Control: ModernText@1.0.0
                                   Properties:
@@ -373,7 +467,7 @@ Screens:
                                                           Level: Trim(TxtLevelPrestasi.Value),
                                                           NamaPrestasi: Trim(TxtNamaPrestasiPrestasi.Value),
                                                           DetailPrestasi: Trim(TxtDetailPrestasiPrestasi.Value),
-                                                          Tanggal: DateDiff(Date(1899, 12, 30), DateTanggalPrestasi.SelectedDate, TimeUnit.Days)
+                                                          Tanggal: DateTanggalPrestasi.SelectedDate
                                                       }
                                                   ),
                                                   With(
@@ -389,7 +483,7 @@ Screens:
                                                                       Level: Trim(TxtLevelPrestasi.Value),
                                                                       NamaPrestasi: Trim(TxtNamaPrestasiPrestasi.Value),
                                                                       DetailPrestasi: Trim(TxtDetailPrestasiPrestasi.Value),
-                                                                      Tanggal: DateDiff(Date(1899, 12, 30), DateTanggalPrestasi.SelectedDate, TimeUnit.Days)
+                                                                      Tanggal: DateTanggalPrestasi.SelectedDate
                                                                   }
                                                               )
                                                       },
@@ -407,6 +501,8 @@ Screens:
                                               );
                                               Set(gblPrestasiSubmitting, false);
                                               Set(gblPrestasiEditMode, false);
+                                              Set(gblPrestasiDetailMode, false);
+                                              UpdateContext({locConfirmDeletePrestasi: false});
                                               Set(gblSelectedPrestasi, Defaults(Profil_Prestasi));
                                               Navigate(S2_ProfilPegawai, ScreenTransition.Fade),
                                               Notify(
@@ -422,4 +518,5 @@ Screens:
                                     RadiusTopRight: =6
                                     Size: =12
                                     Text: =If(Coalesce(gblPrestasiSubmitting, false), "Menyimpan...", "Simpan")
+                                    Visible: =!Coalesce(locConfirmDeletePrestasi, false)
                                     Width: =130

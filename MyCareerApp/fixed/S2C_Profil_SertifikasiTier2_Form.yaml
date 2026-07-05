@@ -3,6 +3,9 @@ Screens:
     Properties:
       Fill: =RGBA(245, 245, 245, 1)
       LoadingSpinnerColor: =RGBA(31, 56, 100, 1)
+      OnVisible: |-
+        =Set(gblSertifikasiTier2Submitting, false);
+        UpdateContext({locConfirmDeleteSertifikasiTier2: false})
     Children:
       - ScreenContainerSertifikasiTier2Form:
           Control: GroupContainer@1.5.0
@@ -40,6 +43,8 @@ Screens:
                         Height: =64
                         OnSelect: |-
                           =Set(gblSertifikasiTier2EditMode, false);
+                          Set(gblSertifikasiTier2DetailMode, false);
+                          UpdateContext({locConfirmDeleteSertifikasiTier2: false});
                           Set(gblSelectedSertifikasiTier2, Defaults(Profil_SertifikasiTier2));
                           Back()
                         Size: =24
@@ -231,7 +236,15 @@ Screens:
                                   Properties:
                                     AccessibleLabel: ="Tanggal Terbit"
                                     DisplayMode: =If(Coalesce(gblSertifikasiTier2DetailMode, false), DisplayMode.View, DisplayMode.Edit)
-                                    DefaultDate: =If(Coalesce(gblSertifikasiTier2EditMode, false), Date(1899, 12, 30) + Value(gblSelectedSertifikasiTier2.TanggalTerbit), Today())
+                                    DefaultDate: |-
+                                      =If(
+                                          Coalesce(gblSertifikasiTier2EditMode, false) && !IsBlank(gblSelectedSertifikasiTier2.TanggalTerbit),
+                                          IfError(
+                                              Date(1899, 12, 30) + Value(gblSelectedSertifikasiTier2.TanggalTerbit),
+                                              gblSelectedSertifikasiTier2.TanggalTerbit
+                                          ),
+                                          Today()
+                                      )
                                     Format: ="dd/mm/yyyy"
                                     Placeholder: ="Pilih tanggal"
                                     Width: =Parent.Width
@@ -263,7 +276,15 @@ Screens:
                                   Properties:
                                     AccessibleLabel: ="Tanggal Berakhir"
                                     DisplayMode: =If(Coalesce(gblSertifikasiTier2DetailMode, false), DisplayMode.View, DisplayMode.Edit)
-                                    DefaultDate: =If(Coalesce(gblSertifikasiTier2EditMode, false), Date(1899, 12, 30) + Value(gblSelectedSertifikasiTier2.TanggalBerakhir), Today())
+                                    DefaultDate: |-
+                                      =If(
+                                          Coalesce(gblSertifikasiTier2EditMode, false) && !IsBlank(gblSelectedSertifikasiTier2.TanggalBerakhir),
+                                          IfError(
+                                              Date(1899, 12, 30) + Value(gblSelectedSertifikasiTier2.TanggalBerakhir),
+                                              gblSelectedSertifikasiTier2.TanggalBerakhir
+                                          ),
+                                          Today()
+                                      )
                                     Format: ="dd/mm/yyyy"
                                     Placeholder: ="Pilih tanggal"
                                     Width: =Parent.Width
@@ -306,11 +327,12 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =48
+                              Height: =If(Coalesce(locConfirmDeleteSertifikasiTier2, false), 104, 48)
                               LayoutDirection: =LayoutDirection.Horizontal
                               LayoutGap: =12
                               LayoutJustifyContent: =LayoutJustifyContent.End
-                              LayoutMinHeight: =48
+                              LayoutMinHeight: =If(Coalesce(locConfirmDeleteSertifikasiTier2, false), 104, 48)
+                              LayoutWrap: =true
                               Visible: =!Coalesce(gblSertifikasiTier2DetailMode, false)
                               Width: =Parent.Width
                             Children:
@@ -327,6 +349,8 @@ Screens:
                                     Height: =44
                                     OnSelect: |-
                                       =Set(gblSertifikasiTier2EditMode, false);
+                                      Set(gblSertifikasiTier2DetailMode, false);
+                                      UpdateContext({locConfirmDeleteSertifikasiTier2: false});
                                       Set(gblSelectedSertifikasiTier2, Defaults(Profil_SertifikasiTier2));
                                       Back()
                                     RadiusBottomLeft: =6
@@ -336,6 +360,84 @@ Screens:
                                     Size: =12
                                     Text: ="Batal"
                                     Width: =110
+                              - BtnHapusSertifikasiTier2:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(196, 43, 28, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(196, 43, 28, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =UpdateContext({locConfirmDeleteSertifikasiTier2: true})
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="Hapus"
+                                    Visible: =Coalesce(gblSertifikasiTier2EditMode, false) && !Coalesce(locConfirmDeleteSertifikasiTier2, false)
+                                    Width: =110
+                              - BtnBatalHapusSertifikasiTier2:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =UpdateContext({locConfirmDeleteSertifikasiTier2: false})
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="Batal Hapus"
+                                    Visible: =Coalesce(gblSertifikasiTier2EditMode, false) && Coalesce(locConfirmDeleteSertifikasiTier2, false)
+                                    Width: =120
+                              - BtnKonfirmasiHapusSertifikasiTier2:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisplayMode: =If(Coalesce(gblSertifikasiTier2Submitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Fill: =RGBA(196, 43, 28, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =If(
+                                          !Coalesce(gblSertifikasiTier2Submitting, false),
+                                          Set(gblSertifikasiTier2Submitting, true);
+                                          IfError(
+                                              Remove(Profil_SertifikasiTier2, gblSelectedSertifikasiTier2);
+                                              Refresh(Profil_SertifikasiTier2);
+                                              Notify("Data Sertifikasi Tier 2 berhasil dihapus.", NotificationType.Success);
+                                              Set(gblSertifikasiTier2Submitting, false);
+                                              Set(gblSertifikasiTier2EditMode, false);
+                                              Set(gblSertifikasiTier2DetailMode, false);
+                                              UpdateContext({locConfirmDeleteSertifikasiTier2: false});
+                                              Set(gblSelectedSertifikasiTier2, Defaults(Profil_SertifikasiTier2));
+                                              Navigate(S2_ProfilPegawai, ScreenTransition.Fade),
+                                              Notify("Gagal menghapus data Sertifikasi Tier 2: " & FirstError.Message, NotificationType.Error);
+                                              Set(gblSertifikasiTier2Submitting, false)
+                                          )
+                                      )
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: =If(Coalesce(gblSertifikasiTier2Submitting, false), "Menghapus...", "Ya, Hapus")
+                                    Visible: =Coalesce(gblSertifikasiTier2EditMode, false) && Coalesce(locConfirmDeleteSertifikasiTier2, false)
+                                    Width: =120
                               - BtnSimpanSertifikasiTier2:
                                   Control: ModernText@1.0.0
                                   Properties:
@@ -371,8 +473,8 @@ Screens:
                                                           NIP: gblSelectedSertifikasiTier2.NIP,
                                                           NamaSertifikat: Trim(TxtNamaSertifikatSertifikasiTier2.Value),
                                                           Penerbit: Trim(TxtPenerbitSertifikasiTier2.Value),
-                                                          TanggalTerbit: DateDiff(Date(1899, 12, 30), DateTanggalTerbitSertifikasiTier2.SelectedDate, TimeUnit.Days),
-                                                          TanggalBerakhir: DateDiff(Date(1899, 12, 30), DateTanggalBerakhirSertifikasiTier2.SelectedDate, TimeUnit.Days),
+                                                          TanggalTerbit: DateTanggalTerbitSertifikasiTier2.SelectedDate,
+                                                          TanggalBerakhir: DateTanggalBerakhirSertifikasiTier2.SelectedDate,
                                                           NomorSertifikat: Trim(TxtNomorSertifikatSertifikasiTier2.Value)
                                                       }
                                                   ),
@@ -387,8 +489,8 @@ Screens:
                                                                       NIP: Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
                                                                       NamaSertifikat: Trim(TxtNamaSertifikatSertifikasiTier2.Value),
                                                                       Penerbit: Trim(TxtPenerbitSertifikasiTier2.Value),
-                                                                      TanggalTerbit: DateDiff(Date(1899, 12, 30), DateTanggalTerbitSertifikasiTier2.SelectedDate, TimeUnit.Days),
-                                                                      TanggalBerakhir: DateDiff(Date(1899, 12, 30), DateTanggalBerakhirSertifikasiTier2.SelectedDate, TimeUnit.Days),
+                                                                      TanggalTerbit: DateTanggalTerbitSertifikasiTier2.SelectedDate,
+                                                                      TanggalBerakhir: DateTanggalBerakhirSertifikasiTier2.SelectedDate,
                                                                       NomorSertifikat: Trim(TxtNomorSertifikatSertifikasiTier2.Value)
                                                                   }
                                                               )
@@ -407,6 +509,8 @@ Screens:
                                               );
                                               Set(gblSertifikasiTier2Submitting, false);
                                               Set(gblSertifikasiTier2EditMode, false);
+                                              Set(gblSertifikasiTier2DetailMode, false);
+                                              UpdateContext({locConfirmDeleteSertifikasiTier2: false});
                                               Set(gblSelectedSertifikasiTier2, Defaults(Profil_SertifikasiTier2));
                                               Navigate(S2_ProfilPegawai, ScreenTransition.Fade),
                                               Notify(
@@ -422,4 +526,5 @@ Screens:
                                     RadiusTopRight: =6
                                     Size: =12
                                     Text: =If(Coalesce(gblSertifikasiTier2Submitting, false), "Menyimpan...", "Simpan")
+                                    Visible: =!Coalesce(locConfirmDeleteSertifikasiTier2, false)
                                     Width: =130
