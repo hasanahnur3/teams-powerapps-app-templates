@@ -167,32 +167,6 @@ Screens:
                                     Min: =2000
                                     Value: =If(Coalesce(gblIDPEditMode, false), Value(gblSelectedIDP.Tahun), Year(Today()))
                                     Width: =Parent.Width
-                        - FieldCoachingIDP:
-                            Control: GroupContainer@1.5.0
-                            Variant: AutoLayout
-                            Properties:
-                              FillPortions: =0
-                              Height: =76
-                              LayoutDirection: =LayoutDirection.Vertical
-                              LayoutGap: =6
-                              LayoutMinHeight: =76
-                              Width: =Parent.Width
-                            Children:
-                              - LblCoachingIDP:
-                                  Control: ModernText@1.0.0
-                                  Properties:
-                                    Font: =Font.'Open Sans'
-                                    FontWeight: =FontWeight.Semibold
-                                    Size: =12
-                                    Text: ="Coaching ID"
-                                    Width: =Parent.Width
-                              - NumCoachingIDP:
-                                  Control: NumberInput@2.9.12
-                                  Properties:
-                                    AccessibleLabel: ="Coaching ID"
-                                    Min: =0
-                                    Value: =If(Coalesce(gblIDPEditMode, false), Value(Coalesce(gblSelectedIDP.CoachingID, 0)), 0)
-                                    Width: =Parent.Width
                         - FieldKategoriIDP:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
@@ -256,12 +230,19 @@ Screens:
                                     Size: =12
                                     Text: ="Tipe *"
                                     Width: =Parent.Width
-                              - TxtTipeIDP:
-                                  Control: TextInput@0.0.54
+                              - CmbTipeIDP:
+                                  Control: ComboBox@0.0.51
                                   Properties:
                                     AccessibleLabel: ="Tipe IDP"
-                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
-                                    Value: =If(Coalesce(gblIDPEditMode, false), Coalesce(gblSelectedIDP.Tipe, ""), "")
+                                    DefaultSelectedItems: |-
+                                      =If(
+                                          Coalesce(gblIDPEditMode, false),
+                                          Filter(Choices([@IDP].Tipe), Value = gblSelectedIDP.Tipe.Value),
+                                          Blank()
+                                      )
+                                    InputTextPlaceholder: ="Pilih tipe"
+                                    Items: =Choices([@IDP].Tipe)
+                                    SelectMultiple: =false
                                     Width: =Parent.Width
                         - FieldDetailIDP:
                             Control: GroupContainer@1.5.0
@@ -427,7 +408,7 @@ Screens:
                                           Or(
                                               IsBlank(NumTahunIDP.Value),
                                               IsBlank(CmbKategoriIDP.Selected.Value),
-                                              IsBlank(Trim(TxtTipeIDP.Value)),
+                                              IsBlank(CmbTipeIDP.Selected.Value),
                                               IsBlank(Trim(TxtDetailIDP.Value)),
                                               IsBlank(CmbTargetIDP.Selected.Value),
                                               IsBlank(CmbStatusIDP.Selected.Value)
@@ -447,9 +428,8 @@ Screens:
                                                       {
                                                           NIP: gblSelectedIDP.NIP,
                                                           Tahun: Value(NumTahunIDP.Value),
-                                                          CoachingID: If(Value(NumCoachingIDP.Value) = 0, Blank(), Value(NumCoachingIDP.Value)),
                                                           Kategori: CmbKategoriIDP.Selected.Value,
-                                                          Tipe: Trim(TxtTipeIDP.Value),
+                                                          Tipe: CmbTipeIDP.Selected,
                                                           Detail: Trim(TxtDetailIDP.Value),
                                                           Target: CmbTargetIDP.Selected.Value,
                                                           Status: CmbStatusIDP.Selected.Value
@@ -465,9 +445,8 @@ Screens:
                                                                       Title: "TEMP_" & Text(GUID()),
                                                                       NIP: Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
                                                                       Tahun: Value(NumTahunIDP.Value),
-                                                                      CoachingID: If(Value(NumCoachingIDP.Value) = 0, Blank(), Value(NumCoachingIDP.Value)),
                                                                       Kategori: CmbKategoriIDP.Selected.Value,
-                                                                      Tipe: Trim(TxtTipeIDP.Value),
+                                                                      Tipe: CmbTipeIDP.Selected,
                                                                       Detail: Trim(TxtDetailIDP.Value),
                                                                       Target: CmbTargetIDP.Selected.Value,
                                                                       Status: CmbStatusIDP.Selected.Value

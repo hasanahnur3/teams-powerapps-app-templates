@@ -2014,10 +2014,7 @@ Screens:
                                             =If(
                                                 IsBlank(ThisItem.StartDate),
                                                 "-",
-                                                IfError(
-                                                    Text(Date(1899, 12, 30) + Value(ThisItem.StartDate), "[$-id-ID]dd/mm/yyyy"),
-                                                    Text(DateValue(Text(ThisItem.StartDate)), "[$-id-ID]dd/mm/yyyy")
-                                                )
+                                                Text(ThisItem.StartDate, "[$-id-ID]dd/mm/yyyy")
                                             )
                                           Width: =Parent.TemplateWidth * 0.129
                                           X: =Parent.TemplateWidth * 0.435
@@ -2033,10 +2030,7 @@ Screens:
                                             =If(
                                                 IsBlank(ThisItem.CompletionDate),
                                                 "-",
-                                                IfError(
-                                                    Text(Date(1899, 12, 30) + Value(ThisItem.CompletionDate), "[$-id-ID]dd/mm/yyyy"),
-                                                    Text(DateValue(Text(ThisItem.CompletionDate)), "[$-id-ID]dd/mm/yyyy")
-                                                )
+                                                Text(ThisItem.CompletionDate, "[$-id-ID]dd/mm/yyyy")
                                             )
                                           Width: =Parent.TemplateWidth * 0.129
                                           X: =Parent.TemplateWidth * 0.564
@@ -2135,7 +2129,7 @@ Screens:
                                           Height: =Parent.Height
                                           PaddingLeft: =10
                                           Size: =12
-                                          Text: =Text(Date(1899, 12, 30) + Value(First(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).StartDate), "[$-id-ID]dd/mm/yyyy")
+                                          Text: =Text(First(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).StartDate, "[$-id-ID]dd/mm/yyyy")
                                     - PMKEnd1:
                                         Control: ModernText@1.0.0
                                         Properties:
@@ -2145,7 +2139,7 @@ Screens:
                                           Height: =Parent.Height
                                           PaddingLeft: =10
                                           Size: =12
-                                          Text: =Text(Date(1899, 12, 30) + Value(First(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).CompletionDate), "[$-id-ID]dd/mm/yyyy")
+                                          Text: =Text(First(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).CompletionDate, "[$-id-ID]dd/mm/yyyy")
                                     - PMKJenis1:
                                         Control: ModernText@1.0.0
                                         Properties:
@@ -2352,10 +2346,7 @@ Screens:
                                             =If(
                                                 IsBlank(ThisItem.TanggalPelaksanaan),
                                                 "-",
-                                                IfError(
-                                                    Text(Date(1899, 12, 30) + Value(ThisItem.TanggalPelaksanaan), "[$-id-ID]dd/mm/yyyy"),
-                                                    Text(DateValue(Text(ThisItem.TanggalPelaksanaan)), "[$-id-ID]dd/mm/yyyy")
-                                                )
+                                                Text(ThisItem.TanggalPelaksanaan, "[$-id-ID]dd/mm/yyyy")
                                             )
                                           Width: =Parent.TemplateWidth * 0.25
                                           X: =Parent.TemplateWidth * 0.75
@@ -2412,7 +2403,7 @@ Screens:
                                           Height: =Parent.Height
                                           PaddingLeft: =10
                                           Size: =12
-                                          Text: =Coalesce(Text(Date(1899, 12, 30) + Value(First(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).TanggalPelaksanaan), "[$-id-ID]dd/mm/yyyy"), "—")
+                                          Text: =Coalesce(Text(First(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).TanggalPelaksanaan, "[$-id-ID]dd/mm/yyyy"), "—")
                               - KumEmpty:
                                   Control: ModernText@1.0.0
                                   Properties:
@@ -2707,10 +2698,7 @@ Screens:
                                             =If(
                                                 IsBlank(ThisItem.TglMulai),
                                                 "-",
-                                                IfError(
-                                                    Text(Date(1899, 12, 30) + Value(ThisItem.TglMulai), "[$-id-ID]dd/mm/yyyy"),
-                                                    Text(DateValue(Text(ThisItem.TglMulai)), "[$-id-ID]dd/mm/yyyy")
-                                                )
+                                                Text(ThisItem.TglMulai, "[$-id-ID]dd/mm/yyyy")
                                             )
                                           Width: =Parent.TemplateWidth * 0.133
                                           X: =Parent.TemplateWidth * 0.05
@@ -2726,10 +2714,7 @@ Screens:
                                             =If(
                                                 IsBlank(ThisItem.TglAkhir),
                                                 "-",
-                                                IfError(
-                                                    Text(Date(1899, 12, 30) + Value(ThisItem.TglAkhir), "[$-id-ID]dd/mm/yyyy"),
-                                                    Text(DateValue(Text(ThisItem.TglAkhir)), "[$-id-ID]dd/mm/yyyy")
-                                                )
+                                                Text(ThisItem.TglAkhir, "[$-id-ID]dd/mm/yyyy")
                                             )
                                           Width: =Parent.TemplateWidth * 0.133
                                           X: =Parent.TemplateWidth * 0.183
@@ -2809,7 +2794,7 @@ Screens:
                                           Height: =Parent.Height
                                           PaddingLeft: =10
                                           Size: =12
-                                          Text: =Coalesce(Text(Date(1899, 12, 30) + Value(First(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).TglMulai), "[$-id-ID]dd/mm/yyyy"), "—")
+                                          Text: =Coalesce(Text(First(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).TglMulai, "[$-id-ID]dd/mm/yyyy"), "—")
                                     - PenTglAkhir1:
                                         Control: ModernText@1.0.0
                                         Properties:
@@ -2819,7 +2804,7 @@ Screens:
                                           Height: =Parent.Height
                                           PaddingLeft: =10
                                           Size: =12
-                                          Text: =Coalesce(Text(Date(1899, 12, 30) + Value(First(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).TglAkhir), "[$-id-ID]dd/mm/yyyy"), "—")
+                                          Text: =Coalesce(Text(First(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).TglAkhir, "[$-id-ID]dd/mm/yyyy"), "—")
                                     - PenPIC1:
                                         Control: ModernText@1.0.0
                                         Properties:
@@ -3034,7 +3019,7 @@ Screens:
                                             Set(gblPrestasiEditMode, true);
                                             Navigate(S2G_Profil_Prestasi_Form, ScreenTransition.Fade)
                                           Size: =12
-                                          Text: =Text(ThisItem.Title)
+                                          Text: =Text(ThisItem.ID)
                                           Width: =Parent.TemplateWidth * 0.055
                                     - PrGalleryJenis:
                                         Control: ModernText@1.0.0
@@ -3093,8 +3078,12 @@ Screens:
                                                 IsBlank(ThisItem.Tanggal),
                                                 "-",
                                                 IfError(
-                                                    Text(Date(1899, 12, 30) + Value(ThisItem.Tanggal), "[$-id-ID]dd/mm/yyyy"),
-                                                    Text(DateValue(Text(ThisItem.Tanggal)), "[$-id-ID]dd/mm/yyyy")
+                                                    Text(
+                                                        DateValue(Text(ThisItem.Tanggal), "en-US"),
+                                                        "dd/mm/yyyy",
+                                                        "id-ID"
+                                                    ),
+                                                    Text(ThisItem.Tanggal, "dd/mm/yyyy", "id-ID")
                                                 )
                                             )
                                           Width: =Parent.TemplateWidth * 0.145
@@ -3131,7 +3120,7 @@ Screens:
                                             Set(gblPrestasiEditMode, true);
                                             Navigate(S2G_Profil_Prestasi_Form, ScreenTransition.Fade)
                                           Size: =12
-                                          Text: ="1"
+                                          Text: =Text(First(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).ID)
                                     - PrJenis1:
                                         Control: ModernText@1.0.0
                                         Properties:
@@ -3181,7 +3170,18 @@ Screens:
                                           Height: =Parent.Height
                                           PaddingLeft: =10
                                           Size: =12
-                                          Text: =Text(Date(1899, 12, 30) + Value(First(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).Tanggal), "[$-id-ID]dd/mm/yyyy")
+                                          Text: |-
+                                            =With(
+                                                {prestasiTanggal: First(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).Tanggal},
+                                                If(
+                                                    IsBlank(prestasiTanggal),
+                                                    "-",
+                                                    IfError(
+                                                        Text(DateValue(Text(prestasiTanggal), "en-US"), "dd/mm/yyyy", "id-ID"),
+                                                        Text(prestasiTanggal, "dd/mm/yyyy", "id-ID")
+                                                    )
+                                                )
+                                            )
                               - PrestasiEmpty:
                                   Control: ModernText@1.0.0
                                   Properties:
@@ -3457,10 +3457,7 @@ Screens:
                                             =If(
                                                 IsBlank(ThisItem.StartDate),
                                                 "-",
-                                                IfError(
-                                                    Text(Date(1899, 12, 30) + Value(ThisItem.StartDate), "[$-id-ID]dd/mm/yyyy"),
-                                                    Text(DateValue(Text(ThisItem.StartDate)), "[$-id-ID]dd/mm/yyyy")
-                                                )
+                                                Text(ThisItem.StartDate, "[$-id-ID]dd/mm/yyyy")
                                             )
                                           Width: =Parent.TemplateWidth * 0.113
                                           X: =Parent.TemplateWidth * 0.774
@@ -3476,10 +3473,7 @@ Screens:
                                             =If(
                                                 IsBlank(ThisItem.EndDate),
                                                 "-",
-                                                IfError(
-                                                    Text(Date(1899, 12, 30) + Value(ThisItem.EndDate), "[$-id-ID]dd/mm/yyyy"),
-                                                    Text(DateValue(Text(ThisItem.EndDate)), "[$-id-ID]dd/mm/yyyy")
-                                                )
+                                                Text(ThisItem.EndDate, "[$-id-ID]dd/mm/yyyy")
                                             )
                                           Width: =Parent.TemplateWidth * 0.113
                                           X: =Parent.TemplateWidth * 0.887
@@ -3575,7 +3569,7 @@ Screens:
                                           Height: =Parent.Height
                                           PaddingLeft: =10
                                           Size: =12
-                                          Text: =Text(Date(1899, 12, 30) + Value(First(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).StartDate), "[$-id-ID]dd/mm/yyyy")
+                                          Text: =Text(First(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).StartDate, "[$-id-ID]dd/mm/yyyy")
                                     - KepEnd1:
                                         Control: ModernText@1.0.0
                                         Properties:
@@ -3585,7 +3579,7 @@ Screens:
                                           Height: =Parent.Height
                                           PaddingLeft: =10
                                           Size: =12
-                                          Text: =Text(Date(1899, 12, 30) + Value(First(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).EndDate), "[$-id-ID]dd/mm/yyyy")
+                                          Text: =Text(First(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).EndDate, "[$-id-ID]dd/mm/yyyy")
                               - KepanitiaanEmpty:
                                   Control: ModernText@1.0.0
                                   Properties:
@@ -3828,10 +3822,7 @@ Screens:
                                             =If(
                                                 IsBlank(ThisItem.PeriodeMulai),
                                                 "-",
-                                                IfError(
-                                                    Text(Date(1899, 12, 30) + Value(ThisItem.PeriodeMulai), "[$-id-ID]dd/mm/yyyy"),
-                                                    Text(DateValue(Text(ThisItem.PeriodeMulai)), "[$-id-ID]dd/mm/yyyy")
-                                                )
+                                                Text(ThisItem.PeriodeMulai, "[$-id-ID]dd/mm/yyyy")
                                             )
                                           Width: =Parent.TemplateWidth * 0.131
                                           X: =Parent.TemplateWidth * 0.377
@@ -3847,10 +3838,7 @@ Screens:
                                             =If(
                                                 IsBlank(ThisItem.PeriodeSelesai),
                                                 "-",
-                                                IfError(
-                                                    Text(Date(1899, 12, 30) + Value(ThisItem.PeriodeSelesai), "[$-id-ID]dd/mm/yyyy"),
-                                                    Text(DateValue(Text(ThisItem.PeriodeSelesai)), "[$-id-ID]dd/mm/yyyy")
-                                                )
+                                                Text(ThisItem.PeriodeSelesai, "[$-id-ID]dd/mm/yyyy")
                                             )
                                           Width: =Parent.TemplateWidth * 0.131
                                           X: =Parent.TemplateWidth * 0.508
@@ -3950,7 +3938,7 @@ Screens:
                                           Height: =Parent.Height
                                           PaddingLeft: =10
                                           Size: =12
-                                          Text: =Coalesce(Text(Date(1899, 12, 30) + Value(First(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).PeriodeMulai), "[$-id-ID]dd/mm/yyyy"), "—")
+                                          Text: =Coalesce(Text(First(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).PeriodeMulai, "[$-id-ID]dd/mm/yyyy"), "—")
                                     - PltSelesai1:
                                         Control: ModernText@1.0.0
                                         Properties:
@@ -3960,7 +3948,7 @@ Screens:
                                           Height: =Parent.Height
                                           PaddingLeft: =10
                                           Size: =12
-                                          Text: =Coalesce(Text(Date(1899, 12, 30) + Value(First(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).PeriodeSelesai), "[$-id-ID]dd/mm/yyyy"), "—")
+                                          Text: =Coalesce(Text(First(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).PeriodeSelesai, "[$-id-ID]dd/mm/yyyy"), "—")
                                     - PltSK1:
                                         Control: ModernText@1.0.0
                                         Properties:

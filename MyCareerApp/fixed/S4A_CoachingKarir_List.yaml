@@ -303,7 +303,7 @@ Screens:
                               LayoutMinWidth: =16
                               OnSelect: |-
                                 =Set(gblSelectedCoachingKarir, ThisItem);
-                                Navigate(S4B_CoachingKarir_Detail, ScreenTransition.Fade)
+                                Navigate(S9C_CoachingKarir_Detail, ScreenTransition.Fade)
                               TemplatePadding: =0
                               TemplateSize: =If(App.Width < 1200, 164, 84)
                             Children:
@@ -395,7 +395,7 @@ Screens:
                                     Height: =38
                                     OnSelect: |-
                                       =Set(gblSelectedCoachingKarir, ThisItem);
-                                      Navigate(S4B_CoachingKarir_Detail, ScreenTransition.Fade)
+                                      Navigate(S9C_CoachingKarir_Detail, ScreenTransition.Fade)
                                     RadiusBottomLeft: =6
                                     RadiusBottomRight: =6
                                     RadiusTopLeft: =6

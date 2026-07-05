@@ -10,6 +10,7 @@ Screens:
           Variant: AutoLayout
           Properties:
             Fill: =RGBA(245, 245, 245, 1)
+            DropShadow: =DropShadow.None
             Height: =Parent.Height
             LayoutAlignItems: =LayoutAlignItems.Stretch
             LayoutDirection: =LayoutDirection.Vertical
@@ -63,13 +64,14 @@ Screens:
                 Control: Rectangle@2.3.0
                 Properties:
                   BorderThickness: =0
-                  Fill: =RGBA(0, 0, 0, 0.08)
-                  Height: =5
+                  Fill: =RGBA(0, 0, 0, 0)
+                  Height: =0
                   Width: =Parent.Width
             - ChecklistDetailMain:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
                 Properties:
+                  DropShadow: =DropShadow.None
                   LayoutAlignItems: =LayoutAlignItems.Stretch
                   LayoutDirection: =LayoutDirection.Vertical
                   LayoutGap: =12
@@ -103,47 +105,13 @@ Screens:
                               Height: =40
                               Size: =18
                               Text: ="Detail Checklist Mentoring"
-                        - BtnEditChecklistDetail:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              Align: =Align.Center
-                              BorderColor: =RGBA(0, 120, 212, 1)
-                              BorderStyle: =BorderStyle.Solid
-                              BorderThickness: =1
-                              Color: =RGBA(0, 120, 212, 1)
-                              Font: =Font.'Open Sans'
-                              FontWeight: =FontWeight.Semibold
-                              Height: =40
-                              OnSelect: |-
-                                =Set(gblChecklistEditMode, true);
-                                Navigate(S6B_ChecklistMentoring_Form, ScreenTransition.Fade)
-                              RadiusBottomLeft: =6
-                              RadiusBottomRight: =6
-                              RadiusTopLeft: =6
-                              RadiusTopRight: =6
-                              Text: ="Edit"
-                              Visible: =Value(gblSelectedChecklist.Tahun) = Year(Today())
-                              Width: =90
-                        - BtnDeleteChecklistDetail:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              Align: =Align.Center
-                              Color: =RGBA(196, 43, 28, 1)
-                              Font: =Font.'Open Sans'
-                              FontWeight: =FontWeight.Semibold
-                              Height: =40
-                              OnSelect: '=UpdateContext({locShowDeleteChecklist: true})'
-                              Text: ="Hapus"
-                              Visible: =Value(gblSelectedChecklist.Tahun) = Year(Today())
-                              Width: =90
                   - ChecklistDetailCard:
                       Control: GroupContainer@1.5.0
                       Variant: AutoLayout
                       Properties:
-                        BorderColor: =RGBA(225, 223, 221, 1)
-                        BorderStyle: =BorderStyle.Solid
-                        BorderThickness: =1
-                        DropShadow: =DropShadow.Light
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =0
+                        DropShadow: =DropShadow.None
                         Fill: =RGBA(255, 255, 255, 1)
                         FillPortions: =0
                         Height: |-
@@ -303,67 +271,175 @@ Screens:
                             Variant: AutoLayout
                             Properties:
                               FillPortions: =0
-                              Height: =If(Parent.Width < 700, 388, 120)
+                              Height: =If(Parent.Width < 700, 850, 260)
                               LayoutDirection: =LayoutDirection.Horizontal
                               LayoutGap: =16
-                              LayoutMinHeight: =If(Parent.Width < 700, 388, 120)
+                              LayoutMinHeight: =If(Parent.Width < 700, 850, 260)
                               LayoutWrap: =true
                               Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                             Children:
                               - PersonalStatementDetail:
-                                  Control: ModernText@1.0.0
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
                                   Properties:
                                     BorderColor: =RGBA(225, 223, 221, 1)
                                     BorderStyle: =BorderStyle.Solid
                                     BorderThickness: =1
-                                    Color: =If(IsBlank(gblSelectedChecklist.PersonalStatementFile), RGBA(161, 98, 7, 1), RGBA(16, 124, 16, 1))
-                                    Font: =Font.'Open Sans'
-                                    FontWeight: =FontWeight.Semibold
-                                    Height: =112
+                                    DropShadow: =DropShadow.None
+                                    Fill: =RGBA(248, 247, 246, 1)
+                                    Height: =250
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =8
+                                    LayoutJustifyContent: =LayoutJustifyContent.Center
                                     PaddingBottom: =14
                                     PaddingLeft: =14
                                     PaddingRight: =14
                                     PaddingTop: =14
-                                    Size: =12
-                                    Text: '="Personal Statement" & Char(10) & Coalesce(gblSelectedChecklist.PersonalStatementFile, "Belum diunggah")'
-                                    VerticalAlign: =VerticalAlign.Top
                                     Width: =If(Parent.Width < 700, Parent.Width, (Parent.Width - 32) / 3)
+                                  Children:
+                                    - LblPersonalStatementDetail:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Center
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =28
+                                          Text: ="Personal Statement"
+                                          Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                                    - ImgPersonalStatementDetail:
+                                        Control: Image@2.2.3
+                                        Properties:
+                                          Height: =180
+                                          Image: =gblSelectedChecklist.PersonalStatementFile
+                                          ImagePosition: =ImagePosition.Fit
+                                          Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                               - CareerPlanDetail:
-                                  Control: ModernText@1.0.0
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
                                   Properties:
                                     BorderColor: =RGBA(225, 223, 221, 1)
                                     BorderStyle: =BorderStyle.Solid
                                     BorderThickness: =1
-                                    Color: =If(IsBlank(gblSelectedChecklist.CareerPlanFile), RGBA(161, 98, 7, 1), RGBA(16, 124, 16, 1))
-                                    Font: =Font.'Open Sans'
-                                    FontWeight: =FontWeight.Semibold
-                                    Height: =112
+                                    DropShadow: =DropShadow.None
+                                    Fill: =RGBA(248, 247, 246, 1)
+                                    Height: =250
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =8
+                                    LayoutJustifyContent: =LayoutJustifyContent.Center
                                     PaddingBottom: =14
                                     PaddingLeft: =14
                                     PaddingRight: =14
                                     PaddingTop: =14
-                                    Size: =12
-                                    Text: '="Career Plan" & Char(10) & Coalesce(gblSelectedChecklist.CareerPlanFile, "Belum diunggah")'
-                                    VerticalAlign: =VerticalAlign.Top
                                     Width: =If(Parent.Width < 700, Parent.Width, (Parent.Width - 32) / 3)
+                                  Children:
+                                    - LblCareerPlanDetail:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Center
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =28
+                                          Text: ="Career Plan"
+                                          Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                                    - ImgCareerPlanDetail:
+                                        Control: Image@2.2.3
+                                        Properties:
+                                          Height: =180
+                                          Image: =gblSelectedChecklist.CareerPlanFile
+                                          ImagePosition: =ImagePosition.Fit
+                                          Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                               - BuktiUploadDetail:
-                                  Control: ModernText@1.0.0
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
                                   Properties:
                                     BorderColor: =RGBA(225, 223, 221, 1)
                                     BorderStyle: =BorderStyle.Solid
                                     BorderThickness: =1
-                                    Color: =If(IsBlank(gblSelectedChecklist.BuktiUploadFile), RGBA(161, 98, 7, 1), RGBA(16, 124, 16, 1))
-                                    Font: =Font.'Open Sans'
-                                    FontWeight: =FontWeight.Semibold
-                                    Height: =112
+                                    DropShadow: =DropShadow.None
+                                    Fill: =RGBA(248, 247, 246, 1)
+                                    Height: =250
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =8
+                                    LayoutJustifyContent: =LayoutJustifyContent.Center
                                     PaddingBottom: =14
                                     PaddingLeft: =14
                                     PaddingRight: =14
                                     PaddingTop: =14
-                                    Size: =12
-                                    Text: '="Bukti Upload" & Char(10) & Coalesce(gblSelectedChecklist.BuktiUploadFile, "Belum diunggah")'
-                                    VerticalAlign: =VerticalAlign.Top
                                     Width: =If(Parent.Width < 700, Parent.Width, (Parent.Width - 32) / 3)
+                                  Children:
+                                    - LblBuktiUploadDetail:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Center
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =28
+                                          Text: ="Bukti Upload"
+                                          Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                                    - ImgBuktiUploadDetail:
+                                        Control: Image@2.2.3
+                                        Properties:
+                                          Height: =180
+                                          Image: =gblSelectedChecklist.BuktiUploadFile
+                                          ImagePosition: =ImagePosition.Fit
+                                          Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                        - ChecklistDetailActions:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =48
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =12
+                              LayoutJustifyContent: =LayoutJustifyContent.End
+                              LayoutMinHeight: =48
+                              Visible: =true
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                            Children:
+                              - BtnEditChecklistDetail:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(9, 33, 98, 1)
+                                    Fill: =RGBA(235, 240, 252, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =42
+                                    OnSelect: |-
+                                      =Set(gblChecklistEditMode, true);
+                                      Navigate(S6B_ChecklistMentoring_Form, ScreenTransition.Fade)
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="Edit"
+                                    Width: =If(Parent.Width < 480, (Parent.Width - 12) / 2, 120)
+                              - BtnDeleteChecklistDetail:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    Fill: =RGBA(196, 43, 28, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =42
+                                    OnSelect: '=UpdateContext({locShowDeleteChecklist: true})'
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="Hapus"
+                                    Width: =If(Parent.Width < 480, (Parent.Width - 12) / 2, 120)
       - DeleteChecklistOverlay:
           Control: GroupContainer@1.5.0
           Variant: AutoLayout

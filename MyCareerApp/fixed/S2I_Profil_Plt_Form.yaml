@@ -239,10 +239,7 @@ Screens:
                                     DefaultDate: |-
                                       =If(
                                           Coalesce(gblPltEditMode, false) && !IsBlank(gblSelectedPlt.PeriodeMulai),
-                                          IfError(
-                                              Date(1899, 12, 30) + Value(gblSelectedPlt.PeriodeMulai),
-                                              gblSelectedPlt.PeriodeMulai
-                                          ),
+                                          gblSelectedPlt.PeriodeMulai,
                                           Today()
                                       )
                                     Format: ="dd/mm/yyyy"
@@ -279,10 +276,7 @@ Screens:
                                     DefaultDate: |-
                                       =If(
                                           Coalesce(gblPltEditMode, false) && !IsBlank(gblSelectedPlt.PeriodeSelesai),
-                                          IfError(
-                                              Date(1899, 12, 30) + Value(gblSelectedPlt.PeriodeSelesai),
-                                              gblSelectedPlt.PeriodeSelesai
-                                          ),
+                                          gblSelectedPlt.PeriodeSelesai,
                                           Today()
                                       )
                                     Format: ="dd/mm/yyyy"
@@ -347,7 +341,8 @@ Screens:
                                   Properties:
                                     AccessibleLabel: ="Skor"
                                     DisplayMode: =If(Coalesce(gblPltDetailMode, false), DisplayMode.View, DisplayMode.Edit)
-                                    Value: =If(Coalesce(gblPltEditMode, false), Value(gblSelectedPlt.Skor), 0)
+                                    Min: =0
+                                    Value: =If(Coalesce(gblPltEditMode, false), Coalesce(gblSelectedPlt.Skor, 0), 0)
                                     Width: =Parent.Width
 
                         - FieldCatatanPlt:
@@ -525,6 +520,11 @@ Screens:
                                               "Lengkapi seluruh field PLT.",
                                               NotificationType.Warning
                                           ),
+                                          DatePeriodeSelesaiPlt.SelectedDate < DatePeriodeMulaiPlt.SelectedDate,
+                                          Notify(
+                                              "Periode selesai tidak boleh lebih awal dari periode mulai.",
+                                              NotificationType.Warning
+                                          ),
                                           !Coalesce(gblPltSubmitting, false),
                                           Set(gblPltSubmitting, true);
                                           IfError(
@@ -540,7 +540,7 @@ Screens:
                                                           PeriodeMulai: DatePeriodeMulaiPlt.SelectedDate,
                                                           PeriodeSelesai: DatePeriodeSelesaiPlt.SelectedDate,
                                                           NoSK: Trim(TxtNoSKPlt.Value),
-                                                          Skor: Value(NumSkorPlt.Value),
+                                                          Skor: NumSkorPlt.Value,
                                                           Catatan: Trim(TxtCatatanPlt.Value)
                                                       }
                                                   ),
@@ -558,7 +558,7 @@ Screens:
                                                                       PeriodeMulai: DatePeriodeMulaiPlt.SelectedDate,
                                                                       PeriodeSelesai: DatePeriodeSelesaiPlt.SelectedDate,
                                                                       NoSK: Trim(TxtNoSKPlt.Value),
-                                                                      Skor: Value(NumSkorPlt.Value),
+                                                                      Skor: NumSkorPlt.Value,
                                                                       Catatan: Trim(TxtCatatanPlt.Value)
                                                                   }
                                                               )

@@ -6,7 +6,7 @@ Screens:
       OnVisible: |-
         =Refresh(CoachingKarir);
         Set(gblSelectedCoachingKarir, Defaults(CoachingKarir));
-        Set(gblCoachingKarirCoachEditMode, false)
+        Set(gblCoachingKarirEditMode, false)
     Children:
       - CKListScreenContainer:
           Control: GroupContainer@1.5.0
@@ -303,7 +303,7 @@ Screens:
                               OnSelect: |-
                                 =Set(gblSelectedCoachingKarir, ThisItem);
                                 Set(gblCoachingKarirListMode, "Coach");
-                                Navigate(S9C_CoachingKarir_Detail, ScreenTransition.Fade)
+                                Navigate(S4B_CoachingKarir_Detail, ScreenTransition.Fade)
                               TemplatePadding: =0
                               TemplateSize: =If(App.Width < 1200, 152, 92)
                             Children:
@@ -396,7 +396,7 @@ Screens:
                                     OnSelect: |-
                                       =Set(gblSelectedCoachingKarir, ThisItem);
                                       Set(gblCoachingKarirListMode, "Coach");
-                                      Navigate(S9C_CoachingKarir_Detail, ScreenTransition.Fade)
+                                      Navigate(S4B_CoachingKarir_Detail, ScreenTransition.Fade)
                                     RadiusBottomLeft: =6
                                     RadiusBottomRight: =6
                                     RadiusTopLeft: =6

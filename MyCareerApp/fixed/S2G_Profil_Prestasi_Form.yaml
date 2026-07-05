@@ -302,10 +302,7 @@ Screens:
                                     DefaultDate: |-
                                       =If(
                                           Coalesce(gblPrestasiEditMode, false) && !IsBlank(gblSelectedPrestasi.Tanggal),
-                                          IfError(
-                                              Date(1899, 12, 30) + Value(gblSelectedPrestasi.Tanggal),
-                                              gblSelectedPrestasi.Tanggal
-                                          ),
+                                          gblSelectedPrestasi.Tanggal,
                                           Today()
                                       )
                                     Format: ="dd/mm/yyyy"

@@ -5,13 +5,17 @@ Screens:
       LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
       OnVisible: |-
         =Set(gblChecklistSubmitting, false);
-        UpdateContext({locConfirmDeleteChecklistForm: false})
+        UpdateContext({locConfirmDeleteChecklistForm: false});
+        Reset(AddMediaPersonalStatementChecklist);
+        Reset(AddMediaCareerPlanChecklist);
+        Reset(AddMediaBuktiUploadChecklist)
     Children:
       - ChecklistFormContainer:
           Control: GroupContainer@1.5.0
           Variant: AutoLayout
           Properties:
             Fill: =RGBA(245, 245, 245, 1)
+            DropShadow: =DropShadow.None
             Height: =Parent.Height
             LayoutAlignItems: =LayoutAlignItems.Stretch
             LayoutDirection: =LayoutDirection.Vertical
@@ -68,13 +72,14 @@ Screens:
                 Control: Rectangle@2.3.0
                 Properties:
                   BorderThickness: =0
-                  Fill: =RGBA(0, 0, 0, 0.08)
-                  Height: =5
+                  Fill: =RGBA(0, 0, 0, 0)
+                  Height: =0
                   Width: =Parent.Width
             - ChecklistFormMain:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
                 Properties:
+                  DropShadow: =DropShadow.None
                   LayoutAlignItems: =LayoutAlignItems.Stretch
                   LayoutDirection: =LayoutDirection.Vertical
                   LayoutMinHeight: =16
@@ -89,16 +94,15 @@ Screens:
                       Control: GroupContainer@1.5.0
                       Variant: AutoLayout
                       Properties:
-                        BorderColor: =RGBA(225, 223, 221, 1)
-                        BorderStyle: =BorderStyle.Solid
-                        BorderThickness: =1
-                        DropShadow: =DropShadow.Light
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =0
+                        DropShadow: =DropShadow.None
                         Fill: =RGBA(255, 255, 255, 1)
                         FillPortions: =0
-                        Height: =720
+                        Height: =1220
                         LayoutDirection: =LayoutDirection.Vertical
                         LayoutGap: =18
-                        LayoutMinHeight: =720
+                        LayoutMinHeight: =1220
                         PaddingBottom: =28
                         PaddingLeft: =28
                         PaddingRight: =28
@@ -221,10 +225,10 @@ Screens:
                             Variant: AutoLayout
                             Properties:
                               FillPortions: =0
-                              Height: =76
+                              Height: =210
                               LayoutDirection: =LayoutDirection.Vertical
                               LayoutGap: =6
-                              LayoutMinHeight: =76
+                              LayoutMinHeight: =210
                               Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                             Children:
                               - LblPersonalStatementChecklist:
@@ -236,22 +240,46 @@ Screens:
                                     Size: =12
                                     Text: ="Personal Statement"
                                     Width: =Parent.Width
-                              - TxtPersonalStatementChecklist:
-                                  Control: TextInput@0.0.54
+                              - UploadPersonalStatementChecklist:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: ManualLayout
                                   Properties:
-                                    AccessibleLabel: ="Nama file atau URL Personal Statement"
-                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
-                                    Value: =If(Coalesce(gblChecklistEditMode, false), Coalesce(gblSelectedChecklist.PersonalStatementFile, ""), "")
+                                    DropShadow: =DropShadow.None
+                                    Height: =170
                                     Width: =Parent.Width
+                                  Children:
+                                    - ImgPersonalStatementChecklist:
+                                        Control: Image@2.2.3
+                                        Properties:
+                                          BorderStyle: =BorderStyle.None
+                                          Height: =150
+                                          Image: =If(IsBlank(AddMediaPersonalStatementChecklist.Media), If(Coalesce(gblChecklistEditMode, false), gblSelectedChecklist.PersonalStatementFile, Blank()), AddMediaPersonalStatementChecklist.Media)
+                                          ImagePosition: =ImagePosition.Fit
+                                          RadiusBottomLeft: =6
+                                          RadiusBottomRight: =6
+                                          RadiusTopLeft: =6
+                                          RadiusTopRight: =6
+                                          Width: =Min(320, Parent.Width)
+                                    - AddMediaPersonalStatementChecklist:
+                                        Control: AddMedia@2.2.1
+                                        Properties:
+                                          BorderStyle: =BorderStyle.None
+                                          ChangePictureText: ="Ganti gambar"
+                                          Color: =RGBA(255, 255, 255, 1)
+                                          Fill: =RGBA(18, 38, 82, 1)
+                                          Font: =Font.'Open Sans'
+                                          Height: =150
+                                          Text: ="Unggah gambar"
+                                          Width: =Min(320, Parent.Width)
                         - FieldCareerPlanChecklist:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
                             Properties:
                               FillPortions: =0
-                              Height: =76
+                              Height: =210
                               LayoutDirection: =LayoutDirection.Vertical
                               LayoutGap: =6
-                              LayoutMinHeight: =76
+                              LayoutMinHeight: =210
                               Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                             Children:
                               - LblCareerPlanChecklist:
@@ -263,22 +291,46 @@ Screens:
                                     Size: =12
                                     Text: ="Career Plan"
                                     Width: =Parent.Width
-                              - TxtCareerPlanChecklist:
-                                  Control: TextInput@0.0.54
+                              - UploadCareerPlanChecklist:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: ManualLayout
                                   Properties:
-                                    AccessibleLabel: ="Nama file atau URL Career Plan"
-                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
-                                    Value: =If(Coalesce(gblChecklistEditMode, false), Coalesce(gblSelectedChecklist.CareerPlanFile, ""), "")
+                                    DropShadow: =DropShadow.None
+                                    Height: =170
                                     Width: =Parent.Width
+                                  Children:
+                                    - ImgCareerPlanChecklist:
+                                        Control: Image@2.2.3
+                                        Properties:
+                                          BorderStyle: =BorderStyle.None
+                                          Height: =150
+                                          Image: =If(IsBlank(AddMediaCareerPlanChecklist.Media), If(Coalesce(gblChecklistEditMode, false), gblSelectedChecklist.CareerPlanFile, Blank()), AddMediaCareerPlanChecklist.Media)
+                                          ImagePosition: =ImagePosition.Fit
+                                          RadiusBottomLeft: =6
+                                          RadiusBottomRight: =6
+                                          RadiusTopLeft: =6
+                                          RadiusTopRight: =6
+                                          Width: =Min(320, Parent.Width)
+                                    - AddMediaCareerPlanChecklist:
+                                        Control: AddMedia@2.2.1
+                                        Properties:
+                                          BorderStyle: =BorderStyle.None
+                                          ChangePictureText: ="Ganti gambar"
+                                          Color: =RGBA(255, 255, 255, 1)
+                                          Fill: =RGBA(18, 38, 82, 1)
+                                          Font: =Font.'Open Sans'
+                                          Height: =150
+                                          Text: ="Unggah gambar"
+                                          Width: =Min(320, Parent.Width)
                         - FieldBuktiUploadChecklist:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
                             Properties:
                               FillPortions: =0
-                              Height: =76
+                              Height: =210
                               LayoutDirection: =LayoutDirection.Vertical
                               LayoutGap: =6
-                              LayoutMinHeight: =76
+                              LayoutMinHeight: =210
                               Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                             Children:
                               - LblBuktiUploadChecklist:
@@ -290,22 +342,46 @@ Screens:
                                     Size: =12
                                     Text: ="Bukti Upload"
                                     Width: =Parent.Width
-                              - TxtBuktiUploadChecklist:
-                                  Control: TextInput@0.0.54
+                              - UploadBuktiUploadChecklist:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: ManualLayout
                                   Properties:
-                                    AccessibleLabel: ="Nama file atau URL Bukti Upload"
-                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
-                                    Value: =If(Coalesce(gblChecklistEditMode, false), Coalesce(gblSelectedChecklist.BuktiUploadFile, ""), "")
+                                    DropShadow: =DropShadow.None
+                                    Height: =170
                                     Width: =Parent.Width
+                                  Children:
+                                    - ImgBuktiUploadChecklist:
+                                        Control: Image@2.2.3
+                                        Properties:
+                                          BorderStyle: =BorderStyle.None
+                                          Height: =150
+                                          Image: =If(IsBlank(AddMediaBuktiUploadChecklist.Media), If(Coalesce(gblChecklistEditMode, false), gblSelectedChecklist.BuktiUploadFile, Blank()), AddMediaBuktiUploadChecklist.Media)
+                                          ImagePosition: =ImagePosition.Fit
+                                          RadiusBottomLeft: =6
+                                          RadiusBottomRight: =6
+                                          RadiusTopLeft: =6
+                                          RadiusTopRight: =6
+                                          Width: =Min(320, Parent.Width)
+                                    - AddMediaBuktiUploadChecklist:
+                                        Control: AddMedia@2.2.1
+                                        Properties:
+                                          BorderStyle: =BorderStyle.None
+                                          ChangePictureText: ="Ganti gambar"
+                                          Color: =RGBA(255, 255, 255, 1)
+                                          Fill: =RGBA(18, 38, 82, 1)
+                                          Font: =Font.'Open Sans'
+                                          Height: =150
+                                          Text: ="Unggah gambar"
+                                          Width: =Min(320, Parent.Width)
                         - ChecklistStatusPreview:
                             Control: ModernText@1.0.0
                             Properties:
                               Color: |-
                                 =If(
                                     And(
-                                        !IsBlank(Trim(TxtPersonalStatementChecklist.Value)),
-                                        !IsBlank(Trim(TxtCareerPlanChecklist.Value)),
-                                        !IsBlank(Trim(TxtBuktiUploadChecklist.Value))
+                                        !IsBlank(ImgPersonalStatementChecklist.Image),
+                                        !IsBlank(ImgCareerPlanChecklist.Image),
+                                        !IsBlank(ImgBuktiUploadChecklist.Image)
                                     ),
                                     RGBA(16, 124, 16, 1),
                                     RGBA(161, 98, 7, 1)
@@ -317,9 +393,9 @@ Screens:
                                 ="Status: " &
                                 If(
                                     And(
-                                        !IsBlank(Trim(TxtPersonalStatementChecklist.Value)),
-                                        !IsBlank(Trim(TxtCareerPlanChecklist.Value)),
-                                        !IsBlank(Trim(TxtBuktiUploadChecklist.Value))
+                                        !IsBlank(ImgPersonalStatementChecklist.Image),
+                                        !IsBlank(ImgCareerPlanChecklist.Image),
+                                        !IsBlank(ImgBuktiUploadChecklist.Image)
                                     ),
                                     "Lengkap",
                                     "Belum Lengkap"
@@ -441,20 +517,6 @@ Screens:
                                               "Lengkapi Tahun dan Mentor.",
                                               NotificationType.Warning
                                           ),
-                                          And(
-                                              !Coalesce(gblChecklistEditMode, false),
-                                              !IsBlank(
-                                                  LookUp(
-                                                      ChecklistMentoring,
-                                                      NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)) &&
-                                                      Value(Tahun) = Value(NumTahunChecklist.Value)
-                                                  )
-                                              )
-                                          ),
-                                          Notify(
-                                              "Checklist untuk tahun tersebut sudah tersedia.",
-                                              NotificationType.Warning
-                                          ),
                                           !Coalesce(gblChecklistSubmitting, false),
                                           Set(gblChecklistSubmitting, true);
                                           IfError(
@@ -467,68 +529,39 @@ Screens:
                                                           NIP: gblSelectedChecklist.NIP,
                                                           Tahun: Value(NumTahunChecklist.Value),
                                                           MentorNIP: CmbMentorChecklist.Selected.NIP,
-                                                          PersonalStatementFile: Trim(TxtPersonalStatementChecklist.Value),
-                                                          CareerPlanFile: Trim(TxtCareerPlanChecklist.Value),
-                                                          BuktiUploadFile: Trim(TxtBuktiUploadChecklist.Value),
-                                                          Status:
-                                                              If(
-                                                                  And(
-                                                                      !IsBlank(Trim(TxtPersonalStatementChecklist.Value)),
-                                                                      !IsBlank(Trim(TxtCareerPlanChecklist.Value)),
-                                                                      !IsBlank(Trim(TxtBuktiUploadChecklist.Value))
-                                                                  ),
-                                                                  "Lengkap",
-                                                                  "Belum Lengkap"
-                                                              )
+                                                          Status: If(And(!IsBlank(ImagePersonalStatementSubmit.Image), !IsBlank(ImageCareerPlanSubmit.Image), !IsBlank(ImageBuktiUploadSubmit.Image)), "Lengkap", "Belum Lengkap"),
+                                                          PersonalStatementFile: ImagePersonalStatementSubmit.Image,
+                                                          CareerPlanFile: ImageCareerPlanSubmit.Image,
+                                                          BuktiUploadFile: ImageBuktiUploadSubmit.Image
                                                       }
                                                   ),
                                                   With(
                                                       {
-                                                          newChecklist:
-                                                              Patch(
-                                                                  ChecklistMentoring,
-                                                                  Defaults(ChecklistMentoring),
-                                                                  {
-                                                                      Title: "TEMP_" & Text(GUID()),
-                                                                      NIP: Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
-                                                                      Tahun: Value(NumTahunChecklist.Value),
-                                                                      MentorNIP: CmbMentorChecklist.Selected.NIP,
-                                                                      PersonalStatementFile: Trim(TxtPersonalStatementChecklist.Value),
-                                                                      CareerPlanFile: Trim(TxtCareerPlanChecklist.Value),
-                                                                      BuktiUploadFile: Trim(TxtBuktiUploadChecklist.Value),
-                                                                      Status:
-                                                                          If(
-                                                                              And(
-                                                                                  !IsBlank(Trim(TxtPersonalStatementChecklist.Value)),
-                                                                                  !IsBlank(Trim(TxtCareerPlanChecklist.Value)),
-                                                                                  !IsBlank(Trim(TxtBuktiUploadChecklist.Value))
-                                                                              ),
-                                                                              "Lengkap",
-                                                                              "Belum Lengkap"
-                                                                          )
-                                                                  }
-                                                              )
+                                                          newChecklist: Patch(
+                                                              ChecklistMentoring,
+                                                              Defaults(ChecklistMentoring),
+                                                              {
+                                                                  Title: "TEMP_" & Text(GUID()),
+                                                                  NIP: Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
+                                                                  Tahun: Value(NumTahunChecklist.Value),
+                                                                  MentorNIP: CmbMentorChecklist.Selected.NIP,
+                                                                  Status: If(And(!IsBlank(ImagePersonalStatementSubmit.Image), !IsBlank(ImageCareerPlanSubmit.Image), !IsBlank(ImageBuktiUploadSubmit.Image)), "Lengkap", "Belum Lengkap"),
+                                                                  PersonalStatementFile: ImagePersonalStatementSubmit.Image,
+                                                                  CareerPlanFile: ImageCareerPlanSubmit.Image,
+                                                                  BuktiUploadFile: ImageBuktiUploadSubmit.Image
+                                                              }
+                                                          )
                                                       },
-                                                      Patch(
-                                                          ChecklistMentoring,
-                                                          newChecklist,
-                                                          {Title: Text(newChecklist.ID)}
-                                                      )
+                                                      Patch(ChecklistMentoring, newChecklist, {Title: Text(newChecklist.ID)})
                                                   )
                                               );
                                               Refresh(ChecklistMentoring);
-                                              Notify(
-                                                  If(Coalesce(gblChecklistEditMode, false), "Checklist berhasil diperbarui.", "Checklist berhasil disimpan."),
-                                                  NotificationType.Success
-                                              );
+                                              Notify(If(Coalesce(gblChecklistEditMode, false), "Checklist berhasil diperbarui.", "Checklist berhasil disimpan."), NotificationType.Success);
                                               Set(gblChecklistSubmitting, false);
                                               Set(gblChecklistEditMode, false);
                                               Set(gblSelectedChecklist, Defaults(ChecklistMentoring));
                                               Navigate(S6A_ChecklistMentoring_List, ScreenTransition.Fade),
-                                              Notify(
-                                                  "Gagal menyimpan checklist: " & FirstError.Message,
-                                                  NotificationType.Error
-                                              );
+                                              Notify("Gagal menyimpan checklist: " & FirstError.Message, NotificationType.Error);
                                               Set(gblChecklistSubmitting, false)
                                           )
                                       )
@@ -539,3 +572,165 @@ Screens:
                                     Text: =If(Coalesce(gblChecklistSubmitting, false), "Menyimpan...", "Simpan")
                                     Visible: =!Coalesce(locConfirmDeleteChecklistForm, false)
                                     Width: =130
+                  - ChecklistImagesForm:
+                      Control: Form@2.4.4
+                      Layout: Vertical
+                      Properties:
+                        BorderThickness: =0
+                        DataSource: =ChecklistMentoring
+                        DefaultMode: =If(Coalesce(gblChecklistEditMode, false), FormMode.Edit, FormMode.New)
+                        FillPortions: =0
+                        Height: =1
+                        Item: =gblSelectedChecklist
+                        LayoutMinHeight: =1
+                        LayoutMinWidth: =1
+                        OnFailure: |-
+                          =Notify("Gagal menyimpan checklist: " & ChecklistImagesForm.Error, NotificationType.Error);
+                          Set(gblChecklistSubmitting, false)
+                        OnSuccess: |-
+                          =If(
+                              !Coalesce(gblChecklistEditMode, false),
+                              Patch(ChecklistMentoring, ChecklistImagesForm.LastSubmit, {Title: Text(ChecklistImagesForm.LastSubmit.ID)})
+                          );
+                          Refresh(ChecklistMentoring);
+                          Notify(If(Coalesce(gblChecklistEditMode, false), "Checklist berhasil diperbarui.", "Checklist berhasil disimpan."), NotificationType.Success);
+                          Set(gblChecklistSubmitting, false);
+                          Set(gblChecklistEditMode, false);
+                          Set(gblSelectedChecklist, Defaults(ChecklistMentoring));
+                          Navigate(S6A_ChecklistMentoring_List, ScreenTransition.Fade)
+                        Visible: =true
+                        Width: =1
+                      Children:
+                        - Title_Checklist_DataCard:
+                            Control: TypedDataCard@1.0.7
+                            Variant: TextualEdit
+                            IsLocked: false
+                            Properties:
+                              DataField: ="Title"
+                              Default: =ThisItem.Title
+                              DisplayName: =DataSourceInfo([@ChecklistMentoring], DataSourceInfo.DisplayName, 'Title')
+                              Required: =true
+                              Update: =If(Coalesce(gblChecklistEditMode, false), gblSelectedChecklist.Title, "TEMP_" & Text(GUID()))
+                              Visible: =true
+                        - NIP_Checklist_DataCard:
+                            Control: TypedDataCard@1.0.7
+                            Variant: TextualEdit
+                            IsLocked: false
+                            Properties:
+                              DataField: ="NIP"
+                              Default: =ThisItem.NIP
+                              DisplayName: =DataSourceInfo([@ChecklistMentoring], DataSourceInfo.DisplayName, 'NIP')
+                              Required: =false
+                              Update: =Text(If(Coalesce(gblChecklistEditMode, false), gblSelectedChecklist.NIP, If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))
+                              Visible: =true
+                        - Tahun_Checklist_DataCard:
+                            Control: TypedDataCard@1.0.7
+                            Variant: NumberEdit
+                            IsLocked: false
+                            Properties:
+                              DataField: ="Tahun"
+                              Default: =ThisItem.Tahun
+                              DisplayName: =DataSourceInfo([@ChecklistMentoring], DataSourceInfo.DisplayName, 'Tahun')
+                              Required: =false
+                              Update: =Value(NumTahunChecklist.Value)
+                              Visible: =true
+                        - MentorNIP_Checklist_DataCard:
+                            Control: TypedDataCard@1.0.7
+                            Variant: TextualEdit
+                            IsLocked: false
+                            Properties:
+                              DataField: ="MentorNIP"
+                              Default: =ThisItem.MentorNIP
+                              DisplayName: =DataSourceInfo([@ChecklistMentoring], DataSourceInfo.DisplayName, 'MentorNIP')
+                              Required: =false
+                              Update: =CmbMentorChecklist.Selected.NIP
+                              Visible: =true
+                        - Status_Checklist_DataCard:
+                            Control: TypedDataCard@1.0.7
+                            Variant: TextualEdit
+                            IsLocked: false
+                            Properties:
+                              DataField: ="Status"
+                              Default: =ThisItem.Status
+                              DisplayName: =DataSourceInfo([@ChecklistMentoring], DataSourceInfo.DisplayName, 'Status')
+                              Required: =false
+                              Update: =If(And(!IsBlank(ImgPersonalStatementChecklist.Image), !IsBlank(ImgCareerPlanChecklist.Image), !IsBlank(ImgBuktiUploadChecklist.Image)), "Lengkap", "Belum Lengkap")
+                              Visible: =true
+                        - PersonalStatementFile_DataCard:
+                            Control: TypedDataCard@1.0.7
+                            Variant: LargePicture
+                            IsLocked: false
+                            Properties:
+                              BorderColor: =RGBA(245, 245, 245, 1)
+                              DataField: ="PersonalStatementFile"
+                              Default: =ThisItem.PersonalStatementFile
+                              DisplayName: =DataSourceInfo([@ChecklistMentoring], DataSourceInfo.DisplayName, 'PersonalStatementFile')
+                              Height: =200
+                              Required: =false
+                              Update: =ImagePersonalStatementSubmit.Image
+                              Visible: =true
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =5
+                            Children:
+                              - ImagePersonalStatementSubmit:
+                                  Control: Image@2.2.3
+                                  MetadataKey: FieldValue
+                                  Properties:
+                                    DisplayMode: =Parent.DisplayMode
+                                    Height: =150
+                                    Image: =If(IsBlank(AddMediaPersonalStatementChecklist.Media), Parent.Default, AddMediaPersonalStatementChecklist.Media)
+                                    Visible: =false
+                                    Width: =Parent.Width
+                        - CareerPlanFile_DataCard:
+                            Control: TypedDataCard@1.0.7
+                            Variant: LargePicture
+                            IsLocked: false
+                            Properties:
+                              BorderColor: =RGBA(245, 245, 245, 1)
+                              DataField: ="CareerPlanFile"
+                              Default: =ThisItem.CareerPlanFile
+                              DisplayName: =DataSourceInfo([@ChecklistMentoring], DataSourceInfo.DisplayName, 'CareerPlanFile')
+                              Height: =200
+                              Required: =false
+                              Update: =ImageCareerPlanSubmit.Image
+                              Visible: =true
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =6
+                            Children:
+                              - ImageCareerPlanSubmit:
+                                  Control: Image@2.2.3
+                                  MetadataKey: FieldValue
+                                  Properties:
+                                    DisplayMode: =Parent.DisplayMode
+                                    Height: =150
+                                    Image: =If(IsBlank(AddMediaCareerPlanChecklist.Media), Parent.Default, AddMediaCareerPlanChecklist.Media)
+                                    Visible: =false
+                                    Width: =Parent.Width
+                        - BuktiUploadFile_DataCard:
+                            Control: TypedDataCard@1.0.7
+                            Variant: LargePicture
+                            IsLocked: false
+                            Properties:
+                              BorderColor: =RGBA(245, 245, 245, 1)
+                              DataField: ="BuktiUploadFile"
+                              Default: =ThisItem.BuktiUploadFile
+                              DisplayName: =DataSourceInfo([@ChecklistMentoring], DataSourceInfo.DisplayName, 'BuktiUploadFile')
+                              Height: =200
+                              Required: =false
+                              Update: =ImageBuktiUploadSubmit.Image
+                              Visible: =true
+                              Width: =Parent.Width
+                              X: =0
+                              Y: =7
+                            Children:
+                              - ImageBuktiUploadSubmit:
+                                  Control: Image@2.2.3
+                                  MetadataKey: FieldValue
+                                  Properties:
+                                    DisplayMode: =Parent.DisplayMode
+                                    Height: =150
+                                    Image: =If(IsBlank(AddMediaBuktiUploadChecklist.Media), Parent.Default, AddMediaBuktiUploadChecklist.Media)
+                                    Visible: =false
+                                    Width: =Parent.Width

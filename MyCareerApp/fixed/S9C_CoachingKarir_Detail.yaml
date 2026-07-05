@@ -1,5 +1,5 @@
 Screens:
-  S4B_CoachingKarir_Detail:
+  S9C_CoachingKarir_Detail:
     Properties:
       Fill: =RGBA(245, 245, 245, 1)
       LoadingSpinnerColor: =RGBA(9, 33, 98, 1)
@@ -114,14 +114,15 @@ Screens:
                               FontWeight: =FontWeight.Semibold
                               Height: =40
                               OnSelect: |-
-                                =Set(gblCoachingKarirEditMode, true);
+                                =Set(gblCoachingKarirCoachEditMode, true);
+                                Set(gblCoachingKarirListMode, "Coach");
                                 Navigate(S9B_CoachingKarir_Coach_Form, ScreenTransition.Fade)
                               RadiusBottomLeft: =6
                               RadiusBottomRight: =6
                               RadiusTopLeft: =6
                               RadiusTopRight: =6
                               Text: ="Edit"
-                              Visible: =false
+                              Visible: =And(gblCoachingKarirListMode = "Coach", Trim(gblSelectedCoachingKarir.MentorNIP) = Trim(Text(gblCurrentNIP)))
                               Width: =90
                         - BtnDeleteCKDetail:
                             Control: ModernText@1.0.0
@@ -133,7 +134,7 @@ Screens:
                               Height: =40
                               OnSelect: '=UpdateContext({locShowDeleteCK: true})'
                               Text: ="Hapus"
-                              Visible: =false
+                              Visible: =And(gblCoachingKarirListMode = "Coach", Trim(gblSelectedCoachingKarir.MentorNIP) = Trim(Text(gblCurrentNIP)))
                               Width: =90
                   - CKDetailCard:
                       Control: GroupContainer@1.5.0
@@ -154,6 +155,8 @@ Screens:
                                   CKDetailCatatan.Height +
                                   CKDetailResultLabel.Height +
                                   CKDetailResult.Height +
+                                  CKDetailActionItemsLabel.Height +
+                                  CKDetailActionItemsGallery.Height +
                                   If(Parent.Width < 640, 170, 210)
                           )
                         LayoutDirection: =LayoutDirection.Vertical
@@ -167,6 +170,8 @@ Screens:
                                   CKDetailCatatan.Height +
                                   CKDetailResultLabel.Height +
                                   CKDetailResult.Height +
+                                  CKDetailActionItemsLabel.Height +
+                                  CKDetailActionItemsGallery.Height +
                                   If(Parent.Width < 640, 170, 210)
                           )
                         PaddingBottom: =If(Parent.Width < 640, 18, 28)
@@ -201,10 +206,11 @@ Screens:
                               - CKDetailMenteeValue:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Color: =RGBA(50, 49, 48, 1)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Bold
-                                    Height: =52
+                                    Height: =72
                                     Size: =19
                                     Text: =Coalesce(LookUp(Pegawai, Title = gblSelectedCoachingKarir.MenteeNIP, Nama), gblSelectedCoachingKarir.MenteeNIP, "-")
                                     VerticalAlign: =VerticalAlign.Top
@@ -225,10 +231,11 @@ Screens:
                               - CKDetailDateValue:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Color: =RGBA(50, 49, 48, 1)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Bold
-                                    Height: =52
+                                    Height: =72
                                     Size: =19
                                     Text: |-
                                       =If(
@@ -258,6 +265,7 @@ Screens:
                               - CKDetailMentorValue:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Color: =RGBA(50, 49, 48, 1)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Bold
@@ -287,10 +295,11 @@ Screens:
                         - CKDetailCatatan:
                             Control: ModernText@1.0.0
                             Properties:
+                              AutoHeight: =true
                               Color: =RGBA(31, 56, 100, 1)
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Bold
-                              Height: =56
+                              Height: =96
                               Size: =16
                               Text: =Coalesce(gblSelectedCoachingKarir.Catatan, "-")
                               VerticalAlign: =VerticalAlign.Top
@@ -306,22 +315,120 @@ Screens:
                               Text: ="HASIL COACHING"
                               Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                         - CKDetailResult:
-                            Control: ModernText@1.0.0
+                            Control: Image@2.2.3
                             Properties:
                               BorderColor: =RGBA(225, 223, 221, 1)
                               BorderStyle: =BorderStyle.Solid
                               BorderThickness: =1
-                              Color: =RGBA(50, 49, 48, 1)
                               Fill: =RGBA(250, 250, 250, 1)
+                              Height: =If(Parent.Width < 640, 260, 220)
+                              Image: =gblSelectedCoachingKarir.FotoBukti
+                              ImagePosition: =ImagePosition.Fit
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                        - CKDetailActionItemsLabel:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Color: =RGBA(145, 145, 145, 1)
                               Font: =Font.'Open Sans'
-                              Height: =If(Parent.Width < 640, 180, 120)
-                              PaddingBottom: =16
-                              PaddingLeft: =16
-                              PaddingRight: =16
-                              PaddingTop: =16
-                              Size: =13
-                              Text: =Coalesce(gblSelectedCoachingKarir.FotoBukti, "-")
-                              VerticalAlign: =VerticalAlign.Top
+                              FontWeight: =FontWeight.Bold
+                              Height: =24
+                              Size: =11
+                              Text: ="ACTION ITEMS"
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                        - CKDetailActionItemsGallery:
+                            Control: Gallery@2.15.0
+                            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+                            Properties:
+                              BorderColor: =RGBA(225, 223, 221, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =0
+                              Height: |-
+                                =If(
+                                    IsEmpty(Filter(ActionItem, CoachingID = gblSelectedCoachingKarir.ID)),
+                                    72,
+                                    CountRows(Filter(ActionItem, CoachingID = gblSelectedCoachingKarir.ID)) * 96
+                                )
+                              Items: |-
+                                =Sort(
+                                    Filter(
+                                        ActionItem,
+                                        CoachingID = gblSelectedCoachingKarir.ID
+                                    ),
+                                    Title,
+                                    SortOrder.Ascending
+                                )
+                              LayoutMinHeight: |-
+                                =If(
+                                    IsEmpty(Filter(ActionItem, CoachingID = gblSelectedCoachingKarir.ID)),
+                                    72,
+                                    CountRows(Filter(ActionItem, CoachingID = gblSelectedCoachingKarir.ID)) * 96
+                                )
+                              TemplatePadding: =6
+                              TemplateSize: =90
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                            Children:
+                              - CKDetailActionItemCard:
+                                  Control: Rectangle@2.3.0
+                                  Properties:
+                                    BorderColor: =RGBA(235, 235, 235, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Fill: =RGBA(250, 250, 250, 1)
+                                    Height: =Parent.TemplateHeight - 6
+                                    Width: =Parent.TemplateWidth - 12
+                                    X: =6
+                                    Y: =3
+                              - CKDetailActionItemTitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(31, 56, 100, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =24
+                                    Size: =12
+                                    Text: =Coalesce(ThisItem.Title, "-") & " • " & Coalesce(ThisItem.Kategori, "-") & " • " & Coalesce(ThisItem.Tipe.Value, "-")
+                                    Width: =Parent.TemplateWidth - 32
+                                    X: =16
+                                    Y: =10
+                              - CKDetailActionItemDetail:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    Height: =48
+                                    Size: =12
+                                    Text: =Coalesce(ThisItem.Detail, "-")
+                                    VerticalAlign: =VerticalAlign.Top
+                                    Width: =Parent.TemplateWidth - 32
+                                    X: =16
+                                    Y: =38
+                              - CKDetailActionItemsEmpty:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    Height: =60
+                                    Size: =12
+                                    Text: ="Belum ada action item."
+                                    Visible: =IsEmpty(Parent.AllItems)
+                                    Width: =Parent.TemplateWidth
+                                    X: =0
+                                    Y: =10
+                        - CKDetailActionItemsEmptyState:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              Color: =RGBA(96, 94, 92, 1)
+                              Font: =Font.'Open Sans'
+                              Height: =60
+                              Size: =12
+                              Text: ="Belum ada action item."
+                              Visible: =IsEmpty(Filter(ActionItem, CoachingID = gblSelectedCoachingKarir.ID))
                               Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
       - CKDeleteOverlay:
           Control: GroupContainer@1.5.0
@@ -418,13 +525,19 @@ Screens:
                               Height: =42
                               OnSelect: |-
                                 =IfError(
+                                    RemoveIf(ActionItem, CoachingID = gblSelectedCoachingKarir.ID);
                                     Remove(CoachingKarir, gblSelectedCoachingKarir);
+                                    Refresh(ActionItem);
                                     Refresh(CoachingKarir);
                                     UpdateContext({locShowDeleteCK: false});
                                     Notify("Coaching Karir berhasil dihapus.", NotificationType.Success);
                                     Set(gblSelectedCoachingKarir, Defaults(CoachingKarir));
-                                    Set(gblCoachingKarirEditMode, false);
-                                    Navigate(S4A_CoachingKarir_List, ScreenTransition.Fade),
+                                    Set(gblCoachingKarirCoachEditMode, false);
+                                    If(
+                                        gblCoachingKarirListMode = "Coach",
+                                        Navigate(S9A_CoachingKarir_Coach_List, ScreenTransition.Fade),
+                                        Navigate(S9A_CoachingKarir_Mentee_List, ScreenTransition.Fade)
+                                    ),
                                     Notify(
                                         "Gagal menghapus Coaching Karir: " & FirstError.Message,
                                         NotificationType.Error

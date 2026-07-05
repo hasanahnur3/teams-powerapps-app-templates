@@ -5,7 +5,7 @@ Screens:
       LoadingSpinnerColor: =RGBA(9, 33, 98, 1)
       OnVisible: |-
         =Set(gblCoachingKarirSubmitting, false);
-        ResetForm(CKFotoBuktiForm);
+        Reset(AddMediaFotoBuktiCK);
         Clear(colCKActionItemsDeleted);
         ClearCollect(
             colCKActionItems,
@@ -277,85 +277,44 @@ Screens:
                                     FontWeight: =FontWeight.Semibold
                                     Size: =12
                                     Text: ="Foto Bukti *"
-                              - CKFotoBuktiForm:
-                                  Control: Form@2.4.4
-                                  Layout: Vertical
+                              - UploadFotoBuktiCK:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: ManualLayout
                                   Properties:
-                                    DataSource: =CoachingKarir
-                                    DefaultMode: =If(Coalesce(gblCoachingKarirCoachEditMode, false), FormMode.Edit, FormMode.New)
-                                    FillPortions: =0
+                                    DropShadow: =DropShadow.None
                                     Height: =210
-                                    Item: =If(Coalesce(gblCoachingKarirCoachEditMode, false), gblSelectedCoachingKarir, Defaults(CoachingKarir))
-                                    LayoutMinHeight: =210
                                     Width: =Parent.Width
                                   Children:
-                                    - FotoBukti_DataCardCK:
-                                        Control: TypedDataCard@1.0.7
-                                        Variant: LargePicture
-                                        IsLocked: false
+                                    - ImageFotoBuktiCK:
+                                        Control: Image@2.2.3
                                         Properties:
-                                          DataField: ="FotoBukti"
-                                          Default: =ThisItem.FotoBukti
-                                          DisplayName: =DataSourceInfo([@CoachingKarir],DataSourceInfo.DisplayName,'FotoBukti')
-                                          Height: =210
-                                          Required: =false
-                                          Update: =ImageFotoBuktiCK.Image
-                                          Width: =Parent.Width
-                                          X: =0
-                                          Y: =0
-                                        Children:
-                                          - ImageFotoBuktiCK:
-                                              Control: Image@2.2.3
-                                              MetadataKey: FieldValue
-                                              Properties:
-                                                BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
-                                                BorderStyle: =BorderStyle.None
-                                                BorderThickness: =2
-                                                DisplayMode: =Parent.DisplayMode
-                                                Height: =AddMediaFotoBuktiCK.Height
-                                                Image: =If(IsBlank(AddMediaFotoBuktiCK.Media), Parent.Default, AddMediaFotoBuktiCK.Media)
-                                                ImagePosition: =ImagePosition.Fit
-                                                RadiusBottomLeft: =6
-                                                RadiusBottomRight: =6
-                                                RadiusTopLeft: =6
-                                                RadiusTopRight: =6
-                                                Tooltip: =Parent.DisplayName
-                                                Width: =AddMediaFotoBuktiCK.Width
-                                                X: =AddMediaFotoBuktiCK.X
-                                                Y: =AddMediaFotoBuktiCK.Y
-                                          - AddMediaFotoBuktiCK:
-                                              Control: AddMedia@2.2.1
-                                              MetadataKey: AddPicture
-                                              Properties:
-                                                BorderColor: =RGBA(0, 0, 0, 0)
-                                                BorderStyle: =BorderStyle.None
-                                                BorderThickness: =2
-                                                ChangePictureText: ="Ganti foto"
-                                                Color: =RGBA(255, 255, 255, 1)
-                                                DisplayMode: =Parent.DisplayMode
-                                                Fill: =RGBA(9, 33, 98, 1)
-                                                Font: =Font.'Open Sans'
-                                                Height: =200
-                                                HoverColor: =RGBA(255, 255, 255, 1)
-                                                HoverFill: =RGBA(20, 54, 145, 1)
-                                                PressedColor: =RGBA(255, 255, 255, 1)
-                                                PressedFill: =RGBA(6, 24, 72, 1)
-                                                Size: =15
-                                                Text: ="Unggah foto"
-                                                Width: =Min(420, Parent.Width)
-                                                X: =0
-                                                Y: =0
-                                          - ErrorMessageFotoBuktiCK:
-                                              Control: Text@0.0.51
-                                              MetadataKey: ErrorMessage
-                                              Properties:
-                                                Height: =24
-                                                Size: =12
-                                                Text: =Parent.Error
-                                                Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
-                                                Width: =Parent.Width
-                                                X: =0
-                                                Y: =ImageFotoBuktiCK.Y + ImageFotoBuktiCK.Height
+                                          BorderStyle: =BorderStyle.None
+                                          Height: =200
+                                          Image: =If(IsBlank(AddMediaFotoBuktiCK.Media), If(Coalesce(gblCoachingKarirCoachEditMode, false), gblSelectedCoachingKarir.FotoBukti, Blank()), AddMediaFotoBuktiCK.Media)
+                                          ImagePosition: =ImagePosition.Fit
+                                          RadiusBottomLeft: =6
+                                          RadiusBottomRight: =6
+                                          RadiusTopLeft: =6
+                                          RadiusTopRight: =6
+                                          Width: =Min(420, Parent.Width)
+                                    - AddMediaFotoBuktiCK:
+                                        Control: AddMedia@2.2.1
+                                        Properties:
+                                          BorderColor: =RGBA(0, 0, 0, 0)
+                                          BorderStyle: =BorderStyle.None
+                                          BorderThickness: =2
+                                          ChangePictureText: ="Ganti foto"
+                                          Color: =RGBA(255, 255, 255, 1)
+                                          Fill: =RGBA(9, 33, 98, 1)
+                                          Font: =Font.'Open Sans'
+                                          Height: =200
+                                          HoverColor: =RGBA(255, 255, 255, 1)
+                                          HoverFill: =RGBA(20, 54, 145, 1)
+                                          PressedColor: =RGBA(255, 255, 255, 1)
+                                          PressedFill: =RGBA(6, 24, 72, 1)
+                                          Size: =15
+                                          Text: ="Unggah foto"
+                                          Width: =Min(420, Parent.Width)
                         - CKActionItemsTitle:
                             Control: ModernText@1.0.0
                             Properties:
@@ -557,7 +516,7 @@ Screens:
                     =Reset(DateTanggalCKForm);
                     Reset(CmbMenteeCKForm);
                     Reset(TxtCatatanCKForm);
-                    ResetForm(CKFotoBuktiForm);
+                    Reset(AddMediaFotoBuktiCK);
                     Clear(colCKActionItems);
                     Clear(colCKActionItemsDeleted);
                     Set(gblCoachingKarirSubmitting, false);
@@ -610,7 +569,7 @@ Screens:
                                                 MentorNIP: Text(gblCurrentNIP),
                                                 Tanggal: DateTanggalCKForm.SelectedDate,
                                                 Catatan: Trim(TxtCatatanCKForm.Value),
-                                                FotoBukti: FotoBukti_DataCardCK.Update
+                                                FotoBukti: ImageFotoBuktiCK.Image
                                             }
                                         ),
                                         With(
@@ -624,7 +583,7 @@ Screens:
                                                         MentorNIP: Text(gblCurrentNIP),
                                                         Tanggal: DateTanggalCKForm.SelectedDate,
                                                         Catatan: Trim(TxtCatatanCKForm.Value),
-                                                        FotoBukti: FotoBukti_DataCardCK.Update
+                                                        FotoBukti: ImageFotoBuktiCK.Image
                                                     }
                                                 )
                                             },
@@ -647,22 +606,17 @@ Screens:
                                     ClearCollect(
                                         colCKSavedActionItems,
                                         ForAll(
-                                            Sequence(CountRows(colCKActionItems)) As actionIndex,
-                                            With(
+                                            colCKActionItems As actionItem,
+                                            Patch(
+                                                ActionItem,
+                                                Defaults(ActionItem),
                                                 {
-                                                    actionItem: Last(FirstN(colCKActionItems, actionIndex.Value))
-                                                },
-                                                Patch(
-                                                    ActionItem,
-                                                    Defaults(ActionItem),
-                                                    {
-                                                        Title: Text(savedCoachingKarir.ID) & "_" & Text(actionIndex.Value),
-                                                        CoachingID: savedCoachingKarir.ID,
-                                                        Kategori: actionItem.Kategori,
-                                                        Tipe: {Value: actionItem.Tipe},
-                                                        Detail: Trim(actionItem.Detail)
-                                                    }
-                                                )
+                                                    Title: Text(savedCoachingKarir.ID) & "_" & actionItem.LocalID,
+                                                    CoachingID: savedCoachingKarir.ID,
+                                                    Kategori: actionItem.Kategori,
+                                                    Tipe: {Value: actionItem.Tipe},
+                                                    Detail: Trim(actionItem.Detail)
+                                                }
                                             )
                                         )
                                     ),

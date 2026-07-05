@@ -1,14 +1,14 @@
 Screens:
-  S9A_CoachingKarir_Coach_List:
+  S9A_CoachingKarir_Mentee_List:
     Properties:
       Fill: =RGBA(255, 255, 255, 1)
       LoadingSpinnerColor: =RGBA(9, 33, 98, 1)
       OnVisible: |-
         =Refresh(CoachingKarir);
         Set(gblSelectedCoachingKarir, Defaults(CoachingKarir));
-        Set(gblCoachingKarirCoachEditMode, false)
+        Set(gblCoachingKarirEditMode, false)
     Children:
-      - CKListScreenContainer:
+      - MenteeCKListScreenContainer:
           Control: GroupContainer@1.5.0
           Variant: AutoLayout
           Properties:
@@ -23,7 +23,7 @@ Screens:
             PaddingTop: =16
             Width: =Parent.Width
           Children:
-            - CKListHeader:
+            - MenteeCKListHeader:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
                 Properties:
@@ -43,7 +43,7 @@ Screens:
                   RadiusTopLeft: =8
                   RadiusTopRight: =8
                 Children:
-                  - BtnBackCKList:
+                  - BtnBackMenteeCKList:
                       Control: ModernText@1.0.0
                       Properties:
                         Align: =Align.Center
@@ -57,7 +57,7 @@ Screens:
                         Size: =22
                         Text: ="‹"
                         Width: =40
-                  - LblAppNameCKList:
+                  - LblAppNameMenteeCKList:
                       Control: ModernText@1.0.0
                       Properties:
                         Align: =Align.Center
@@ -68,13 +68,13 @@ Screens:
                         Height: =40
                         Size: =18
                         Text: ="MyCareerApp"
-                  - HeaderSpacerCKList:
+                  - HeaderSpacerMenteeCKList:
                       Control: Rectangle@2.3.0
                       Properties:
                         Fill: =RGBA(0, 0, 0, 0)
                         Height: =40
                         Width: =40
-            - CKListMain:
+            - MenteeCKListMain:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
                 Properties:
@@ -89,7 +89,7 @@ Screens:
                   PaddingRight: =8
                   PaddingTop: =8
                 Children:
-                  - CKListTitleRow:
+                  - MenteeCKListTitleRow:
                       Control: GroupContainer@1.5.0
                       Variant: AutoLayout
                       Properties:
@@ -103,7 +103,7 @@ Screens:
                         LayoutMinWidth: =16
                         LayoutWrap: =true
                       Children:
-                        - CKListPageTitle:
+                        - MenteeCKListPageTitle:
                             Control: ModernText@1.0.0
                             Properties:
                               Color: =RGBA(31, 56, 100, 1)
@@ -113,8 +113,8 @@ Screens:
                               Height: =40
                               LayoutMinWidth: =220
                               Size: =18
-                              Text: ="Daftar Coaching Karir sebagai Coach"
-                        - BtnCreateCK:
+                              Text: ="Daftar Coaching Karir sebagai Mentee"
+                        - BtnCreateMenteeCK:
                             Control: ModernText@1.0.0
                             Properties:
                               Align: =Align.Center
@@ -122,10 +122,9 @@ Screens:
                               Fill: =RGBA(9, 33, 98, 1)
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Semibold
-                              FillPortions: =0
-                              Height: =40
+                              Height: =42
                               OnSelect: |-
-                                =Set(gblCoachingKarirCoachEditMode, false);
+                                =Set(gblCoachingKarirEditMode, false);
                                 Set(gblSelectedCoachingKarir, Defaults(CoachingKarir));
                                 Navigate(S9B_CoachingKarir_Coach_Form, ScreenTransition.Fade)
                               RadiusBottomLeft: =6
@@ -133,10 +132,10 @@ Screens:
                               RadiusTopLeft: =6
                               RadiusTopRight: =6
                               Size: =12
-                              Text: ="+ Tambah Coaching Karir"
-                              Visible: =true
-                              Width: =224
-                  - CoachContextCK:
+                              Text: =If(App.Width < 520, "+ Baru", "+ Buat Baru")
+                              Visible: =false
+                              Width: =If(App.Width < 520, 90, 130)
+                  - PimpinanContextMenteeCK:
                       Control: GroupContainer@1.5.0
                       Variant: AutoLayout
                       Properties:
@@ -162,7 +161,7 @@ Screens:
                         RadiusTopRight: =8
                         Visible: =Coalesce(gblPimpinanView, false)
                       Children:
-                        - CoachEmployeeCK:
+                        - PimpinanEmployeeMenteeCK:
                             Control: ModernText@1.0.0
                             Properties:
                               Color: =RGBA(31, 56, 100, 1)
@@ -174,7 +173,7 @@ Screens:
                               Size: =12
                               Text: '="Pegawai: " & Coalesce(LookUp(Pegawai, Title = Text(gblSubjectNIP), Nama), Text(gblSubjectNIP))'
                               Width: =If(Parent.Width < 620, Parent.Width - 32, Max(200, Parent.Width - 460))
-                        - PimpinanTabProfileCK:
+                        - PimpinanTabProfileMenteeCK:
                             Control: ModernText@1.0.0
                             Properties:
                               Align: =Align.Center
@@ -186,7 +185,7 @@ Screens:
                               Size: =11
                               Text: ="Profil"
                               Width: =90
-                        - PimpinanTabPRCK:
+                        - PimpinanTabPRMenteeCK:
                             Control: ModernText@1.0.0
                             Properties:
                               Align: =Align.Center
@@ -198,7 +197,7 @@ Screens:
                               Size: =11
                               Text: ="Performance Review"
                               Width: =150
-                        - PimpinanTabActiveCK:
+                        - PimpinanTabActiveMenteeCK:
                             Control: ModernText@1.0.0
                             Properties:
                               Align: =Align.Center
@@ -210,7 +209,7 @@ Screens:
                               Size: =11
                               Text: ="Coaching Karir"
                               Width: =140
-                  - CKListCard:
+                  - MenteeCKListCard:
                       Control: GroupContainer@1.5.0
                       Variant: AutoLayout
                       Properties:
@@ -231,7 +230,7 @@ Screens:
                         RadiusTopLeft: =8
                         RadiusTopRight: =8
                       Children:
-                        - CKTableHeader:
+                        - MenteeCKTableHeader:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
                             Properties:
@@ -245,7 +244,7 @@ Screens:
                               PaddingRight: =12
                               Visible: =App.Width >= 1200
                             Children:
-                              - HeaderTanggalCK:
+                              - HeaderTanggalMenteeCK:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     Color: =RGBA(96, 94, 92, 1)
@@ -254,7 +253,7 @@ Screens:
                                     Size: =11
                                     Text: ="Tanggal"
                                     Width: =(Parent.Width - 24) * 0.20
-                              - HeaderCatatanCK:
+                              - HeaderCatatanMenteeCK:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     Color: =RGBA(96, 94, 92, 1)
@@ -263,16 +262,16 @@ Screens:
                                     Size: =11
                                     Text: ="Catatan"
                                     Width: =(Parent.Width - 24) * 0.42
-                              - HeaderMentorCK:
+                              - HeaderMentorMenteeCK:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     Color: =RGBA(96, 94, 92, 1)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Bold
                                     Size: =11
-                                    Text: ="Mentee"
+                                    Text: ="Mentor"
                                     Width: =(Parent.Width - 24) * 0.23
-                              - HeaderActionCK:
+                              - HeaderActionMenteeCK:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     Align: =Align.Center
@@ -282,7 +281,7 @@ Screens:
                                     Size: =11
                                     Text: ="Aksi"
                                     Width: =(Parent.Width - 24) * 0.15
-                        - GalleryCKList:
+                        - GalleryMenteeCKList:
                             Control: Gallery@2.15.0
                             Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
                             Properties:
@@ -293,7 +292,13 @@ Screens:
                                 =Sort(
                                     Filter(
                                         CoachingKarir,
-                                        Trim(MentorNIP) = Trim(Text(gblCurrentNIP))
+                                        MenteeNIP = Text(
+                                            If(
+                                                Coalesce(gblPimpinanView, false),
+                                                gblSubjectNIP,
+                                                gblCurrentNIP
+                                            )
+                                        )
                                     ),
                                     Tanggal,
                                     SortOrder.Descending
@@ -302,12 +307,12 @@ Screens:
                               LayoutMinWidth: =16
                               OnSelect: |-
                                 =Set(gblSelectedCoachingKarir, ThisItem);
-                                Set(gblCoachingKarirListMode, "Coach");
+                                Set(gblCoachingKarirListMode, "Mentee");
                                 Navigate(S9C_CoachingKarir_Detail, ScreenTransition.Fade)
                               TemplatePadding: =0
                               TemplateSize: =If(App.Width < 1200, 152, 92)
                             Children:
-                              - RowBackgroundCK:
+                              - RowBackgroundMenteeCK:
                                   Control: Rectangle@2.3.0
                                   Properties:
                                     BorderColor: =RGBA(235, 235, 235, 1)
@@ -317,7 +322,7 @@ Screens:
                                     Height: =Parent.TemplateHeight - 6
                                     OnSelect: =Select(Parent)
                                     Width: =Parent.TemplateWidth
-                              - ValTanggalCK:
+                              - ValTanggalMenteeCK:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     Color: =RGBA(50, 49, 48, 1)
@@ -344,7 +349,7 @@ Screens:
                                     Width: =If(App.Width < 1200, Parent.TemplateWidth - 120, (Parent.TemplateWidth - 24) * 0.20)
                                     X: =If(App.Width < 1200, 16, 12)
                                     Y: =If(App.Width < 1200, 14, 25)
-                              - ValCatatanCK:
+                              - ValCatatanMenteeCK:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     Color: =RGBA(50, 49, 48, 1)
@@ -358,7 +363,7 @@ Screens:
                                     Width: =If(App.Width < 1200, Parent.TemplateWidth - 132, (Parent.TemplateWidth - 24) * 0.42)
                                     X: =If(App.Width < 1200, 16, 12 + (Parent.TemplateWidth - 24) * 0.20)
                                     Y: =If(App.Width < 1200, 48, 22)
-                              - ValMentorCK:
+                              - ValMentorMenteeCK:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     Color: =RGBA(96, 94, 92, 1)
@@ -369,22 +374,22 @@ Screens:
                                     Text: |-
                                       =If(
                                           App.Width < 1200,
-                                          "Mentee: " &
+                                          "Mentor: " &
                                               Coalesce(
-                                                  LookUp(Pegawai, Title = ThisItem.MenteeNIP, Nama),
-                                                  ThisItem.MenteeNIP,
+                                                  LookUp(Pegawai, Title = ThisItem.MentorNIP, Nama),
+                                                  ThisItem.MentorNIP,
                                                   "-"
                                               ),
                                           Coalesce(
-                                              LookUp(Pegawai, Title = ThisItem.MenteeNIP, Nama),
-                                              ThisItem.MenteeNIP,
+                                              LookUp(Pegawai, Title = ThisItem.MentorNIP, Nama),
+                                              ThisItem.MentorNIP,
                                               "-"
                                           )
                                       )
                                     Width: =If(App.Width < 1200, Parent.TemplateWidth - 132, (Parent.TemplateWidth - 24) * 0.23)
                                     X: =If(App.Width < 1200, 16, 12 + (Parent.TemplateWidth - 24) * 0.62)
                                     Y: =If(App.Width < 1200, 100, 25)
-                              - BtnDetailCK:
+                              - BtnDetailMenteeCK:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     Align: =Align.Center
@@ -395,7 +400,7 @@ Screens:
                                     Height: =38
                                     OnSelect: |-
                                       =Set(gblSelectedCoachingKarir, ThisItem);
-                                      Set(gblCoachingKarirListMode, "Coach");
+                                      Set(gblCoachingKarirListMode, "Mentee");
                                       Navigate(S9C_CoachingKarir_Detail, ScreenTransition.Fade)
                                     RadiusBottomLeft: =6
                                     RadiusBottomRight: =6
@@ -413,7 +418,7 @@ Screens:
                                               (((Parent.TemplateWidth - 24) * 0.15) - 88) / 2
                                       )
                                     Y: =If(App.Width < 1200, 18, 22)
-                  - CKEmptyState:
+                  - MenteeCKEmptyState:
                       Control: ModernText@1.0.0
                       Properties:
                         Align: =Align.Center
@@ -422,4 +427,4 @@ Screens:
                         Height: =80
                         Size: =13
                         Text: ="Belum ada data Coaching Karir."
-                        Visible: =IsEmpty(GalleryCKList.AllItems)
+                        Visible: =IsEmpty(GalleryMenteeCKList.AllItems)
