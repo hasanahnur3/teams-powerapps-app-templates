@@ -39,7 +39,9 @@ Screens:
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
                         Height: =64
-                        OnSelect: =Back()
+                        OnSelect: |-
+                          =Set(gblChecklistAdminView, false);
+                          Back()
                         Size: =24
                         Text: ="‹"
                         Width: =44
@@ -401,7 +403,7 @@ Screens:
                               LayoutGap: =12
                               LayoutJustifyContent: =LayoutJustifyContent.End
                               LayoutMinHeight: =48
-                              Visible: =true
+                              Visible: =!Coalesce(gblChecklistAdminView, false)
                               Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                             Children:
                               - BtnEditChecklistDetail:
@@ -415,6 +417,7 @@ Screens:
                                     Height: =42
                                     OnSelect: |-
                                       =Set(gblChecklistEditMode, true);
+                                      Set(gblChecklistAdminView, false);
                                       Navigate(S6B_ChecklistMentoring_Form, ScreenTransition.Fade)
                                     RadiusBottomLeft: =6
                                     RadiusBottomRight: =6
@@ -422,6 +425,7 @@ Screens:
                                     RadiusTopRight: =6
                                     Size: =12
                                     Text: ="Edit"
+                                    Visible: =!Coalesce(gblChecklistAdminView, false)
                                     Width: =If(Parent.Width < 480, (Parent.Width - 12) / 2, 120)
                               - BtnDeleteChecklistDetail:
                                   Control: ModernText@1.0.0
@@ -439,6 +443,7 @@ Screens:
                                     RadiusTopRight: =6
                                     Size: =12
                                     Text: ="Hapus"
+                                    Visible: =!Coalesce(gblChecklistAdminView, false)
                                     Width: =If(Parent.Width < 480, (Parent.Width - 12) / 2, 120)
       - DeleteChecklistOverlay:
           Control: GroupContainer@1.5.0

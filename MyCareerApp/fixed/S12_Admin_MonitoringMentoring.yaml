@@ -3,6 +3,10 @@ Screens:
     Properties:
       Fill: =RGBA(245, 245, 245, 1)
       LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+      OnVisible: |-
+        =Refresh(Pegawai);
+        Refresh(ChecklistMentoring);
+        Set(gblChecklistAdminView, false)
     Children:
       - AdminMonitoringContainer:
           Control: GroupContainer@1.5.0
@@ -37,7 +41,9 @@ Screens:
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
                         Height: =64
-                        OnSelect: =Back()
+                        OnSelect: |-
+                          =Set(gblChecklistAdminView, false);
+                          Back()
                         Size: =24
                         Text: ="‹"
                         Width: =44
@@ -71,24 +77,36 @@ Screens:
                 Properties:
                   LayoutAlignItems: =LayoutAlignItems.Stretch
                   LayoutDirection: =LayoutDirection.Vertical
-                  LayoutGap: =12
+                  LayoutGap: =16
                   LayoutMinHeight: =16
+                  LayoutOverflowY: =LayoutOverflow.Scroll
                   PaddingBottom: =16
                   PaddingLeft: =16
                   PaddingRight: =16
                   PaddingTop: =16
                   Width: =Parent.Width
                 Children:
+                  - AdminMonitoringBreadcrumb:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(96, 94, 92, 1)
+                        FillPortions: =0
+                        Font: =Font.'Open Sans'
+                        Height: =24
+                        Size: =12
+                        Text: ="Home › Monitoring Mentoring"
+                        Width: =Parent.Width
                   - AdminMonitoringHeading:
                       Control: GroupContainer@1.5.0
                       Variant: AutoLayout
                       Properties:
                         DropShadow: =DropShadow.None
                         FillPortions: =0
-                        Height: =48
+                        Height: =56
                         LayoutAlignItems: =LayoutAlignItems.Center
                         LayoutDirection: =LayoutDirection.Horizontal
-                        LayoutMinHeight: =48
+                        LayoutGap: =12
+                        LayoutMinHeight: =56
                         Width: =Parent.Width
                       Children:
                         - AdminMonitoringTitle:
@@ -98,27 +116,27 @@ Screens:
                               FillPortions: =1
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Bold
-                              Height: =40
-                              Size: =18
+                              Height: =44
+                              Size: =20
                               Text: ="Monitoring Mentoring"
-                        - BtnTambahChecklist:
-                            Control: ModernText@1.0.0
+                        - CmbTahunAdminMonitoring:
+                            Control: ComboBox@0.0.51
                             Properties:
-                              Align: =Align.Center
-                              Color: =RGBA(255, 255, 255, 1)
-                              Fill: =RGBA(18, 38, 82, 1)
-                              Font: =Font.'Open Sans'
-                              FontWeight: =FontWeight.Semibold
-                              Height: =40
-                              OnSelect: =Notify("Gunakan halaman pegawai untuk menambah checklist.", NotificationType.Information)
-                              RadiusBottomLeft: =6
-                              RadiusBottomRight: =6
-                              RadiusTopLeft: =6
-                              RadiusTopRight: =6
-                              Size: =12
-                              Text: ="+ Tambah"
-                              Width: =110
-                  - ChecklistPimpinanContext:
+                              AccessibleLabel: ="Pilih tahun monitoring"
+                              DefaultSelectedItems: |-
+                                =Table({Value: Year(Today())})
+                              InputTextPlaceholder: ="Tahun"
+                              Items: |-
+                                =Table(
+                                    {Value: Year(Today()) + 1},
+                                    {Value: Year(Today())},
+                                    {Value: Year(Today()) - 1},
+                                    {Value: Year(Today()) - 2},
+                                    {Value: Year(Today()) - 3}
+                                )
+                              SelectMultiple: =false
+                              Width: =180
+                  - AdminMonitoringTableCard:
                       Control: GroupContainer@1.5.0
                       Variant: AutoLayout
                       Properties:
@@ -128,236 +146,218 @@ Screens:
                         DropShadow: =DropShadow.None
                         Fill: =RGBA(255, 255, 255, 1)
                         FillPortions: =0
-                        Height: =82
-                        LayoutAlignItems: =LayoutAlignItems.Center
-                        LayoutDirection: =LayoutDirection.Horizontal
-                        LayoutGap: =12
-                        LayoutMinHeight: =82
-                        PaddingBottom: =12
-                        PaddingLeft: =16
-                        PaddingRight: =16
-                        PaddingTop: =12
-                        RadiusBottomLeft: =8
-                        RadiusBottomRight: =8
-                        RadiusTopLeft: =8
-                        RadiusTopRight: =8
-                        Visible: =false
-                        Width: =Parent.Width
-                      Children:
-                        - ChecklistContextEmployee:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              Color: =RGBA(31, 56, 100, 1)
-                              FillPortions: =1
-                              Font: =Font.'Open Sans'
-                              FontWeight: =FontWeight.Bold
-                              Height: =44
-                              OnSelect: =Navigate(S11_Pimpinan_DaftarPegawai, ScreenTransition.Fade)
-                              Size: =12
-                              Text: '="Pegawai: " & Coalesce(LookUp(Pegawai, Title = Text(gblSubjectNIP), Nama), Text(gblSubjectNIP), "-")'
-                        - ChecklistContextCount:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              Align: =Align.Center
-                              Color: =RGBA(0, 120, 212, 1)
-                              Fill: =RGBA(222, 236, 249, 1)
-                              Font: =Font.'Open Sans'
-                              FontWeight: =FontWeight.Semibold
-                              Height: =36
-                              Size: =11
-                              Text: '=CountRows(Filter(ChecklistMentoring, NIP = Text(gblSubjectNIP))) & " checklist"'
-                              Width: =120
-                  - ChecklistTableCard:
-                      Control: GroupContainer@1.5.0
-                      Variant: AutoLayout
-                      Properties:
-                        BorderColor: =RGBA(225, 223, 221, 1)
-                        BorderStyle: =BorderStyle.Solid
-                        BorderThickness: =1
-                        DropShadow: =DropShadow.Light
-                        Fill: =RGBA(255, 255, 255, 1)
+                        Height: =720
                         LayoutAlignItems: =LayoutAlignItems.Stretch
                         LayoutDirection: =LayoutDirection.Vertical
-                        LayoutMinHeight: =16
-                        PaddingBottom: =8
-                        PaddingLeft: =8
-                        PaddingRight: =8
-                        PaddingTop: =8
+                        LayoutMinHeight: =420
                         RadiusBottomLeft: =8
                         RadiusBottomRight: =8
                         RadiusTopLeft: =8
                         RadiusTopRight: =8
                         Width: =Parent.Width
                       Children:
-                        - ChecklistColumnHeader:
+                        - AdminMonitoringTableHeader:
                             Control: GroupContainer@1.5.0
-                            Variant: AutoLayout
+                            Variant: ManualLayout
                             Properties:
-                              Fill: =RGBA(243, 246, 250, 1)
+                              Fill: =RGBA(250, 249, 248, 1)
                               FillPortions: =0
-                              Height: =44
-                              LayoutAlignItems: =LayoutAlignItems.Center
-                              LayoutDirection: =LayoutDirection.Horizontal
-                              LayoutMinHeight: =44
-                              PaddingLeft: =12
-                              PaddingRight: =12
-                              Visible: =App.Width >= 900
+                              Height: =70
+                              LayoutMinHeight: =70
+                              Width: =Parent.Width
                             Children:
-                              - HeaderTahunChecklist:
+                              - HeaderNoAdminMonitoring:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     Color: =RGBA(96, 94, 92, 1)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Bold
-                                    Size: =11
-                                    Text: ="TAHUN"
-                                    Width: =(Parent.Width - 24) * 0.15
-                              - HeaderMentorChecklist:
+                                    Height: =40
+                                    Size: =13
+                                    Text: ="NO"
+                                    Width: =80
+                                    X: =40
+                                    Y: =18
+                              - HeaderNamaAdminMonitoring:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     Color: =RGBA(96, 94, 92, 1)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Bold
-                                    Size: =11
-                                    Text: ="MENTOR"
-                                    Width: =(Parent.Width - 24) * 0.30
-                              - HeaderDokumenChecklist:
+                                    Height: =40
+                                    Size: =13
+                                    Text: ="NAMA PEGAWAI"
+                                    Width: =360
+                                    X: =140
+                                    Y: =18
+                              - HeaderNIPAdminMonitoring:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     Color: =RGBA(96, 94, 92, 1)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Bold
-                                    Size: =11
-                                    Text: ="DOKUMEN"
-                                    Width: =(Parent.Width - 24) * 0.35
-                              - HeaderStatusChecklist:
+                                    Height: =40
+                                    Size: =13
+                                    Text: ="NIP"
+                                    Width: =220
+                                    X: =If(Parent.Width < 900, Parent.Width - 420, Parent.Width * 0.48)
+                                    Y: =18
+                              - HeaderStatusAdminMonitoring:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     Color: =RGBA(96, 94, 92, 1)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Bold
-                                    Size: =11
-                                    Text: ="STATUS"
-                                    Width: =(Parent.Width - 24) * 0.20
+                                    Height: =40
+                                    Size: =13
+                                    Text: ="CHECKLIST MENTORING " & Text(Coalesce(CmbTahunAdminMonitoring.Selected.Value, Year(Today())))
+                                    Width: =360
+                                    X: =If(Parent.Width < 900, Parent.Width - 250, Parent.Width * 0.72)
+                                    Y: =18
                         - GalleryAdminMonitoring:
                             Control: Gallery@2.15.0
                             Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
                             Properties:
                               Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =1
                               Items: |-
-                                =Sort(
-                                    ChecklistMentoring,
-                                    Value(Tahun),
-                                    SortOrder.Descending
+                                =SortByColumns(
+                                    Filter(Pegawai, Coalesce(IsPegawai, true)),
+                                    "Nama",
+                                    SortOrder.Ascending
                                 )
-                              LayoutMinHeight: =180
+                              LayoutMinHeight: =320
                               OnSelect: |-
-                                =Set(gblSelectedChecklist, ThisItem);
-                                Navigate(S6C_ChecklistMentoring_Detail, ScreenTransition.Fade)
+                                =With(
+                                    {
+                                        selectedChecklist: LookUp(
+                                            ChecklistMentoring,
+                                            NIP = ThisItem.Title &&
+                                                Tahun = Value(Coalesce(CmbTahunAdminMonitoring.Selected.Value, Year(Today())))
+                                        )
+                                    },
+                                    If(
+                                        !IsBlank(selectedChecklist.ID),
+                                        Set(gblSelectedChecklist, selectedChecklist);
+                                        Set(gblChecklistEditMode, false);
+                                        Set(gblChecklistAdminView, true);
+                                        Navigate(S6C_ChecklistMentoring_Detail, ScreenTransition.Fade)
+                                    )
+                                )
                               TemplatePadding: =0
-                              TemplateSize: =If(App.Width < 900, 112, 64)
+                              TemplateSize: =86
                             Children:
-                              - ChecklistDesktopRow:
-                                  Control: GroupContainer@1.5.0
-                                  Variant: AutoLayout
+                              - AdminMonitoringRowBackground:
+                                  Control: Rectangle@2.3.0
                                   Properties:
-                                    BorderColor: =RGBA(235, 235, 235, 1)
-                                    BorderStyle: =BorderStyle.Solid
-                                    BorderThickness: =1
-                                    Height: =64
-                                    LayoutAlignItems: =LayoutAlignItems.Center
-                                    LayoutDirection: =LayoutDirection.Horizontal
-                                    PaddingLeft: =12
-                                    PaddingRight: =12
-                                    Visible: =App.Width >= 900
+                                    Fill: |-
+                                      =With(
+                                          {
+                                              rowChecklist: LookUp(
+                                                  ChecklistMentoring,
+                                                  NIP = ThisItem.Title &&
+                                                      Tahun = Value(Coalesce(CmbTahunAdminMonitoring.Selected.Value, Year(Today())))
+                                              )
+                                          },
+                                          If(!IsBlank(rowChecklist.ID), RGBA(255, 255, 255, 1), RGBA(252, 252, 252, 1))
+                                      )
+                                    Height: =Parent.TemplateHeight - 1
+                                    OnSelect: =Select(Parent)
                                     Width: =Parent.TemplateWidth
-                                  Children:
-                                    - ValTahunChecklistRow:
-                                        Control: ModernText@1.0.0
-                                        Properties:
-                                          Font: =Font.'Open Sans'
-                                          FontWeight: =FontWeight.Bold
-                                          OnSelect: =Select(Parent)
-                                          Size: =12
-                                          Text: =Text(ThisItem.Tahun)
-                                          Width: =(Parent.Width - 24) * 0.15
-                                    - ValMentorChecklistRow:
-                                        Control: ModernText@1.0.0
-                                        Properties:
-                                          Font: =Font.'Open Sans'
-                                          OnSelect: =Select(Parent)
-                                          Size: =12
-                                          Text: =Coalesce(LookUp(Pegawai, Title = ThisItem.MentorNIP, Nama), ThisItem.MentorNIP, "-")
-                                          Width: =(Parent.Width - 24) * 0.30
-                                    - ValDokumenChecklistRow:
-                                        Control: ModernText@1.0.0
-                                        Properties:
-                                          Font: =Font.'Open Sans'
-                                          OnSelect: =Select(Parent)
-                                          Size: =11
-                                          Text: |-
-                                            =(
-                                                If(IsBlank(ThisItem.PersonalStatementFile), 0, 1) +
-                                                If(IsBlank(ThisItem.CareerPlanFile), 0, 1) +
-                                                If(IsBlank(ThisItem.BuktiUploadFile), 0, 1)
-                                            ) & " dari 3 file"
-                                          Width: =(Parent.Width - 24) * 0.35
-                                    - ValStatusChecklistRow:
-                                        Control: ModernText@1.0.0
-                                        Properties:
-                                          Color: =If(ThisItem.Status = "Lengkap", RGBA(16, 124, 16, 1), RGBA(161, 98, 7, 1))
-                                          Font: =Font.'Open Sans'
-                                          FontWeight: =FontWeight.Semibold
-                                          OnSelect: =Select(Parent)
-                                          Size: =11
-                                          Text: =Coalesce(ThisItem.Status, "Belum Lengkap")
-                                          Width: =(Parent.Width - 24) * 0.20
-                              - ChecklistMobileRow:
-                                  Control: GroupContainer@1.5.0
-                                  Variant: AutoLayout
+                              - AdminMonitoringRowDivider:
+                                  Control: Rectangle@2.3.0
                                   Properties:
-                                    BorderColor: =RGBA(235, 235, 235, 1)
-                                    BorderStyle: =BorderStyle.Solid
-                                    BorderThickness: =1
-                                    Height: =108
-                                    LayoutDirection: =LayoutDirection.Vertical
-                                    LayoutGap: =5
-                                    PaddingBottom: =10
-                                    PaddingLeft: =12
-                                    PaddingRight: =12
-                                    PaddingTop: =10
-                                    Visible: =App.Width < 900
+                                    Fill: =RGBA(237, 235, 233, 1)
+                                    Height: =1
                                     Width: =Parent.TemplateWidth
-                                  Children:
-                                    - ChecklistMobileTitle:
-                                        Control: ModernText@1.0.0
-                                        Properties:
-                                          Color: =RGBA(31, 56, 100, 1)
-                                          Font: =Font.'Open Sans'
-                                          FontWeight: =FontWeight.Bold
-                                          OnSelect: =Select(Parent)
-                                          Size: =13
-                                          Text: '="Monitoring Mentoring " & Text(ThisItem.Tahun)'
-                                          Width: =Parent.Width
-                                    - ChecklistMobileMentor:
-                                        Control: ModernText@1.0.0
-                                        Properties:
-                                          Font: =Font.'Open Sans'
-                                          OnSelect: =Select(Parent)
-                                          Size: =11
-                                          Text: '="Mentor: " & Coalesce(LookUp(Pegawai, Title = ThisItem.MentorNIP, Nama), ThisItem.MentorNIP, "-")'
-                                          Width: =Parent.Width
-                                    - ChecklistMobileStatus:
-                                        Control: ModernText@1.0.0
-                                        Properties:
-                                          Color: =If(ThisItem.Status = "Lengkap", RGBA(16, 124, 16, 1), RGBA(161, 98, 7, 1))
-                                          Font: =Font.'Open Sans'
-                                          FontWeight: =FontWeight.Semibold
-                                          OnSelect: =Select(Parent)
-                                          Size: =11
-                                          Text: =Coalesce(ThisItem.Status, "Belum Lengkap")
-                                          Width: =Parent.Width
-                        - ChecklistEmptyState:
+                                    Y: =Parent.TemplateHeight - 1
+                              - ValNoAdminMonitoring:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    Height: =40
+                                    OnSelect: =Select(Parent)
+                                    Size: =13
+                                    Text: =Text(CountRows(Filter(Pegawai, Coalesce(IsPegawai, true) && Nama <= ThisItem.Nama)))
+                                    Width: =80
+                                    X: =40
+                                    Y: =24
+                              - ValNamaAdminMonitoring:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =40
+                                    OnSelect: =Select(Parent)
+                                    Size: =13
+                                    Text: =Coalesce(ThisItem.Nama, "-")
+                                    Width: =360
+                                    X: =140
+                                    Y: =24
+                              - ValNIPAdminMonitoring:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    Height: =40
+                                    OnSelect: =Select(Parent)
+                                    Size: =13
+                                    Text: =Coalesce(ThisItem.Title, "-")
+                                    Width: =220
+                                    X: =If(Parent.TemplateWidth < 900, Parent.TemplateWidth - 420, Parent.TemplateWidth * 0.48)
+                                    Y: =24
+                              - ValStatusAdminMonitoring:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: |-
+                                      =With(
+                                          {
+                                              rowChecklist: LookUp(
+                                                  ChecklistMentoring,
+                                                  NIP = ThisItem.Title &&
+                                                      Tahun = Value(Coalesce(CmbTahunAdminMonitoring.Selected.Value, Year(Today())))
+                                              )
+                                          },
+                                          If(!IsBlank(rowChecklist.ID), RGBA(16, 124, 16, 1), RGBA(161, 98, 7, 1))
+                                      )
+                                    Fill: |-
+                                      =With(
+                                          {
+                                              rowChecklist: LookUp(
+                                                  ChecklistMentoring,
+                                                  NIP = ThisItem.Title &&
+                                                      Tahun = Value(Coalesce(CmbTahunAdminMonitoring.Selected.Value, Year(Today())))
+                                              )
+                                          },
+                                          If(!IsBlank(rowChecklist.ID), RGBA(218, 242, 208, 1), RGBA(255, 244, 206, 1))
+                                      )
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =26
+                                    OnSelect: =Select(Parent)
+                                    RadiusBottomLeft: =14
+                                    RadiusBottomRight: =14
+                                    RadiusTopLeft: =14
+                                    RadiusTopRight: =14
+                                    Size: =12
+                                    Text: |-
+                                      =With(
+                                          {
+                                              rowChecklist: LookUp(
+                                                  ChecklistMentoring,
+                                                  NIP = ThisItem.Title &&
+                                                      Tahun = Value(Coalesce(CmbTahunAdminMonitoring.Selected.Value, Year(Today())))
+                                              )
+                                          },
+                                          If(!IsBlank(rowChecklist.ID), "✓ Sudah Diisi", "✗ Belum Diisi")
+                                      )
+                                    Width: =150
+                                    X: =If(Parent.TemplateWidth < 900, Parent.TemplateWidth - 250, Parent.TemplateWidth * 0.72)
+                                    Y: =30
+                        - AdminMonitoringEmptyState:
                             Control: ModernText@1.0.0
                             Properties:
                               Align: =Align.Center
@@ -365,6 +365,246 @@ Screens:
                               Font: =Font.'Open Sans'
                               Height: =80
                               Size: =12
-                              Text: ="Belum ada checklist mentoring."
+                              Text: ="Belum ada data pegawai."
                               Visible: =IsEmpty(GalleryAdminMonitoring.AllItems)
                               Width: =Parent.Width
+                  - AdminMonitoringStats:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =118
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =16
+                        LayoutMinHeight: =118
+                        LayoutWrap: =true
+                        Width: =Parent.Width
+                      Children:
+                        - StatTotalPegawai:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =RGBA(225, 223, 221, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =1
+                              Height: =110
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =110
+                              LayoutMinWidth: =180
+                              PaddingBottom: =16
+                              PaddingLeft: =18
+                              PaddingRight: =18
+                              PaddingTop: =16
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                            Children:
+                              - StatTotalPegawaiLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =28
+                                    Size: =12
+                                    Text: ="TOTAL PEGAWAI"
+                                    Width: =Parent.Width
+                              - StatTotalPegawaiValue:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(31, 56, 100, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =44
+                                    Size: =28
+                                    Text: =Text(CountRows(Filter(Pegawai, Coalesce(IsPegawai, true))))
+                                    Width: =Parent.Width
+                        - StatSudahDiisi:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =RGBA(225, 223, 221, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =1
+                              Height: =110
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =110
+                              LayoutMinWidth: =180
+                              PaddingBottom: =16
+                              PaddingLeft: =18
+                              PaddingRight: =18
+                              PaddingTop: =16
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                            Children:
+                              - StatSudahDiisiLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =28
+                                    Size: =12
+                                    Text: ="SUDAH DIISI"
+                                    Width: =Parent.Width
+                              - StatSudahDiisiValue:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(16, 124, 16, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =44
+                                    Size: =28
+                                    Text: |-
+                                      =Text(
+                                          CountRows(
+                                              Filter(
+                                                  Pegawai As pegawai,
+                                                  Coalesce(pegawai.IsPegawai, true) &&
+                                                      !IsBlank(
+                                                          LookUp(
+                                                              ChecklistMentoring,
+                                                              NIP = pegawai.Title &&
+                                                                  Tahun = Value(Coalesce(CmbTahunAdminMonitoring.Selected.Value, Year(Today())))
+                                                          ).ID
+                                                      )
+                                              )
+                                          )
+                                      )
+                                    Width: =Parent.Width
+                        - StatBelumDiisi:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =RGBA(225, 223, 221, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =1
+                              Height: =110
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =110
+                              LayoutMinWidth: =180
+                              PaddingBottom: =16
+                              PaddingLeft: =18
+                              PaddingRight: =18
+                              PaddingTop: =16
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                            Children:
+                              - StatBelumDiisiLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =28
+                                    Size: =12
+                                    Text: ="BELUM DIISI"
+                                    Width: =Parent.Width
+                              - StatBelumDiisiValue:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(196, 43, 28, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =44
+                                    Size: =28
+                                    Text: |-
+                                      =Text(
+                                          CountRows(Filter(Pegawai, Coalesce(IsPegawai, true))) -
+                                          CountRows(
+                                              Filter(
+                                                  Pegawai As pegawai,
+                                                  Coalesce(pegawai.IsPegawai, true) &&
+                                                      !IsBlank(
+                                                          LookUp(
+                                                              ChecklistMentoring,
+                                                              NIP = pegawai.Title &&
+                                                                  Tahun = Value(Coalesce(CmbTahunAdminMonitoring.Selected.Value, Year(Today())))
+                                                          ).ID
+                                                      )
+                                              )
+                                          )
+                                      )
+                                    Width: =Parent.Width
+                        - StatCompletionRate:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =RGBA(225, 223, 221, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =1
+                              Height: =110
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =110
+                              LayoutMinWidth: =180
+                              PaddingBottom: =16
+                              PaddingLeft: =18
+                              PaddingRight: =18
+                              PaddingTop: =16
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                            Children:
+                              - StatCompletionRateLabel:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =28
+                                    Size: =12
+                                    Text: ="COMPLETION RATE"
+                                    Width: =Parent.Width
+                              - StatCompletionRateValue:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(0, 120, 212, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =44
+                                    Size: =28
+                                    Text: |-
+                                      =With(
+                                          {
+                                              totalPegawai: CountRows(Filter(Pegawai, Coalesce(IsPegawai, true))),
+                                              totalChecklist:
+                                                  CountRows(
+                                                      Filter(
+                                                          Pegawai As pegawai,
+                                                          Coalesce(pegawai.IsPegawai, true) &&
+                                                              !IsBlank(
+                                                                  LookUp(
+                                                                      ChecklistMentoring,
+                                                                      NIP = pegawai.Title &&
+                                                                          Tahun = Value(Coalesce(CmbTahunAdminMonitoring.Selected.Value, Year(Today())))
+                                                                  ).ID
+                                                              )
+                                                      )
+                                                  )
+                                          },
+                                          If(totalPegawai = 0, "0%", Text(Round(totalChecklist / totalPegawai * 100, 0), "0") & "%")
+                                      )
+                                    Width: =Parent.Width

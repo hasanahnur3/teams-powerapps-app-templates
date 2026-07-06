@@ -1,0 +1,118 @@
+PART 1 OF 4
+
+Build a Microsoft Power Apps canvas app named "MyCareerApp".
+
+The app is an internal employee career development and talent management system for an organization. It helps employees maintain their career profile, submit performance reviews, record mentoring and coaching activities, manage Individual Development Plans (IDP), upload mentoring checklist evidence, and lets managers, leaders, coaches, mentors, and admins monitor employee progress.
+
+Use a clean, professional, enterprise style:
+- Primary color: dark navy blue.
+- Background: light gray.
+- Cards and tables: white, subtle borders, 8 px radius.
+- Typography: Open Sans or similar.
+- Layout should be responsive for desktop and tablet.
+- Use clear Indonesian labels because the users are Indonesian employees.
+- The app name shown in top bars should be "MyCareerApp".
+
+Core user roles:
+1. Employee / Pegawai
+   - Can view and edit their own profile.
+   - Can create and view their own Performance Review.
+   - Can view coaching/mentoring records involving them.
+   - Can create and edit their current-year IDP.
+   - Can view prior-year IDP in read-only mode.
+   - Can create and manage their own Checklist Mentoring.
+
+2. Line Manager
+   - Can review Performance Review records for employees assigned to them.
+   - Can open review details.
+
+3. Mentor / Coach
+   - Can create coaching and mentoring sessions.
+   - Can manage action items from career coaching sessions.
+   - Can view mentee coaching records.
+
+4. Pimpinan / Leader
+   - Can select a subject employee from an employee list.
+   - Can view that employee's profile, IDP, performance review, coaching, and checklist data in context.
+   - Leader view should use global subject employee context, not the current logged-in user's NIP.
+
+5. Admin
+   - Can open a Monitoring Mentoring menu.
+   - Can choose a year.
+   - Can see all employees and whether each employee has submitted Checklist Mentoring for the selected year.
+   - Can click rows that are already submitted and open the Checklist Mentoring detail in read-only monitoring mode.
+
+Main data tables and important fields:
+
+1. Pegawai
+   - Title: employee NIP as text.
+   - NIP: employee NIP, if present.
+   - Nama: employee full name.
+   - Satker: work unit.
+   - Jabatan: job title.
+   - Pangkat: grade/rank.
+   - LastUpdated: date.
+   - NilaiKinerja: numeric average performance score.
+   - IsPegawai: boolean.
+   - IsLineManager: boolean.
+   - IsCoach: boolean.
+   - IsPimpinan: boolean.
+   - IsAdmin: boolean.
+
+2. PerformanceReview
+   - Title.
+   - NIP.
+   - Tahun.
+   - Semester.
+   - Tanggal.
+   - LineManagerNIP.
+   - FotoBukti or supporting evidence.
+   - Other review fields as needed.
+
+3. CoachingKarir
+   - Title.
+   - MenteeNIP.
+   - MentorNIP.
+   - Tanggal.
+   - Catatan.
+   - Other coaching fields as needed.
+
+4. ActionItem
+   - Title.
+   - CoachingID.
+   - Kategori.
+   - Tipe.
+   - Detail.
+   - Other action item fields as needed.
+
+5. CoachingTematik
+   - Title.
+   - MenteeNIP.
+   - MentorNIP.
+   - Tanggal.
+   - Topik.
+   - Catatan.
+
+6. IDP
+   - Title.
+   - ID.
+   - NIP.
+   - Tahun.
+   - Kategori.
+   - Tipe: choice column.
+   - Detail.
+   - Target: TW1, TW2, TW3, TW4.
+   - Status: Rencana, Proses, Selesai, Dibatalkan.
+   - Modified.
+
+7. ChecklistMentoring
+   - Title.
+   - ID.
+   - NIP.
+   - Tahun.
+   - MentorNIP.
+   - Status: Lengkap or Belum Lengkap.
+   - PersonalStatementFile: image/file.
+   - CareerPlanFile: image/file.
+   - BuktiUploadFile: image/file.
+   - Created.

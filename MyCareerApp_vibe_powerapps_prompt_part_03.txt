@@ -1,0 +1,85 @@
+PART 3 OF 4
+
+Coaching Tematik:
+- Similar structure to Coaching Karir.
+- List should show Tanggal, Topik, Mentor, and action/detail.
+- Form allows creating/editing thematic coaching sessions.
+
+Individual Development Plan (IDP):
+- Screen title: Individual Development Plan.
+- Top section should show action items from the latest Coaching Karir session for the active employee.
+- Include a "Lihat detail" link to the latest coaching detail when a session exists.
+- Main table title: Daftar IDP.
+- Table columns: Tahun, Kategori, Tipe, Last Edited, Target, Status.
+- Do not show Detail/Deskripsi in the IDP table to avoid overlap.
+- Filter IDP by the active employee NIP:
+  - If gblPimpinanView is true and gblSubjectNIP is not blank, use gblSubjectNIP.
+  - Otherwise use gblCurrentNIP.
+- Sort by Tahun descending and ID descending.
+- Current-year rows are highlighted.
+- Clicking any IDP row opens the IDP form/detail screen.
+- If the IDP year is the current year:
+  - Fields are editable.
+  - Save and Delete are available.
+- If the IDP year is not current year:
+  - Open as "Detail Individual Development Plan".
+  - All fields are disabled/read-only.
+  - Hide Save and Delete buttons.
+  - Bottom button should say "Kembali".
+- New IDP defaults to current year.
+- Kategori is derived from selected Tipe:
+  - S2, S3 -> Pendidikan (PTB).
+  - Sertifikasi Tier 1, Sertifikasi Tier 2, PMK, Kum Mengajar -> Sertifikasi.
+  - Penugasan DN/LN, Prestasi BI Wide, Kepanitiaan BI Wide, Plt/Penunjukan/Rangkap Jabatan/Penugasan tetap -> Exposure.
+
+Checklist Mentoring:
+- Employee screen title: Daftar Checklist Mentoring.
+- Employee can add new checklist.
+- List columns: Tahun, Mentor, Dibuat, Status, Aksi.
+- Detail screen shows:
+  - Pegawai.
+  - Tahun.
+  - Mentor.
+  - Status.
+  - Personal Statement image/file.
+  - Career Plan image/file.
+  - Bukti Upload image/file.
+- Form fields:
+  - Tahun.
+  - Mentor.
+  - Personal Statement upload.
+  - Career Plan upload.
+  - Bukti Upload upload.
+- Status should be "Lengkap" when all three uploads exist, otherwise "Belum Lengkap".
+- Current-year checklist can be edited/deleted by the owner.
+- Previous-year checklist should be read-only if needed.
+
+Admin Monitoring Mentoring:
+- This is the admin menu reached from Home > MENU ADMIN > Monitoring Mentoring.
+- Screen title: Monitoring Mentoring.
+- Show a year selector at the top, defaulting to the current year.
+- Show a table of all employees from Pegawai.
+- Table columns:
+  - NO.
+  - NAMA PEGAWAI.
+  - NIP.
+  - CHECKLIST MENTORING [selected year].
+- For each employee, check if there is a ChecklistMentoring record where:
+  - ChecklistMentoring.NIP = Pegawai.Title.
+  - ChecklistMentoring.Tahun = selected year.
+- If a record exists:
+  - Show green pill "Sudah Diisi".
+  - Row is clickable.
+  - Clicking row sets gblSelectedChecklist and navigates to Checklist Mentoring Detail.
+  - Set gblChecklistAdminView = true.
+- If no record exists:
+  - Show yellow pill "Belum Diisi".
+  - Row should not navigate.
+- The detail screen opened from admin monitoring must be read-only:
+  - Hide Edit button.
+  - Hide Delete button.
+- Show summary cards below the table:
+  - Total Pegawai.
+  - Sudah Diisi.
+  - Belum Diisi.
+  - Completion Rate = Sudah Diisi / Total Pegawai * 100%.

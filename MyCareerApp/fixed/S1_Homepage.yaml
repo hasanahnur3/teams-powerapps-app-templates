@@ -48,11 +48,9 @@ Screens:
       - TopBarShadow:
           Control: Rectangle@2.3.0
           Properties:
-            BorderThickness: =0
             Fill: =RGBA(0, 0, 0, 0.08)
             Height: =5
             Width: =Parent.Width
-            X: =0
             Y: =64
       - ContentArea:
           Control: GroupContainer@1.5.0
@@ -75,9 +73,7 @@ Screens:
                 Variant: AutoLayout
                 Properties:
                   BorderColor: =RGBA(225, 223, 221, 1)
-                  BorderStyle: =BorderStyle.Solid
                   BorderThickness: =1
-                  DropShadow: =DropShadow.Light
                   Fill: =RGBA(255, 255, 255, 1)
                   Height: =If(Parent.Width < 620, 248, 156)
                   LayoutDirection: =LayoutDirection.Vertical
@@ -98,14 +94,12 @@ Screens:
                         Color: =RGBA(50, 49, 48, 1)
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
-                        Height: =32
                         Size: =14
                         Text: ="Status Kamu"
                   - StatusItemsRow:
                       Control: GroupContainer@1.5.0
                       Variant: AutoLayout
                       Properties:
-                        BorderThickness: =0
                         DropShadow: =DropShadow.None
                         Height: =If(Parent.Width < 588, 172, 80)
                         LayoutAlignItems: =LayoutAlignItems.Stretch
@@ -118,7 +112,6 @@ Screens:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
                             Properties:
-                              BorderThickness: =0
                               DropShadow: =DropShadow.None
                               FillPortions: =If(Parent.Width < 588, 0, 1)
                               LayoutDirection: =LayoutDirection.Vertical
@@ -142,8 +135,36 @@ Screens:
                               - St1Badge:
                                   Control: ModernText@1.0.0
                                   Properties:
-                                    Color: =RGBA(122, 70, 0, 1)
-                                    Fill: =RGBA(255, 244, 206, 1)
+                                    Color: |-
+                                      =With(
+                                          {
+                                              prQ1ID: LookUp(
+                                                  PerformanceReview,
+                                                  NIP = Text(gblCurrentNIP) && Tahun = Year(Today()) && Semester = 1,
+                                                  ID
+                                              )
+                                          },
+                                          If(
+                                              Month(Today()) > 6,
+                                              RGBA(96, 94, 92, 1),
+                                              If(IsBlank(prQ1ID), RGBA(122, 70, 0, 1), RGBA(16, 124, 16, 1))
+                                          )
+                                      )
+                                    Fill: |-
+                                      =With(
+                                          {
+                                              prQ1ID: LookUp(
+                                                  PerformanceReview,
+                                                  NIP = Text(gblCurrentNIP) && Tahun = Year(Today()) && Semester = 1,
+                                                  ID
+                                              )
+                                          },
+                                          If(
+                                              Month(Today()) > 6,
+                                              RGBA(243, 242, 241, 1),
+                                              If(IsBlank(prQ1ID), RGBA(255, 244, 206, 1), RGBA(223, 246, 221, 1))
+                                          )
+                                      )
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
                                     Height: =28
@@ -156,12 +177,25 @@ Screens:
                                     RadiusTopLeft: =6
                                     RadiusTopRight: =6
                                     Size: =11
-                                    Text: ="Perlu Diisi"
+                                    Text: |-
+                                      =With(
+                                          {
+                                              prQ1ID: LookUp(
+                                                  PerformanceReview,
+                                                  NIP = Text(gblCurrentNIP) && Tahun = Year(Today()) && Semester = 1,
+                                                  ID
+                                              )
+                                          },
+                                          If(
+                                              Month(Today()) <= 6,
+                                              If(IsBlank(prQ1ID), "Perlu Diisi", "Sudah Diisi"),
+                                              "Sudah Berakhir"
+                                          )
+                                      )
                         - StatusItem2:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
                             Properties:
-                              BorderThickness: =0
                               DropShadow: =DropShadow.None
                               FillPortions: =If(Parent.Width < 588, 0, 1)
                               LayoutDirection: =LayoutDirection.Vertical
@@ -185,8 +219,36 @@ Screens:
                               - St2Badge:
                                   Control: ModernText@1.0.0
                                   Properties:
-                                    Color: =RGBA(96, 94, 92, 1)
-                                    Fill: =RGBA(243, 242, 241, 1)
+                                    Color: |-
+                                      =With(
+                                          {
+                                              prQ2ID: LookUp(
+                                                  PerformanceReview,
+                                                  NIP = Text(gblCurrentNIP) && Tahun = Year(Today()) && Semester = 2,
+                                                  ID
+                                              )
+                                          },
+                                          If(
+                                              Month(Today()) <= 6,
+                                              RGBA(96, 94, 92, 1),
+                                              If(IsBlank(prQ2ID), RGBA(122, 70, 0, 1), RGBA(16, 124, 16, 1))
+                                          )
+                                      )
+                                    Fill: |-
+                                      =With(
+                                          {
+                                              prQ2ID: LookUp(
+                                                  PerformanceReview,
+                                                  NIP = Text(gblCurrentNIP) && Tahun = Year(Today()) && Semester = 2,
+                                                  ID
+                                              )
+                                          },
+                                          If(
+                                              Month(Today()) <= 6,
+                                              RGBA(243, 242, 241, 1),
+                                              If(IsBlank(prQ2ID), RGBA(255, 244, 206, 1), RGBA(223, 246, 221, 1))
+                                          )
+                                      )
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
                                     Height: =28
@@ -199,12 +261,25 @@ Screens:
                                     RadiusTopLeft: =6
                                     RadiusTopRight: =6
                                     Size: =11
-                                    Text: ="Belum Dimulai"
+                                    Text: |-
+                                      =With(
+                                          {
+                                              prQ2ID: LookUp(
+                                                  PerformanceReview,
+                                                  NIP = Text(gblCurrentNIP) && Tahun = Year(Today()) && Semester = 2,
+                                                  ID
+                                              )
+                                          },
+                                          If(
+                                              Month(Today()) <= 6,
+                                              "Belum Dimulai",
+                                              If(IsBlank(prQ2ID), "Perlu Diisi", "Sudah Diisi")
+                                          )
+                                      )
                         - StatusItem3:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
                             Properties:
-                              BorderThickness: =0
                               DropShadow: =DropShadow.None
                               FillPortions: =If(Parent.Width < 588, 0, 1)
                               LayoutDirection: =LayoutDirection.Vertical
@@ -242,12 +317,30 @@ Screens:
                                     RadiusTopLeft: =6
                                     RadiusTopRight: =6
                                     Size: =11
-                                    Text: ="Maret 2026"
+                                    Text: |-
+                                      =With(
+                                          {
+                                              lastCK: First(
+                                                  SortByColumns(
+                                                      Filter(CoachingKarir, MenteeNIP = Text(gblCurrentNIP)),
+                                                      "Tanggal",
+                                                      SortOrder.Descending
+                                                  )
+                                              )
+                                          },
+                                          If(
+                                              IsBlank(lastCK.Tanggal),
+                                              "-",
+                                              IfError(
+                                                  Text(lastCK.Tanggal, "[$-id-ID]mmmm yyyy"),
+                                                  Text(Date(1899, 12, 30) + Value(lastCK.Tanggal), "[$-id-ID]mmmm yyyy")
+                                              )
+                                          )
+                                      )
                         - StatusItem4:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
                             Properties:
-                              BorderThickness: =0
                               DropShadow: =DropShadow.None
                               FillPortions: =If(Parent.Width < 588, 0, 1)
                               LayoutDirection: =LayoutDirection.Vertical
@@ -267,12 +360,22 @@ Screens:
                                     Color: =RGBA(96, 94, 92, 1)
                                     Font: =Font.'Open Sans'
                                     Size: =11
-                                    Text: ="IDP 2026"
+                                    Text: ="IDP " & Year(Today())
                               - St4Badge:
                                   Control: ModernText@1.0.0
                                   Properties:
-                                    Color: =RGBA(0, 78, 140, 1)
-                                    Fill: =RGBA(222, 236, 249, 1)
+                                    Color: |-
+                                      =If(
+                                          CountRows(Filter(IDP, NIP = Text(gblCurrentNIP) && Tahun = Year(Today()))) = 0,
+                                          RGBA(122, 70, 0, 1),
+                                          RGBA(0, 78, 140, 1)
+                                      )
+                                    Fill: |-
+                                      =If(
+                                          CountRows(Filter(IDP, NIP = Text(gblCurrentNIP) && Tahun = Year(Today()))) = 0,
+                                          RGBA(255, 244, 206, 1),
+                                          RGBA(222, 236, 249, 1)
+                                      )
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
                                     Height: =28
@@ -285,20 +388,18 @@ Screens:
                                     RadiusTopLeft: =6
                                     RadiusTopRight: =6
                                     Size: =11
-                                    Text: ="Kuadran II"
+                                    Text: =CountRows(Filter(IDP, NIP = Text(gblCurrentNIP) && Tahun = Year(Today()))) & " item"
             - CardPegawai:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
                 Properties:
                   BorderColor: =RGBA(225, 223, 221, 1)
-                  BorderStyle: =BorderStyle.Solid
                   BorderThickness: =1
-                  DropShadow: =DropShadow.Light
                   Fill: =RGBA(255, 255, 255, 1)
-                  Height: =If(Parent.Width < 620, 232, 112)
+                  Height: =If(Parent.Width < 900, 232, If(Parent.Width < 1200, 172, 112))
                   LayoutDirection: =LayoutDirection.Vertical
                   LayoutGap: =8
-                  LayoutMinHeight: =If(Parent.Width < 620, 232, 112)
+                  LayoutMinHeight: =If(Parent.Width < 900, 232, If(Parent.Width < 1200, 172, 112))
                   PaddingBottom: =16
                   PaddingLeft: =16
                   PaddingRight: =16
@@ -322,12 +423,11 @@ Screens:
                       Control: GroupContainer@1.5.0
                       Variant: AutoLayout
                       Properties:
-                        BorderThickness: =0
                         DropShadow: =DropShadow.None
-                        Height: =If(Parent.Width < 588, 168, 48)
+                        Height: =If(Parent.Width < 900, 168, If(Parent.Width < 1200, 108, 48))
                         LayoutDirection: =LayoutDirection.Horizontal
                         LayoutGap: =12
-                        LayoutMinHeight: =If(Parent.Width < 588, 168, 48)
+                        LayoutMinHeight: =If(Parent.Width < 900, 168, If(Parent.Width < 1200, 108, 48))
                         LayoutWrap: =true
                       Children:
                         - BtnProfilPegawai:
@@ -340,7 +440,7 @@ Screens:
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Semibold
                               Height: =48
-                              LayoutMinWidth: =140
+                              LayoutMinWidth: =If(Parent.Width < 1200, 280, 140)
                               OnSelect: =Navigate(S2_ProfilPegawai, ScreenTransition.Fade)
                               RadiusBottomLeft: =8
                               RadiusBottomRight: =8
@@ -358,8 +458,8 @@ Screens:
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Semibold
                               Height: =48
-                              LayoutMinWidth: =140
-                              OnSelect: =Navigate(S4_Mentoring, ScreenTransition.Fade)
+                              LayoutMinWidth: =If(Parent.Width < 1200, 280, 140)
+                              OnSelect: =Navigate(S9A_CoachingKarir_Mentee_List, ScreenTransition.Fade)
                               RadiusBottomLeft: =8
                               RadiusBottomRight: =8
                               RadiusTopLeft: =8
@@ -376,8 +476,8 @@ Screens:
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Semibold
                               Height: =48
-                              LayoutMinWidth: =140
-                              OnSelect: =Navigate(S3_PRDetail, ScreenTransition.Fade)
+                              LayoutMinWidth: =If(Parent.Width < 1200, 280, 140)
+                              OnSelect: =Navigate(S3A_PR_List, ScreenTransition.Fade)
                               RadiusBottomLeft: =8
                               RadiusBottomRight: =8
                               RadiusTopLeft: =8
@@ -394,7 +494,7 @@ Screens:
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Semibold
                               Height: =48
-                              LayoutMinWidth: =140
+                              LayoutMinWidth: =If(Parent.Width < 1200, 280, 140)
                               OnSelect: |-
                                 =Set(gblPimpinanView, false);
                                 Navigate(S9A_CoachingKarir_Mentee_List, ScreenTransition.Fade)
@@ -414,7 +514,7 @@ Screens:
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Semibold
                               Height: =48
-                              LayoutMinWidth: =140
+                              LayoutMinWidth: =If(Parent.Width < 1200, 280, 140)
                               OnSelect: |-
                                 =Set(gblPimpinanView, false);
                                 Navigate(S7A_CoachingTematik_List, ScreenTransition.Fade)
@@ -434,7 +534,7 @@ Screens:
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Semibold
                               Height: =48
-                              LayoutMinWidth: =140
+                              LayoutMinWidth: =If(Parent.Width < 1200, 280, 140)
                               OnSelect: |-
                                 =Set(gblPimpinanView, false);
                                 Navigate(S5A_IDP_View, ScreenTransition.Fade)
@@ -449,9 +549,7 @@ Screens:
                 Variant: AutoLayout
                 Properties:
                   BorderColor: =RGBA(225, 223, 221, 1)
-                  BorderStyle: =BorderStyle.Solid
                   BorderThickness: =1
-                  DropShadow: =DropShadow.Light
                   Fill: =RGBA(255, 255, 255, 1)
                   Height: =112
                   LayoutDirection: =LayoutDirection.Vertical
@@ -480,7 +578,6 @@ Screens:
                       Control: GroupContainer@1.5.0
                       Variant: AutoLayout
                       Properties:
-                        BorderThickness: =0
                         DropShadow: =DropShadow.None
                         Height: =48
                         LayoutDirection: =LayoutDirection.Horizontal
@@ -511,9 +608,7 @@ Screens:
                 Variant: AutoLayout
                 Properties:
                   BorderColor: =RGBA(225, 223, 221, 1)
-                  BorderStyle: =BorderStyle.Solid
                   BorderThickness: =1
-                  DropShadow: =DropShadow.Light
                   Fill: =RGBA(255, 255, 255, 1)
                   Height: =112
                   LayoutDirection: =LayoutDirection.Vertical
@@ -542,7 +637,6 @@ Screens:
                       Control: GroupContainer@1.5.0
                       Variant: AutoLayout
                       Properties:
-                        BorderThickness: =0
                         DropShadow: =DropShadow.None
                         Height: =48
                         LayoutDirection: =LayoutDirection.Horizontal
@@ -579,7 +673,7 @@ Screens:
                               FontWeight: =FontWeight.Semibold
                               Height: =48
                               LayoutMinWidth: =140
-                              OnSelect: =Navigate(S10A_CoachingTematik_Coach_List, ScreenTransition.Fade)
+                              OnSelect: =Navigate(S9A_CoachingKarir_Coach_List, ScreenTransition.Fade)
                               RadiusBottomLeft: =8
                               RadiusBottomRight: =8
                               RadiusTopLeft: =8
@@ -591,9 +685,7 @@ Screens:
                 Variant: AutoLayout
                 Properties:
                   BorderColor: =RGBA(225, 223, 221, 1)
-                  BorderStyle: =BorderStyle.Solid
                   BorderThickness: =1
-                  DropShadow: =DropShadow.Light
                   Fill: =RGBA(255, 255, 255, 1)
                   Height: =112
                   LayoutDirection: =LayoutDirection.Vertical
@@ -622,7 +714,6 @@ Screens:
                       Control: GroupContainer@1.5.0
                       Variant: AutoLayout
                       Properties:
-                        BorderThickness: =0
                         DropShadow: =DropShadow.None
                         Height: =48
                         LayoutDirection: =LayoutDirection.Horizontal
@@ -653,9 +744,7 @@ Screens:
                 Variant: AutoLayout
                 Properties:
                   BorderColor: =RGBA(225, 223, 221, 1)
-                  BorderStyle: =BorderStyle.Solid
                   BorderThickness: =1
-                  DropShadow: =DropShadow.Light
                   Fill: =RGBA(255, 255, 255, 1)
                   Height: =112
                   LayoutDirection: =LayoutDirection.Vertical
@@ -684,7 +773,6 @@ Screens:
                       Control: GroupContainer@1.5.0
                       Variant: AutoLayout
                       Properties:
-                        BorderThickness: =0
                         DropShadow: =DropShadow.None
                         Height: =48
                         LayoutDirection: =LayoutDirection.Horizontal

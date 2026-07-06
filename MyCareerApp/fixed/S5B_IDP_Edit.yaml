@@ -3,6 +3,7 @@ Screens:
     Properties:
       Fill: =RGBA(245, 245, 245, 1)
       LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+      OnVisible: '=UpdateContext({locConfirmDeleteIDP: false})'
     Children:
       - IDPEditContainer:
           Control: GroupContainer@1.5.0
@@ -39,7 +40,9 @@ Screens:
                         Height: =64
                         OnSelect: |-
                           =Set(gblIDPEditMode, false);
+                          Set(gblIDPReadOnly, false);
                           Set(gblSelectedIDP, Defaults(IDP));
+                          UpdateContext({locConfirmDeleteIDP: false});
                           Back()
                         Size: =24
                         Text: ="‹"
@@ -89,7 +92,7 @@ Screens:
                         BorderColor: =RGBA(225, 223, 221, 1)
                         BorderStyle: =BorderStyle.Solid
                         BorderThickness: =1
-                        DropShadow: =DropShadow.Light
+                        DropShadow: =DropShadow.None
                         Fill: =RGBA(255, 255, 255, 1)
                         FillPortions: =0
                         Height: =860
@@ -114,7 +117,7 @@ Screens:
                               FontWeight: =FontWeight.Bold
                               Height: =34
                               Size: =20
-                              Text: =If(Coalesce(gblIDPEditMode, false), "Edit Individual Development Plan", "Tambah Individual Development Plan")
+                              Text: =If(Coalesce(gblIDPReadOnly, false), "Detail Individual Development Plan", If(Coalesce(gblIDPEditMode, false), "Edit Individual Development Plan", "Tambah Individual Development Plan"))
                               Width: =Parent.Width
                         - IDPEditSubtitle:
                             Control: ModernText@1.0.0
@@ -144,6 +147,7 @@ Screens:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
                             Properties:
+                              DropShadow: =DropShadow.None
                               FillPortions: =0
                               Height: =76
                               LayoutDirection: =LayoutDirection.Vertical
@@ -163,6 +167,7 @@ Screens:
                                   Control: NumberInput@2.9.12
                                   Properties:
                                     AccessibleLabel: ="Tahun"
+                                    DisplayMode: =If(Coalesce(gblIDPReadOnly, false), DisplayMode.View, DisplayMode.Edit)
                                     Max: =Year(Today()) + 5
                                     Min: =2000
                                     Value: =If(Coalesce(gblIDPEditMode, false), Value(gblSelectedIDP.Tahun), Year(Today()))
@@ -171,6 +176,7 @@ Screens:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
                             Properties:
+                              DropShadow: =DropShadow.None
                               FillPortions: =0
                               Height: =76
                               LayoutDirection: =LayoutDirection.Vertical
@@ -191,18 +197,37 @@ Screens:
                                   Properties:
                                     AccessibleLabel: ="Kategori IDP"
                                     DefaultSelectedItems: |-
-                                      =If(
-                                          Coalesce(gblIDPEditMode, false),
-                                          Filter(
+                                      =With(
+                                          {
+                                              selectedTipe: Coalesce(
+                                                  CmbTipeIDP.Selected.Value,
+                                                  If(Coalesce(gblIDPEditMode, false), gblSelectedIDP.Tipe.Value, Blank())
+                                              )
+                                          },
+                                          If(
+                                              IsBlank(selectedTipe),
+                                              Blank(),
                                               Table(
-                                                  {Value: "Pendidikan (PTB)"},
-                                                  {Value: "Sertifikasi"},
-                                                  {Value: "Exposure"}
-                                              ),
-                                              Value = gblSelectedIDP.Kategori
-                                          ),
-                                          Blank()
+                                                  {
+                                                      Value: Switch(
+                                                          selectedTipe,
+                                                          "S2", "Pendidikan (PTB)",
+                                                          "S3", "Pendidikan (PTB)",
+                                                          "Sertifikasi Tier 1", "Sertifikasi",
+                                                          "Sertifikasi Tier 2", "Sertifikasi",
+                                                          "PMK", "Sertifikasi",
+                                                          "Kum Mengajar", "Sertifikasi",
+                                                          "Penugasan DN/LN, Penugasan Strategis atau lainnya", "Exposure",
+                                                          "Prestasi BI Wide atau lainnya", "Exposure",
+                                                          "Kepanitiaan BI Wide", "Exposure",
+                                                          "Plt/Penunjukan/Rangkap Jabatan/Penugasan tetap", "Exposure",
+                                                          ""
+                                                      )
+                                                  }
+                                              )
+                                          )
                                       )
+                                    DisplayMode: =DisplayMode.View
                                     Items: |-
                                       =Table(
                                           {Value: "Pendidikan (PTB)"},
@@ -215,6 +240,7 @@ Screens:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
                             Properties:
+                              DropShadow: =DropShadow.None
                               FillPortions: =0
                               Height: =76
                               LayoutDirection: =LayoutDirection.Vertical
@@ -234,6 +260,7 @@ Screens:
                                   Control: ComboBox@0.0.51
                                   Properties:
                                     AccessibleLabel: ="Tipe IDP"
+                                    DisplayMode: =If(Coalesce(gblIDPReadOnly, false), DisplayMode.View, DisplayMode.Edit)
                                     DefaultSelectedItems: |-
                                       =If(
                                           Coalesce(gblIDPEditMode, false),
@@ -248,6 +275,7 @@ Screens:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
                             Properties:
+                              DropShadow: =DropShadow.None
                               FillPortions: =0
                               Height: =118
                               LayoutDirection: =LayoutDirection.Vertical
@@ -267,6 +295,7 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Detail rencana pengembangan"
+                                    DisplayMode: =If(Coalesce(gblIDPReadOnly, false), DisplayMode.View, DisplayMode.Edit)
                                     Height: =76
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeMultiline"
                                     Value: =If(Coalesce(gblIDPEditMode, false), Coalesce(gblSelectedIDP.Detail, ""), "")
@@ -275,6 +304,7 @@ Screens:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
                             Properties:
+                              DropShadow: =DropShadow.None
                               FillPortions: =0
                               Height: =76
                               LayoutDirection: =LayoutDirection.Vertical
@@ -294,6 +324,7 @@ Screens:
                                   Control: ComboBox@0.0.51
                                   Properties:
                                     AccessibleLabel: ="Target triwulan"
+                                    DisplayMode: =If(Coalesce(gblIDPReadOnly, false), DisplayMode.View, DisplayMode.Edit)
                                     DefaultSelectedItems: |-
                                       =If(
                                           Coalesce(gblIDPEditMode, false),
@@ -321,6 +352,7 @@ Screens:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
                             Properties:
+                              DropShadow: =DropShadow.None
                               FillPortions: =0
                               Height: =76
                               LayoutDirection: =LayoutDirection.Vertical
@@ -340,6 +372,7 @@ Screens:
                                   Control: ComboBox@0.0.51
                                   Properties:
                                     AccessibleLabel: ="Status IDP"
+                                    DisplayMode: =If(Coalesce(gblIDPReadOnly, false), DisplayMode.View, DisplayMode.Edit)
                                     DefaultSelectedItems: |-
                                       =If(
                                           Coalesce(gblIDPEditMode, false),
@@ -368,13 +401,100 @@ Screens:
                             Variant: AutoLayout
                             Properties:
                               FillPortions: =0
-                              Height: =48
+                              Height: =If(Coalesce(locConfirmDeleteIDP, false), 104, 48)
                               LayoutDirection: =LayoutDirection.Horizontal
                               LayoutGap: =12
                               LayoutJustifyContent: =LayoutJustifyContent.End
-                              LayoutMinHeight: =48
+                              LayoutMinHeight: =If(Coalesce(locConfirmDeleteIDP, false), 104, 48)
+                              LayoutWrap: =true
                               Width: =Parent.Width
                             Children:
+                              - DeleteConfirmIDPText:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(196, 43, 28, 1)
+                                    FillPortions: =1
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    Size: =12
+                                    Text: ="Yakin ingin menghapus IDP ini? Data yang dihapus tidak bisa dikembalikan."
+                                    Visible: =Coalesce(gblIDPEditMode, false) && !Coalesce(gblIDPReadOnly, false) && Coalesce(locConfirmDeleteIDP, false)
+                              - BtnHapusIDP:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(196, 43, 28, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(196, 43, 28, 1)
+                                    DisplayMode: =If(Coalesce(gblIDPSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: '=UpdateContext({locConfirmDeleteIDP: true})'
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Text: ="Hapus"
+                                    Visible: =Coalesce(gblIDPEditMode, false) && !Coalesce(gblIDPReadOnly, false) && !Coalesce(locConfirmDeleteIDP, false)
+                                    Width: =110
+                              - BtnBatalHapusIDP:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    DisplayMode: =If(Coalesce(gblIDPSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: '=UpdateContext({locConfirmDeleteIDP: false})'
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Text: ="Batal Hapus"
+                                    Visible: =Coalesce(gblIDPEditMode, false) && !Coalesce(gblIDPReadOnly, false) && Coalesce(locConfirmDeleteIDP, false)
+                                    Width: =130
+                              - BtnKonfirmasiHapusIDP:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisplayMode: =If(Coalesce(gblIDPSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Fill: =RGBA(196, 43, 28, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =If(
+                                          Coalesce(gblIDPEditMode, false) && !Coalesce(gblIDPReadOnly, false) && !Coalesce(gblIDPSubmitting, false),
+                                          Set(gblIDPSubmitting, true);
+                                          IfError(
+                                              Remove(IDP, gblSelectedIDP);
+                                              Refresh(IDP);
+                                              Notify("IDP berhasil dihapus.", NotificationType.Success);
+                                              UpdateContext({locConfirmDeleteIDP: false});
+                                              Set(gblIDPSubmitting, false);
+                                              Set(gblIDPEditMode, false);
+                                              Set(gblIDPReadOnly, false);
+                                              Set(gblSelectedIDP, Defaults(IDP));
+                                              Navigate(S5A_IDP_View, ScreenTransition.Fade),
+                                              Notify("Gagal menghapus IDP: " & FirstError.Message, NotificationType.Error);
+                                              Set(gblIDPSubmitting, false)
+                                          )
+                                      )
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Text: =If(Coalesce(gblIDPSubmitting, false), "Menghapus...", "Ya, Hapus")
+                                    Visible: =Coalesce(gblIDPEditMode, false) && !Coalesce(gblIDPReadOnly, false) && Coalesce(locConfirmDeleteIDP, false)
+                                    Width: =130
                               - BtnBatalIDP:
                                   Control: ModernText@1.0.0
                                   Properties:
@@ -386,12 +506,16 @@ Screens:
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
                                     Height: =44
-                                    OnSelect: =Back()
+                                    OnSelect: |-
+                                      =UpdateContext({locConfirmDeleteIDP: false});
+                                      Set(gblIDPReadOnly, false);
+                                      Back()
                                     RadiusBottomLeft: =6
                                     RadiusBottomRight: =6
                                     RadiusTopLeft: =6
                                     RadiusTopRight: =6
-                                    Text: ="Batal"
+                                    Text: =If(Coalesce(gblIDPReadOnly, false), "Kembali", "Batal")
+                                    Visible: =!Coalesce(locConfirmDeleteIDP, false)
                                     Width: =110
                               - BtnSimpanIDP:
                                   Control: ModernText@1.0.0
@@ -407,14 +531,13 @@ Screens:
                                       =If(
                                           Or(
                                               IsBlank(NumTahunIDP.Value),
-                                              IsBlank(CmbKategoriIDP.Selected.Value),
                                               IsBlank(CmbTipeIDP.Selected.Value),
                                               IsBlank(Trim(TxtDetailIDP.Value)),
                                               IsBlank(CmbTargetIDP.Selected.Value),
                                               IsBlank(CmbStatusIDP.Selected.Value)
                                           ),
                                           Notify(
-                                              "Lengkapi Tahun, Kategori, Tipe, Detail, Target, dan Status.",
+                                              "Lengkapi Tahun, Tipe, Detail, Target, dan Status.",
                                               NotificationType.Warning
                                           ),
                                           !Coalesce(gblIDPSubmitting, false),
@@ -428,7 +551,20 @@ Screens:
                                                       {
                                                           NIP: gblSelectedIDP.NIP,
                                                           Tahun: Value(NumTahunIDP.Value),
-                                                          Kategori: CmbKategoriIDP.Selected.Value,
+                                                          Kategori: Switch(
+                                                              CmbTipeIDP.Selected.Value,
+                                                              "S2", "Pendidikan (PTB)",
+                                                              "S3", "Pendidikan (PTB)",
+                                                              "Sertifikasi Tier 1", "Sertifikasi",
+                                                              "Sertifikasi Tier 2", "Sertifikasi",
+                                                              "PMK", "Sertifikasi",
+                                                              "Kum Mengajar", "Sertifikasi",
+                                                              "Penugasan DN/LN, Penugasan Strategis atau lainnya", "Exposure",
+                                                              "Prestasi BI Wide atau lainnya", "Exposure",
+                                                              "Kepanitiaan BI Wide", "Exposure",
+                                                              "Plt/Penunjukan/Rangkap Jabatan/Penugasan tetap", "Exposure",
+                                                              ""
+                                                          ),
                                                           Tipe: CmbTipeIDP.Selected,
                                                           Detail: Trim(TxtDetailIDP.Value),
                                                           Target: CmbTargetIDP.Selected.Value,
@@ -445,7 +581,20 @@ Screens:
                                                                       Title: "TEMP_" & Text(GUID()),
                                                                       NIP: Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
                                                                       Tahun: Value(NumTahunIDP.Value),
-                                                                      Kategori: CmbKategoriIDP.Selected.Value,
+                                                                      Kategori: Switch(
+                                                                          CmbTipeIDP.Selected.Value,
+                                                                          "S2", "Pendidikan (PTB)",
+                                                                          "S3", "Pendidikan (PTB)",
+                                                                          "Sertifikasi Tier 1", "Sertifikasi",
+                                                                          "Sertifikasi Tier 2", "Sertifikasi",
+                                                                          "PMK", "Sertifikasi",
+                                                                          "Kum Mengajar", "Sertifikasi",
+                                                                          "Penugasan DN/LN, Penugasan Strategis atau lainnya", "Exposure",
+                                                                          "Prestasi BI Wide atau lainnya", "Exposure",
+                                                                          "Kepanitiaan BI Wide", "Exposure",
+                                                                          "Plt/Penunjukan/Rangkap Jabatan/Penugasan tetap", "Exposure",
+                                                                          ""
+                                                                      ),
                                                                       Tipe: CmbTipeIDP.Selected,
                                                                       Detail: Trim(TxtDetailIDP.Value),
                                                                       Target: CmbTargetIDP.Selected.Value,
@@ -467,11 +616,12 @@ Screens:
                                               );
                                               Set(gblIDPSubmitting, false);
                                               Set(gblIDPEditMode, false);
+                                              Set(gblIDPReadOnly, false);
                                               Set(gblSelectedIDP, Defaults(IDP));
                                               Navigate(S5A_IDP_View, ScreenTransition.Fade),
-                                              Notify(
-                                                  "Gagal menyimpan IDP: " & FirstError.Message,
-                                                  NotificationType.Error
+                                                  Notify(
+                                                      "Gagal menyimpan IDP: " & FirstError.Message,
+                                                      NotificationType.Error
                                               );
                                               Set(gblIDPSubmitting, false)
                                           )
@@ -481,4 +631,5 @@ Screens:
                                     RadiusTopLeft: =6
                                     RadiusTopRight: =6
                                     Text: =If(Coalesce(gblIDPSubmitting, false), "Menyimpan...", "Simpan")
+                                    Visible: =!Coalesce(gblIDPReadOnly, false) && !Coalesce(locConfirmDeleteIDP, false)
                                     Width: =130

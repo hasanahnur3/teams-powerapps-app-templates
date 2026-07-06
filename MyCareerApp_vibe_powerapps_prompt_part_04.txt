@@ -1,0 +1,43 @@
+PART 4 OF 4
+
+Pimpinan / Leader employee selection:
+- Screen title: Daftar Pegawai.
+- Let leader choose an employee.
+- After selecting, set gblSubjectNIP and set gblPimpinanView true when opening employee-related modules.
+- Available tabs/buttons:
+  - Profil Pegawai.
+  - IDP.
+  - Performance Review.
+  - Coaching Karir.
+  - Coaching Tematik.
+  - Checklist Mentoring.
+- All selected-employee screens should use gblSubjectNIP instead of gblCurrentNIP.
+
+Important UX rules:
+- Use Indonesian labels for user-facing text.
+- Empty states should be explicit:
+  - "Belum ada data."
+  - "Belum ada IDP di sistem."
+  - "Belum ada checklist mentoring."
+- Use success/error notifications after save/delete.
+- Use confirmation before delete.
+- Refresh the relevant data source after save/delete.
+- Do not allow accidental edit/delete from admin monitoring detail view.
+- Avoid overlapping columns in wide tables.
+- In tables, make rows visually clean and easy to scan.
+
+Navigation map:
+- Home -> Profil Pegawai.
+- Home -> Performance Review.
+- Home -> Coaching Karir.
+- Home -> Coaching Tematik.
+- Home -> IDP.
+- Home -> Checklist Mentoring.
+- Home -> Daftar Pegawai for Pimpinan.
+- Home -> Monitoring Mentoring for Admin.
+- IDP list -> IDP add/edit/detail.
+- Checklist list -> Checklist add/edit/detail.
+- Admin Monitoring -> Checklist detail read-only.
+- Pimpinan Daftar Pegawai -> selected employee profile/IDP/performance/coaching/checklist.
+
+Build this as a production-ready Power Apps canvas app with clean screens, connected data tables, forms, galleries, filtering, role-based menus, detail screens, save/delete flows, and admin monitoring.

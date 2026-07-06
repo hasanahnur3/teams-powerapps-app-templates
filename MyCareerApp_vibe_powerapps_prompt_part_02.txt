@@ -1,0 +1,71 @@
+PART 2 OF 4
+
+8. Profile detail tables
+   Use separate tables for employee career profile details:
+   - Profil_Pendidikan: NIP, Jenjang, Universitas, ProgramStudi, TahunLulus.
+   - Profil_SertifikasiTier1: NIP, NamaSertifikat, Penerbit, TglTerbit, TglBerakhir, NoSertifikat.
+   - Profil_SertifikasiTier2: same structure as Tier 1.
+   - Profil_PMK: NIP, TrainingName, Penyelenggara, StartDate, CompletionDate, JenisPMK, Tipe, Negara.
+   - Profil_KumMengajar: NIP, NamaIHT, TanggalPelaksanaan.
+   - Profil_Penugasan: NIP, StartDate, EndDate, PIC, NamaPenugasan, Deskripsi.
+   - Profil_Prestasi: NIP, Jenis, Level, NamaPrestasi, DetailPrestasi, Tanggal.
+   - Profil_Kepanitiaan: NIP, NamaKepanitiaan, Posisi, Institusi, UraianTugas, Produk, StartDate, EndDate.
+   - Profil_Plt: NIP, JabatanPlt, UnitKerja, PeriodeMulai, PeriodeSelesai, NoSK, Skor, Catatan.
+
+Global variables / app state:
+- gblCurrentNIP: current logged-in employee NIP.
+- gblSubjectNIP: selected employee NIP when leader/admin is viewing another employee.
+- gblPimpinanView: true when viewing another employee as leader.
+- gblSelectedChecklist: selected ChecklistMentoring record.
+- gblChecklistEditMode: true when editing an existing checklist.
+- gblChecklistAdminView: true when admin opens checklist detail from Monitoring Mentoring; this makes detail read-only and hides Edit/Delete.
+- gblSelectedIDP: selected IDP record.
+- gblIDPEditMode: true when opening an existing IDP.
+- gblIDPReadOnly: true when opening non-current-year IDP.
+- gblSelectedCoachingKarir, gblSelectedCoachingTematik, gblSelectedPR: selected records for detail screens.
+
+Home screen:
+- Show a top bar with app name.
+- Show "Status Kamu" cards:
+  - Performance Review Q1 status for current year.
+  - Performance Review Q2 status for current year.
+  - Last Career Coaching status.
+  - IDP current year count.
+- Show menu sections based on role:
+  - MENU PEGAWAI: Profil Pegawai, Mentoring, Performance Review, Coaching Karir, Coaching Tematik, IDP.
+  - MENU LINE MANAGER: Performance Review.
+  - MENU MENTOR: Coaching Karir and Coaching Tematik.
+  - MENU PIMPINAN: Daftar Pegawai.
+  - MENU ADMIN: Monitoring Mentoring.
+
+Employee profile:
+- Screen title: Profil Pegawai.
+- Show identity: Nama Pegawai, Satuan Kerja, NIP, Jabatan, Pangkat, Tanggal Pengisian.
+- Show quantitative section:
+  - Nilai Kinerja Rata-Rata 5 Tahun.
+  - Masa Dinas Pangkat.
+- Show career profile sections as tables:
+  - Pendidikan.
+  - Sertifikasi Tier 1.
+  - Sertifikasi Tier 2.
+  - PMK / Program Meningkatkan Kompetensi.
+  - Kum Mengajar.
+  - Penugasan DN/LN, Penugasan Strategis atau lainnya.
+  - Prestasi BI Wide atau lainnya.
+  - Kepanitiaan / Proyek / Tim Kerja / Adhoc lainnya.
+  - Plt / Penunjukan / Rangkap Jabatan / Penugasan Tetap.
+- Each row can open an edit form when the current user owns the profile.
+- In leader view, show the selected employee's data based on gblSubjectNIP.
+
+Performance Review:
+- Employee can see their own performance review records.
+- Line Manager can see employee performance reviews assigned to them.
+- Leader can view selected employee performance reviews.
+- List should show Tahun, Semester, Tanggal, Line Manager, and an action/detail button.
+- Detail screen should show review information and supporting evidence.
+
+Career Coaching / Coaching Karir:
+- Mentee list: shows sessions where MenteeNIP equals the active employee NIP.
+- Coach list: shows sessions where MentorNIP equals current user NIP.
+- Each record has date, notes, mentor/mentee, and action items.
+- Detail screen shows coaching details and related action items.
