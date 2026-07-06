@@ -1,0 +1,277 @@
+Draft revision notes for MyCareerApp Vibe Power Apps.
+
+Concern 1: Make all user-facing attribute labels readable.
+- Do not show camelCase field names in table headers, form labels, cards, or detail screens.
+- Convert field names into readable Indonesian Title Case labels.
+- Examples:
+  - jenjang -> Jenjang
+  - universitas -> Universitas
+  - programStudi -> Program Studi
+  - tahunLulus -> Tahun Lulus
+  - namaSertifikat -> Nama Sertifikat
+  - penerbit -> Penerbit
+  - tglTerbit -> Tanggal Terbit
+  - tglBerakhir -> Tanggal Berakhir
+  - noSertifikat -> No. Sertifikat
+- Apply this rule across all screens, especially Profil Pegawai tables and edit/detail forms.
+
+Concern 2: Remove internal/debug variables from the UI.
+- Do not show internal variable names or debug text to users.
+- Remove or hide labels such as "gblCurrentNIP: 198701152010011001".
+- Users should only see polished business labels and values, not Power Apps variable names.
+
+Concern 3: Replace the current hover/selected button color.
+- The bright cyan/turquoise hover color is not acceptable.
+- Replace it across the whole app.
+- Do not use bright cyan/turquoise for hover, pressed, selected, active, or focused menu states.
+- Use a professional enterprise palette instead:
+  - Default menu button fill: very light blue-gray or white.
+  - Hover fill: soft navy tint, for example RGB(232, 238, 249) or similar.
+  - Selected/active fill: dark navy RGB(18, 38, 82) with white text, or a subtle navy tint with navy text.
+  - Border: muted gray-blue.
+  - Text: dark navy or near-black.
+- Apply this to all menu buttons, navigation buttons, row hover states, selected states, and interactive cards.
+- Keep the visual style consistent across MENU PEGAWAI, MENU LINE MANAGER, MENU MENTOR / COACH, MENU PIMPINAN, MENU ADMIN, table rows, and action buttons.
+
+Concern 4: Put every table inside a proper card/container.
+- Do not place table headers and rows directly on the gray page background.
+- Every table/list/gallery must sit inside a white card.
+- The table card should use:
+  - White fill.
+  - Subtle border, for example RGB(225, 223, 221).
+  - 8 px corner radius.
+  - Internal padding.
+  - Optional subtle shadow.
+  - A distinct header band, for example very light gray or light blue-gray.
+  - Row dividers inside the card.
+- Apply this to all table screens:
+  - Daftar Pegawai / Pimpinan employee selection.
+  - Profil Pegawai tables.
+  - Performance Review lists.
+  - Coaching Karir lists.
+  - Coaching Tematik lists.
+  - IDP table.
+  - Checklist Mentoring list.
+  - Admin Monitoring Mentoring table.
+- The page background can remain light gray, but the table itself must be visually grouped in a card.
+- Action buttons inside table rows should be compact and consistently styled.
+
+Concern 5: Add "Tambah" buttons to every Profil Pegawai table section.
+- Each Profil Pegawai subtable/card must have an Add button in the card header.
+- Do not only provide Edit buttons inside existing rows.
+- Add a button such as "+ Tambah" or "+ Tambah Baris" on each section:
+  - Pendidikan.
+  - Sertifikasi Tier 1.
+  - Sertifikasi Tier 2.
+  - PMK / Program Meningkatkan Kompetensi.
+  - Kum Mengajar.
+  - Penugasan DN/LN, Penugasan Strategis atau lainnya.
+  - Prestasi BI Wide atau lainnya.
+  - Kepanitiaan / Proyek / Tim Kerja / Adhoc Lainnya.
+  - Plt / Penunjukan / Rangkap Jabatan / Penugasan Tetap.
+- The Add button should navigate to the correct add form for that section.
+- The Add button should create a new record for the active employee NIP:
+  - Use gblCurrentNIP in normal employee mode.
+  - Use gblSubjectNIP when gblPimpinanView is true and a leader is viewing a selected employee.
+- Existing rows should still have Edit buttons.
+- If the current view is read-only for a role, hide the Add and Edit buttons.
+
+Concern 6: Make every Edit button functional, not a placeholder notification.
+- Do not use placeholder messages such as "Form edit profil siap dikonfigurasi."
+- Every Edit button in every Profil Pegawai table must open the correct edit form for that specific section and selected row.
+- When the user clicks Edit:
+  - Store the selected row record in the correct selected-record variable.
+  - Set that section's edit mode to true.
+  - Navigate to the correct edit form screen.
+  - Pre-fill the form with the selected row's existing values.
+- This must work for:
+  - Pendidikan.
+  - Sertifikasi Tier 1.
+  - Sertifikasi Tier 2.
+  - PMK / Program Meningkatkan Kompetensi.
+  - Kum Mengajar.
+  - Penugasan DN/LN.
+  - Prestasi.
+  - Kepanitiaan / Proyek / Tim Kerja / Adhoc.
+  - Plt / Penunjukan / Rangkap Jabatan / Penugasan Tetap.
+- Each edit form must allow Save and Cancel.
+- Save should Patch the existing record, Refresh the relevant table, Notify success/error, then return to Profil Pegawai.
+- Cancel should return to Profil Pegawai without changing data.
+- Delete may be available with confirmation if appropriate, but the Edit button itself must never show a placeholder notification.
+
+Concern 7: Add Unit Kerja (Uker) and Status to Profil Pegawai.
+- The employee profile must include Unit Kerja / Uker and Status.
+- Add these fields to the Pegawai data model if not already present:
+  - Uker or UnitKerja: employee unit/work unit code, for example KPPD, KMPI, PKID, MKAM, KDA.
+  - Status: employee status, for example Organik.
+- Show these fields clearly in Profil Pegawai identity section:
+  - Nama Pegawai.
+  - NIP.
+  - Uker / Unit Kerja.
+  - Satker, if still used.
+  - Jabatan.
+  - Pangkat.
+  - Status.
+  - Tanggal Pengisian / Last Updated.
+- In employee list tables, include columns:
+  - Uker.
+  - NIP.
+  - Status.
+- Status should be displayed as a clean pill/badge, for example "Organik" with soft blue fill and navy/blue text.
+- Uker values can look like clickable text if they navigate/filter to a unit detail, but if no unit detail exists, keep it as normal readable text.
+- Use readable labels: "Uker" or "Unit Kerja", not camelCase field names.
+
+Concern 8: Person/employee selection dropdowns must be searchable.
+- Any dropdown used to choose a person/employee must be searchable.
+- Use a ComboBox/searchable picker, not a basic non-searchable dropdown.
+- The picker should allow searching by:
+  - Nama.
+  - NIP.
+  - Uker / Unit Kerja, if useful.
+- Show readable option text such as "Nama Pegawai - NIP - Uker".
+- Store/use the selected employee NIP as the key value.
+- Apply this to:
+  - Pimpinan Daftar Pegawai employee selector.
+  - Mentor selector in Checklist Mentoring.
+  - Mentor/Coach selector in coaching forms.
+  - Line Manager selector in Performance Review, if present.
+  - Any other employee/person selection field.
+- Searchable people picker should work well even when there are many employees.
+
+Concern 9: Checklist Mentoring evidence fields must be uploads, not URL text inputs.
+- In Checklist Mentoring form/detail, these fields must not be simple text inputs with example URLs:
+  - personalStatementFile / Personal Statement.
+  - careerPlanFile / Career Plan.
+  - buktiUploadFile / Bukti Upload.
+- Preferred behavior:
+  - Use file upload / attachment controls for each field.
+  - User can upload a file for Personal Statement.
+  - User can upload a file for Career Plan.
+  - User can upload a file for Bukti Upload.
+- If the generated Power Apps experience cannot support general file upload, use image/photo upload controls as fallback.
+- The UI labels must be readable:
+  - Personal Statement.
+  - Career Plan.
+  - Bukti Upload.
+- Show uploaded file/image preview or uploaded file name in detail view.
+- Status should be "Lengkap" only when all three required uploads exist.
+- Status should be "Belum Lengkap" when one or more uploads are missing.
+- Do not ask users to type file URLs manually.
+
+Correction: Performance Review is input by Pegawai, not by Line Manager.
+- Do not add a "+ Tambah Performance Review" button for Line Manager.
+- The employee/Pegawai Performance Review screen should have the add/create flow.
+- Line Manager Performance Review menu is for reviewing/viewing employee-submitted Performance Reviews assigned to that Line Manager.
+- Line Manager should be able to open detail and review the submitted record, but not be the primary creator unless a separate approval/review action is explicitly required.
+- Remove any debug text such as gblCurrentNIP from the top bar.
+
+Concern 10: Coaching Karir Coach menu should be list-first, with separate Add form and full Action Items CRUD.
+- The Coach-facing Coaching Karir screen must not show the create form directly on the front/list page.
+- The front page should show only the list of Coaching Karir records already created by the current coach.
+- Filter the list with:
+  - CoachingKarir.MentorNIP = gblCurrentNIP.
+- Sort the list by Tanggal descending.
+- Show columns/cards:
+  - Tanggal.
+  - Catatan.
+  - Mentee.
+  - Aksi / Detail.
+- Put the list inside a white table card with a header band.
+- At the top of the list page, provide a separate button:
+  - "+ Tambah Coaching Karir".
+- Clicking "+ Tambah Coaching Karir" should:
+  - Set coaching edit mode to false.
+  - Clear selected coaching record.
+  - Navigate to a separate Coaching Karir form screen.
+- The list page should not contain the Judul/Tanggal/Mentee/Mentor/Catatan/Simpan inputs directly.
+
+Correct Coaching Karir Coach flow based on the implemented fixed app:
+1. Coach list screen
+   - OnVisible refresh CoachingKarir.
+   - Reset selected coaching record.
+   - Reset coach edit mode to false.
+   - Display records where MentorNIP equals current user's NIP.
+   - Each row has Detail action.
+   - Detail action sets selected coaching record, sets list mode to "Coach", then navigates to Coaching Karir Detail.
+
+2. Add/Edit form screen
+   - Used only after clicking "+ Tambah Coaching Karir" or Edit from detail.
+   - Fields:
+     - Tanggal, required.
+     - Mentee, required, searchable ComboBox from Pegawai.
+     - Catatan, required.
+     - Foto Bukti, required for new records, use photo/image upload.
+     - Action Items editable collection.
+   - MentorNIP is not manually selected. It must default to gblCurrentNIP because the current user is the coach.
+   - Do not show a separate "Pilih mentor" dropdown on the Coach create form.
+
+3. Action Items CRUD inside Coaching Karir form
+   - Use an in-memory collection for editable action items, such as colCKActionItems.
+   - On new form, start with an empty collection.
+   - On edit form, load existing ActionItem rows where ActionItem.CoachingID = selected CoachingKarir.ID into the collection.
+   - Each Action Item row has:
+     - Tipe dropdown.
+     - Kategori auto-derived from Tipe.
+     - Detail text input.
+     - Delete/remove button.
+   - Add button "+ Tambah Action Item" adds a blank row to the collection.
+   - Delete button removes the row from the collection; for existing rows, track deleted IDs or rebuild the saved rows during save.
+   - Kategori mapping:
+     - S2, S3 -> Pendidikan (PTB).
+     - Sertifikasi Tier 1, Sertifikasi Tier 2, PMK, Kum Mengajar -> Sertifikasi.
+     - Penugasan DN/LN, Prestasi BI Wide, Kepanitiaan BI Wide, Plt/Penunjukan/Rangkap Jabatan/Penugasan tetap -> Exposure.
+   - Validate before saving:
+     - Tanggal is filled.
+     - Mentee is selected.
+     - Catatan is filled.
+     - Foto Bukti exists for new records.
+     - Every action item has Tipe and Detail.
+
+4. Save behavior
+   - If adding:
+     - Patch a new CoachingKarir record.
+     - Set Title initially to a temporary GUID, then update Title to the new ID if needed.
+     - Set MenteeNIP from selected mentee.
+     - Set MentorNIP to gblCurrentNIP.
+     - Set Tanggal, Catatan, FotoBukti.
+   - If editing:
+     - Patch the selected CoachingKarir record.
+     - Keep MentorNIP as current coach.
+     - Update MenteeNIP, Tanggal, Catatan, FotoBukti.
+   - For Action Items:
+     - Save all action items with CoachingID = saved CoachingKarir.ID.
+     - Existing implementation can remove/recreate ActionItem rows for that CoachingID during edit, then patch the current collection rows.
+     - Each ActionItem stores Title, CoachingID, Kategori, Tipe, Detail.
+   - Refresh CoachingKarir and ActionItem after save.
+   - Notify success/error.
+   - Navigate back to Coach Coaching Karir list.
+
+5. Detail screen
+   - Detail shows Mentee, Tanggal, Mentor, Catatan, Foto Bukti, and all related Action Items.
+   - If opened in Coach mode and current user is the MentorNIP, show Edit and Delete buttons.
+   - Edit sets coach edit mode true and navigates to the add/edit form with fields pre-filled and action items loaded.
+   - Delete asks for confirmation, removes related ActionItem rows, removes CoachingKarir, refreshes data, then returns to the correct list.
+
+6. Mentee/leader view
+   - Mentee view should show records where MenteeNIP equals the active employee NIP.
+   - Pimpinan view should use gblSubjectNIP as the active employee.
+   - Mentee/leader view should generally open detail read-only unless explicitly authorized.
+
+Concern 11: Coaching Tematik Coach menu is view-only.
+- The Coach-facing Coaching Tematik screen must not allow create.
+- Remove/hide all create form inputs from the Coach Coaching Tematik front page.
+- Remove/hide fields such as Judul, Topik, Pilih mentee, Pilih mentor, Tanggal, Catatan, and Simpan from the Coach view.
+- The Coach Coaching Tematik page should show only a list of existing Coaching Tematik records where:
+  - CoachingTematik.MentorNIP = gblCurrentNIP.
+- Sort by Tanggal descending.
+- Show columns/cards:
+  - Tanggal.
+  - Topik.
+  - Mentee.
+  - Aksi / Detail.
+- Put the list inside a white table card with a header band.
+- Each row can open a detail screen.
+- The detail screen for Coach should be read-only unless explicitly required otherwise.
+- The creation flow for Coaching Tematik belongs to the Pegawai/employee side.
+- Employee creates a Coaching Tematik request/session and selects the mentor/coach.
+- Coach only views Coaching Tematik sessions assigned to them.

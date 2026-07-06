@@ -1,0 +1,38 @@
+PEGAWAI MASTER SEED - PART 2 OF 4
+
+Append to the same Pegawai dataset from Part 1. Do not create a new table or duplicate rows.
+
+```csv
+"18262","18262","Ichwan Setiawan","KSAD","","","","Organik","2025-08-15","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"15515","15515","Krisna Setioaji","KPO","","","","Organik","2026-05-20","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"16612","16612","Richi Becker","KPO","","","","Organik","2025-08-01","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"18028","18028","Ni Luh Devi Lingga Pratiwi","KPO","","","","Organik","2025-09-04","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"17999","17999","Maritza Syavira","KPO","","","","Organik","2025-07-30","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"18099","18099","Okky Rengga","KPO","","","","Organik","2026-03-10","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"12716","12716","Herry Heryanda","PKID","","","","Organik","2025-10-14","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"14196","14196","Christin R. Sidabutar","KMB","","","","Organik","2025-08-25","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"","","Oktavianus Sinaga","KPO","","","","Organik","2024-06-04","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"14404","14404","Sofyan Assauri","KMB","","","","Organik","2025-08-08","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"15473","15473","Ida Bgs Edy Dharma Endrayana S.","KMB","","","","Organik","2026-01-14","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"15471","15471","Marethania Halley Pasalli","KMB","","","","Organik","2025-08-01","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"15470","15470","Nohan Bhadrika Ratna Widyastuti","KMB","","","","Organik","2024-08-21","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"16092","16092","Putri Oktalisa Panjaitan","KMB","","","","Organik","2025-09-11","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"17741","17741","Taufiq Marjon","KMB","","","","Organik","2025-05-23","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"18259","18259","Simon Frans Rudolf","KMB","","","","Organik","2026-02-04","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"16946","16946","Rr. Ajeng Sofiana","KMB","","","","Organik","2025-10-15","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"14366","14366","Marhendra Lidiansa","KEPID","","","","Organik","2025-03-13","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"15468","15468","Wily Ramadan","KEPID","","","","Organik","2026-05-08","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"","","Muhammad Juliandri","KEPID","","","","Organik","2024-06-04","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"15909","15909","Nita Arryani Sari","KEPID","","","","Organik","2025-07-30","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"16870","16870","Riwaldi Puja","KEPID","","","","Organik","2025-07-28","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"17700","17700","Norman Lewis Siboro","KEPID","","","","Organik","2025-07-28","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"18005","18005","Muhammad Faiq Purnomo Putra","KEPID","","","","Organik","2024-10-01","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"18104","18104","Abhiyasa Suta Bhumikapala","KEPID","","","","Organik","2025-12-19","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"14957","14957","Farid Hamdi","KEPID","","","","Organik","2026-01-21","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"18103","18103","Yufri Isnaini Rochmat Maulana","KEPID","","","","Organik","2025-09-18","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"18253","18253","Muhammad Firza Gustama","KEPID","","","","Organik","2024-08-21","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"18254","18254","Onggo Setia Nugroho","KEPID","","","","Organik","2026-01-27","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"17673","17673","I Putu Medagia A","KEPID","","","","Organik","2025-02-03","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"18425","18425","Ahmad Syarifuddin Randiko","KEPID","","","","Organik","2025-11-10","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"14955","14955","Dedy Yanto","KEPID","","","","Organik","2024-07-19","","TRUE","FALSE","FALSE","FALSE","FALSE"
+```

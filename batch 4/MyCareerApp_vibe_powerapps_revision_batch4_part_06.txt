@@ -1,0 +1,58 @@
+REVISION BATCH 4 - PART 6
+
+Concern 6: Seed valid Coaching Karir dummy records for Budi Santoso's Coach menu.
+- The Coach Coaching Karir list is empty when the active user is Budi Santoso.
+- Add realistic test records to the same draft/test CoachingKarir data source used by the Coach gallery.
+- The Coach list must filter records by:
+  - CoachingKarir.MentorNIP = Text(gblCurrentNIP).
+- Therefore every dummy Coaching Karir record intended for Budi must use:
+  - MentorNIP = "198701152010011001".
+  - This is Budi Santoso's NIP in the current generated test data.
+- MenteeNIP must identify another existing employee. Do not set both MentorNIP and MenteeNIP to Budi.
+- Create at least two dummy Coaching Karir records.
+
+Dummy coaching record 1:
+- Stable unique Title/key: "CK_BUDI_SITI_2026_01" or an equivalent collision-safe value.
+- MenteeNIP: "198305202006021002".
+- Mentee: Siti Rahmawati, resolved from Pegawai.
+- MentorNIP: "198701152010011001".
+- Mentor: Budi Santoso, resolved from Pegawai.
+- Tanggal: a valid date value in 2026, not formatted text.
+- Catatan: "Diskusi rencana pengembangan kompetensi dan persiapan sertifikasi Tier 1."
+- FotoBukti: blank unless a real bundled test image/media value exists.
+
+Dummy coaching record 2:
+- Stable unique Title/key: "CK_BUDI_AGUS_2026_02" or equivalent.
+- MenteeNIP: "197912112002121003".
+- Mentee: Agus Wijaya, resolved from Pegawai.
+- MentorNIP: "198701152010011001".
+- Tanggal: another valid 2026 date.
+- Catatan: "Pembahasan jalur karir, exposure proyek lintas unit, dan target pengembangan berikutnya."
+- FotoBukti: blank unless a real valid test image is available.
+- If either sample mentee NIP does not exist in the active Pegawai draft table, use another existing non-Budi employee NIP while keeping Budi's MentorNIP unchanged.
+
+Related Action Items:
+- Add at least one ActionItem for each seeded coaching record so the detail screen is meaningfully testable.
+- Save ActionItem.CoachingID using the actual ID of the newly created parent CoachingKarir record, not the Title string unless CoachingID is explicitly a text foreign key.
+- Example for Siti:
+  - Kategori: "Sertifikasi".
+  - Tipe: "Sertifikasi Tier 1".
+  - Detail: "Mengikuti kelas persiapan dan mendaftar asesmen sertifikasi pada TW3."
+- Example for Agus:
+  - Kategori: "Exposure".
+  - Tipe: "Penugasan DN/LN, Penugasan Strategis atau lainnya".
+  - Detail: "Mengikuti proyek lintas unit dan menyusun evaluasi hasil penugasan."
+- Use the current ActionItem schema and generate stable unique Title values.
+
+Seeding and data integrity:
+- Seed these records once only. Use stable Title keys with LookUp/If checks so opening the app or screen repeatedly does not create duplicates.
+- Create/resolve each parent CoachingKarir record first, then create its ActionItem rows using the returned parent ID.
+- If using draft collections, add the data to the exact collections consumed by the Coach list and detail galleries.
+- If using connected tables, Patch the existing CoachingKarir and ActionItem data sources, then Refresh both.
+- Do not create disconnected display-only rows.
+- Do not use example.com URLs, fake local paths, generated upload objects, or filenames that pretend evidence was uploaded.
+- Sort the Coach list by Tanggal descending after filtering MentorNIP.
+- Each row must display Tanggal, Catatan, Mentee, Mentor, and a working Detail action.
+- Because Budi's NIP equals each seeded record's MentorNIP, the Coach detail must show functional Edit and Delete actions for Budi.
+- The same records must be read-only when opened by their mentees, Pimpinan, or another coach.
+- Verify with gblCurrentNIP = "198701152010011001": open MENU MENTOR / COACH > Coaching Karir, confirm both records appear, open Detail, see related Action Items, and verify Budi can Edit/Delete according to the ownership rules.

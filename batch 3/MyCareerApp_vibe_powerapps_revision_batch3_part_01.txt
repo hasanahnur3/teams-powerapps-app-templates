@@ -1,0 +1,28 @@
+REVISION BATCH 3 - PART 1
+
+Concern 5: Remove every remaining cyan/turquoise color from the entire app.
+- Bright cyan/turquoise is still visible in interactive states, including the selected Mentor option shown in the dropdown.
+- Perform a complete app-wide audit and replace every cyan/turquoise usage wherever it appears.
+- Do not leave cyan/turquoise in any control property, component, screen, theme token, formula, or hard-coded color value.
+- Check and replace it in all relevant states and properties, including:
+  - Fill.
+  - Color.
+  - BorderColor.
+  - HoverFill and HoverColor.
+  - PressedFill and PressedColor.
+  - SelectedFill and SelectedColor.
+  - SelectionFill and SelectionColor.
+  - FocusedBorderColor.
+  - ChevronBackground and ChevronHoverBackground.
+  - Checkbox, radio button, toggle, date picker, ComboBox, dropdown, gallery, table, navigation, icon, link, and button states.
+  - Selected rows/options, active menu items, badges, highlights, focus indicators, loading indicators, and decorative accents.
+- This rule applies to every screen and reusable component, not only the Mentor field or the currently visible screen.
+- Replace cyan/turquoise with the established professional navy palette:
+  - Primary/active navy: RGB(18, 38, 82).
+  - Soft hover tint: RGB(232, 238, 249).
+  - Pressed tint: RGB(218, 226, 242).
+  - Muted border: RGB(200, 210, 222).
+  - Selected option: dark navy fill with white text, or a soft navy fill with dark navy text.
+- Specifically ensure the selected row in all dropdowns and ComboBoxes no longer uses the default cyan highlight.
+- If cyan comes from a Power Apps theme or modern control default rather than an explicit property, override the relevant theme/accent and selected-state properties so the cyan cannot reappear.
+- Reuse centralized theme variables/tokens for these colors wherever possible to keep all interaction states consistent.

@@ -1,0 +1,17 @@
+REVISION BATCH 3 - PART 5
+
+Concern 8 (continued): Apply photo thumbnails and preview popups across every applicable detail screen.
+- Apply this behavior to every detail page and every field that contains an image/photo, including but not limited to:
+  - Coaching Karir detail — Foto Bukti.
+  - Coaching Tematik detail — Foto Bukti or related session evidence.
+  - Performance Review detail — Foto Bukti / supporting evidence.
+  - Checklist Mentoring detail — Personal Statement, Career Plan, and Bukti Upload when stored as images/photos.
+  - Mentoring session detail and any other evidence/photo field.
+  - Profil Pegawai detail/subsection screens if they contain certificate, assignment, achievement, or other image evidence.
+  - IDP detail if image evidence is present.
+- For detail pages containing multiple images, clicking each thumbnail must open the correct selected image in the same reusable preview popup.
+- Keep non-image documents as file-name/download actions where appropriate; only render supported image files as images. Do not attempt to render PDF, Word, or other documents in an Image control.
+- Ensure the popup is responsive on desktop, tablet, and smaller layouts, stays above all other controls, and does not cause the underlying detail page to navigate or scroll unexpectedly.
+- The popup controls and close button must use the navy/neutral palette from this revision and must not introduce cyan/turquoise states.
+- Verify the complete interaction on every applicable screen: load a real saved photo, see its thumbnail, click it, see the large preview, close it, and remain on the same detail record.
+

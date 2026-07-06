@@ -1,0 +1,34 @@
+REVISION BATCH 4 - PART 3
+
+Concern 3: Add proper spacing between every textarea label and its input field.
+- Labels above multiline text inputs currently sit directly against the textarea border, as shown by Goal, Reality, Options, and Will in the Performance Review form.
+- Fix the layout globally so labels never touch or overlap their textarea/input boundary.
+- Each field must use a clear vertical structure:
+  - Label.
+  - 8 px minimum vertical gap.
+  - Textarea/input control.
+  - 20-24 px minimum space before the next field label.
+- Prefer an auto-layout vertical field container with LayoutGap = 8 for the label-to-control spacing.
+- Use a separate parent form/container gap of approximately 20-24 px between complete field groups.
+- If controls use manual positioning, set the textarea Y based on the label bottom plus spacing, for example Label.Y + Label.Height + 8. Set the next field Y based on the previous textarea bottom plus 20-24 px.
+- Do not fix this by placing spaces or line breaks inside label text.
+- Do not use negative margins, overlapping controls, or transparent overlays.
+- Ensure every label has enough height for its text, required asterisk, validation state, and responsive wrapping.
+- Preserve a clear hierarchy:
+  - Label text should use the standard form-label size and semibold weight.
+  - Required marker should align with the label without reducing the gap beneath it.
+  - Helper and validation text should have its own spacing and must not overlap the input.
+- Apply this to all multiline fields across the app, including:
+  - Performance Review: Goal, Reality, Options, and Will.
+  - Coaching Karir and Coaching Tematik notes/results.
+  - IDP Detail Rencana.
+  - Mentoring notes and descriptions.
+  - Profil Pegawai description, assignment, achievement, or other multiline fields.
+  - Admin/monitoring notes and every other textarea-style control.
+- Apply the same minimum label-to-control gap to normal TextInput, Dropdown, ComboBox, DatePicker, and upload fields wherever the label is currently touching the control.
+- Keep textarea heights consistent for comparable fields. The visible field should have sufficient internal padding so typed text does not touch its border.
+- Textarea Fill must remain white with a visible muted border. Focus and hover states must follow the navy palette and must not use cyan/turquoise.
+- The spacing must remain correct in new, edit, read-only, validation-error, and disabled states.
+- On responsive layouts, wrapping labels must push the textarea downward instead of overlapping it. Avoid fixed parent heights that clip the added spacing.
+- Review container Height/LayoutMinHeight values after adding gaps so the bottom of fields and action buttons are not clipped.
+- Verify every form visually at desktop and smaller widths. Labels must be clearly separated from their controls, and the spacing between Goal, Reality, Options, and Will should look even and intentional.

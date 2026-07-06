@@ -1,0 +1,40 @@
+REVISION BATCH 4 - PART 1
+
+Concern 1: Every detail-screen Back button must return to its originating list, not to Home.
+- Across the entire app, Back/Kembali buttons on detail screens currently may navigate directly to the homepage. Remove this behavior.
+- A detail screen must return to the list or monitoring screen from which the user opened that detail record.
+- The destination must be context-aware. Do not hard-code Home and do not assume that every detail was opened from the normal Pegawai list.
+- Before navigating from any list/gallery/table row to a detail screen, store the originating navigation context and return screen, for example:
+  - Set(gblDetailReturnScreen, App.ActiveScreen).
+  - Set(gblDetailSource, "Pegawai"), "Pimpinan", "LineManager", "Coach", "Mentor", "AdminMonitoring", or another clear context value.
+  - Then set the selected record and Navigate to the detail screen.
+- On every detail screen, the Back button should use the stored return screen when it is valid, for example Navigate(gblDetailReturnScreen, ScreenTransition.Fade).
+- If storing a Screen value is not supported reliably by the generated app, use a Switch on gblDetailSource that maps each source context to the correct list screen.
+- Required behavior includes:
+  - Opened from a normal Pegawai list -> return to that same Pegawai list.
+  - Opened while Pimpinan is viewing a selected employee -> return to the appropriate Pimpinan employee context/list, preserving gblSubjectNIP and gblPimpinanView.
+  - Opened from Monitoring Mentoring -> return to Monitoring Mentoring, preserving the selected year/filter and scroll/list context where possible.
+  - Opened from a Line Manager list -> return to the Line Manager list.
+  - Opened from a Coach or Mentor list -> return to the corresponding Coach/Mentor list.
+  - Opened from an Admin monitoring list -> return to that Admin monitoring list.
+- Do not clear selected employee, role context, filter variables, year selection, or monitoring state when pressing Back from detail.
+- Do not route Pimpinan users through the homepage between a detail record and the selected employee context.
+- Do not route Monitoring Mentoring users to the general Checklist Mentoring employee list; return them to the exact monitoring screen they came from.
+- Apply this to every type of detail screen, including:
+  - Profil Pegawai and all profile subsection details.
+  - Performance Review detail.
+  - Coaching Karir detail.
+  - Coaching Tematik detail.
+  - IDP detail/read-only view.
+  - Checklist Mentoring detail.
+  - Mentoring session detail.
+  - Admin/Monitoring Mentoring detail.
+  - Any additional record detail, evidence preview, or drill-down screen.
+- Edit forms opened from detail must also return correctly:
+  - Cancel from Edit -> return to the detail record or its originating list according to the existing flow.
+  - Successful Save -> return to the intended refreshed detail/list without losing the original source context.
+  - Delete -> return to the originating list because the deleted detail no longer exists.
+- The visible Back-button label may be context-specific, such as "Kembali ke Daftar", "Kembali ke Pimpinan", or "Kembali ke Monitoring", instead of incorrectly saying "Kembali ke Home".
+- Add a safe fallback only for cases where no source context exists, such as direct deep-link access. The fallback should be the closest relevant list screen, not Home whenever a relevant list exists.
+- Reset gblDetailReturnScreen/gblDetailSource only after navigation is complete or when starting an unrelated flow; do not reset them in the detail screen OnVisible.
+- Verify every detail screen from every supported entry path. Open a record, press Back, and confirm the user returns to the exact originating list with the same role and employee/filter context.

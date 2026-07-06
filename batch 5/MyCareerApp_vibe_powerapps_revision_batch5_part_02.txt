@@ -1,0 +1,23 @@
+REVISION BATCH 5 - PART 2
+
+Concern 2: Fix Checklist Mentoring detail image display and make Delete open a functional confirmation popup.
+
+Checklist Mentoring detail display:
+- The Checklist Mentoring detail currently shows upload/file controls and filenames, but saved image evidence is not rendered.
+- A detail/read-only screen must not display "Choose File", an empty browser file input, or "Hapus file" controls. Those belong only in an authorized edit form.
+- For Personal Statement, Career Plan, and Bukti Upload:
+  - Detect whether the saved evidence is a supported image such as JPG, JPEG, PNG, GIF, or another image media value.
+  - Render image evidence using an actual Image control.
+  - Use the real saved media/content value, attachment value, or valid stored URL—not only its filename.
+  - Preserve aspect ratio with ImagePosition.Fit.
+  - Show a clean thumbnail inside a bordered white preview container.
+  - Display the actual filename as secondary text when available.
+- Clicking an image thumbnail must open the shared large image-preview popup/lightbox defined in the earlier revision.
+- The preview popup must show a dark overlay, enlarged fitted image, Close/X action, and return the user to the same detail record when closed.
+- If a saved file is not an image, show a file icon, readable filename, and functional Open/Download action instead of trying to render it as an Image.
+- If no evidence exists, show "Belum ada file" rather than a broken image, blank URL, or upload input.
+- If metadata exists but content cannot be loaded, show "File tidak dapat ditampilkan" and keep any valid Open/Download action.
+- Do not use the local browser file input value as the saved image source; browser file inputs reset and cannot display previously persisted content.
+- Ensure Save stores both the real file/media and the metadata needed to retrieve it later. A filename string alone is insufficient.
+- Apply the display fix to detail opened from Pegawai, Mentor, Pimpinan, and Monitoring Mentoring contexts.
+- Verify with real images: see each thumbnail, open the large preview, close it, and remain on the same detail record.

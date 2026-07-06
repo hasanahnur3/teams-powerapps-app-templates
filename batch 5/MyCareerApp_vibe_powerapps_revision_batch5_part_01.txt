@@ -1,0 +1,67 @@
+REVISION BATCH 5 - PART 1
+
+Concern 1: Make the Homepage "Status Kamu" section more colorful using the badge style from the fixed app.
+- The current Status Kamu cards are too plain: each value is large black text on an otherwise empty white card.
+- Reuse the compact colored status badges from MyCareerApp/fixed/S1_Homepage.yaml. The user likes that palette and visual treatment.
+- Keep the overall section professional and readable. Use white cards with subtle borders/shadows, while placing the dynamic result inside a colored pill/badge.
+- Each status item should contain:
+  - A readable muted-gray label at the top.
+  - A compact colored badge below it.
+  - Badge height around 28-32 px.
+  - Horizontal padding around 10-12 px.
+  - Semibold text.
+  - Corner radius around 6-14 px.
+  - Badge width based on its content rather than filling the entire card.
+- Do not color the full card with strong colors. Use soft badge backgrounds so the section remains balanced.
+
+Use the fixed-app badge palette:
+- Success/completed:
+  - Text: RGB(16, 124, 16).
+  - Fill: RGB(223, 246, 221).
+- Warning/action required:
+  - Text: RGB(122, 70, 0).
+  - Fill: RGB(255, 244, 206).
+- Neutral/not started/period ended:
+  - Text: RGB(96, 94, 92).
+  - Fill: RGB(243, 242, 241).
+- Informational/available data:
+  - Text: RGB(0, 78, 140).
+  - Fill: RGB(222, 236, 249).
+- These soft blue values are acceptable. Do not use the bright cyan/turquoise selection color prohibited in earlier revisions.
+
+Performance Review Q1 badge:
+- Look up the current employee's current-year Semester 1 PerformanceReview record.
+- During the Q1 period:
+  - Record exists -> green badge, text "Sudah Diisi".
+  - No record -> yellow badge, text "Perlu Diisi".
+- After its active period ends -> neutral gray badge, text "Sudah Berakhir".
+- Do not show the result as oversized black text.
+
+Performance Review Q2 badge:
+- Look up the current employee's current-year Semester 2 record.
+- Before the Q2 period -> neutral gray badge, text "Belum Dimulai".
+- During Q2:
+  - Record exists -> green badge, text "Sudah Diisi".
+  - No record -> yellow badge, text "Perlu Diisi".
+- Derive the state from data and the current period; do not hard-code Budi's current screenshot values.
+
+Last Career Coaching badge:
+- Rename the label consistently to "Coaching Karir Terakhir".
+- Find the latest CoachingKarir record where MenteeNIP = Text(gblCurrentNIP), sorted by Tanggal descending.
+- If a record exists, show its month/year or formatted date inside a green badge.
+- If no record exists, show "Belum Ada" in a neutral or warning badge rather than a bare dash or empty space.
+
+IDP current-year badge:
+- Label: "IDP " & Year(Today()) or "IDP Tahun Ini".
+- Count current-year IDP records for the current employee.
+- Count > 0 -> informational blue badge showing "1 item", "2 item", etc.
+- Count = 0 -> yellow badge showing "Belum Ada" or "0 item".
+
+Layout and behavior:
+- Keep all four cards equal in height with consistent label/badge alignment.
+- Reduce excessive empty whitespace inside each card.
+- Use responsive wrapping: four columns on wide screens, two columns on medium screens, and one/two columns as appropriate on small screens.
+- Ensure labels can wrap without colliding with badges.
+- Preserve data-driven formulas for the current employee, including Pimpinan context only if this section is intentionally shown for a selected employee.
+- If a card is clickable, use the established navy hover/pressed palette and navigate to the relevant list; never use cyan/turquoise.
+- Verify the four states visually with populated and empty test data. The section should feel more colorful at a glance while remaining accessible and enterprise-appropriate.

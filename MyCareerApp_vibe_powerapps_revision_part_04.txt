@@ -1,0 +1,68 @@
+REVISION PART 4 OF 5
+
+Correct Coaching Karir Coach flow based on the implemented fixed app:
+1. Coach list screen
+   - OnVisible refresh CoachingKarir.
+   - Reset selected coaching record.
+   - Reset coach edit mode to false.
+   - Display records where MentorNIP equals current user's NIP.
+   - Each row has Detail action.
+   - Detail action sets selected coaching record, sets list mode to "Coach", then navigates to Coaching Karir Detail.
+
+2. Add/Edit form screen
+   - Used only after clicking "+ Tambah Coaching Karir" or Edit from detail.
+   - Fields:
+     - Tanggal, required.
+     - Mentee, required, searchable ComboBox from Pegawai.
+     - Catatan, required.
+     - Foto Bukti, required for new records, use photo/image upload.
+     - Action Items editable collection.
+   - MentorNIP is not manually selected. It must default to gblCurrentNIP because the current user is the coach.
+   - Do not show a separate "Pilih mentor" dropdown on the Coach create form.
+
+3. Action Items CRUD inside Coaching Karir form
+   - Use an in-memory collection for editable action items, such as colCKActionItems.
+   - On new form, start with an empty collection.
+   - On edit form, load existing ActionItem rows where ActionItem.CoachingID = selected CoachingKarir.ID into the collection.
+   - Each Action Item row has:
+     - Tipe dropdown.
+     - Kategori auto-derived from Tipe.
+     - Detail text input.
+     - Delete/remove button.
+   - Add button "+ Tambah Action Item" adds a blank row to the collection.
+   - Delete button removes the row from the collection; for existing rows, track deleted IDs or rebuild the saved rows during save.
+   - Kategori mapping:
+     - S2, S3 -> Pendidikan (PTB).
+     - Sertifikasi Tier 1, Sertifikasi Tier 2, PMK, Kum Mengajar -> Sertifikasi.
+     - Penugasan DN/LN, Prestasi BI Wide, Kepanitiaan BI Wide, Plt/Penunjukan/Rangkap Jabatan/Penugasan tetap -> Exposure.
+   - Validate before saving:
+     - Tanggal is filled.
+     - Mentee is selected.
+     - Catatan is filled.
+     - Foto Bukti exists for new records.
+     - Every action item has Tipe and Detail.
+
+4. Save behavior
+   - If adding:
+     - Patch a new CoachingKarir record.
+     - Set Title initially to a temporary GUID, then update Title to the new ID if needed.
+     - Set MenteeNIP from selected mentee.
+     - Set MentorNIP to gblCurrentNIP.
+     - Set Tanggal, Catatan, FotoBukti.
+   - If editing:
+     - Patch the selected CoachingKarir record.
+     - Keep MentorNIP as current coach.
+     - Update MenteeNIP, Tanggal, Catatan, FotoBukti.
+   - For Action Items:
+     - Save all action items with CoachingID = saved CoachingKarir.ID.
+     - Existing implementation can remove/recreate ActionItem rows for that CoachingID during edit, then patch the current collection rows.
+     - Each ActionItem stores Title, CoachingID, Kategori, Tipe, Detail.
+   - Refresh CoachingKarir and ActionItem after save.
+   - Notify success/error.
+   - Navigate back to Coach Coaching Karir list.
+
+5. Detail screen
+   - Detail shows Mentee, Tanggal, Mentor, Catatan, Foto Bukti, and all related Action Items.
+   - If opened in Coach mode and current user is the MentorNIP, show Edit and Delete buttons.
+   - Edit sets coach edit mode true and navigates to the add/edit form with fields pre-filled and action items loaded.
+   - Delete asks for confirmation, removes related ActionItem rows, removes CoachingKarir, refreshes data, then returns to the correct list.

@@ -1,0 +1,66 @@
+REVISION PART 2 OF 5
+
+Concern 5: Add "Tambah" buttons to every Profil Pegawai table section.
+- Each Profil Pegawai subtable/card must have an Add button in the card header.
+- Do not only provide Edit buttons inside existing rows.
+- Add a button such as "+ Tambah" or "+ Tambah Baris" on each section:
+  - Pendidikan.
+  - Sertifikasi Tier 1.
+  - Sertifikasi Tier 2.
+  - PMK / Program Meningkatkan Kompetensi.
+  - Kum Mengajar.
+  - Penugasan DN/LN, Penugasan Strategis atau lainnya.
+  - Prestasi BI Wide atau lainnya.
+  - Kepanitiaan / Proyek / Tim Kerja / Adhoc Lainnya.
+  - Plt / Penunjukan / Rangkap Jabatan / Penugasan Tetap.
+- The Add button should navigate to the correct add form for that section.
+- The Add button should create a new record for the active employee NIP:
+  - Use gblCurrentNIP in normal employee mode.
+  - Use gblSubjectNIP when gblPimpinanView is true and a leader is viewing a selected employee.
+- Existing rows should still have Edit buttons.
+- If the current view is read-only for a role, hide the Add and Edit buttons.
+
+Concern 6: Make every Edit button functional, not a placeholder notification.
+- Do not use placeholder messages such as "Form edit profil siap dikonfigurasi."
+- Every Edit button in every Profil Pegawai table must open the correct edit form for that specific section and selected row.
+- When the user clicks Edit:
+  - Store the selected row record in the correct selected-record variable.
+  - Set that section's edit mode to true.
+  - Navigate to the correct edit form screen.
+  - Pre-fill the form with the selected row's existing values.
+- This must work for:
+  - Pendidikan.
+  - Sertifikasi Tier 1.
+  - Sertifikasi Tier 2.
+  - PMK / Program Meningkatkan Kompetensi.
+  - Kum Mengajar.
+  - Penugasan DN/LN.
+  - Prestasi.
+  - Kepanitiaan / Proyek / Tim Kerja / Adhoc.
+  - Plt / Penunjukan / Rangkap Jabatan / Penugasan Tetap.
+- Each edit form must allow Save and Cancel.
+- Save should Patch the existing record, Refresh the relevant table, Notify success/error, then return to Profil Pegawai.
+- Cancel should return to Profil Pegawai without changing data.
+- Delete may be available with confirmation if appropriate, but the Edit button itself must never show a placeholder notification.
+
+Concern 7: Add Unit Kerja (Uker) and Status to Profil Pegawai.
+- The employee profile must include Unit Kerja / Uker and Status.
+- Add these fields to the Pegawai data model if not already present:
+  - Uker or UnitKerja: employee unit/work unit code, for example KPPD, KMPI, PKID, MKAM, KDA.
+  - Status: employee status, for example Organik.
+- Show these fields clearly in Profil Pegawai identity section:
+  - Nama Pegawai.
+  - NIP.
+  - Uker / Unit Kerja.
+  - Satker, if still used.
+  - Jabatan.
+  - Pangkat.
+  - Status.
+  - Tanggal Pengisian / Last Updated.
+- In employee list tables, include columns:
+  - Uker.
+  - NIP.
+  - Status.
+- Status should be displayed as a clean pill/badge, for example "Organik" with soft blue fill and navy/blue text.
+- Uker values can look like clickable text if they navigate/filter to a unit detail, but if no unit detail exists, keep it as normal readable text.
+- Use readable labels: "Uker" or "Unit Kerja", not camelCase field names.

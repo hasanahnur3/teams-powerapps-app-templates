@@ -1,0 +1,25 @@
+REVISION PART 5 OF 5
+
+6. Mentee/leader view
+   - Mentee view should show records where MenteeNIP equals the active employee NIP.
+   - Pimpinan view should use gblSubjectNIP as the active employee.
+   - Mentee/leader view should generally open detail read-only unless explicitly authorized.
+
+Concern 11: Coaching Tematik Coach menu is view-only.
+- The Coach-facing Coaching Tematik screen must not allow create.
+- Remove/hide all create form inputs from the Coach Coaching Tematik front page.
+- Remove/hide fields such as Judul, Topik, Pilih mentee, Pilih mentor, Tanggal, Catatan, and Simpan from the Coach view.
+- The Coach Coaching Tematik page should show only a list of existing Coaching Tematik records where:
+  - CoachingTematik.MentorNIP = gblCurrentNIP.
+- Sort by Tanggal descending.
+- Show columns/cards:
+  - Tanggal.
+  - Topik.
+  - Mentee.
+  - Aksi / Detail.
+- Put the list inside a white table card with a header band.
+- Each row can open a detail screen.
+- The detail screen for Coach should be read-only unless explicitly required otherwise.
+- The creation flow for Coaching Tematik belongs to the Pegawai/employee side.
+- Employee creates a Coaching Tematik request/session and selects the mentor/coach.
+- Coach only views Coaching Tematik sessions assigned to them.

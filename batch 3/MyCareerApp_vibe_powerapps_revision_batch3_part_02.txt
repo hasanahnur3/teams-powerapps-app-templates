@@ -1,0 +1,27 @@
+REVISION BATCH 3 - PART 2
+
+Concern 6: Make the searchable Mentor picker genuinely functional.
+- The current implementation is not a working searchable picker. It shows a separate search text box above a normal dropdown, while the dropdown itself still behaves like a static selector.
+- Replace the separate search-input-plus-dropdown arrangement with one searchable Power Apps ComboBox.
+- Do not show duplicate Mentor controls or a disconnected search field.
+- The ComboBox must allow the user to type directly into the picker and immediately filter the available mentors by:
+  - Nama.
+  - NIP.
+  - Uker / Unit Kerja.
+- Configure the ComboBox with behavior equivalent to:
+  - IsSearchable = true.
+  - SelectMultiple = false.
+  - SearchFields = ["Nama", "NIP", "Uker"], using the actual data-source column names.
+  - DisplayFields should show a readable combined label such as "Nama - NIP - Uker".
+  - Items must come from the Pegawai data source or the correct eligible-mentor data source.
+- If Power Apps cannot search a calculated display string directly, shape the source first with AddColumns and search the original searchable columns. For example, add a DisplayLabel column for presentation while keeping Nama, NIP, and Uker available for search.
+- The displayed option and selected value must use the same record source. Do not create a second disconnected dropdown or collection that loses the selected record.
+- When saving, store the selected mentor's NIP from the selected ComboBox record, for example cmbMentor.Selected.NIP.
+- In edit mode, DefaultSelectedItems must resolve the existing MentorNIP back to the matching Pegawai record so the current mentor is preselected.
+- In new mode, the field should start blank unless the business flow explicitly supplies a default mentor.
+- Show a clear placeholder such as "Cari Nama / NIP / Uker" inside the ComboBox.
+- Handle empty searches cleanly and show all eligible mentors before the user types.
+- Do not include blank, malformed, or duplicate mentor entries.
+- Preserve any role eligibility rule already required for mentors; search must operate within the eligible mentor list rather than bypassing authorization filters.
+- Apply and verify this working searchable-person pattern everywhere a Mentor/Coach is selected, including Checklist Mentoring and employee-created Coaching Tematik forms.
+- The selected and hovered options must use the navy interaction palette defined above, never cyan/turquoise.

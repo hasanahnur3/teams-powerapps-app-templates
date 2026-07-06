@@ -1,0 +1,55 @@
+Use this as a correction/addendum for the MyCareerApp home page.
+
+The home page must include ALL role-based menu sections, even if some are hidden based on the logged-in user's role. Do not only build MENU PEGAWAI and MENU ADMIN.
+
+Create these home page sections:
+
+1. MENU PEGAWAI
+Visible when current user's Pegawai record has IsPegawai = true.
+Buttons:
+- Profil Pegawai -> navigate to employee profile screen.
+- Mentoring / Checklist Mentoring -> navigate to Checklist Mentoring list.
+- Performance Review -> navigate to employee Performance Review list.
+- Coaching Karir -> navigate to Career Coaching list for the employee.
+- Coaching Tematik -> navigate to Thematic Coaching list for the employee.
+- IDP -> navigate to Individual Development Plan list.
+
+2. MENU LINE MANAGER
+Visible when current user's Pegawai record has IsLineManager = true.
+Buttons:
+- Performance Review -> navigate to Line Manager Performance Review list, showing employees/reviews assigned to this line manager.
+
+3. MENU MENTOR / COACH
+Visible when current user's Pegawai record has IsCoach = true.
+Buttons:
+- Coaching Karir -> navigate to coach/mentor Career Coaching list, showing sessions where MentorNIP = current user's NIP.
+- Coaching Tematik -> navigate to coach/mentor Thematic Coaching list, showing sessions where MentorNIP = current user's NIP.
+
+4. MENU PIMPINAN
+Visible when current user's Pegawai record has IsPimpinan = true.
+Buttons:
+- Daftar Pegawai -> navigate to employee selection screen.
+The Pimpinan flow must let the leader select a subject employee, set gblSubjectNIP, set gblPimpinanView = true, then open that employee's Profil Pegawai, IDP, Performance Review, Coaching Karir, Coaching Tematik, or Checklist Mentoring.
+
+5. MENU ADMIN
+Visible when current user's Pegawai record has IsAdmin = true.
+Buttons:
+- Monitoring Mentoring -> navigate to admin Monitoring Mentoring screen.
+The admin monitoring screen lets admin choose a year, see all employees, check whether each employee has submitted ChecklistMentoring for that year, and open submitted checklist details in read-only mode.
+
+Important homepage behavior:
+- A user can have multiple roles at once, so multiple menu sections may be visible at the same time.
+- Do not collapse all menus into only employee/admin.
+- Do not omit MENU LINE MANAGER, MENU MENTOR / COACH, or MENU PIMPINAN.
+- Role visibility should be based on the current user's Pegawai record:
+  - IsPegawai
+  - IsLineManager
+  - IsCoach
+  - IsPimpinan
+  - IsAdmin
+- Keep the existing "Status Kamu" cards at the top.
+- Keep the app language Indonesian.
+- Use card sections with clear headings and button rows.
+- If a sample user only has IsPegawai and IsAdmin, still create the hidden sections and their screens/logic so they appear for users with other roles.
+
+Please update the app home page and navigation to include these five menu sections and all buttons above.

@@ -1,0 +1,230 @@
+REVISION BATCH 2 - PART 3 DRAFT
+
+Concern 5: Remove every remaining cyan/turquoise color from the entire app.
+- Bright cyan/turquoise is still visible in interactive states, including the selected Mentor option shown in the dropdown.
+- Perform a complete app-wide audit and replace every cyan/turquoise usage wherever it appears.
+- Do not leave cyan/turquoise in any control property, component, screen, theme token, formula, or hard-coded color value.
+- Check and replace it in all relevant states and properties, including:
+  - Fill.
+  - Color.
+  - BorderColor.
+  - HoverFill and HoverColor.
+  - PressedFill and PressedColor.
+  - SelectedFill and SelectedColor.
+  - SelectionFill and SelectionColor.
+  - FocusedBorderColor.
+  - ChevronBackground and ChevronHoverBackground.
+  - Checkbox, radio button, toggle, date picker, ComboBox, dropdown, gallery, table, navigation, icon, link, and button states.
+  - Selected rows/options, active menu items, badges, highlights, focus indicators, loading indicators, and decorative accents.
+- This rule applies to every screen and reusable component, not only the Mentor field or the currently visible screen.
+- Replace cyan/turquoise with the established professional navy palette:
+  - Primary/active navy: RGB(18, 38, 82).
+  - Soft hover tint: RGB(232, 238, 249).
+  - Pressed tint: RGB(218, 226, 242).
+  - Muted border: RGB(200, 210, 222).
+  - Selected option: dark navy fill with white text, or a soft navy fill with dark navy text.
+- Specifically ensure the selected row in all dropdowns and ComboBoxes no longer uses the default cyan highlight.
+- If cyan comes from a Power Apps theme or modern control default rather than an explicit property, override the relevant theme/accent and selected-state properties so the cyan cannot reappear.
+- Reuse centralized theme variables/tokens for these colors wherever possible to keep all interaction states consistent.
+
+Concern 6: Make the searchable Mentor picker genuinely functional.
+- The current implementation is not a working searchable picker. It shows a separate search text box above a normal dropdown, while the dropdown itself still behaves like a static selector.
+- Replace the separate search-input-plus-dropdown arrangement with one searchable Power Apps ComboBox.
+- Do not show duplicate Mentor controls or a disconnected search field.
+- The ComboBox must allow the user to type directly into the picker and immediately filter the available mentors by:
+  - Nama.
+  - NIP.
+  - Uker / Unit Kerja.
+- Configure the ComboBox with behavior equivalent to:
+  - IsSearchable = true.
+  - SelectMultiple = false.
+  - SearchFields = ["Nama", "NIP", "Uker"], using the actual data-source column names.
+  - DisplayFields should show a readable combined label such as "Nama - NIP - Uker".
+  - Items must come from the Pegawai data source or the correct eligible-mentor data source.
+- If Power Apps cannot search a calculated display string directly, shape the source first with AddColumns and search the original searchable columns. For example, add a DisplayLabel column for presentation while keeping Nama, NIP, and Uker available for search.
+- The displayed option and selected value must use the same record source. Do not create a second disconnected dropdown or collection that loses the selected record.
+- When saving, store the selected mentor's NIP from the selected ComboBox record, for example cmbMentor.Selected.NIP.
+- In edit mode, DefaultSelectedItems must resolve the existing MentorNIP back to the matching Pegawai record so the current mentor is preselected.
+- In new mode, the field should start blank unless the business flow explicitly supplies a default mentor.
+- Show a clear placeholder such as "Cari Nama / NIP / Uker" inside the ComboBox.
+- Handle empty searches cleanly and show all eligible mentors before the user types.
+- Do not include blank, malformed, or duplicate mentor entries.
+- Preserve any role eligibility rule already required for mentors; search must operate within the eligible mentor list rather than bypassing authorization filters.
+- Apply and verify this working searchable-person pattern everywhere a Mentor/Coach is selected, including Checklist Mentoring and employee-created Coaching Tematik forms.
+- The selected and hovered options must use the navy interaction palette defined above, never cyan/turquoise.
+
+Concern 7: Fix the "+ Tambah Performance Review" button and implement the real employee create flow.
+- Clicking "+ Tambah Performance Review" currently only shows the placeholder notification "Form tambah Performance Review tersedia untuk pegawai." This is not a completed action and must be removed.
+- Do not use Notify as a substitute for navigation or an unimplemented form.
+- The button on the Pegawai Performance Review list must open a real new-record form.
+- Use behavior equivalent to the following OnSelect flow:
+  - Set(gblPREditMode, false).
+  - Set(gblSelectedPR, Blank()).
+  - NewForm(the Performance Review form control).
+  - Navigate to the Performance Review add/edit form screen.
+- Ensure the form screen and form control actually exist and are connected to the PerformanceReview data source. Do not navigate to a placeholder screen.
+- In new mode, the form Item should use Defaults(PerformanceReview), and in edit mode it should use gblSelectedPR.
+- The employee must be able to complete the required Performance Review fields:
+  - Tahun.
+  - Semester.
+  - Tanggal, using a date picker and defaulting to Today() for a new record.
+  - Line Manager, using a working searchable employee ComboBox.
+  - Goal.
+  - Reality.
+  - Options.
+  - Will.
+  - Foto Bukti / supporting evidence upload.
+- NIP must be set automatically to gblCurrentNIP for a new employee submission. Do not ask the employee to type their own NIP.
+- The form must provide functional Save and Cancel buttons.
+- Save must validate all required fields, create the record in PerformanceReview, and only show a success notification after the data operation succeeds.
+- After successful save:
+  - Refresh(PerformanceReview).
+  - Reset the form and selected-record/edit-mode variables as appropriate.
+  - Navigate back to the employee Performance Review list.
+  - Ensure the new row immediately appears in the list filtered by NIP = gblCurrentNIP.
+- On save failure, remain on the form and show the real error message. Never show a false success notification.
+- Cancel must discard unsaved changes and return to the employee Performance Review list.
+- Keep the "+ Tambah Performance Review" button visible only in the employee/Pegawai flow.
+- Do not show this Add button in the Line Manager or Pimpinan read/review flows; those roles should open submitted records for detail/review instead of creating an employee submission.
+- Verify the full interaction end to end: click Add, open a blank form, enter values, save, return to the list, and see the newly created record.
+
+Concern 8: Display actual photos on every detail screen and add a closable image preview popup.
+- Detail screens currently show a raw URL string for photo fields, for example the "Foto Bukti" value on Detail Coaching Karir.
+- Never display a photo/image field as a raw URL, file path, JSON value, attachment object, or plain text link when the value represents an image.
+- Replace the text/label control with an actual Power Apps Image control that renders the stored image.
+- Show the image as a clean thumbnail or preview inside the detail card:
+  - Preserve the image aspect ratio.
+  - Use ImagePosition.Fit so the image is not cropped or stretched.
+  - Use a reasonable maximum height and width so it does not dominate the detail page.
+  - Add a subtle border and rounded visual container consistent with the app design.
+  - Make it visually clear that the thumbnail can be clicked to enlarge.
+- When the user clicks the thumbnail, open a large in-app image popup/lightbox on top of the current screen.
+- The popup must include:
+  - A semi-transparent dark overlay covering the screen behind it.
+  - A centered white or dark-neutral modal container.
+  - The selected photo displayed as large as practical while preserving its aspect ratio.
+  - A clearly visible Close/X button.
+  - Optional "Tutup" button for additional clarity.
+- Clicking Close/X, "Tutup", or the overlay outside the image should close the popup and keep the user on the same detail screen.
+- Use popup state variables equivalent to:
+  - Thumbnail OnSelect: Set(gblPreviewImage, the current image value); Set(gblShowImagePreview, true).
+  - Popup Visible: gblShowImagePreview.
+  - Large Image.Image: gblPreviewImage.
+  - Close action: Set(gblShowImagePreview, false); Set(gblPreviewImage, Blank()).
+- Reset/close the popup whenever the user leaves the detail screen so it does not remain open on another screen.
+- The Image property must correctly handle the app's real storage format, including native image values, uploaded media, SharePoint image columns, attachments, or valid image URLs. Use the correct image/media value rather than converting it to display text.
+- Do not use placeholder URLs such as example.com in the final UI or as proof that image rendering works.
+- If an image is missing, show a polished empty state such as "Foto belum tersedia" with a neutral placeholder; do not show Blank(), broken-image icons, or an empty URL.
+- If the stored value exists but cannot be loaded, show a controlled "Foto tidak dapat ditampilkan" state instead of exposing the underlying URL or formula error.
+- Apply this behavior to every detail page and every field that contains an image/photo, including but not limited to:
+  - Coaching Karir detail — Foto Bukti.
+  - Coaching Tematik detail — Foto Bukti or related session evidence.
+  - Performance Review detail — Foto Bukti / supporting evidence.
+  - Checklist Mentoring detail — Personal Statement, Career Plan, and Bukti Upload when stored as images/photos.
+  - Mentoring session detail and any other evidence/photo field.
+  - Profil Pegawai detail/subsection screens if they contain certificate, assignment, achievement, or other image evidence.
+  - IDP detail if image evidence is present.
+- For detail pages containing multiple images, clicking each thumbnail must open the correct selected image in the same reusable preview popup.
+- Keep non-image documents as file-name/download actions where appropriate; only render supported image files as images. Do not attempt to render PDF, Word, or other documents in an Image control.
+- Ensure the popup is responsive on desktop, tablet, and smaller layouts, stays above all other controls, and does not cause the underlying detail page to navigate or scroll unexpectedly.
+- The popup controls and close button must use the navy/neutral palette from this revision and must not introduce cyan/turquoise states.
+- Verify the complete interaction on every applicable screen: load a real saved photo, see its thumbnail, click it, see the large preview, close it, and remain on the same detail record.
+
+Concern 9: Fix the employee "+ Tambah Coaching Tematik" button and open the real create form.
+- On the Pegawai Coaching Tematik list, clicking "+ Tambah Coaching Tematik" currently does not open a form and only shows an informational placeholder notification indicating that employees can submit Coaching Tematik.
+- Remove this placeholder behavior. A notification is not a substitute for a working create flow.
+- The employee Add button must initialize a new record and navigate to a real Coaching Tematik form screen.
+- Use behavior equivalent to this OnSelect flow:
+  - Set(gblCoachingTematikEditMode, false).
+  - Set(gblSelectedCoachingTematik, Blank()) or Defaults(CoachingTematik), consistently with the form implementation.
+  - Reset all Coaching Tematik input controls.
+  - Navigate(S7B_CoachingTematik_Form, ScreenTransition.Fade), or navigate to the actual employee Coaching Tematik form screen used by the app.
+- Ensure the target form screen is included in the generated app and is not hidden, missing, or replaced by another placeholder.
+- The employee create form must contain functional inputs for:
+  - Tanggal, required, using a date picker and defaulting to Today() in new mode.
+  - Mentor, required, using the genuinely searchable ComboBox specified in Concern 6.
+  - Topik, required.
+  - Hasil Coaching / Catatan, according to the CoachingTematik data model and required business flow.
+  - Any required supporting photo/evidence field defined by the data source.
+- MenteeNIP must be assigned automatically from gblCurrentNIP for a new employee-created record. Do not make the employee select or type their own identity.
+- MentorNIP must be saved from the selected Mentor ComboBox record, for example cmbMentorTematik.Selected.NIP.
+- Connect the form/save logic to the actual CoachingTematik data source.
+- In new mode, Patch Defaults(CoachingTematik). In edit mode, Patch the selected existing record rather than creating a duplicate.
+- Validate required fields before saving. Do not save when Tanggal, Mentor, or Topik is missing.
+- Only show the success notification after Patch/SubmitForm succeeds.
+- After a successful create:
+  - Refresh(CoachingTematik).
+  - Clear/reset the form, selected record, edit mode, and submitting state.
+  - Navigate back to the employee Coaching Tematik list.
+  - Ensure the newly created row immediately appears where MenteeNIP = gblCurrentNIP.
+- On failure, stay on the form and show the actual data-source error. Do not show a false success message.
+- Cancel must discard unsaved values and return to the employee Coaching Tematik list.
+- Prevent double submission by disabling Save while the operation is in progress.
+- Preserve role separation:
+  - Pegawai can create Coaching Tematik requests/sessions and select a mentor.
+  - The Coach-facing Coaching Tematik menu remains list/detail view-only and must not display an Add button or creation form.
+  - Pimpinan view remains read-only for the selected employee unless explicitly authorized otherwise.
+- Do not route the employee Add button to the Coach list/detail screen.
+- Verify the complete flow end to end: open the Pegawai Coaching Tematik list, click Add, see a blank form, select a searchable mentor, enter the required values, save, return to the list, and see the new record.
+
+Concern 10: Explicitly remove the cyan selected-option highlight from every Dropdown and ComboBox.
+- Cyan/turquoise is still appearing inside opened dropdown lists, including the selected option in the Action Item Tipe dropdown shown in the example.
+- The previous global color change is incomplete. Fix the actual Dropdown and ComboBox controls rather than only changing buttons, screen backgrounds, or top-level theme colors.
+- Apply this to every Dropdown and ComboBox on every screen, form, popup, component, gallery row, and editable collection.
+- This includes, but is not limited to:
+  - Action Item Tipe dropdowns.
+  - Kategori and Status dropdowns.
+  - Semester and Tahun selectors.
+  - Mentor, Coach, Mentee, Line Manager, and employee selectors.
+  - Profil Pegawai add/edit form dropdowns.
+  - Performance Review forms.
+  - Coaching Karir and Coaching Tematik forms.
+  - IDP forms.
+  - Checklist Mentoring forms.
+  - Any dropdown embedded inside a gallery or reusable component.
+- For classic Power Apps Dropdown/ComboBox controls, explicitly override all available interaction properties, including:
+  - SelectionFill = RGB(18, 38, 82).
+  - SelectionColor = White.
+  - HoverFill = RGB(232, 238, 249).
+  - HoverColor = RGB(18, 38, 82) or the standard dark text color.
+  - PressedFill = RGB(218, 226, 242).
+  - PressedColor = RGB(18, 38, 82).
+  - ChevronBackground = White or the normal field background.
+  - ChevronHoverBackground = RGB(232, 238, 249).
+  - ChevronFill and ChevronHoverFill = RGB(18, 38, 82).
+  - FocusedBorderColor = RGB(18, 38, 82).
+- For modern Dropdown/ComboBox controls where classic SelectionFill properties are unavailable, replace or override the control's BasePaletteColor/accent/theme token with the dark navy palette.
+- If the modern control continues to force the default cyan selected-row color and cannot be overridden reliably, replace it with a classic Dropdown or classic ComboBox whose selected, hover, and pressed colors can be controlled explicitly.
+- Searchable person fields must remain searchable ComboBoxes after the color fix. Do not downgrade those fields to a non-searchable Dropdown merely to change their color.
+- The selected option must use dark navy with white text, or a very light navy tint with dark navy text. It must never use bright cyan/turquoise.
+- The checkmark shown beside the selected option must also use navy/white styling and must not retain a cyan accent.
+- Ensure the open dropdown menu, closed field, hover state, focused border, selected row, checkmark, and chevron all follow the same navy/neutral palette.
+- Search the generated app for existing cyan/turquoise values and default accent tokens, including RGBA/RGB/hex values and theme references, then replace or override every match used by Dropdown and ComboBox controls.
+- Do not rely on inheritance alone. Set the relevant properties directly on controls or update the reusable component/theme used by every instance.
+- Verify this visually by opening every distinct Dropdown and ComboBox type in the app. No selected option, including "Penugasan DN/LN" in the Action Item dropdown, may display a cyan/turquoise background.
+
+Concern 11: Dropdowns and ComboBoxes placed outside cards must have a white field background.
+- Dropdowns/ComboBoxes that sit directly on the light gray or blue-gray page background currently blend into the page, as shown by the Tahun selector on Monitoring Mentoring.
+- Every Dropdown or ComboBox placed outside a white card/container must use a solid white background so it is visually distinguishable from the page.
+- Apply this rule to the closed input field itself, not only to the opened option list.
+- Use styling equivalent to:
+  - Fill / field background: White or RGB(255, 255, 255).
+  - BorderColor: muted gray-blue such as RGB(200, 210, 222).
+  - BorderThickness: 1 px.
+  - Text color: dark navy or near-black.
+  - Chevron background: White.
+  - Chevron color: dark navy or muted dark gray.
+  - Hover field background: very light navy tint such as RGB(245, 248, 252), while remaining clearly distinct from the page.
+  - Focused border: dark navy RGB(18, 38, 82), without cyan/turquoise.
+  - Disabled background: a deliberate light neutral gray, not the same color as the normal page background.
+- Keep an appropriate corner radius and internal padding consistent with the rest of the app.
+- If the control is inside a white card, it may still use white fill, but it must retain a visible border so the field boundary remains clear.
+- Do not use transparent Fill for standalone Dropdown or ComboBox controls.
+- Do not allow theme inheritance to make standalone selectors the same color as the screen background.
+- Apply this consistently to all standalone filters and selectors, including:
+  - Tahun selector on Monitoring Mentoring.
+  - Year, period, quarter, status, category, and employee filters above table cards.
+  - Dropdowns in page headers, filter bars, and sections without a white card.
+  - Standalone searchable person ComboBoxes.
+- The opened option list must also use a white background, with navy selected/hover states as specified in Concern 10.
+- Verify each screen against both the normal and disabled/read-only state. The field must remain visibly separate from its surrounding background and must never reintroduce cyan/turquoise.

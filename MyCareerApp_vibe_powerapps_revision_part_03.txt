@@ -1,0 +1,65 @@
+REVISION PART 3 OF 5
+
+Concern 8: Person/employee selection dropdowns must be searchable.
+- Any dropdown used to choose a person/employee must be searchable.
+- Use a ComboBox/searchable picker, not a basic non-searchable dropdown.
+- The picker should allow searching by:
+  - Nama.
+  - NIP.
+  - Uker / Unit Kerja, if useful.
+- Show readable option text such as "Nama Pegawai - NIP - Uker".
+- Store/use the selected employee NIP as the key value.
+- Apply this to:
+  - Pimpinan Daftar Pegawai employee selector.
+  - Mentor selector in Checklist Mentoring.
+  - Mentor/Coach selector in coaching forms.
+  - Line Manager selector in Performance Review, if present.
+  - Any other employee/person selection field.
+- Searchable people picker should work well even when there are many employees.
+
+Concern 9: Checklist Mentoring evidence fields must be uploads, not URL text inputs.
+- In Checklist Mentoring form/detail, these fields must not be simple text inputs with example URLs:
+  - personalStatementFile / Personal Statement.
+  - careerPlanFile / Career Plan.
+  - buktiUploadFile / Bukti Upload.
+- Preferred behavior:
+  - Use file upload / attachment controls for each field.
+  - User can upload a file for Personal Statement.
+  - User can upload a file for Career Plan.
+  - User can upload a file for Bukti Upload.
+- If the generated Power Apps experience cannot support general file upload, use image/photo upload controls as fallback.
+- The UI labels must be readable:
+  - Personal Statement.
+  - Career Plan.
+  - Bukti Upload.
+- Show uploaded file/image preview or uploaded file name in detail view.
+- Status should be "Lengkap" only when all three required uploads exist.
+- Status should be "Belum Lengkap" when one or more uploads are missing.
+- Do not ask users to type file URLs manually.
+
+Correction: Performance Review is input by Pegawai, not by Line Manager.
+- Do not add a "+ Tambah Performance Review" button for Line Manager.
+- The employee/Pegawai Performance Review screen should have the add/create flow.
+- Line Manager Performance Review menu is for reviewing/viewing employee-submitted Performance Reviews assigned to that Line Manager.
+- Line Manager should be able to open detail and review the submitted record, but not be the primary creator unless a separate approval/review action is explicitly required.
+- Remove any debug text such as gblCurrentNIP from the top bar.
+
+Concern 10: Coaching Karir Coach menu should be list-first, with separate Add form and full Action Items CRUD.
+- The Coach-facing Coaching Karir screen must not show the create form directly on the front/list page.
+- The front page should show only the list of Coaching Karir records already created by the current coach.
+- Filter the list with:
+  - CoachingKarir.MentorNIP = gblCurrentNIP.
+- Sort the list by Tanggal descending.
+- Show columns/cards:
+  - Tanggal.
+  - Catatan.
+  - Mentee.
+  - Aksi / Detail.
+- Put the list inside a white table card with a header band.
+- At the top of the list page, provide a separate button:
+  - "+ Tambah Coaching Karir".
+- Clicking "+ Tambah Coaching Karir" should:
+  - Set coaching edit mode to false.
+  - Clear selected coaching record.
+  - Navigate to a separate Coaching Karir form screen.
+- The list page should not contain the Judul/Tanggal/Mentee/Mentor/Catatan/Simpan inputs directly.

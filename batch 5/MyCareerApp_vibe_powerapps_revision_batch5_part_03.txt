@@ -1,0 +1,28 @@
+REVISION BATCH 5 - PART 3
+
+Concern 2 (continued): Make Checklist Mentoring Delete open a functional confirmation popup.
+- The red Hapus button currently does nothing. Its OnSelect must open a confirmation modal, not immediately delete and not remain inert.
+- Use screen-local state, for example UpdateContext({locConfirmDeleteChecklist: true}).
+- Set the popup container Visible property to locConfirmDeleteChecklist.
+- Ensure the popup is above the form/detail content and is not hidden behind a parent container, clipped by overflow, or disabled by another overlay.
+- The modal must include:
+  - Full-screen semi-transparent dark overlay.
+  - Centered confirmation card.
+  - Title "Hapus Checklist Mentoring?".
+  - Warning that the record and its evidence cannot be restored.
+  - "Batal" button.
+  - Red "Ya, Hapus" button.
+- Batal or clicking the overlay closes the modal without changing data.
+- Initialize locConfirmDeleteChecklist to false in screen OnVisible and reset it when leaving the screen.
+
+Permissions and deletion:
+- Show and enable record Delete only for the employee who owns the Checklist Mentoring record, where selectedRecord.NIP = Text(gblCurrentNIP), in an authorized employee context.
+- Hide record Delete for Pimpinan, Mentor/read-only, Admin Monitoring, and other viewers unless an explicit admin-delete policy exists.
+- Re-check authorization inside "Ya, Hapus" OnSelect; do not rely only on button visibility.
+- Disable confirmation actions while deletion is running.
+- Use IfError around Remove(ChecklistMentoring, selectedRecord), adapting the actual selected-record variable name.
+- If evidence is stored in related attachments/files, remove it through the supported data-source operation or cascade behavior; do not leave orphaned records.
+- On success: Refresh(ChecklistMentoring), close the popup, clear selection/submitting state, notify success, and return to the originating list using the context-aware return navigation.
+- On failure: remain on the detail screen, reset submitting state, and show FirstError.Message. Never show false success.
+- Distinguish "Hapus file" inside edit mode from the red record-level Hapus button. File removal clears only that evidence field; record deletion removes the entire Checklist Mentoring record after confirmation.
+- Verify: click record Hapus and see the modal; test Batal; confirm deletion; then verify read-only roles cannot delete.

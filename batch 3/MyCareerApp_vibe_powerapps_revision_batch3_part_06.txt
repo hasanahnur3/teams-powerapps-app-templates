@@ -1,0 +1,38 @@
+REVISION BATCH 3 - PART 6
+
+Concern 9: Fix the employee "+ Tambah Coaching Tematik" button and open the real create form.
+- On the Pegawai Coaching Tematik list, clicking "+ Tambah Coaching Tematik" currently does not open a form and only shows an informational placeholder notification indicating that employees can submit Coaching Tematik.
+- Remove this placeholder behavior. A notification is not a substitute for a working create flow.
+- The employee Add button must initialize a new record and navigate to a real Coaching Tematik form screen.
+- Use behavior equivalent to this OnSelect flow:
+  - Set(gblCoachingTematikEditMode, false).
+  - Set(gblSelectedCoachingTematik, Blank()) or Defaults(CoachingTematik), consistently with the form implementation.
+  - Reset all Coaching Tematik input controls.
+  - Navigate(S7B_CoachingTematik_Form, ScreenTransition.Fade), or navigate to the actual employee Coaching Tematik form screen used by the app.
+- Ensure the target form screen is included in the generated app and is not hidden, missing, or replaced by another placeholder.
+- The employee create form must contain functional inputs for:
+  - Tanggal, required, using a date picker and defaulting to Today() in new mode.
+  - Mentor, required, using the genuinely searchable ComboBox specified in Concern 6.
+  - Topik, required.
+  - Hasil Coaching / Catatan, according to the CoachingTematik data model and required business flow.
+  - Any required supporting photo/evidence field defined by the data source.
+- MenteeNIP must be assigned automatically from gblCurrentNIP for a new employee-created record. Do not make the employee select or type their own identity.
+- MentorNIP must be saved from the selected Mentor ComboBox record, for example cmbMentorTematik.Selected.NIP.
+- Connect the form/save logic to the actual CoachingTematik data source.
+- In new mode, Patch Defaults(CoachingTematik). In edit mode, Patch the selected existing record rather than creating a duplicate.
+- Validate required fields before saving. Do not save when Tanggal, Mentor, or Topik is missing.
+- Only show the success notification after Patch/SubmitForm succeeds.
+- After a successful create:
+  - Refresh(CoachingTematik).
+  - Clear/reset the form, selected record, edit mode, and submitting state.
+  - Navigate back to the employee Coaching Tematik list.
+  - Ensure the newly created row immediately appears where MenteeNIP = gblCurrentNIP.
+- On failure, stay on the form and show the actual data-source error. Do not show a false success message.
+- Cancel must discard unsaved values and return to the employee Coaching Tematik list.
+- Prevent double submission by disabling Save while the operation is in progress.
+- Preserve role separation:
+  - Pegawai can create Coaching Tematik requests/sessions and select a mentor.
+  - The Coach-facing Coaching Tematik menu remains list/detail view-only and must not display an Add button or creation form.
+  - Pimpinan view remains read-only for the selected employee unless explicitly authorized otherwise.
+- Do not route the employee Add button to the Coach list/detail screen.
+- Verify the complete flow end to end: open the Pegawai Coaching Tematik list, click Add, see a blank form, select a searchable mentor, enter the required values, save, return to the list, and see the new record.

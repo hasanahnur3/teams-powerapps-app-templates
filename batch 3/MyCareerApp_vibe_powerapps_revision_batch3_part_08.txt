@@ -1,0 +1,27 @@
+REVISION BATCH 3 - PART 8
+
+Concern 11: Dropdowns and ComboBoxes placed outside cards must have a white field background.
+- Dropdowns/ComboBoxes that sit directly on the light gray or blue-gray page background currently blend into the page, as shown by the Tahun selector on Monitoring Mentoring.
+- Every Dropdown or ComboBox placed outside a white card/container must use a solid white background so it is visually distinguishable from the page.
+- Apply this rule to the closed input field itself, not only to the opened option list.
+- Use styling equivalent to:
+  - Fill / field background: White or RGB(255, 255, 255).
+  - BorderColor: muted gray-blue such as RGB(200, 210, 222).
+  - BorderThickness: 1 px.
+  - Text color: dark navy or near-black.
+  - Chevron background: White.
+  - Chevron color: dark navy or muted dark gray.
+  - Hover field background: very light navy tint such as RGB(245, 248, 252), while remaining clearly distinct from the page.
+  - Focused border: dark navy RGB(18, 38, 82), without cyan/turquoise.
+  - Disabled background: a deliberate light neutral gray, not the same color as the normal page background.
+- Keep an appropriate corner radius and internal padding consistent with the rest of the app.
+- If the control is inside a white card, it may still use white fill, but it must retain a visible border so the field boundary remains clear.
+- Do not use transparent Fill for standalone Dropdown or ComboBox controls.
+- Do not allow theme inheritance to make standalone selectors the same color as the screen background.
+- Apply this consistently to all standalone filters and selectors, including:
+  - Tahun selector on Monitoring Mentoring.
+  - Year, period, quarter, status, category, and employee filters above table cards.
+  - Dropdowns in page headers, filter bars, and sections without a white card.
+  - Standalone searchable person ComboBoxes.
+- The opened option list must also use a white background, with navy selected/hover states as specified in Concern 10.
+- Verify each screen against both the normal and disabled/read-only state. The field must remain visibly separate from its surrounding background and must never reintroduce cyan/turquoise.

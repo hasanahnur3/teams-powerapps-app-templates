@@ -1,0 +1,30 @@
+REVISION BATCH 3 - PART 4
+
+Concern 8: Display actual photos on every detail screen and add a closable image preview popup.
+- Detail screens currently show a raw URL string for photo fields, for example the "Foto Bukti" value on Detail Coaching Karir.
+- Never display a photo/image field as a raw URL, file path, JSON value, attachment object, or plain text link when the value represents an image.
+- Replace the text/label control with an actual Power Apps Image control that renders the stored image.
+- Show the image as a clean thumbnail or preview inside the detail card:
+  - Preserve the image aspect ratio.
+  - Use ImagePosition.Fit so the image is not cropped or stretched.
+  - Use a reasonable maximum height and width so it does not dominate the detail page.
+  - Add a subtle border and rounded visual container consistent with the app design.
+  - Make it visually clear that the thumbnail can be clicked to enlarge.
+- When the user clicks the thumbnail, open a large in-app image popup/lightbox on top of the current screen.
+- The popup must include:
+  - A semi-transparent dark overlay covering the screen behind it.
+  - A centered white or dark-neutral modal container.
+  - The selected photo displayed as large as practical while preserving its aspect ratio.
+  - A clearly visible Close/X button.
+  - Optional "Tutup" button for additional clarity.
+- Clicking Close/X, "Tutup", or the overlay outside the image should close the popup and keep the user on the same detail screen.
+- Use popup state variables equivalent to:
+  - Thumbnail OnSelect: Set(gblPreviewImage, the current image value); Set(gblShowImagePreview, true).
+  - Popup Visible: gblShowImagePreview.
+  - Large Image.Image: gblPreviewImage.
+  - Close action: Set(gblShowImagePreview, false); Set(gblPreviewImage, Blank()).
+- Reset/close the popup whenever the user leaves the detail screen so it does not remain open on another screen.
+- The Image property must correctly handle the app's real storage format, including native image values, uploaded media, SharePoint image columns, attachments, or valid image URLs. Use the correct image/media value rather than converting it to display text.
+- Do not use placeholder URLs such as example.com in the final UI or as proof that image rendering works.
+- If an image is missing, show a polished empty state such as "Foto belum tersedia" with a neutral placeholder; do not show Blank(), broken-image icons, or an empty URL.
+- If the stored value exists but cannot be loaded, show a controlled "Foto tidak dapat ditampilkan" state instead of exposing the underlying URL or formula error.

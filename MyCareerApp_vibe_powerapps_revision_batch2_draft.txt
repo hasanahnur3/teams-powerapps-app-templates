@@ -1,0 +1,77 @@
+Revision batch 2 for MyCareerApp Vibe Power Apps.
+
+Concern 1: Remove the bright cyan/turquoise hover color everywhere.
+- There are still hover states using a bright cyan/turquoise fill, for example on the "Kembali ke Home" button.
+- This color must be removed across the entire app.
+- Do not use bright cyan/turquoise for:
+  - HoverFill.
+  - PressedFill.
+  - SelectedFill.
+  - FocusedBorderColor/focus state if it creates the same cyan effect.
+  - Active navigation buttons.
+  - Menu buttons.
+  - Back buttons.
+  - Table row hover/selected states.
+  - Action buttons.
+  - Cards that behave like buttons.
+- Replace the cyan/turquoise interaction color with a professional enterprise palette:
+  - Default button fill: white or very light blue-gray.
+  - Default text/icon color: dark navy or near-black.
+  - Hover fill: soft navy tint, for example RGB(232, 238, 249).
+  - Pressed fill: slightly deeper navy tint, for example RGB(218, 226, 242).
+  - Selected/active fill: dark navy RGB(18, 38, 82) with white text, or subtle navy tint with navy text.
+  - Border: muted gray-blue, for example RGB(200, 210, 222).
+- Back buttons such as "Kembali ke Home" should not turn cyan on hover.
+- Use consistent hover styling across all screens, including Home, Profil Pegawai, Performance Review, Coaching Karir, Coaching Tematik, IDP, Checklist Mentoring, Daftar Pegawai, and Admin Monitoring.
+- If the app has theme tokens, define the hover color once and reuse it everywhere.
+
+Concern 2: Remove gray title bars inside Profil Pegawai table cards.
+- On Profil Pegawai, table section cards should not have an extra gray background bar behind the section title.
+- Examples: the "Pendidikan" card currently has a gray header strip behind the title and Tambah button. Remove that gray strip.
+- Keep each table inside a white card, but make the section header area white as part of the same card.
+- Section header layout:
+  - White background.
+  - Title on the left, for example "Pendidikan".
+  - "+ Tambah" button on the right.
+  - Optional thin divider under the header.
+  - No additional gray fill behind the title.
+- Apply this to every Profil Pegawai table section:
+  - Pendidikan.
+  - Sertifikasi Tier 1.
+  - Sertifikasi Tier 2.
+  - PMK.
+  - Kum Mengajar.
+  - Penugasan.
+  - Prestasi.
+  - Kepanitiaan.
+  - Plt / Rangkap Jabatan.
+- Table column header rows may still use a very subtle tint if needed, but the section title bar itself should not be gray.
+
+Concern 3: Profil Pegawai add forms must actually save and immediately appear in the table.
+- After adding data such as Pendidikan, the success message appears but the new row does not appear in the table. Fix the data flow.
+- Do not show a success notification unless the Patch/SubmitForm actually succeeds.
+- For each Profil Pegawai section add form:
+  - Patch to the correct data source/table for that section.
+  - Set NIP to the active employee NIP.
+  - In normal employee mode, active employee NIP = gblCurrentNIP.
+  - In Pimpinan/selected employee mode, active employee NIP = gblSubjectNIP.
+  - Refresh the same data source after successful save.
+  - Navigate back to Profil Pegawai.
+  - Ensure the table/gallery Items property reads from that same refreshed data source.
+  - Ensure the table/gallery filters by the same NIP value used during save.
+- Example for Pendidikan:
+  - Add form must Patch to Profil_Pendidikan.
+  - Saved record must include NIP = active employee NIP.
+  - Profil Pegawai Pendidikan table Items must filter Profil_Pendidikan where NIP = active employee NIP.
+  - After save, Refresh(Profil_Pendidikan) then return to Profil Pegawai so the row appears.
+- Apply the same rule to:
+  - Profil_Pendidikan.
+  - Profil_SertifikasiTier1.
+  - Profil_SertifikasiTier2.
+  - Profil_PMK.
+  - Profil_KumMengajar.
+  - Profil_Penugasan.
+  - Profil_Prestasi.
+  - Profil_Kepanitiaan.
+  - Profil_Plt.
+- Also verify that Edit forms patch the selected existing record, not Defaults(), when edit mode is true.

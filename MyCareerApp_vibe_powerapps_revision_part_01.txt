@@ -1,0 +1,59 @@
+REVISION PART 1 OF 5
+
+Draft revision notes for MyCareerApp Vibe Power Apps.
+
+Concern 1: Make all user-facing attribute labels readable.
+- Do not show camelCase field names in table headers, form labels, cards, or detail screens.
+- Convert field names into readable Indonesian Title Case labels.
+- Examples:
+  - jenjang -> Jenjang
+  - universitas -> Universitas
+  - programStudi -> Program Studi
+  - tahunLulus -> Tahun Lulus
+  - namaSertifikat -> Nama Sertifikat
+  - penerbit -> Penerbit
+  - tglTerbit -> Tanggal Terbit
+  - tglBerakhir -> Tanggal Berakhir
+  - noSertifikat -> No. Sertifikat
+- Apply this rule across all screens, especially Profil Pegawai tables and edit/detail forms.
+
+Concern 2: Remove internal/debug variables from the UI.
+- Do not show internal variable names or debug text to users.
+- Remove or hide labels such as "gblCurrentNIP: 198701152010011001".
+- Users should only see polished business labels and values, not Power Apps variable names.
+
+Concern 3: Replace the current hover/selected button color.
+- The bright cyan/turquoise hover color is not acceptable.
+- Replace it across the whole app.
+- Do not use bright cyan/turquoise for hover, pressed, selected, active, or focused menu states.
+- Use a professional enterprise palette instead:
+  - Default menu button fill: very light blue-gray or white.
+  - Hover fill: soft navy tint, for example RGB(232, 238, 249) or similar.
+  - Selected/active fill: dark navy RGB(18, 38, 82) with white text, or a subtle navy tint with navy text.
+  - Border: muted gray-blue.
+  - Text: dark navy or near-black.
+- Apply this to all menu buttons, navigation buttons, row hover states, selected states, and interactive cards.
+- Keep the visual style consistent across MENU PEGAWAI, MENU LINE MANAGER, MENU MENTOR / COACH, MENU PIMPINAN, MENU ADMIN, table rows, and action buttons.
+
+Concern 4: Put every table inside a proper card/container.
+- Do not place table headers and rows directly on the gray page background.
+- Every table/list/gallery must sit inside a white card.
+- The table card should use:
+  - White fill.
+  - Subtle border, for example RGB(225, 223, 221).
+  - 8 px corner radius.
+  - Internal padding.
+  - Optional subtle shadow.
+  - A distinct header band, for example very light gray or light blue-gray.
+  - Row dividers inside the card.
+- Apply this to all table screens:
+  - Daftar Pegawai / Pimpinan employee selection.
+  - Profil Pegawai tables.
+  - Performance Review lists.
+  - Coaching Karir lists.
+  - Coaching Tematik lists.
+  - IDP table.
+  - Checklist Mentoring list.
+  - Admin Monitoring Mentoring table.
+- The page background can remain light gray, but the table itself must be visually grouped in a card.
+- Action buttons inside table rows should be compact and consistently styled.

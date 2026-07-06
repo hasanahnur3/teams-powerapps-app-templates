@@ -1,0 +1,42 @@
+REVISION BATCH 4 - PART 2
+
+Concern 2: Upload controls must start empty and only contain files explicitly selected by the user.
+- File/photo upload fields currently appear pre-populated when a new form opens, for example generated names such as personal-statement-1783309664823.jpg, career-plan-1783309667989.jpg, and bukti-upload-1783309668740.jpg.
+- This is incorrect. Do not generate, simulate, prefill, or attach a file automatically.
+- In every new/add form, each file/photo field must start with no selected file and no filename.
+- A file may only appear after the user clicks Upload File / Upload Photo and explicitly selects or captures a file using the device's native picker.
+- Upload buttons must open the appropriate native file/image picker supported by Power Apps.
+- Remove all placeholder media, sample URLs, dummy blobs, generated file objects, timestamp filenames, and formulas that create mock uploaded files during OnVisible, OnStart, Reset, Default, or form initialization.
+- Do not interpret clicking the Upload button itself as a successful upload. Selection is complete only when the upload/media control returns a real user-selected file.
+- New/add mode behavior:
+  - Reset every upload/media control when the form opens.
+  - Clear temporary upload variables and collections.
+  - Show a neutral empty state such as "Belum ada file dipilih" or "Pilih file dari perangkat Anda".
+  - Do not display any filename, preview, success icon, or completed status before selection.
+- Edit mode behavior:
+  - Show the existing saved file/photo only when the current record genuinely contains one.
+  - Clearly distinguish an existing saved file from a newly selected replacement.
+  - Do not overwrite or remove the existing file unless the user chooses Replace/Ganti or Hapus.
+  - If the record has no saved file, keep the control empty exactly like new mode.
+- After a real selection:
+  - Display the actual selected filename, not a fabricated timestamp filename.
+  - For images, show an actual preview thumbnail.
+  - Provide Replace/Ganti and Remove/Hapus actions before Save.
+  - Removing a newly selected file must return the field to its empty state.
+- Use real Power Apps upload-capable controls, such as Attachments for file attachments or Add picture/AddMediaButton for image columns, according to the actual data-source field type.
+- Do not use a button and label that only pretend a file was selected.
+- Save/Patch must use the actual file/media returned by the control. Never save only a fabricated filename or local-looking path.
+- Validate required upload fields at Save time. If required and still empty, block Save and tell the user which file must be selected.
+- Do not mark Checklist Mentoring as "Lengkap" unless all required evidence files were genuinely selected/saved or already exist on the edited record.
+- Apply this globally to every upload field, including:
+  - Checklist Mentoring: Personal Statement, Career Plan, and Bukti Upload.
+  - Performance Review: Foto Bukti/supporting evidence.
+  - Coaching Karir and Coaching Tematik evidence photos.
+  - Mentoring session evidence.
+  - Profil Pegawai certificates or supporting documents.
+  - IDP evidence and every other file/photo upload control in the app.
+- When Save succeeds, persist the real selected files and clear temporary upload state before the next new form is opened.
+- When Cancel is clicked, discard unsaved selections and reset all upload controls so they cannot leak into another record.
+- When returning to an add form after saving or canceling, confirm that no file from the previous form remains selected.
+- Detail screens must display only genuinely saved files/photos and follow the thumbnail/popup behavior from the previous revision.
+- Verify each upload flow end to end: open a new form and see empty fields; click Upload; select a real local file; see its real name/preview; save; reopen the record and see the persisted file; open another new form and confirm it is empty again.

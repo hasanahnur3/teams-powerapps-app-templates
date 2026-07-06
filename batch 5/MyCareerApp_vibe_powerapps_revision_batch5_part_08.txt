@@ -1,0 +1,13 @@
+REVISION BATCH 5 - PART 8
+
+Concern 3 (continued): Append these final rows to the same Pegawai dataset from the previous parts. Do not create another table, do not duplicate existing rows, and keep Title/NIP as text keys. After loading, verify row count and required fields.
+
+```csv
+"18544","18544","MARCHENDA FAYZA MADJID","PKID","","","","Organik","2026-01-14","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"H8737","H8737","AULIA RIDHO VERDIKHA","KEPID","","","","PKWT","2026-01-22","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"110203","110203","Maulida Darusma Yanti (S)","KMPI","","","","Swakelola","2025-03-13","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"112350","112350","Karina Hernawati Santoso (THI)","KEPID","","","","Vendor","2025-05-09","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"17230","17230","M. ARIEF WAHYUDI GINTING","KMB","","","","Organik","2025-10-30","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"113164","113164","Biyan Farhansyah (THI)","MKAM","","","","Vendor","2025-07-23","","TRUE","FALSE","FALSE","FALSE","FALSE"
+"18698","18698","INDIRA PUSPITA MARGARIZA","KEPID","","","","Organik","2026-02-11","","TRUE","FALSE","FALSE","FALSE","FALSE"
+```

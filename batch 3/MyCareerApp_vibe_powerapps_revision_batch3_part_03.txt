@@ -1,0 +1,36 @@
+REVISION BATCH 3 - PART 3
+
+Concern 7: Fix the "+ Tambah Performance Review" button and implement the real employee create flow.
+- Clicking "+ Tambah Performance Review" currently only shows the placeholder notification "Form tambah Performance Review tersedia untuk pegawai." This is not a completed action and must be removed.
+- Do not use Notify as a substitute for navigation or an unimplemented form.
+- The button on the Pegawai Performance Review list must open a real new-record form.
+- Use behavior equivalent to the following OnSelect flow:
+  - Set(gblPREditMode, false).
+  - Set(gblSelectedPR, Blank()).
+  - NewForm(the Performance Review form control).
+  - Navigate to the Performance Review add/edit form screen.
+- Ensure the form screen and form control actually exist and are connected to the PerformanceReview data source. Do not navigate to a placeholder screen.
+- In new mode, the form Item should use Defaults(PerformanceReview), and in edit mode it should use gblSelectedPR.
+- The employee must be able to complete the required Performance Review fields:
+  - Tahun.
+  - Semester.
+  - Tanggal, using a date picker and defaulting to Today() for a new record.
+  - Line Manager, using a working searchable employee ComboBox.
+  - Goal.
+  - Reality.
+  - Options.
+  - Will.
+  - Foto Bukti / supporting evidence upload.
+- NIP must be set automatically to gblCurrentNIP for a new employee submission. Do not ask the employee to type their own NIP.
+- The form must provide functional Save and Cancel buttons.
+- Save must validate all required fields, create the record in PerformanceReview, and only show a success notification after the data operation succeeds.
+- After successful save:
+  - Refresh(PerformanceReview).
+  - Reset the form and selected-record/edit-mode variables as appropriate.
+  - Navigate back to the employee Performance Review list.
+  - Ensure the new row immediately appears in the list filtered by NIP = gblCurrentNIP.
+- On save failure, remain on the form and show the real error message. Never show a false success notification.
+- Cancel must discard unsaved changes and return to the employee Performance Review list.
+- Keep the "+ Tambah Performance Review" button visible only in the employee/Pegawai flow.
+- Do not show this Add button in the Line Manager or Pimpinan read/review flows; those roles should open submitted records for detail/review instead of creating an employee submission.
+- Verify the full interaction end to end: click Add, open a blank form, enter values, save, return to the list, and see the newly created record.

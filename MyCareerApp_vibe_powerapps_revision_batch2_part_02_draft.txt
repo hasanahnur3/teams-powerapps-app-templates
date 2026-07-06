@@ -1,0 +1,37 @@
+REVISION BATCH 2 - PART 2 DRAFT
+
+Concern 4: Any form field whose label/title contains "Tanggal" must be a date field.
+- Across the entire app, any form input with a label/title containing "Tanggal" must use a date picker/date field, not a text input.
+- Default value should be Today() for new records.
+- For edit forms, default value should be the existing record's date value.
+- If the existing record date is blank in edit mode, fall back to Today().
+- Use Indonesian date display format where appropriate, for example dd/mm/yyyy or dd mmm yyyy.
+- In Power Apps terms, use DatePicker controls or native date input controls.
+- Suggested behavior:
+  - NewForm mode: DefaultDate / DefaultSelectedDate = Today().
+  - EditForm mode: DefaultDate / DefaultSelectedDate = Parent.Default or the selected record date.
+  - Patch/SubmitForm should save DatePicker.SelectedDate as a date value.
+- Apply this to all screens and forms, including:
+  - Profil Pegawai forms.
+  - Pendidikan and certification date fields.
+  - Tanggal Terbit.
+  - Tanggal Berakhir.
+  - Tanggal Pelaksanaan.
+  - Tanggal Pengisian.
+  - Tanggal Performance Review.
+  - Tanggal Coaching Karir.
+  - Tanggal Coaching Tematik.
+  - Start Date / Completion Date / End Date fields when they represent dates.
+  - Periode Mulai / Periode Selesai when they represent dates.
+- Also treat date-like internal field names as date fields even if the visible label is not exactly "Tanggal", for example:
+  - tglTerbit.
+  - tglBerakhir.
+  - tanggalReview.
+  - tanggalCoaching.
+  - startDate.
+  - endDate.
+  - completionDate.
+- Do not generate text boxes for date inputs.
+- Save/Patch date fields as date values, not as formatted text strings.
+- Tables/details may display dates as formatted text, but forms must use date controls.
+- Keep labels readable in Title Case, for example "Tanggal Terbit", "Tanggal Berakhir", and "Tanggal Coaching", not camelCase labels.

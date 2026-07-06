@@ -1,0 +1,60 @@
+REVISION BATCH 4 - PART 4
+
+Concern 4: Add functional, permission-aware Delete actions with confirmation popups to detail screens.
+- Detail Performance Review and Detail Coaching Tematik currently have no Delete button. Add a real Delete action to both screens.
+- Keep/delete-fix the Coaching Karir Delete action so it is visible only when the current user is the coach who owns that coaching record.
+- Never show Delete merely because the user can view a detail record. Visibility and the delete formula must both enforce authorization.
+
+Performance Review permissions:
+- Show Delete only in the employee-owned detail flow when the record NIP equals Text(gblCurrentNIP).
+- Hide Delete for Line Manager, Pimpinan, Admin/read-only, and other users who are only reviewing the employee submission.
+- Do not allow a viewer to delete by triggering the formula indirectly even if the button is hidden.
+
+Coaching Tematik permissions:
+- Coaching Tematik is created by the employee/mentee. Show Delete only when the current user owns the record, for example MenteeNIP = Text(gblCurrentNIP), and the screen is not in Pimpinan/Coach/read-only context.
+- Hide Delete in the Coach-facing Coaching Tematik detail because that flow is view-only.
+- Hide Delete for Pimpinan and other monitoring/view-only roles.
+
+Coaching Karir permissions:
+- Show Delete only when the current user is the coach for the selected record:
+  - gblSelectedCoachingKarir.MentorNIP = Text(gblCurrentNIP).
+  - The detail was opened in Coach mode/context.
+- A mentee must not see or execute Delete for Coaching Karir.
+- Pimpinan, Line Manager, Admin, or another coach must not see or execute Delete.
+- When deleting Coaching Karir, remove its related ActionItem records where CoachingID equals the selected Coaching Karir ID before removing the parent record, or use a safe supported cascade strategy.
+
+Confirmation popup behavior:
+- Clicking Delete must not immediately remove data. It must open an in-app confirmation modal.
+- The popup must include:
+  - A dark semi-transparent full-screen overlay.
+  - A centered confirmation card above all content.
+  - Clear title such as "Hapus Performance Review?", "Hapus Coaching Tematik?", or "Hapus Coaching Karir?".
+  - Warning that deleted data cannot be restored.
+  - Secondary "Batal" button.
+  - Destructive red "Ya, Hapus" button.
+- Batal or clicking the overlay closes the popup without changing data.
+- The popup must reset to closed whenever the detail screen opens or the user navigates away.
+- Use a screen-specific local variable such as locConfirmDelete, avoiding popup state leaking between screens.
+
+Delete execution:
+- Re-check ownership/authorization inside the "Ya, Hapus" OnSelect formula before Remove; do not rely only on button visibility.
+- Disable both actions while deletion is in progress to prevent duplicate requests.
+- Use IfError around every Remove/RemoveIf operation.
+- Only after successful deletion:
+  - Refresh the relevant data source and related child source where applicable.
+  - Close the popup and clear submitting/selected-record state.
+  - Show a success notification.
+  - Return to the originating list using the context-aware navigation defined in Batch 4 Part 1.
+- On failure:
+  - Keep the user on the detail screen.
+  - Close or keep the popup in a recoverable state.
+  - Reset the submitting flag.
+  - Show the actual FirstError.Message.
+  - Never display a false success notification.
+- Suggested operations:
+  - Performance Review: Remove(PerformanceReview, gblSelectedPR).
+  - Coaching Tematik: Remove(CoachingTematik, gblSelectedCoachingTematik).
+  - Coaching Karir: RemoveIf(ActionItem, CoachingID = gblSelectedCoachingKarir.ID), then Remove(CoachingKarir, gblSelectedCoachingKarir).
+- Adapt variable names while preserving these ownership rules.
+- Style Delete as a red destructive action without cyan/turquoise states.
+- Verify authorized and unauthorized paths separately for Pegawai, Coach, Line Manager, Pimpinan, and monitoring roles.

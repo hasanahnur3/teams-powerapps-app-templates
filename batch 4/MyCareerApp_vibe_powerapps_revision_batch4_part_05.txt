@@ -1,0 +1,49 @@
+REVISION BATCH 4 - PART 5
+
+Concern 5: Seed valid dummy Performance Review records for Budi Santoso's Line Manager menu.
+- The Line Manager Performance Review list is empty when the active user is Budi Santoso.
+- Add realistic test records to the draft/test PerformanceReview data source so Budi has employee submissions to review.
+- The Line Manager list is filtered by:
+  - PerformanceReview.LineManagerNIP = Text(gblCurrentNIP).
+- Therefore every dummy row intended for Budi's Line Manager menu must use:
+  - LineManagerNIP = "198701152010011001".
+  - This is Budi Santoso's NIP in the current generated test data.
+- Do not incorrectly set the record NIP to Budi merely because Budi is viewing the list. The PerformanceReview.NIP field must identify the subordinate employee who submitted the review.
+- Create at least two dummy records belonging to existing Pegawai records, for example:
+
+Dummy record 1:
+- NIP: "198305202006021002".
+- Employee: Siti Rahmawati.
+- LineManagerNIP: "198701152010011001".
+- Tahun: 2026.
+- Semester: 1.
+- Tanggal: a valid date value in 2026, not formatted text.
+- Goal: "Meningkatkan kualitas analisis dan menyelesaikan target pengembangan kompetensi semester pertama."
+- Reality: "Sebagian besar target kerja telah tercapai dan program pengembangan sedang berjalan."
+- Options: "Mengikuti pelatihan lanjutan dan mendapatkan exposure melalui proyek lintas unit."
+- Will: "Menyelesaikan rencana pengembangan dan melakukan evaluasi rutin bersama Line Manager."
+- Status: "Menunggu Review" or the equivalent valid choice in the existing schema.
+
+Dummy record 2:
+- NIP: "197912112002121003".
+- Employee: Agus Wijaya.
+- LineManagerNIP: "198701152010011001".
+- Tahun: 2025.
+- Semester: 2.
+- Tanggal: a valid date value in 2025.
+- Goal, Reality, Options, and Will: populate with realistic non-empty review text.
+- Status: use a valid status such as "Disetujui" if supported by the existing data model.
+- If either sample NIP does not exist in the active Pegawai draft table, use another existing subordinate NIP but keep Budi's LineManagerNIP unchanged.
+- Generate a unique Title/key for each record using the same pattern as the existing PerformanceReview records, for example NIP_Tahun_Semester_ID or another collision-safe key.
+- Use the current PerformanceReview schema exactly. Populate Nilai/Ringkasan only if those columns already exist; do not invent incompatible columns.
+- Foto Bukti may remain blank for dummy data unless a real bundled test image/media value is available. Do not use example.com URLs, fake local paths, fabricated upload objects, or filenames that pretend a file was uploaded.
+- Seed the records once only. Use stable unique keys or LookUp checks so app startup/navigation does not create duplicates every time.
+- If the app uses draft in-memory tables, add these rows to the same draft collection/table consumed by the Line Manager gallery.
+- If the app uses the connected PerformanceReview table, create the test records in that same table and Refresh(PerformanceReview) afterward.
+- Do not create a separate dummy collection unless the gallery is also deliberately configured to read it.
+- The Line Manager gallery Items must remain equivalent to:
+  - Sort(Filter(PerformanceReview, LineManagerNIP = Text(gblCurrentNIP)), Value(Tahun) * 10 + Value(Semester), SortOrder.Descending).
+- Resolve employee names by looking up each record NIP in Pegawai. The rows should display Siti Rahmawati/Agus Wijaya, not Budi Santoso as the submitting employee.
+- Each dummy row must support opening the normal Performance Review detail screen.
+- In Budi's Line Manager context, detail must remain review/read-only according to role permissions; Budi must not receive the employee-owner Delete action.
+- Verify with gblCurrentNIP = "198701152010011001": open MENU LINE MANAGER > Performance Review and confirm the seeded records appear with Tahun, Semester, Tanggal, employee name, Status, and a working Detail action.

@@ -1,0 +1,37 @@
+REVISION BATCH 3 - PART 7
+
+Concern 10: Explicitly remove the cyan selected-option highlight from every Dropdown and ComboBox.
+- Cyan/turquoise is still appearing inside opened dropdown lists, including the selected option in the Action Item Tipe dropdown shown in the example.
+- The previous global color change is incomplete. Fix the actual Dropdown and ComboBox controls rather than only changing buttons, screen backgrounds, or top-level theme colors.
+- Apply this to every Dropdown and ComboBox on every screen, form, popup, component, gallery row, and editable collection.
+- This includes, but is not limited to:
+  - Action Item Tipe dropdowns.
+  - Kategori and Status dropdowns.
+  - Semester and Tahun selectors.
+  - Mentor, Coach, Mentee, Line Manager, and employee selectors.
+  - Profil Pegawai add/edit form dropdowns.
+  - Performance Review forms.
+  - Coaching Karir and Coaching Tematik forms.
+  - IDP forms.
+  - Checklist Mentoring forms.
+  - Any dropdown embedded inside a gallery or reusable component.
+- For classic Power Apps Dropdown/ComboBox controls, explicitly override all available interaction properties, including:
+  - SelectionFill = RGB(18, 38, 82).
+  - SelectionColor = White.
+  - HoverFill = RGB(232, 238, 249).
+  - HoverColor = RGB(18, 38, 82) or the standard dark text color.
+  - PressedFill = RGB(218, 226, 242).
+  - PressedColor = RGB(18, 38, 82).
+  - ChevronBackground = White or the normal field background.
+  - ChevronHoverBackground = RGB(232, 238, 249).
+  - ChevronFill and ChevronHoverFill = RGB(18, 38, 82).
+  - FocusedBorderColor = RGB(18, 38, 82).
+- For modern Dropdown/ComboBox controls where classic SelectionFill properties are unavailable, replace or override the control's BasePaletteColor/accent/theme token with the dark navy palette.
+- If the modern control continues to force the default cyan selected-row color and cannot be overridden reliably, replace it with a classic Dropdown or classic ComboBox whose selected, hover, and pressed colors can be controlled explicitly.
+- Searchable person fields must remain searchable ComboBoxes after the color fix. Do not downgrade those fields to a non-searchable Dropdown merely to change their color.
+- The selected option must use dark navy with white text, or a very light navy tint with dark navy text. It must never use bright cyan/turquoise.
+- The checkmark shown beside the selected option must also use navy/white styling and must not retain a cyan accent.
+- Ensure the open dropdown menu, closed field, hover state, focused border, selected row, checkmark, and chevron all follow the same navy/neutral palette.
+- Search the generated app for existing cyan/turquoise values and default accent tokens, including RGBA/RGB/hex values and theme references, then replace or override every match used by Dropdown and ComboBox controls.
+- Do not rely on inheritance alone. Set the relevant properties directly on controls or update the reusable component/theme used by every instance.
+- Verify this visually by opening every distinct Dropdown and ComboBox type in the app. No selected option, including "Penugasan DN/LN" in the Action Item dropdown, may display a cyan/turquoise background.
