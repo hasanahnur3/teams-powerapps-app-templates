@@ -3,6 +3,18 @@ Screens:
     Properties:
       Fill: =RGBA(255, 255, 255, 1)
       LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+      OnVisible: |-
+        =If(
+            IsEmpty(colNonFormNavigationHistory) ||
+            Last(colNonFormNavigationHistory).ScreenName <> App.ActiveScreen.Name,
+            Collect(
+                colNonFormNavigationHistory,
+                {
+                    ScreenName: App.ActiveScreen.Name,
+                    ScreenRef: App.ActiveScreen
+                }
+            )
+        );
     Children:
       - PRTableScreenContainer:
           Control: GroupContainer@1.5.0
@@ -23,13 +35,12 @@ Screens:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
                 Properties:
-                  Fill: =RGBA(9, 33, 98, 1)
+                  Fill: =RGBA(31, 48, 112, 1)
                   FillPortions: =0
                   Height: =75
                   LayoutAlignItems: =LayoutAlignItems.Center
                   LayoutDirection: =LayoutDirection.Horizontal
-                  LayoutMinHeight: =16
-                  LayoutMinWidth: =16
+                  LayoutMinHeight: =75
                   PaddingBottom: =8
                   PaddingLeft: =8
                   PaddingRight: =8
@@ -38,18 +49,32 @@ Screens:
                   RadiusBottomRight: =8
                   RadiusTopLeft: =8
                   RadiusTopRight: =8
+                  Width: =Parent.Width
                 Children:
                   - BtnBackPRTable:
                       Control: ModernText@1.0.0
                       Properties:
-                        Align: =Align.Center
                         AutoHeight: =true
+                        Align: =Align.Center
                         Color: =RGBA(255, 255, 255, 1)
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
                         Height: =40
-                        OnSelect: =Back()
-                        PaddingLeft: =20
+                        OnSelect: |-
+                              =If(
+                                  IsMatch(App.ActiveScreen.Name, "form", MatchOptions.IgnoreCase),
+                                  If(
+                                      !IsEmpty(colNonFormNavigationHistory),
+                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                      Back()
+                                  ),
+                                  If(
+                                      CountRows(colNonFormNavigationHistory) > 1,
+                                      Remove(colNonFormNavigationHistory, Last(colNonFormNavigationHistory));
+                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                      Back()
+                                  )
+                              )
                         Size: =22
                         Text: ="‹"
                         Width: =40
@@ -63,13 +88,33 @@ Screens:
                         FontWeight: =FontWeight.Bold
                         Height: =40
                         Size: =18
-                        Text: ="MyCareerApp"
+                        Text: =If(Coalesce(gblPimpinanView, false), Coalesce(LookUp(Pegawai, Title = Text(gblSubjectNIP), Nama), Text(gblSubjectNIP), "-") & " (" & Text(gblSubjectNIP) & ")", "MyCareerApp")
                   - HeaderSpacerPRTable:
-                      Control: Rectangle@2.3.0
+                      Control: ModernText@1.0.0
                       Properties:
-                        Fill: =RGBA(0, 0, 0, 0)
+                        AccessibleLabel: ="Kembali ke Homepage"
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
                         Height: =40
+                        OnSelect: |-
+                          =Set(gblPimpinanView, false);
+                          Set(gblSubjectNIP, Blank());
+                          Set(gblChecklistAdminView, false);
+                          Clear(colNonFormNavigationHistory);
+                          Navigate(S1_Homepage, ScreenTransition.Fade)
+                        Size: =20
+                        Text: ="⌂"
                         Width: =40
+            - PRTableHeaderShadow:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =RGBA(0, 0, 0, 0)
+                  FillPortions: =0
+                  Height: =0
+                  LayoutMinHeight: =0
+                  Width: =Parent.Width
             - PRTableMain:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
@@ -91,11 +136,11 @@ Screens:
                       Properties:
                         DropShadow: =DropShadow.None
                         FillPortions: =0
-                        Height: =If(Parent.Width < 600, 96, 44)
+                        Height: =If(Parent.Width < 600, 148, If(Parent.Width < 900, 96, 44))
                         LayoutAlignItems: =LayoutAlignItems.Center
                         LayoutDirection: =LayoutDirection.Horizontal
                         LayoutGap: =12
-                        LayoutMinHeight: =If(Parent.Width < 600, 96, 44)
+                        LayoutMinHeight: =If(Parent.Width < 600, 148, If(Parent.Width < 900, 96, 44))
                         LayoutMinWidth: =16
                         LayoutWrap: =true
                       Children:
@@ -110,6 +155,18 @@ Screens:
                               LayoutMinWidth: =220
                               Size: =18
                               Text: ="Daftar Performance Review"
+                        - TxtSearchPR:
+                            Control: TextInput@0.0.54
+                            Properties:
+                              AccessibleLabel: ="Cari Performance Review"
+                              BorderColor: =RGBA(200, 198, 196, 1)
+                              Fill: =RGBA(255, 255, 255, 1)
+                              Height: =40
+                              LayoutMinWidth: =If(Parent.Width < 600, Parent.Width, 240)
+                              Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                              Placeholder: ="Cari tahun, semester, tanggal, atau line manager..."
+                              TriggerOutput: ='TextInputCanvas.TriggerOutput'.Keypress
+                              Width: =If(Parent.Width < 600, Parent.Width, 280)
                         - BtnAddPRTable:
                             Control: ModernText@1.0.0
                             Properties:
@@ -156,7 +213,7 @@ Screens:
                         RadiusBottomRight: =8
                         RadiusTopLeft: =8
                         RadiusTopRight: =8
-                        Visible: =Coalesce(gblPimpinanView, false)
+                        Visible: =false
                       Children:
                         - PRContextNama:
                             Control: GroupContainer@1.5.0
@@ -255,7 +312,7 @@ Screens:
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Bold
                                     Size: =11
-                                    Text: ="SEMESTER"
+                                    Text: ="PERFORMANCE REVIEW"
                               - ValContextSemester:
                                   Control: ModernText@1.0.0
                                   Properties:
@@ -381,7 +438,7 @@ Screens:
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Bold
                                     Size: =11
-                                    Text: ="Semester"
+                                    Text: ="Performance Review"
                                     Width: =(Parent.Width - 24) * 0.13
                               - HeaderTanggalPR:
                                   Control: ModernText@1.0.0
@@ -419,19 +476,44 @@ Screens:
                               Fill: =RGBA(255, 255, 255, 1)
                               FillPortions: =1
                               Items: |-
-                                =Sort(
-                                    Filter(
-                                        PerformanceReview,
-                                        NIP = Text(
+                                =With(
+                                    {
+                                        keyword: Lower(Trim(TxtSearchPR.Value)),
+                                        targetNIP: Text(
                                             If(
                                                 Coalesce(gblPimpinanView, false),
                                                 gblSubjectNIP,
                                                 gblCurrentNIP
                                             )
                                         )
-                                    ),
-                                    Value(Tahun) * 10 + Value(Semester),
-                                    SortOrder.Descending
+                                    },
+                                    Sort(
+                                        Filter(
+                                            PerformanceReview As PRRecord,
+                                            PRRecord.NIP = targetNIP &&
+                                            (
+                                                IsBlank(keyword) ||
+                                                keyword in Lower(Text(PRRecord.Tahun)) ||
+                                                keyword in Lower("Tahun " & Text(PRRecord.Tahun)) ||
+                                                keyword in Lower(Text(PRRecord.Semester)) ||
+                                                keyword in Lower("Performance Review " & Text(PRRecord.Semester)) ||
+                                                keyword in Lower(Text(PRRecord.Tanggal, "[$-id-ID]dd mmmm yyyy")) ||
+                                                keyword in Lower(Coalesce(PRRecord.LineManagerNIP, "")) ||
+                                                keyword in Lower(
+                                                    Coalesce(
+                                                        LookUp(
+                                                            Pegawai As PegawaiRecord,
+                                                            PegawaiRecord.Title = PRRecord.LineManagerNIP,
+                                                            PegawaiRecord.Nama
+                                                        ),
+                                                        ""
+                                                    )
+                                                )
+                                            )
+                                        ),
+                                        Value(Tahun) * 10 + Value(Semester),
+                                        SortOrder.Descending
+                                    )
                                 )
                               LayoutMinHeight: =16
                               LayoutMinWidth: =16
@@ -489,7 +571,7 @@ Screens:
                                     Height: =26
                                     OnSelect: =Select(Parent)
                                     Size: =11
-                                    Text: =If(App.Width < 1200, "Semester " & Text(ThisItem.Semester), Text(ThisItem.Semester))
+                                    Text: =If(App.Width < 1200, "Performance Review " & Text(ThisItem.Semester), Text(ThisItem.Semester))
                                     Width: =If(App.Width < 1200, 150, (Parent.TemplateWidth - 24) * 0.13)
                                     X: =If(App.Width < 1200, 84, 12 + (Parent.TemplateWidth - 24) * 0.23)
                                     Y: =If(App.Width < 1200, 39, 31)
@@ -542,7 +624,8 @@ Screens:
                                     FontWeight: =FontWeight.Semibold
                                     Height: =38
                                     OnSelect: |-
-                                      =Set(gblSelectedPR, ThisItem);
+                                      =Set(gblPRLineManagerView, false);
+                                      Set(gblSelectedPR, ThisItem);
                                       Navigate(S3C_PR_Detail, ScreenTransition.Fade)
                                     RadiusBottomLeft: =6
                                     RadiusBottomRight: =6

@@ -15,41 +15,64 @@ Screens:
             Height: =Parent.Height
             LayoutAlignItems: =LayoutAlignItems.Stretch
             LayoutDirection: =LayoutDirection.Vertical
-            LayoutGap: =0
+            LayoutGap: =16
             Width: =Parent.Width
+            PaddingBottom: =16
+            PaddingLeft: =16
+            PaddingRight: =16
+            PaddingTop: =16
           Children:
             - HeaderPenugasanForm:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
                 Properties:
-                  DropShadow: =DropShadow.None
-                  Fill: =RGBA(18, 38, 82, 1)
+                  Fill: =RGBA(31, 48, 112, 1)
                   FillPortions: =0
-                  Height: =64
+                  Height: =75
                   LayoutAlignItems: =LayoutAlignItems.Center
                   LayoutDirection: =LayoutDirection.Horizontal
-                  LayoutMinHeight: =64
+                  LayoutMinHeight: =75
+                  PaddingBottom: =8
                   PaddingLeft: =8
                   PaddingRight: =8
+                  PaddingTop: =8
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
                   Width: =Parent.Width
                 Children:
                   - BtnBackPenugasanForm:
                       Control: ModernText@1.0.0
                       Properties:
+                        AutoHeight: =true
                         Align: =Align.Center
                         Color: =RGBA(255, 255, 255, 1)
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
-                        Height: =64
+                        Height: =40
                         OnSelect: |-
-                          =Set(gblPenugasanEditMode, false);
-                          Set(gblPenugasanDetailMode, false);
-                          UpdateContext({locConfirmDeletePenugasan: false});
-                          Set(gblSelectedPenugasan, Defaults(Profil_Penugasan));
-                          Back()
-                        Size: =24
+                              =Set(gblPenugasanEditMode, false);
+                              Set(gblPenugasanDetailMode, false);
+                              UpdateContext({locConfirmDeletePenugasan: false});
+                              Set(gblSelectedPenugasan, Defaults(Profil_Penugasan));
+                              If(
+                                  IsMatch(App.ActiveScreen.Name, "form", MatchOptions.IgnoreCase),
+                                  If(
+                                      !IsEmpty(colNonFormNavigationHistory),
+                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                      Back()
+                                  ),
+                                  If(
+                                      CountRows(colNonFormNavigationHistory) > 1,
+                                      Remove(colNonFormNavigationHistory, Last(colNonFormNavigationHistory));
+                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                      Back()
+                                  )
+                              )
+                        Size: =22
                         Text: ="‹"
-                        Width: =44
+                        Width: =40
                   - LblAppNamePenugasanForm:
                       Control: ModernText@1.0.0
                       Properties:
@@ -58,21 +81,34 @@ Screens:
                         FillPortions: =1
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
-                        Height: =64
-                        Size: =16
+                        Height: =40
+                        Size: =18
                         Text: ="MyCareerApp"
                   - HeaderSpacerPenugasanForm:
-                      Control: Rectangle@2.3.0
+                      Control: ModernText@1.0.0
                       Properties:
-                        Fill: =RGBA(0, 0, 0, 0)
-                        Height: =64
-                        Width: =44
+                        AccessibleLabel: ="Kembali ke Homepage"
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        OnSelect: |-
+                          =Set(gblPimpinanView, false);
+                          Set(gblSubjectNIP, Blank());
+                          Set(gblChecklistAdminView, false);
+                          Clear(colNonFormNavigationHistory);
+                          Navigate(S1_Homepage, ScreenTransition.Fade)
+                        Size: =20
+                        Text: ="⌂"
+                        Width: =40
             - TopBarShadowPenugasanForm:
                 Control: Rectangle@2.3.0
                 Properties:
-                  BorderThickness: =0
-                  Fill: =RGBA(0, 0, 0, 0.08)
-                  Height: =5
+                  Fill: =RGBA(0, 0, 0, 0)
+                  FillPortions: =0
+                  Height: =0
+                  LayoutMinHeight: =0
                   Width: =Parent.Width
             - MainPenugasanForm:
                 Control: GroupContainer@1.5.0
@@ -83,10 +119,10 @@ Screens:
                   LayoutDirection: =LayoutDirection.Vertical
                   LayoutMinHeight: =16
                   LayoutOverflowY: =LayoutOverflow.Scroll
-                  PaddingBottom: =16
-                  PaddingLeft: =16
-                  PaddingRight: =16
-                  PaddingTop: =16
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
                   Width: =Parent.Width
                 Children:
                   - CardPenugasanForm:
@@ -176,7 +212,7 @@ Screens:
                                     DisplayMode: =If(Coalesce(gblPenugasanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     DefaultDate: |-
                                       =If(
-                                          Coalesce(gblPenugasanEditMode, false) && !IsBlank(gblSelectedPenugasan.TglMulai),
+                                          (Coalesce(gblPenugasanEditMode, false) || Coalesce(gblPenugasanDetailMode, false)) && !IsBlank(gblSelectedPenugasan.TglMulai),
                                           IfError(
                                               Date(1899, 12, 30) + Value(gblSelectedPenugasan.TglMulai),
                                               gblSelectedPenugasan.TglMulai
@@ -216,7 +252,7 @@ Screens:
                                     DisplayMode: =If(Coalesce(gblPenugasanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     DefaultDate: |-
                                       =If(
-                                          Coalesce(gblPenugasanEditMode, false) && !IsBlank(gblSelectedPenugasan.TglAkhir),
+                                          (Coalesce(gblPenugasanEditMode, false) || Coalesce(gblPenugasanDetailMode, false)) && !IsBlank(gblSelectedPenugasan.TglAkhir),
                                           IfError(
                                               Date(1899, 12, 30) + Value(gblSelectedPenugasan.TglAkhir),
                                               gblSelectedPenugasan.TglAkhir
@@ -255,7 +291,7 @@ Screens:
                                     AccessibleLabel: ="PIC"
                                     DisplayMode: =If(Coalesce(gblPenugasanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
-                                    Value: =If(Coalesce(gblPenugasanEditMode, false), Coalesce(gblSelectedPenugasan.PIC, ""), "")
+                                    Value: =If(Coalesce(gblPenugasanEditMode, false) || Coalesce(gblPenugasanDetailMode, false), Coalesce(gblSelectedPenugasan.PIC, ""), "")
                                     Width: =Parent.Width
 
                         - FieldNamaPenugasanPenugasan:
@@ -286,7 +322,7 @@ Screens:
                                     AccessibleLabel: ="Nama Penugasan"
                                     DisplayMode: =If(Coalesce(gblPenugasanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
-                                    Value: =If(Coalesce(gblPenugasanEditMode, false), Coalesce(gblSelectedPenugasan.NamaPenugasan, ""), "")
+                                    Value: =If(Coalesce(gblPenugasanEditMode, false) || Coalesce(gblPenugasanDetailMode, false), Coalesce(gblSelectedPenugasan.NamaPenugasan, ""), "")
                                     Width: =Parent.Width
 
                         - FieldDeskripsiPenugasan:
@@ -318,7 +354,7 @@ Screens:
                                     DisplayMode: =If(Coalesce(gblPenugasanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Height: =76
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeMultiline"
-                                    Value: =If(Coalesce(gblPenugasanEditMode, false), Coalesce(gblSelectedPenugasan.Deskripsi, ""), "")
+                                    Value: =If(Coalesce(gblPenugasanEditMode, false) || Coalesce(gblPenugasanDetailMode, false), Coalesce(gblSelectedPenugasan.Deskripsi, ""), "")
                                     Width: =Parent.Width
 
 
@@ -334,7 +370,7 @@ Screens:
                               LayoutJustifyContent: =LayoutJustifyContent.End
                               LayoutMinHeight: =If(Coalesce(locConfirmDeletePenugasan, false), 104, 48)
                               LayoutWrap: =true
-                              Visible: =!Coalesce(gblPenugasanDetailMode, false)
+                              Visible: =!Coalesce(gblPenugasanDetailMode, false) && !Coalesce(gblPimpinanView, false)
                               Width: =Parent.Width
                             Children:
                               - BtnBatalPenugasan:
@@ -364,11 +400,12 @@ Screens:
                               - BtnHapusPenugasan:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    Fill: =If(Coalesce(gblPimpinanView, false), RGBA(225, 223, 221, 1), RGBA(196, 43, 28, 1))
                                     Align: =Align.Center
-                                    BorderColor: =RGBA(196, 43, 28, 1)
-                                    BorderStyle: =BorderStyle.Solid
-                                    BorderThickness: =1
-                                    Color: =RGBA(196, 43, 28, 1)
+                                    BorderColor: =RGBA(0, 0, 0, 0)
+                                    BorderStyle: =BorderStyle.None
+                                    BorderThickness: =0
+                                    Color: =If(Coalesce(gblPimpinanView, false), RGBA(96, 94, 92, 1), RGBA(255, 255, 255, 1))
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
                                     Height: =44
@@ -408,7 +445,7 @@ Screens:
                                   Properties:
                                     Align: =Align.Center
                                     Color: =RGBA(255, 255, 255, 1)
-                                    DisplayMode: =If(Coalesce(gblPenugasanSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    DisplayMode: =If(Coalesce(gblPimpinanView, false) || Coalesce(gblPenugasanSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
                                     Fill: =RGBA(196, 43, 28, 1)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
@@ -444,7 +481,7 @@ Screens:
                                   Properties:
                                     Align: =Align.Center
                                     Color: =RGBA(255, 255, 255, 1)
-                                    DisplayMode: =If(Coalesce(gblPenugasanSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    DisplayMode: =If(Coalesce(gblPimpinanView, false) || Coalesce(gblPenugasanSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
                                     Fill: =RGBA(18, 38, 82, 1)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold

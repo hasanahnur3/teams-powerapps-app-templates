@@ -3,6 +3,19 @@ Screens:
     Properties:
       Fill: =RGBA(255, 255, 255, 1)
       LoadingSpinnerColor: =RGBA(31, 56, 100, 1)
+      OnVisible: |-
+        =If(
+            IsEmpty(colNonFormNavigationHistory) ||
+            Last(colNonFormNavigationHistory).ScreenName <> App.ActiveScreen.Name,
+            Collect(
+                colNonFormNavigationHistory,
+                {
+                    ScreenName: App.ActiveScreen.Name,
+                    ScreenRef: App.ActiveScreen
+                }
+            )
+        );
+        UpdateContext({locShowProfilePhotoPreview: false, locProfilePhotoPreviewImage: Blank()})
     Children:
       - ScreenContainerS2:
           Control: GroupContainer@1.5.0
@@ -24,14 +37,12 @@ Screens:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
                 Properties:
-                  DropShadow: =DropShadow.None
-                  Fill: =RGBA(9, 33, 98, 1)
+                  Fill: =RGBA(31, 48, 112, 1)
                   FillPortions: =0
                   Height: =75
                   LayoutAlignItems: =LayoutAlignItems.Center
                   LayoutDirection: =LayoutDirection.Horizontal
-                  LayoutMinHeight: =16
-                  LayoutMinWidth: =16
+                  LayoutMinHeight: =75
                   PaddingBottom: =8
                   PaddingLeft: =8
                   PaddingRight: =8
@@ -40,18 +51,32 @@ Screens:
                   RadiusBottomRight: =8
                   RadiusTopLeft: =8
                   RadiusTopRight: =8
+                  Width: =Parent.Width
                 Children:
                   - BtnBackS2:
                       Control: ModernText@1.0.0
                       Properties:
-                        Align: =Align.Center
                         AutoHeight: =true
+                        Align: =Align.Center
                         Color: =RGBA(255, 255, 255, 1)
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
                         Height: =40
-                        OnSelect: =Back()
-                        PaddingLeft: =20
+                        OnSelect: |-
+                              =If(
+                                  IsMatch(App.ActiveScreen.Name, "form", MatchOptions.IgnoreCase),
+                                  If(
+                                      !IsEmpty(colNonFormNavigationHistory),
+                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                      Back()
+                                  ),
+                                  If(
+                                      CountRows(colNonFormNavigationHistory) > 1,
+                                      Remove(colNonFormNavigationHistory, Last(colNonFormNavigationHistory));
+                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                      Back()
+                                  )
+                              )
                         Size: =22
                         Text: ="‹"
                         Width: =40
@@ -65,13 +90,33 @@ Screens:
                         FontWeight: =FontWeight.Bold
                         Height: =40
                         Size: =18
-                        Text: ="MyCareerApp"
+                        Text: =If(Coalesce(gblPimpinanView, false), Coalesce(LookUp(Pegawai, Title = Text(gblSubjectNIP), Nama), Text(gblSubjectNIP), "-") & " (" & Text(gblSubjectNIP) & ")", "MyCareerApp")
                   - HeaderSpacerS2:
-                      Control: Rectangle@2.3.0
+                      Control: ModernText@1.0.0
                       Properties:
-                        Fill: =RGBA(0, 0, 0, 0)
+                        AccessibleLabel: ="Kembali ke Homepage"
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
                         Height: =40
+                        OnSelect: |-
+                          =Set(gblPimpinanView, false);
+                          Set(gblSubjectNIP, Blank());
+                          Set(gblChecklistAdminView, false);
+                          Clear(colNonFormNavigationHistory);
+                          Navigate(S1_Homepage, ScreenTransition.Fade)
+                        Size: =20
+                        Text: ="⌂"
                         Width: =40
+            - HeaderContainerS2Shadow:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =RGBA(0, 0, 0, 0)
+                  FillPortions: =0
+                  Height: =0
+                  LayoutMinHeight: =0
+                  Width: =Parent.Width
             - MainS2:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
@@ -118,7 +163,7 @@ Screens:
                         RadiusBottomRight: =8
                         RadiusTopLeft: =8
                         RadiusTopRight: =8
-                        Visible: =Coalesce(gblPimpinanView, false)
+                        Visible: =false
                         Width: =Parent.Width
                       Children:
                         - PimpinanEmployeeS2:
@@ -171,10 +216,10 @@ Screens:
                         BorderThickness: =1
                         Fill: =RGBA(255, 255, 255, 1)
                         FillPortions: =0
-                        Height: =If(Parent.Width < 620, 560, 350)
+                        Height: =If(Parent.Width < 620, 650, 450)
                         LayoutDirection: =LayoutDirection.Vertical
                         LayoutGap: =14
-                        LayoutMinHeight: =If(Parent.Width < 620, 560, 350)
+                        LayoutMinHeight: =If(Parent.Width < 620, 650, 450)
                         LayoutMinWidth: =0
                         LayoutOverflowX: =LayoutOverflow.Hide
                         LayoutOverflowY: =LayoutOverflow.Hide
@@ -194,11 +239,11 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =40
+                              Height: =120
                               LayoutAlignItems: =LayoutAlignItems.Center
                               LayoutDirection: =LayoutDirection.Horizontal
                               LayoutGap: =10
-                              LayoutMinHeight: =40
+                              LayoutMinHeight: =120
                             Children:
                               - TagI:
                                   Control: ModernText@1.0.0
@@ -226,6 +271,52 @@ Screens:
                                     FontWeight: =FontWeight.Bold
                                     Size: =14
                                     Text: ="Identitas Pegawai"
+                              - ProfilePhotoS2:
+                                  Control: Image@2.2.3
+                                  Properties:
+                                    AccessibleLabel: ="Klik untuk memperbesar foto profil pegawai"
+                                    BorderColor: =RGBA(225, 223, 221, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =2
+                                    Height: =120
+                                    Image: |-
+                                      =With(
+                                          {
+                                              selectedEmployee: LookUp(
+                                                  Pegawai,
+                                                  Title = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))
+                                              )
+                                          },
+                                          If(
+                                              Coalesce(gblPimpinanView, false),
+                                              If(
+                                                  IsBlank(selectedEmployee.Email),
+                                                  Blank(),
+                                                  IfError(
+                                                      Office365Users.UserPhotoV2(selectedEmployee.Email),
+                                                      Blank()
+                                                  )
+                                              ),
+                                              User().Image
+                                          )
+                                      )
+                                    ImagePosition: =ImagePosition.Fill
+                                    OnSelect: |-
+                                      =If(
+                                          !IsBlank(Self.Image),
+                                          UpdateContext(
+                                              {
+                                                  locShowProfilePhotoPreview: true,
+                                                  locProfilePhotoPreviewImage: Self.Image
+                                              }
+                                          )
+                                      )
+                                    RadiusBottomLeft: =60
+                                    RadiusBottomRight: =60
+                                    RadiusTopLeft: =60
+                                    RadiusTopRight: =60
+                                    Visible: =true
+                                    Width: =120
                         - SIDivider:
                             Control: Rectangle@2.3.0
                             Properties:
@@ -453,7 +544,6 @@ Screens:
                                           FontWeight: =FontWeight.Bold
                                           Size: =14
                                           Text: =Text(LookUp(Pegawai, Title = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)), LastUpdated), "[$-id-ID]dd mmmm yyyy")
-
                   # ════════════════════════════════
                   # SECTION II — QUANTITATIVE
                   # ════════════════════════════════
@@ -676,7 +766,7 @@ Screens:
                                           Height: =Parent.Height
                                           PaddingLeft: =10
                                           Size: =11
-                                          Text: ="NO"
+                                          Text: ="AKSI"
                                     - PHJenjang:
                                         Control: ModernText@1.0.0
                                         Properties:
@@ -745,20 +835,21 @@ Screens:
                                           OnSelect: =Select(Parent)
                                           Width: =Parent.TemplateWidth
                                     - PendidikanGalleryNo:
-                                        Control: ModernText@1.0.0
+                                        Control: Classic/Icon@2.5.0
                                         Properties:
-                                          Align: =Align.Center
+                                          AccessibleLabel: ="Lihat detail pendidikan"
                                           Color: =RGBA(0, 120, 212, 1)
-                                          Font: =Font.'Open Sans'
-                                          FontWeight: =FontWeight.Bold
                                           Height: =Parent.TemplateHeight
+                                          Icon: =Icon.ChevronRight
                                           OnSelect: |-
-                                            =Set(gblPendidikanDetailMode, false);
+                                            =Set(gblPendidikanDetailMode, Coalesce(gblPimpinanView, false));
                                             Set(gblSelectedPendidikan, ThisItem);
-                                            Set(gblPendidikanEditMode, true);
+                                            Set(gblPendidikanEditMode, !Coalesce(gblPimpinanView, false));
                                             Navigate(S2A_Profil_Pendidikan_Form, ScreenTransition.Fade)
-                                          Size: =12
-                                          Text: =Text(ThisItem.Title)
+                                          PaddingBottom: =(Self.Height - 12) / 2
+                                          PaddingLeft: =(Self.Width - 12) / 2
+                                          PaddingRight: =(Self.Width - 12) / 2
+                                          PaddingTop: =(Self.Height - 12) / 2
                                           Width: =Parent.TemplateWidth * 0.063
                                     - PendidikanGalleryJenjang:
                                         Control: ModernText@1.0.0
@@ -838,12 +929,12 @@ Screens:
                                           FontWeight: =FontWeight.Bold
                                           Height: =Parent.Height
                                           OnSelect: |-
-                                            =Set(gblPendidikanDetailMode, false);
+                                            =Set(gblPendidikanDetailMode, Coalesce(gblPimpinanView, false));
                                             Set(
                                                 gblSelectedPendidikan,
                                                 First(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
                                             );
-                                            Set(gblPendidikanEditMode, true);
+                                            Set(gblPendidikanEditMode, !Coalesce(gblPimpinanView, false));
                                             Navigate(S2A_Profil_Pendidikan_Form, ScreenTransition.Fade)
                                           Size: =12
                                           Text: ="1"
@@ -909,7 +1000,7 @@ Screens:
                                           FontWeight: =FontWeight.Bold
                                           PaddingLeft: =10
                                           Size: =11
-                                          Text: ="NO"
+                                          Text: ="AKSI"
                                     - PH2Jenjang:
                                         Control: ModernText@1.0.0
                                         Properties:
@@ -985,7 +1076,7 @@ Screens:
                                           FontWeight: =FontWeight.Bold
                                           Height: =Parent.Height
                                           OnSelect: |-
-                                            =Set(gblPendidikanDetailMode, false);
+                                            =Set(gblPendidikanDetailMode, Coalesce(gblPimpinanView, false));
                                             Set(
                                                 gblSelectedPendidikan,
                                                 Last(
@@ -995,7 +1086,7 @@ Screens:
                                                     )
                                                 )
                                             );
-                                            Set(gblPendidikanEditMode, true);
+                                            Set(gblPendidikanEditMode, !Coalesce(gblPimpinanView, false));
                                             Navigate(S2A_Profil_Pendidikan_Form, ScreenTransition.Fade)
                                           Size: =12
                                           Text: ="2"
@@ -1107,6 +1198,7 @@ Screens:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     BorderColor: =RGBA(200, 198, 196, 1)
+                                    DisplayMode: =If(Coalesce(gblPimpinanView, false), DisplayMode.Disabled, DisplayMode.Edit)
                                     BorderStyle: =BorderStyle.Solid
                                     BorderThickness: =1
                                     Color: =RGBA(0, 120, 212, 1)
@@ -1125,6 +1217,7 @@ Screens:
                                     RadiusTopRight: =4
                                     Size: =12
                                     Text: ="+ Tambah Baris"
+                                    Visible: =!Coalesce(gblPimpinanView, false)
                                     Width: =130
                         # ── D.1 Sertifikasi Tier 1 ──
                         - TitleTier1:
@@ -1182,7 +1275,7 @@ Screens:
                                           Height: =Parent.Height
                                           PaddingLeft: =10
                                           Size: =11
-                                          Text: ="NO"
+                                          Text: ="AKSI"
                                     - T1HNama:
                                         Control: ModernText@1.0.0
                                         Properties:
@@ -1262,20 +1355,21 @@ Screens:
                                           OnSelect: =Select(Parent)
                                           Width: =Parent.TemplateWidth
                                     - T1GalleryNo:
-                                        Control: ModernText@1.0.0
+                                        Control: Classic/Icon@2.5.0
                                         Properties:
-                                          Align: =Align.Center
+                                          AccessibleLabel: ="Lihat detail sertifikasi Tier 1"
                                           Color: =RGBA(0, 120, 212, 1)
-                                          Font: =Font.'Open Sans'
-                                          FontWeight: =FontWeight.Bold
                                           Height: =Parent.TemplateHeight
+                                          Icon: =Icon.ChevronRight
                                           OnSelect: |-
-                                            =Set(gblSertifikasiTier1DetailMode, false);
+                                            =Set(gblSertifikasiTier1DetailMode, Coalesce(gblPimpinanView, false));
                                             Set(gblSelectedSertifikasiTier1, ThisItem);
-                                            Set(gblSertifikasiTier1EditMode, true);
+                                            Set(gblSertifikasiTier1EditMode, !Coalesce(gblPimpinanView, false));
                                             Navigate(S2B_Profil_SertifikasiTier1_Form, ScreenTransition.Fade)
-                                          Size: =12
-                                          Text: =Text(ThisItem.Title)
+                                          PaddingBottom: =(Self.Height - 12) / 2
+                                          PaddingLeft: =(Self.Width - 12) / 2
+                                          PaddingRight: =(Self.Width - 12) / 2
+                                          PaddingTop: =(Self.Height - 12) / 2
                                           Width: =Parent.TemplateWidth * 0.06
                                     - T1GalleryNama:
                                         Control: ModernText@1.0.0
@@ -1375,9 +1469,9 @@ Screens:
                                           FontWeight: =FontWeight.Bold
                                           Height: =Parent.Height
                                           OnSelect: |-
-                                            =Set(gblSertifikasiTier1DetailMode, false);
+                                            =Set(gblSertifikasiTier1DetailMode, Coalesce(gblPimpinanView, false));
                                             Set(gblSelectedSertifikasiTier1, First(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))));
-                                            Set(gblSertifikasiTier1EditMode, true);
+                                            Set(gblSertifikasiTier1EditMode, !Coalesce(gblPimpinanView, false));
                                             Navigate(S2B_Profil_SertifikasiTier1_Form, ScreenTransition.Fade)
                                           Size: =12
                                           Text: ="1"
@@ -1431,7 +1525,7 @@ Screens:
                                           PaddingLeft: =10
                                           Size: =12
                                           Text: =First(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).NomorSertifikat
-                              - T1Empty:
+                              - Tier1Empty:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     Align: =Align.Center
@@ -1446,6 +1540,7 @@ Screens:
                             Control: ModernText@1.0.0
                             Properties:
                               BorderColor: =RGBA(200, 198, 196, 1)
+                              DisplayMode: =If(Coalesce(gblPimpinanView, false), DisplayMode.Disabled, DisplayMode.Edit)
                               BorderStyle: =BorderStyle.Solid
                               BorderThickness: =1
                               Color: =RGBA(0, 120, 212, 1)
@@ -1464,6 +1559,7 @@ Screens:
                               RadiusTopRight: =4
                               Size: =12
                               Text: ="+ Tambah Baris"
+                              Visible: =!Coalesce(gblPimpinanView, false)
                               Width: =130
 
                         # ── D.2 Sertifikasi Tier 2 ──
@@ -1522,7 +1618,7 @@ Screens:
                                           Height: =Parent.Height
                                           PaddingLeft: =10
                                           Size: =11
-                                          Text: ="NO"
+                                          Text: ="AKSI"
                                     - T2HNama:
                                         Control: ModernText@1.0.0
                                         Properties:
@@ -1602,20 +1698,21 @@ Screens:
                                           OnSelect: =Select(Parent)
                                           Width: =Parent.TemplateWidth
                                     - T2GalleryNo:
-                                        Control: ModernText@1.0.0
+                                        Control: Classic/Icon@2.5.0
                                         Properties:
-                                          Align: =Align.Center
+                                          AccessibleLabel: ="Lihat detail sertifikasi Tier 2"
                                           Color: =RGBA(0, 120, 212, 1)
-                                          Font: =Font.'Open Sans'
-                                          FontWeight: =FontWeight.Bold
                                           Height: =Parent.TemplateHeight
+                                          Icon: =Icon.ChevronRight
                                           OnSelect: |-
-                                            =Set(gblSertifikasiTier2DetailMode, false);
+                                            =Set(gblSertifikasiTier2DetailMode, Coalesce(gblPimpinanView, false));
                                             Set(gblSelectedSertifikasiTier2, ThisItem);
-                                            Set(gblSertifikasiTier2EditMode, true);
+                                            Set(gblSertifikasiTier2EditMode, !Coalesce(gblPimpinanView, false));
                                             Navigate(S2C_Profil_SertifikasiTier2_Form, ScreenTransition.Fade)
-                                          Size: =12
-                                          Text: =Text(ThisItem.Title)
+                                          PaddingBottom: =(Self.Height - 12) / 2
+                                          PaddingLeft: =(Self.Width - 12) / 2
+                                          PaddingRight: =(Self.Width - 12) / 2
+                                          PaddingTop: =(Self.Height - 12) / 2
                                           Width: =Parent.TemplateWidth * 0.06
                                     - T2GalleryNama:
                                         Control: ModernText@1.0.0
@@ -1716,9 +1813,9 @@ Screens:
                                           FontWeight: =FontWeight.Bold
                                           Height: =Parent.Height
                                           OnSelect: |-
-                                            =Set(gblSertifikasiTier2DetailMode, false);
+                                            =Set(gblSertifikasiTier2DetailMode, Coalesce(gblPimpinanView, false));
                                             Set(gblSelectedSertifikasiTier2, First(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))));
-                                            Set(gblSertifikasiTier2EditMode, true);
+                                            Set(gblSertifikasiTier2EditMode, !Coalesce(gblPimpinanView, false));
                                             Navigate(S2C_Profil_SertifikasiTier2_Form, ScreenTransition.Fade)
                                           Size: =12
                                           Text: ="1"
@@ -1772,7 +1869,7 @@ Screens:
                                           PaddingLeft: =10
                                           Size: =12
                                           Text: =Coalesce(First(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).NomorSertifikat, "—")
-                              - T2Empty:
+                              - Tier2Empty:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     Align: =Align.Center
@@ -1787,6 +1884,7 @@ Screens:
                             Control: ModernText@1.0.0
                             Properties:
                               BorderColor: =RGBA(200, 198, 196, 1)
+                              DisplayMode: =If(Coalesce(gblPimpinanView, false), DisplayMode.Disabled, DisplayMode.Edit)
                               BorderStyle: =BorderStyle.Solid
                               BorderThickness: =1
                               Color: =RGBA(0, 120, 212, 1)
@@ -1805,6 +1903,7 @@ Screens:
                               RadiusTopRight: =4
                               Size: =12
                               Text: ="+ Tambah Baris"
+                              Visible: =!Coalesce(gblPimpinanView, false)
                               Width: =130
 
                         # ── D.3 PMK ──
@@ -1863,7 +1962,7 @@ Screens:
                                           Height: =Parent.Height
                                           PaddingLeft: =10
                                           Size: =11
-                                          Text: ="NO"
+                                          Text: ="AKSI"
                                     - PMKHNama:
                                         Control: ModernText@1.0.0
                                         Properties:
@@ -1965,20 +2064,21 @@ Screens:
                                           OnSelect: =Select(Parent)
                                           Width: =Parent.TemplateWidth
                                     - PMKGalleryNo:
-                                        Control: ModernText@1.0.0
+                                        Control: Classic/Icon@2.5.0
                                         Properties:
-                                          Align: =Align.Center
+                                          AccessibleLabel: ="Lihat detail PMK"
                                           Color: =RGBA(0, 120, 212, 1)
-                                          Font: =Font.'Open Sans'
-                                          FontWeight: =FontWeight.Bold
                                           Height: =Parent.TemplateHeight
+                                          Icon: =Icon.ChevronRight
                                           OnSelect: |-
-                                            =Set(gblPMKDetailMode, false);
+                                            =Set(gblPMKDetailMode, Coalesce(gblPimpinanView, false));
                                             Set(gblSelectedPMK, ThisItem);
-                                            Set(gblPMKEditMode, true);
+                                            Set(gblPMKEditMode, !Coalesce(gblPimpinanView, false));
                                             Navigate(S2D_Profil_PMK_Form, ScreenTransition.Fade)
-                                          Size: =12
-                                          Text: =Text(ThisItem.Title)
+                                          PaddingBottom: =(Self.Height - 12) / 2
+                                          PaddingLeft: =(Self.Width - 12) / 2
+                                          PaddingRight: =(Self.Width - 12) / 2
+                                          PaddingTop: =(Self.Height - 12) / 2
                                           Width: =Parent.TemplateWidth * 0.048
                                     - PMKGalleryNama:
                                         Control: ModernText@1.0.0
@@ -2094,9 +2194,9 @@ Screens:
                                           FontWeight: =FontWeight.Bold
                                           Height: =Parent.Height
                                           OnSelect: |-
-                                            =Set(gblPMKDetailMode, false);
+                                            =Set(gblPMKDetailMode, Coalesce(gblPimpinanView, false));
                                             Set(gblSelectedPMK, First(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))));
-                                            Set(gblPMKEditMode, true);
+                                            Set(gblPMKEditMode, !Coalesce(gblPimpinanView, false));
                                             Navigate(S2D_Profil_PMK_Form, ScreenTransition.Fade)
                                           Size: =12
                                           Text: ="1"
@@ -2185,6 +2285,7 @@ Screens:
                             Control: ModernText@1.0.0
                             Properties:
                               BorderColor: =RGBA(200, 198, 196, 1)
+                              DisplayMode: =If(Coalesce(gblPimpinanView, false), DisplayMode.Disabled, DisplayMode.Edit)
                               BorderStyle: =BorderStyle.Solid
                               BorderThickness: =1
                               Color: =RGBA(0, 120, 212, 1)
@@ -2203,6 +2304,7 @@ Screens:
                               RadiusTopRight: =4
                               Size: =12
                               Text: ="+ Tambah Baris"
+                              Visible: =!Coalesce(gblPimpinanView, false)
                               Width: =130
 
                         # ── D.4 Kum Mengajar ──
@@ -2261,7 +2363,7 @@ Screens:
                                           Height: =Parent.Height
                                           PaddingLeft: =10
                                           Size: =11
-                                          Text: ="NO"
+                                          Text: ="AKSI"
                                     - KumHNama:
                                         Control: ModernText@1.0.0
                                         Properties:
@@ -2308,20 +2410,21 @@ Screens:
                                           OnSelect: =Select(Parent)
                                           Width: =Parent.TemplateWidth
                                     - KumGalleryNo:
-                                        Control: ModernText@1.0.0
+                                        Control: Classic/Icon@2.5.0
                                         Properties:
-                                          Align: =Align.Center
+                                          AccessibleLabel: ="Lihat detail Kum Mengajar"
                                           Color: =RGBA(0, 120, 212, 1)
-                                          Font: =Font.'Open Sans'
-                                          FontWeight: =FontWeight.Bold
                                           Height: =Parent.TemplateHeight
+                                          Icon: =Icon.ChevronRight
                                           OnSelect: |-
-                                            =Set(gblKumMengajarDetailMode, false);
+                                            =Set(gblKumMengajarDetailMode, Coalesce(gblPimpinanView, false));
                                             Set(gblSelectedKumMengajar, ThisItem);
-                                            Set(gblKumMengajarEditMode, true);
+                                            Set(gblKumMengajarEditMode, !Coalesce(gblPimpinanView, false));
                                             Navigate(S2E_Profil_KumMengajar_Form, ScreenTransition.Fade)
-                                          Size: =12
-                                          Text: =Text(ThisItem.Title)
+                                          PaddingBottom: =(Self.Height - 12) / 2
+                                          PaddingLeft: =(Self.Width - 12) / 2
+                                          PaddingRight: =(Self.Width - 12) / 2
+                                          PaddingTop: =(Self.Height - 12) / 2
                                           Width: =Parent.TemplateWidth * 0.10
                                     - KumGalleryNama:
                                         Control: ModernText@1.0.0
@@ -2378,9 +2481,9 @@ Screens:
                                           FontWeight: =FontWeight.Bold
                                           Height: =Parent.Height
                                           OnSelect: |-
-                                            =Set(gblKumMengajarDetailMode, false);
+                                            =Set(gblKumMengajarDetailMode, Coalesce(gblPimpinanView, false));
                                             Set(gblSelectedKumMengajar, First(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))));
-                                            Set(gblKumMengajarEditMode, true);
+                                            Set(gblKumMengajarEditMode, !Coalesce(gblPimpinanView, false));
                                             Navigate(S2E_Profil_KumMengajar_Form, ScreenTransition.Fade)
                                           Size: =12
                                           Text: ="1"
@@ -2404,7 +2507,7 @@ Screens:
                                           PaddingLeft: =10
                                           Size: =12
                                           Text: =Coalesce(Text(First(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).TanggalPelaksanaan, "[$-id-ID]dd/mm/yyyy"), "—")
-                              - KumEmpty:
+                              - KumMengajarEmpty:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     Align: =Align.Center
@@ -2415,10 +2518,11 @@ Screens:
                                     Size: =12
                                     Text: ="Belum ada data"
                                     Visible: =false
-                        - BtnTambahKum:
+                        - BtnTambahKumMengajar:
                             Control: ModernText@1.0.0
                             Properties:
                               BorderColor: =RGBA(200, 198, 196, 1)
+                              DisplayMode: =If(Coalesce(gblPimpinanView, false), DisplayMode.Disabled, DisplayMode.Edit)
                               BorderStyle: =BorderStyle.Solid
                               BorderThickness: =1
                               Color: =RGBA(0, 120, 212, 1)
@@ -2437,6 +2541,7 @@ Screens:
                               RadiusTopRight: =4
                               Size: =12
                               Text: ="+ Tambah Baris"
+                              Visible: =!Coalesce(gblPimpinanView, false)
                               Width: =130
 
                   # ════════════════════════════════
@@ -2591,7 +2696,7 @@ Screens:
                                           Height: =Parent.Height
                                           PaddingLeft: =10
                                           Size: =11
-                                          Text: ="NO"
+                                          Text: ="AKSI"
                                     - PenHTglMulai:
                                         Control: ModernText@1.0.0
                                         Properties:
@@ -2671,20 +2776,21 @@ Screens:
                                           OnSelect: =Select(Parent)
                                           Width: =Parent.TemplateWidth
                                     - PenGalleryNo:
-                                        Control: ModernText@1.0.0
+                                        Control: Classic/Icon@2.5.0
                                         Properties:
-                                          Align: =Align.Center
+                                          AccessibleLabel: ="Lihat detail penugasan"
                                           Color: =RGBA(0, 120, 212, 1)
-                                          Font: =Font.'Open Sans'
-                                          FontWeight: =FontWeight.Bold
                                           Height: =Parent.TemplateHeight
+                                          Icon: =Icon.ChevronRight
                                           OnSelect: |-
-                                            =Set(gblPenugasanDetailMode, false);
+                                            =Set(gblPenugasanDetailMode, Coalesce(gblPimpinanView, false));
                                             Set(gblSelectedPenugasan, ThisItem);
-                                            Set(gblPenugasanEditMode, true);
+                                            Set(gblPenugasanEditMode, !Coalesce(gblPimpinanView, false));
                                             Navigate(S2F_Profil_Penugasan_Form, ScreenTransition.Fade)
-                                          Size: =12
-                                          Text: =Text(ThisItem.Title)
+                                          PaddingBottom: =(Self.Height - 12) / 2
+                                          PaddingLeft: =(Self.Width - 12) / 2
+                                          PaddingRight: =(Self.Width - 12) / 2
+                                          PaddingTop: =(Self.Height - 12) / 2
                                           Width: =Parent.TemplateWidth * 0.05
                                     - PenGalleryMulai:
                                         Control: ModernText@1.0.0
@@ -2779,9 +2885,9 @@ Screens:
                                           FontWeight: =FontWeight.Bold
                                           Height: =Parent.Height
                                           OnSelect: |-
-                                            =Set(gblPenugasanDetailMode, false);
+                                            =Set(gblPenugasanDetailMode, Coalesce(gblPimpinanView, false));
                                             Set(gblSelectedPenugasan, First(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))));
-                                            Set(gblPenugasanEditMode, true);
+                                            Set(gblPenugasanEditMode, !Coalesce(gblPimpinanView, false));
                                             Navigate(S2F_Profil_Penugasan_Form, ScreenTransition.Fade)
                                           Size: =12
                                           Text: ="1"
@@ -2850,6 +2956,7 @@ Screens:
                             Control: ModernText@1.0.0
                             Properties:
                               BorderColor: =RGBA(200, 198, 196, 1)
+                              DisplayMode: =If(Coalesce(gblPimpinanView, false), DisplayMode.Disabled, DisplayMode.Edit)
                               BorderStyle: =BorderStyle.Solid
                               BorderThickness: =1
                               Color: =RGBA(0, 120, 212, 1)
@@ -2868,6 +2975,7 @@ Screens:
                               RadiusTopRight: =4
                               Size: =12
                               Text: ="+ Tambah Baris"
+                              Visible: =!Coalesce(gblPimpinanView, false)
                               Width: =130
 
                         # ── E.2 Prestasi ──
@@ -2926,7 +3034,7 @@ Screens:
                                           Height: =Parent.Height
                                           PaddingLeft: =10
                                           Size: =11
-                                          Text: ="NO"
+                                          Text: ="AKSI"
                                     - PrHJenis:
                                         Control: ModernText@1.0.0
                                         Properties:
@@ -3006,20 +3114,21 @@ Screens:
                                           OnSelect: =Select(Parent)
                                           Width: =Parent.TemplateWidth
                                     - PrGalleryNo:
-                                        Control: ModernText@1.0.0
+                                        Control: Classic/Icon@2.5.0
                                         Properties:
-                                          Align: =Align.Center
+                                          AccessibleLabel: ="Lihat detail prestasi"
                                           Color: =RGBA(0, 120, 212, 1)
-                                          Font: =Font.'Open Sans'
-                                          FontWeight: =FontWeight.Bold
                                           Height: =Parent.TemplateHeight
+                                          Icon: =Icon.ChevronRight
                                           OnSelect: |-
-                                            =Set(gblPrestasiDetailMode, false);
+                                            =Set(gblPrestasiDetailMode, Coalesce(gblPimpinanView, false));
                                             Set(gblSelectedPrestasi, ThisItem);
-                                            Set(gblPrestasiEditMode, true);
+                                            Set(gblPrestasiEditMode, !Coalesce(gblPimpinanView, false));
                                             Navigate(S2G_Profil_Prestasi_Form, ScreenTransition.Fade)
-                                          Size: =12
-                                          Text: =Text(ThisItem.ID)
+                                          PaddingBottom: =(Self.Height - 12) / 2
+                                          PaddingLeft: =(Self.Width - 12) / 2
+                                          PaddingRight: =(Self.Width - 12) / 2
+                                          PaddingTop: =(Self.Height - 12) / 2
                                           Width: =Parent.TemplateWidth * 0.055
                                     - PrGalleryJenis:
                                         Control: ModernText@1.0.0
@@ -3115,9 +3224,9 @@ Screens:
                                           FontWeight: =FontWeight.Bold
                                           Height: =Parent.Height
                                           OnSelect: |-
-                                            =Set(gblPrestasiDetailMode, false);
+                                            =Set(gblPrestasiDetailMode, Coalesce(gblPimpinanView, false));
                                             Set(gblSelectedPrestasi, First(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))));
-                                            Set(gblPrestasiEditMode, true);
+                                            Set(gblPrestasiEditMode, !Coalesce(gblPimpinanView, false));
                                             Navigate(S2G_Profil_Prestasi_Form, ScreenTransition.Fade)
                                           Size: =12
                                           Text: =Text(First(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))).ID)
@@ -3197,6 +3306,7 @@ Screens:
                             Control: ModernText@1.0.0
                             Properties:
                               BorderColor: =RGBA(200, 198, 196, 1)
+                              DisplayMode: =If(Coalesce(gblPimpinanView, false), DisplayMode.Disabled, DisplayMode.Edit)
                               BorderStyle: =BorderStyle.Solid
                               BorderThickness: =1
                               Color: =RGBA(0, 120, 212, 1)
@@ -3215,6 +3325,7 @@ Screens:
                               RadiusTopRight: =4
                               Size: =12
                               Text: ="+ Tambah Baris"
+                              Visible: =!Coalesce(gblPimpinanView, false)
                               Width: =130
 
                         # ── E.3 Kepanitiaan ──
@@ -3273,7 +3384,7 @@ Screens:
                                           Height: =Parent.Height
                                           PaddingLeft: =10
                                           Size: =11
-                                          Text: ="NO"
+                                          Text: ="AKSI"
                                     - KepHNama:
                                         Control: ModernText@1.0.0
                                         Properties:
@@ -3375,20 +3486,21 @@ Screens:
                                           OnSelect: =Select(Parent)
                                           Width: =Parent.TemplateWidth
                                     - KepGalleryNo:
-                                        Control: ModernText@1.0.0
+                                        Control: Classic/Icon@2.5.0
                                         Properties:
-                                          Align: =Align.Center
+                                          AccessibleLabel: ="Lihat detail kepanitiaan"
                                           Color: =RGBA(0, 120, 212, 1)
-                                          Font: =Font.'Open Sans'
-                                          FontWeight: =FontWeight.Bold
                                           Height: =Parent.TemplateHeight
+                                          Icon: =Icon.ChevronRight
                                           OnSelect: |-
-                                            =Set(gblKepanitiaanDetailMode, false);
+                                            =Set(gblKepanitiaanDetailMode, Coalesce(gblPimpinanView, false));
                                             Set(gblSelectedKepanitiaan, ThisItem);
-                                            Set(gblKepanitiaanEditMode, true);
+                                            Set(gblKepanitiaanEditMode, !Coalesce(gblPimpinanView, false));
                                             Navigate(S2H_Profil_Kepanitiaan_Form, ScreenTransition.Fade)
-                                          Size: =12
-                                          Text: =Text(ThisItem.Title)
+                                          PaddingBottom: =(Self.Height - 12) / 2
+                                          PaddingLeft: =(Self.Width - 12) / 2
+                                          PaddingRight: =(Self.Width - 12) / 2
+                                          PaddingTop: =(Self.Height - 12) / 2
                                           Width: =Parent.TemplateWidth * 0.048
                                     - KepGalleryNama:
                                         Control: ModernText@1.0.0
@@ -3504,9 +3616,9 @@ Screens:
                                           FontWeight: =FontWeight.Bold
                                           Height: =Parent.Height
                                           OnSelect: |-
-                                            =Set(gblKepanitiaanDetailMode, false);
+                                            =Set(gblKepanitiaanDetailMode, Coalesce(gblPimpinanView, false));
                                             Set(gblSelectedKepanitiaan, First(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))));
-                                            Set(gblKepanitiaanEditMode, true);
+                                            Set(gblKepanitiaanEditMode, !Coalesce(gblPimpinanView, false));
                                             Navigate(S2H_Profil_Kepanitiaan_Form, ScreenTransition.Fade)
                                           Size: =12
                                           Text: ="1"
@@ -3595,6 +3707,7 @@ Screens:
                             Control: ModernText@1.0.0
                             Properties:
                               BorderColor: =RGBA(200, 198, 196, 1)
+                              DisplayMode: =If(Coalesce(gblPimpinanView, false), DisplayMode.Disabled, DisplayMode.Edit)
                               BorderStyle: =BorderStyle.Solid
                               BorderThickness: =1
                               Color: =RGBA(0, 120, 212, 1)
@@ -3613,6 +3726,7 @@ Screens:
                               RadiusTopRight: =4
                               Size: =12
                               Text: ="+ Tambah Baris"
+                              Visible: =!Coalesce(gblPimpinanView, false)
                               Width: =130
 
                         # ── E.4 Plt ──
@@ -3671,7 +3785,7 @@ Screens:
                                           Height: =Parent.Height
                                           PaddingLeft: =10
                                           Size: =11
-                                          Text: ="NO"
+                                          Text: ="AKSI"
                                     - PltHJabatan:
                                         Control: ModernText@1.0.0
                                         Properties:
@@ -3773,20 +3887,21 @@ Screens:
                                           OnSelect: =Select(Parent)
                                           Width: =Parent.TemplateWidth
                                     - PltGalleryNo:
-                                        Control: ModernText@1.0.0
+                                        Control: Classic/Icon@2.5.0
                                         Properties:
-                                          Align: =Align.Center
+                                          AccessibleLabel: ="Lihat detail PLT"
                                           Color: =RGBA(0, 120, 212, 1)
-                                          Font: =Font.'Open Sans'
-                                          FontWeight: =FontWeight.Bold
                                           Height: =Parent.TemplateHeight
+                                          Icon: =Icon.ChevronRight
                                           OnSelect: |-
-                                            =Set(gblPltDetailMode, false);
+                                            =Set(gblPltDetailMode, Coalesce(gblPimpinanView, false));
                                             Set(gblSelectedPlt, ThisItem);
-                                            Set(gblPltEditMode, true);
+                                            Set(gblPltEditMode, !Coalesce(gblPimpinanView, false));
                                             Navigate(S2I_Profil_Plt_Form, ScreenTransition.Fade)
-                                          Size: =12
-                                          Text: =Text(ThisItem.Title)
+                                          PaddingBottom: =(Self.Height - 12) / 2
+                                          PaddingLeft: =(Self.Width - 12) / 2
+                                          PaddingRight: =(Self.Width - 12) / 2
+                                          PaddingTop: =(Self.Height - 12) / 2
                                           Width: =Parent.TemplateWidth * 0.049
                                     - PltGalleryJabatan:
                                         Control: ModernText@1.0.0
@@ -3903,9 +4018,9 @@ Screens:
                                           FontWeight: =FontWeight.Bold
                                           Height: =Parent.Height
                                           OnSelect: |-
-                                            =Set(gblPltDetailMode, false);
+                                            =Set(gblPltDetailMode, Coalesce(gblPimpinanView, false));
                                             Set(gblSelectedPlt, First(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))));
-                                            Set(gblPltEditMode, true);
+                                            Set(gblPltEditMode, !Coalesce(gblPimpinanView, false));
                                             Navigate(S2I_Profil_Plt_Form, ScreenTransition.Fade)
                                           Size: =12
                                           Text: ="1"
@@ -3994,6 +4109,7 @@ Screens:
                             Control: ModernText@1.0.0
                             Properties:
                               BorderColor: =RGBA(200, 198, 196, 1)
+                              DisplayMode: =If(Coalesce(gblPimpinanView, false), DisplayMode.Disabled, DisplayMode.Edit)
                               BorderStyle: =BorderStyle.Solid
                               BorderThickness: =1
                               Color: =RGBA(0, 120, 212, 1)
@@ -4012,4 +4128,61 @@ Screens:
                               RadiusTopRight: =4
                               Size: =12
                               Text: ="+ Tambah Baris"
+                              Visible: =!Coalesce(gblPimpinanView, false)
                               Width: =130
+      - ProfilePhotoPreviewOverlayS2:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(0, 0, 0, 0.88)
+            Height: =Parent.Height
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =12
+            PaddingBottom: =24
+            PaddingLeft: =24
+            PaddingRight: =24
+            PaddingTop: =16
+            Visible: =Coalesce(locShowProfilePhotoPreview, false)
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+          Children:
+            - ProfilePhotoPreviewHeaderS2:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  FillPortions: =0
+                  Height: =48
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutJustifyContent: =LayoutJustifyContent.End
+                  LayoutMinHeight: =48
+                Children:
+                  - BtnCloseProfilePhotoPreviewS2:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AccessibleLabel: ="Tutup pratinjau foto profil"
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Fill: =RGBA(50, 49, 48, 0.75)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =44
+                        OnSelect: |-
+                          =UpdateContext({locShowProfilePhotoPreview: false, locProfilePhotoPreviewImage: Blank()})
+                        RadiusBottomLeft: =22
+                        RadiusBottomRight: =22
+                        RadiusTopLeft: =22
+                        RadiusTopRight: =22
+                        Size: =22
+                        Text: ="×"
+                        Width: =44
+            - ImgProfilePhotoPreviewFullS2:
+                Control: Image@2.2.3
+                Properties:
+                  AccessibleLabel: ="Pratinjau penuh foto profil pegawai"
+                  FillPortions: =1
+                  Image: =locProfilePhotoPreviewImage
+                  ImagePosition: =ImagePosition.Fit
+                  Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight

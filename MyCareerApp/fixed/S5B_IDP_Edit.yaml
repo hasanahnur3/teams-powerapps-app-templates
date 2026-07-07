@@ -3,7 +3,20 @@ Screens:
     Properties:
       Fill: =RGBA(245, 245, 245, 1)
       LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
-      OnVisible: '=UpdateContext({locConfirmDeleteIDP: false})'
+      OnVisible: |-
+        =If(
+            IsEmpty(colNonFormNavigationHistory) ||
+            Last(colNonFormNavigationHistory).ScreenName <> App.ActiveScreen.Name,
+            Collect(
+                colNonFormNavigationHistory,
+                {
+                    ScreenName: App.ActiveScreen.Name,
+                    ScreenRef: App.ActiveScreen
+                }
+            )
+        );
+        UpdateContext({locConfirmDeleteIDP: false});
+        If(Coalesce(gblPimpinanView, false), Set(gblIDPReadOnly, true))
     Children:
       - IDPEditContainer:
           Control: GroupContainer@1.5.0
@@ -13,40 +26,64 @@ Screens:
             Height: =Parent.Height
             LayoutAlignItems: =LayoutAlignItems.Stretch
             LayoutDirection: =LayoutDirection.Vertical
-            LayoutGap: =0
+            LayoutGap: =16
             Width: =Parent.Width
+            PaddingBottom: =16
+            PaddingLeft: =16
+            PaddingRight: =16
+            PaddingTop: =16
           Children:
             - IDPEditTopBar:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
                 Properties:
-                  Fill: =RGBA(18, 38, 82, 1)
+                  Fill: =RGBA(31, 48, 112, 1)
                   FillPortions: =0
-                  Height: =64
+                  Height: =75
                   LayoutAlignItems: =LayoutAlignItems.Center
                   LayoutDirection: =LayoutDirection.Horizontal
-                  LayoutMinHeight: =64
+                  LayoutMinHeight: =75
+                  PaddingBottom: =8
                   PaddingLeft: =8
                   PaddingRight: =8
+                  PaddingTop: =8
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
                   Width: =Parent.Width
                 Children:
                   - BtnBackIDPEdit:
                       Control: ModernText@1.0.0
                       Properties:
+                        AutoHeight: =true
                         Align: =Align.Center
                         Color: =RGBA(255, 255, 255, 1)
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
-                        Height: =64
+                        Height: =40
                         OnSelect: |-
-                          =Set(gblIDPEditMode, false);
-                          Set(gblIDPReadOnly, false);
-                          Set(gblSelectedIDP, Defaults(IDP));
-                          UpdateContext({locConfirmDeleteIDP: false});
-                          Back()
-                        Size: =24
+                              =Set(gblIDPEditMode, false);
+                              Set(gblIDPReadOnly, false);
+                              Set(gblSelectedIDP, Defaults(IDP));
+                              UpdateContext({locConfirmDeleteIDP: false});
+                              If(
+                                  IsMatch(App.ActiveScreen.Name, "form", MatchOptions.IgnoreCase),
+                                  If(
+                                      !IsEmpty(colNonFormNavigationHistory),
+                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                      Back()
+                                  ),
+                                  If(
+                                      CountRows(colNonFormNavigationHistory) > 1,
+                                      Remove(colNonFormNavigationHistory, Last(colNonFormNavigationHistory));
+                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                      Back()
+                                  )
+                              )
+                        Size: =22
                         Text: ="‹"
-                        Width: =44
+                        Width: =40
                   - LblAppNameIDPEdit:
                       Control: ModernText@1.0.0
                       Properties:
@@ -55,21 +92,34 @@ Screens:
                         FillPortions: =1
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
-                        Height: =64
-                        Size: =16
-                        Text: ="MyCareerApp"
+                        Height: =40
+                        Size: =18
+                        Text: =If(Coalesce(gblPimpinanView, false), Coalesce(LookUp(Pegawai, Title = Text(If(!IsBlank(gblSelectedIDP.NIP), gblSelectedIDP.NIP, gblSubjectNIP)), Nama), Text(If(!IsBlank(gblSelectedIDP.NIP), gblSelectedIDP.NIP, gblSubjectNIP)), "-") & " (" & Text(If(!IsBlank(gblSelectedIDP.NIP), gblSelectedIDP.NIP, gblSubjectNIP)) & ")", "MyCareerApp")
                   - IDPEditTopBarSpacer:
-                      Control: Rectangle@2.3.0
+                      Control: ModernText@1.0.0
                       Properties:
-                        Fill: =RGBA(0, 0, 0, 0)
-                        Height: =64
-                        Width: =44
+                        AccessibleLabel: ="Kembali ke Homepage"
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        OnSelect: |-
+                          =Set(gblPimpinanView, false);
+                          Set(gblSubjectNIP, Blank());
+                          Set(gblChecklistAdminView, false);
+                          Clear(colNonFormNavigationHistory);
+                          Navigate(S1_Homepage, ScreenTransition.Fade)
+                        Size: =20
+                        Text: ="⌂"
+                        Width: =40
             - IDPEditTopBarShadow:
                 Control: Rectangle@2.3.0
                 Properties:
-                  BorderThickness: =0
-                  Fill: =RGBA(0, 0, 0, 0.08)
-                  Height: =5
+                  Fill: =RGBA(0, 0, 0, 0)
+                  FillPortions: =0
+                  Height: =0
+                  LayoutMinHeight: =0
                   Width: =Parent.Width
             - IDPEditMain:
                 Control: GroupContainer@1.5.0
@@ -79,10 +129,10 @@ Screens:
                   LayoutDirection: =LayoutDirection.Vertical
                   LayoutMinHeight: =16
                   LayoutOverflowY: =LayoutOverflow.Scroll
-                  PaddingBottom: =16
-                  PaddingLeft: =16
-                  PaddingRight: =16
-                  PaddingTop: =16
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
                   Width: =Parent.Width
                 Children:
                   - IDPEditCard:
@@ -423,12 +473,13 @@ Screens:
                               - BtnHapusIDP:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    Fill: =If(Coalesce(gblPimpinanView, false), RGBA(225, 223, 221, 1), RGBA(196, 43, 28, 1))
                                     Align: =Align.Center
-                                    BorderColor: =RGBA(196, 43, 28, 1)
-                                    BorderStyle: =BorderStyle.Solid
-                                    BorderThickness: =1
-                                    Color: =RGBA(196, 43, 28, 1)
-                                    DisplayMode: =If(Coalesce(gblIDPSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    BorderColor: =RGBA(0, 0, 0, 0)
+                                    BorderStyle: =BorderStyle.None
+                                    BorderThickness: =0
+                                    Color: =If(Coalesce(gblPimpinanView, false), RGBA(96, 94, 92, 1), RGBA(255, 255, 255, 1))
+                                    DisplayMode: =If(Coalesce(gblPimpinanView, false) || Coalesce(gblIDPSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
                                     Height: =44
@@ -448,7 +499,7 @@ Screens:
                                     BorderStyle: =BorderStyle.Solid
                                     BorderThickness: =1
                                     Color: =RGBA(50, 49, 48, 1)
-                                    DisplayMode: =If(Coalesce(gblIDPSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    DisplayMode: =If(Coalesce(gblPimpinanView, false) || Coalesce(gblIDPSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
                                     Height: =44
@@ -465,7 +516,7 @@ Screens:
                                   Properties:
                                     Align: =Align.Center
                                     Color: =RGBA(255, 255, 255, 1)
-                                    DisplayMode: =If(Coalesce(gblIDPSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    DisplayMode: =If(Coalesce(gblPimpinanView, false) || Coalesce(gblIDPSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
                                     Fill: =RGBA(196, 43, 28, 1)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
@@ -522,7 +573,7 @@ Screens:
                                   Properties:
                                     Align: =Align.Center
                                     Color: =RGBA(255, 255, 255, 1)
-                                    DisplayMode: =If(Coalesce(gblIDPSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    DisplayMode: =If(Coalesce(gblPimpinanView, false) || Coalesce(gblIDPSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
                                     Fill: =RGBA(18, 38, 82, 1)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold

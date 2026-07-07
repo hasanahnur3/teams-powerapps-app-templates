@@ -4,7 +4,18 @@ Screens:
       Fill: =RGBA(255, 255, 255, 1)
       LoadingSpinnerColor: =RGBA(9, 33, 98, 1)
       OnVisible: |-
-        =Refresh(CoachingKarir);
+        =If(
+            IsEmpty(colNonFormNavigationHistory) ||
+            Last(colNonFormNavigationHistory).ScreenName <> App.ActiveScreen.Name,
+            Collect(
+                colNonFormNavigationHistory,
+                {
+                    ScreenName: App.ActiveScreen.Name,
+                    ScreenRef: App.ActiveScreen
+                }
+            )
+        );
+        Refresh(CoachingKarir);
         Set(gblSelectedCoachingKarir, Defaults(CoachingKarir));
         Set(gblCoachingKarirCoachEditMode, false)
     Children:
@@ -27,13 +38,12 @@ Screens:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
                 Properties:
-                  Fill: =RGBA(9, 33, 98, 1)
+                  Fill: =RGBA(31, 48, 112, 1)
                   FillPortions: =0
                   Height: =75
                   LayoutAlignItems: =LayoutAlignItems.Center
                   LayoutDirection: =LayoutDirection.Horizontal
-                  LayoutMinHeight: =16
-                  LayoutMinWidth: =16
+                  LayoutMinHeight: =75
                   PaddingBottom: =8
                   PaddingLeft: =8
                   PaddingRight: =8
@@ -42,18 +52,32 @@ Screens:
                   RadiusBottomRight: =8
                   RadiusTopLeft: =8
                   RadiusTopRight: =8
+                  Width: =Parent.Width
                 Children:
                   - BtnBackCKList:
                       Control: ModernText@1.0.0
                       Properties:
-                        Align: =Align.Center
                         AutoHeight: =true
+                        Align: =Align.Center
                         Color: =RGBA(255, 255, 255, 1)
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
                         Height: =40
-                        OnSelect: =Back()
-                        PaddingLeft: =20
+                        OnSelect: |-
+                              =If(
+                                  IsMatch(App.ActiveScreen.Name, "form", MatchOptions.IgnoreCase),
+                                  If(
+                                      !IsEmpty(colNonFormNavigationHistory),
+                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                      Back()
+                                  ),
+                                  If(
+                                      CountRows(colNonFormNavigationHistory) > 1,
+                                      Remove(colNonFormNavigationHistory, Last(colNonFormNavigationHistory));
+                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                      Back()
+                                  )
+                              )
                         Size: =22
                         Text: ="‹"
                         Width: =40
@@ -67,13 +91,33 @@ Screens:
                         FontWeight: =FontWeight.Bold
                         Height: =40
                         Size: =18
-                        Text: ="MyCareerApp"
+                        Text: =If(Coalesce(gblPimpinanView, false), Coalesce(LookUp(Pegawai, Title = Text(gblSubjectNIP), Nama), Text(gblSubjectNIP), "-") & " (" & Text(gblSubjectNIP) & ")", "MyCareerApp")
                   - HeaderSpacerCKList:
-                      Control: Rectangle@2.3.0
+                      Control: ModernText@1.0.0
                       Properties:
-                        Fill: =RGBA(0, 0, 0, 0)
+                        AccessibleLabel: ="Kembali ke Homepage"
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
                         Height: =40
+                        OnSelect: |-
+                          =Set(gblPimpinanView, false);
+                          Set(gblSubjectNIP, Blank());
+                          Set(gblChecklistAdminView, false);
+                          Clear(colNonFormNavigationHistory);
+                          Navigate(S1_Homepage, ScreenTransition.Fade)
+                        Size: =20
+                        Text: ="⌂"
                         Width: =40
+            - CKListHeaderShadow:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =RGBA(0, 0, 0, 0)
+                  FillPortions: =0
+                  Height: =0
+                  LayoutMinHeight: =0
+                  Width: =Parent.Width
             - CKListMain:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
@@ -95,11 +139,11 @@ Screens:
                       Properties:
                         DropShadow: =DropShadow.None
                         FillPortions: =0
-                        Height: =If(Parent.Width < 600, 96, 44)
+                        Height: =If(Parent.Width < 600, 148, If(Parent.Width < 900, 96, 44))
                         LayoutAlignItems: =LayoutAlignItems.Center
                         LayoutDirection: =LayoutDirection.Horizontal
                         LayoutGap: =12
-                        LayoutMinHeight: =If(Parent.Width < 600, 96, 44)
+                        LayoutMinHeight: =If(Parent.Width < 600, 148, If(Parent.Width < 900, 96, 44))
                         LayoutMinWidth: =16
                         LayoutWrap: =true
                       Children:
@@ -114,6 +158,18 @@ Screens:
                               LayoutMinWidth: =220
                               Size: =18
                               Text: ="Daftar Coaching Karir sebagai Coach"
+                        - TxtSearchCoachCK:
+                            Control: TextInput@0.0.54
+                            Properties:
+                              AccessibleLabel: ="Cari Coaching Karir sebagai coach"
+                              BorderColor: =RGBA(200, 198, 196, 1)
+                              Fill: =RGBA(255, 255, 255, 1)
+                              Height: =40
+                              LayoutMinWidth: =If(Parent.Width < 600, Parent.Width, 240)
+                              Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                              Placeholder: ="Cari tanggal, catatan, atau mentee..."
+                              TriggerOutput: ='TextInputCanvas.TriggerOutput'.Keypress
+                              Width: =If(Parent.Width < 600, Parent.Width, 280)
                         - BtnCreateCK:
                             Control: ModernText@1.0.0
                             Properties:
@@ -160,7 +216,7 @@ Screens:
                         RadiusBottomRight: =8
                         RadiusTopLeft: =8
                         RadiusTopRight: =8
-                        Visible: =Coalesce(gblPimpinanView, false)
+                        Visible: =false
                       Children:
                         - CoachEmployeeCK:
                             Control: ModernText@1.0.0
@@ -290,13 +346,23 @@ Screens:
                               Fill: =RGBA(255, 255, 255, 1)
                               FillPortions: =1
                               Items: |-
-                                =Sort(
-                                    Filter(
-                                        CoachingKarir,
-                                        Trim(MentorNIP) = Trim(Text(gblCurrentNIP))
-                                    ),
-                                    Tanggal,
-                                    SortOrder.Descending
+                                =With(
+                                    {keyword: Lower(Trim(TxtSearchCoachCK.Value))},
+                                    Sort(
+                                        Filter(
+                                            CoachingKarir As CKRecord,
+                                            Trim(CKRecord.MentorNIP) = Trim(Text(gblCurrentNIP)) &&
+                                            (
+                                                IsBlank(keyword) ||
+                                                keyword in Lower(Text(CKRecord.Tanggal, "[$-id-ID]dd mmmm yyyy")) ||
+                                                keyword in Lower(Coalesce(CKRecord.Catatan, "")) ||
+                                                keyword in Lower(Coalesce(CKRecord.MenteeNIP, "")) ||
+                                                keyword in Lower(Coalesce(LookUp(Pegawai As P, P.Title = CKRecord.MenteeNIP, P.Nama), ""))
+                                            )
+                                        ),
+                                        Tanggal,
+                                        SortOrder.Descending
+                                    )
                                 )
                               LayoutMinHeight: =16
                               LayoutMinWidth: =16

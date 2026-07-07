@@ -3,7 +3,20 @@ Screens:
     Properties:
       Fill: =RGBA(245, 245, 245, 1)
       LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
-      OnVisible: '=UpdateContext({locShowDeleteChecklist: false})'
+      OnVisible: |-
+        =If(
+            IsEmpty(colNonFormNavigationHistory) ||
+            Last(colNonFormNavigationHistory).ScreenName <> App.ActiveScreen.Name,
+            Collect(
+                colNonFormNavigationHistory,
+                {
+                    ScreenName: App.ActiveScreen.Name,
+                    ScreenRef: App.ActiveScreen
+                }
+            )
+        );
+        UpdateContext({locShowDeleteChecklist: false, locShowDetailImagePreview: false, locDetailImageFull: Blank()});
+        Refresh(MentoringSesi)
     Children:
       - ChecklistDetailContainer:
           Control: GroupContainer@1.5.0
@@ -14,37 +27,61 @@ Screens:
             Height: =Parent.Height
             LayoutAlignItems: =LayoutAlignItems.Stretch
             LayoutDirection: =LayoutDirection.Vertical
-            LayoutGap: =0
+            LayoutGap: =16
             Width: =Parent.Width
+            PaddingBottom: =16
+            PaddingLeft: =16
+            PaddingRight: =16
+            PaddingTop: =16
           Children:
             - ChecklistDetailTopBar:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
                 Properties:
-                  Fill: =RGBA(18, 38, 82, 1)
+                  Fill: =RGBA(31, 48, 112, 1)
                   FillPortions: =0
-                  Height: =64
+                  Height: =75
                   LayoutAlignItems: =LayoutAlignItems.Center
                   LayoutDirection: =LayoutDirection.Horizontal
-                  LayoutMinHeight: =64
+                  LayoutMinHeight: =75
+                  PaddingBottom: =8
                   PaddingLeft: =8
                   PaddingRight: =8
+                  PaddingTop: =8
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
                   Width: =Parent.Width
                 Children:
                   - BtnBackChecklistDetail:
                       Control: ModernText@1.0.0
                       Properties:
+                        AutoHeight: =true
                         Align: =Align.Center
                         Color: =RGBA(255, 255, 255, 1)
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
-                        Height: =64
+                        Height: =40
                         OnSelect: |-
-                          =Set(gblChecklistAdminView, false);
-                          Back()
-                        Size: =24
+                              =Set(gblChecklistAdminView, false);
+                              If(
+                                  IsMatch(App.ActiveScreen.Name, "form", MatchOptions.IgnoreCase),
+                                  If(
+                                      !IsEmpty(colNonFormNavigationHistory),
+                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                      Back()
+                                  ),
+                                  If(
+                                      CountRows(colNonFormNavigationHistory) > 1,
+                                      Remove(colNonFormNavigationHistory, Last(colNonFormNavigationHistory));
+                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                      Back()
+                                  )
+                              )
+                        Size: =22
                         Text: ="‹"
-                        Width: =44
+                        Width: =40
                   - LblAppNameChecklistDetail:
                       Control: ModernText@1.0.0
                       Properties:
@@ -53,21 +90,34 @@ Screens:
                         FillPortions: =1
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
-                        Height: =64
-                        Size: =16
-                        Text: ="MyCareerApp"
+                        Height: =40
+                        Size: =18
+                        Text: =If(Coalesce(gblPimpinanView, false), Coalesce(LookUp(Pegawai, Title = Text(gblSubjectNIP), Nama), Text(gblSubjectNIP), "-") & " (" & Text(gblSubjectNIP) & ")", "MyCareerApp")
                   - ChecklistDetailTopBarSpacer:
-                      Control: Rectangle@2.3.0
+                      Control: ModernText@1.0.0
                       Properties:
-                        Fill: =RGBA(0, 0, 0, 0)
-                        Height: =64
-                        Width: =44
+                        AccessibleLabel: ="Kembali ke Homepage"
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        OnSelect: |-
+                          =Set(gblPimpinanView, false);
+                          Set(gblSubjectNIP, Blank());
+                          Set(gblChecklistAdminView, false);
+                          Clear(colNonFormNavigationHistory);
+                          Navigate(S1_Homepage, ScreenTransition.Fade)
+                        Size: =20
+                        Text: ="⌂"
+                        Width: =40
             - ChecklistDetailTopBarShadow:
                 Control: Rectangle@2.3.0
                 Properties:
-                  BorderThickness: =0
                   Fill: =RGBA(0, 0, 0, 0)
+                  FillPortions: =0
                   Height: =0
+                  LayoutMinHeight: =0
                   Width: =Parent.Width
             - ChecklistDetailMain:
                 Control: GroupContainer@1.5.0
@@ -79,10 +129,10 @@ Screens:
                   LayoutGap: =12
                   LayoutMinHeight: =16
                   LayoutOverflowY: =LayoutOverflow.Scroll
-                  PaddingBottom: =16
-                  PaddingLeft: =16
-                  PaddingRight: =16
-                  PaddingTop: =16
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
                   Width: =Parent.Width
                 Children:
                   - ChecklistDetailHeading:
@@ -123,6 +173,8 @@ Screens:
                                   ChecklistDetailDivider.Height +
                                   ChecklistDocumentTitle.Height +
                                   ChecklistDocumentGrid.Height +
+                                  MentoringSesiDetailTitle.Height +
+                                  MentoringSesiDetailGallery.Height +
                                   160
                           )
                         LayoutDirection: =LayoutDirection.Vertical
@@ -134,6 +186,8 @@ Screens:
                                   ChecklistDetailDivider.Height +
                                   ChecklistDocumentTitle.Height +
                                   ChecklistDocumentGrid.Height +
+                                  MentoringSesiDetailTitle.Height +
+                                  MentoringSesiDetailGallery.Height +
                                   160
                           )
                         PaddingBottom: =28
@@ -313,9 +367,11 @@ Screens:
                                     - ImgPersonalStatementDetail:
                                         Control: Image@2.2.3
                                         Properties:
+                                          AccessibleLabel: ="Klik untuk memperbesar Personal Statement"
                                           Height: =180
-                                          Image: =gblSelectedChecklist.PersonalStatementFile
+                                          Image: =gblSelectedChecklist.PersonalStatementFile.Large
                                           ImagePosition: =ImagePosition.Fit
+                                          OnSelect: '=UpdateContext({locDetailImageFull: gblSelectedChecklist.PersonalStatementFile.Full, locShowDetailImagePreview: true})'
                                           Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                               - CareerPlanDetail:
                                   Control: GroupContainer@1.5.0
@@ -350,9 +406,11 @@ Screens:
                                     - ImgCareerPlanDetail:
                                         Control: Image@2.2.3
                                         Properties:
+                                          AccessibleLabel: ="Klik untuk memperbesar Career Plan"
                                           Height: =180
-                                          Image: =gblSelectedChecklist.CareerPlanFile
+                                          Image: =gblSelectedChecklist.CareerPlanFile.Large
                                           ImagePosition: =ImagePosition.Fit
+                                          OnSelect: '=UpdateContext({locDetailImageFull: gblSelectedChecklist.CareerPlanFile.Full, locShowDetailImagePreview: true})'
                                           Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                               - BuktiUploadDetail:
                                   Control: GroupContainer@1.5.0
@@ -387,10 +445,154 @@ Screens:
                                     - ImgBuktiUploadDetail:
                                         Control: Image@2.2.3
                                         Properties:
+                                          AccessibleLabel: ="Klik untuk memperbesar Bukti Upload"
                                           Height: =180
-                                          Image: =gblSelectedChecklist.BuktiUploadFile
+                                          Image: =gblSelectedChecklist.BuktiUploadFile.Large
                                           ImagePosition: =ImagePosition.Fit
+                                          OnSelect: '=UpdateContext({locDetailImageFull: gblSelectedChecklist.BuktiUploadFile.Full, locShowDetailImagePreview: true})'
                                           Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                        - MentoringSesiDetailTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Color: =RGBA(31, 56, 100, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =30
+                              Size: =14
+                              Text: ="Sesi Mentoring"
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                        - MentoringSesiDetailGallery:
+                            Control: Gallery@2.15.0
+                            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+                            Properties:
+                              BorderColor: =RGBA(225, 223, 221, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =0
+                              Height: |-
+                                =Max(
+                                    120,
+                                    CountRows(
+                                        Filter(
+                                            MentoringSesi,
+                                            ChecklistMentoringID = Text(gblSelectedChecklist.ID)
+                                        )
+                                    ) * If(Parent.Width < 700, 380, 220)
+                                )
+                              Items: |-
+                                =Sort(
+                                    Filter(
+                                        MentoringSesi,
+                                        ChecklistMentoringID = Text(gblSelectedChecklist.ID)
+                                    ),
+                                    NoSesi,
+                                    SortOrder.Ascending
+                                )
+                              LayoutMinHeight: |-
+                                =Max(
+                                    120,
+                                    CountRows(
+                                        Filter(
+                                            MentoringSesi,
+                                            ChecklistMentoringID = Text(gblSelectedChecklist.ID)
+                                        )
+                                    ) * If(Parent.Width < 700, 380, 220)
+                                )
+                              TemplatePadding: =8
+                              TemplateSize: =If(Parent.Width < 700, 364, 204)
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                            Children:
+                              - MentoringSesiDetailCard:
+                                  Control: Rectangle@2.3.0
+                                  Properties:
+                                    BorderColor: =RGBA(225, 223, 221, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Fill: =RGBA(248, 247, 246, 1)
+                                    Height: =Parent.TemplateHeight - 4
+                                    Width: =Parent.TemplateWidth - 8
+                              - MentoringSesiDetailNumber:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(31, 56, 100, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =30
+                                    Size: =13
+                                    Text: '="Sesi " & Text(ThisItem.NoSesi)'
+                                    Width: =If(Parent.TemplateWidth < 700, Parent.TemplateWidth - 40, Parent.TemplateWidth - 360)
+                                    X: =20
+                                    Y: =16
+                              - MentoringSesiDetailDate:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    Height: =28
+                                    Size: =12
+                                    Text: |-
+                                      =If(
+                                          IsBlank(ThisItem.Tanggal),
+                                          "-",
+                                          IfError(
+                                              Text(ThisItem.Tanggal, "[$-id-ID]dd mmm yyyy"),
+                                              Text(Date(1899, 12, 30) + Value(ThisItem.Tanggal), "[$-id-ID]dd mmm yyyy")
+                                          )
+                                      )
+                                    Width: =If(Parent.TemplateWidth < 700, Parent.TemplateWidth - 40, Parent.TemplateWidth - 360)
+                                    X: =20
+                                    Y: =50
+                              - MentoringSesiDetailPhoto:
+                                  Control: Image@2.2.3
+                                  Properties:
+                                    AccessibleLabel: ="Klik untuk memperbesar foto bukti sesi mentoring"
+                                    BorderColor: =RGBA(225, 223, 221, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Height: =If(Parent.TemplateWidth < 700, 248, 164)
+                                    Image: =ThisItem.FotoBukti.Large
+                                    ImagePosition: =ImagePosition.Fit
+                                    OnSelect: |-
+                                      =If(
+                                          !IsBlank(ThisItem.FotoBukti),
+                                          UpdateContext({locDetailImageFull: ThisItem.FotoBukti.Full, locShowDetailImagePreview: true})
+                                      )
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Width: =If(Parent.TemplateWidth < 700, Parent.TemplateWidth - 40, 300)
+                                    X: =If(Parent.TemplateWidth < 700, 20, Parent.TemplateWidth - 328)
+                                    Y: =If(Parent.TemplateWidth < 700, 94, 16)
+                              - MentoringSesiDetailPhotoEmpty:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    Height: =40
+                                    Text: ="Foto belum tersedia"
+                                    Visible: =IsBlank(ThisItem.FotoBukti)
+                                    Width: =If(Parent.TemplateWidth < 700, Parent.TemplateWidth - 60, 280)
+                                    X: =If(Parent.TemplateWidth < 700, 30, Parent.TemplateWidth - 318)
+                                    Y: =If(Parent.TemplateWidth < 700, 196, 78)
+                        - MentoringSesiDetailEmpty:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              Color: =RGBA(96, 94, 92, 1)
+                              Font: =Font.'Open Sans'
+                              Height: =36
+                              Text: ="Belum ada sesi mentoring."
+                              Visible: |-
+                                =IsEmpty(
+                                    Filter(
+                                        MentoringSesi,
+                                        ChecklistMentoringID = Text(gblSelectedChecklist.ID)
+                                    )
+                                )
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                         - ChecklistDetailActions:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
@@ -409,12 +611,15 @@ Screens:
                               - BtnEditChecklistDetail:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    BorderThickness: =0
+                                    BorderStyle: =BorderStyle.None
+                                    BorderColor: =RGBA(0, 0, 0, 0)
                                     Align: =Align.Center
-                                    Color: =RGBA(9, 33, 98, 1)
-                                    Fill: =RGBA(235, 240, 252, 1)
+                                    Color: =If(Coalesce(gblPimpinanView, false), RGBA(96, 94, 92, 1), RGBA(9, 33, 98, 1))
+                                    Fill: =If(Coalesce(gblPimpinanView, false), RGBA(225, 223, 221, 1), RGBA(235, 240, 252, 1))
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
-                                    Height: =42
+                                    Height: =44
                                     OnSelect: |-
                                       =Set(gblChecklistEditMode, true);
                                       Set(gblChecklistAdminView, false);
@@ -425,17 +630,20 @@ Screens:
                                     RadiusTopRight: =6
                                     Size: =12
                                     Text: ="Edit"
-                                    Visible: =!Coalesce(gblChecklistAdminView, false)
+                                    Visible: =And(!Coalesce(gblChecklistAdminView, false), !Coalesce(gblPimpinanView, false))
                                     Width: =If(Parent.Width < 480, (Parent.Width - 12) / 2, 120)
                               - BtnDeleteChecklistDetail:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    BorderThickness: =0
+                                    BorderStyle: =BorderStyle.None
+                                    BorderColor: =RGBA(0, 0, 0, 0)
                                     Align: =Align.Center
-                                    Color: =RGBA(255, 255, 255, 1)
-                                    Fill: =RGBA(196, 43, 28, 1)
+                                    Color: =If(Coalesce(gblPimpinanView, false), RGBA(96, 94, 92, 1), RGBA(255, 255, 255, 1))
+                                    Fill: =If(Coalesce(gblPimpinanView, false), RGBA(225, 223, 221, 1), RGBA(196, 43, 28, 1))
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
-                                    Height: =42
+                                    Height: =44
                                     OnSelect: '=UpdateContext({locShowDeleteChecklist: true})'
                                     RadiusBottomLeft: =6
                                     RadiusBottomRight: =6
@@ -443,7 +651,7 @@ Screens:
                                     RadiusTopRight: =6
                                     Size: =12
                                     Text: ="Hapus"
-                                    Visible: =!Coalesce(gblChecklistAdminView, false)
+                                    Visible: =And(!Coalesce(gblChecklistAdminView, false), !Coalesce(gblPimpinanView, false))
                                     Width: =If(Parent.Width < 480, (Parent.Width - 12) / 2, 120)
       - DeleteChecklistOverlay:
           Control: GroupContainer@1.5.0
@@ -511,12 +719,18 @@ Screens:
                       Control: GroupContainer@1.5.0
                       Variant: AutoLayout
                       Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =0
+                        DropShadow: =DropShadow.None
+                        Fill: =RGBA(0, 0, 0, 0)
                         FillPortions: =0
                         Height: =46
                         LayoutDirection: =LayoutDirection.Horizontal
                         LayoutGap: =12
                         LayoutJustifyContent: =LayoutJustifyContent.Center
                         LayoutMinHeight: =46
+                        Width: =Parent.Width
                       Children:
                         - BtnCancelDeleteChecklist:
                             Control: ModernText@1.0.0
@@ -541,7 +755,12 @@ Screens:
                               Height: =42
                               OnSelect: |-
                                 =IfError(
+                                    RemoveIf(
+                                        MentoringSesi,
+                                        ChecklistMentoringID = Text(gblSelectedChecklist.ID)
+                                    );
                                     Remove(ChecklistMentoring, gblSelectedChecklist);
+                                    Refresh(MentoringSesi);
                                     Refresh(ChecklistMentoring);
                                     UpdateContext({locShowDeleteChecklist: false});
                                     Notify("Checklist Mentoring berhasil dihapus.", NotificationType.Success);
@@ -552,3 +771,58 @@ Screens:
                                 )
                               Text: ="Ya, Hapus"
                               Width: =If(Parent.Width < 280, (Parent.Width - 12) / 2, 120)
+      - ChecklistImagePreviewOverlay:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(0, 0, 0, 0.88)
+            Height: =Parent.Height
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =12
+            PaddingBottom: =24
+            PaddingLeft: =24
+            PaddingRight: =24
+            PaddingTop: =16
+            Visible: =Coalesce(locShowDetailImagePreview, false)
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+          Children:
+            - ChecklistImagePreviewHeader:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  FillPortions: =0
+                  Height: =48
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutJustifyContent: =LayoutJustifyContent.End
+                  LayoutMinHeight: =48
+                Children:
+                  - BtnCloseChecklistImagePreview:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AccessibleLabel: ="Tutup pratinjau gambar"
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Fill: =RGBA(50, 49, 48, 0.75)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =44
+                        OnSelect: '=UpdateContext({locShowDetailImagePreview: false, locDetailImageFull: Blank()})'
+                        RadiusBottomLeft: =22
+                        RadiusBottomRight: =22
+                        RadiusTopLeft: =22
+                        RadiusTopRight: =22
+                        Size: =22
+                        Text: ="×"
+                        Width: =44
+            - ImgChecklistImagePreviewFull:
+                Control: Image@2.2.3
+                Properties:
+                  AccessibleLabel: ="Pratinjau gambar resolusi penuh"
+                  FillPortions: =1
+                  Image: =locDetailImageFull
+                  ImagePosition: =ImagePosition.Fit
+                  Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight

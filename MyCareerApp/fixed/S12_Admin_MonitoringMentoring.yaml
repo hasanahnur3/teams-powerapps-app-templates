@@ -4,7 +4,18 @@ Screens:
       Fill: =RGBA(245, 245, 245, 1)
       LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
       OnVisible: |-
-        =Refresh(Pegawai);
+        =If(
+            IsEmpty(colNonFormNavigationHistory) ||
+            Last(colNonFormNavigationHistory).ScreenName <> App.ActiveScreen.Name,
+            Collect(
+                colNonFormNavigationHistory,
+                {
+                    ScreenName: App.ActiveScreen.Name,
+                    ScreenRef: App.ActiveScreen
+                }
+            )
+        );
+        Refresh(Pegawai);
         Refresh(ChecklistMentoring);
         Set(gblChecklistAdminView, false)
     Children:
@@ -16,37 +27,61 @@ Screens:
             Height: =Parent.Height
             LayoutAlignItems: =LayoutAlignItems.Stretch
             LayoutDirection: =LayoutDirection.Vertical
-            LayoutGap: =0
+            LayoutGap: =16
             Width: =Parent.Width
+            PaddingBottom: =16
+            PaddingLeft: =16
+            PaddingRight: =16
+            PaddingTop: =16
           Children:
             - AdminMonitoringTopBar:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
                 Properties:
-                  Fill: =RGBA(18, 38, 82, 1)
+                  Fill: =RGBA(31, 48, 112, 1)
                   FillPortions: =0
-                  Height: =64
+                  Height: =75
                   LayoutAlignItems: =LayoutAlignItems.Center
                   LayoutDirection: =LayoutDirection.Horizontal
-                  LayoutMinHeight: =64
+                  LayoutMinHeight: =75
+                  PaddingBottom: =8
                   PaddingLeft: =8
                   PaddingRight: =8
+                  PaddingTop: =8
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
                   Width: =Parent.Width
                 Children:
                   - BtnBackAdminMonitoring:
                       Control: ModernText@1.0.0
                       Properties:
+                        AutoHeight: =true
                         Align: =Align.Center
                         Color: =RGBA(255, 255, 255, 1)
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
-                        Height: =64
+                        Height: =40
                         OnSelect: |-
-                          =Set(gblChecklistAdminView, false);
-                          Back()
-                        Size: =24
+                              =Set(gblChecklistAdminView, false);
+                              If(
+                                  IsMatch(App.ActiveScreen.Name, "form", MatchOptions.IgnoreCase),
+                                  If(
+                                      !IsEmpty(colNonFormNavigationHistory),
+                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                      Back()
+                                  ),
+                                  If(
+                                      CountRows(colNonFormNavigationHistory) > 1,
+                                      Remove(colNonFormNavigationHistory, Last(colNonFormNavigationHistory));
+                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                      Back()
+                                  )
+                              )
+                        Size: =22
                         Text: ="‹"
-                        Width: =44
+                        Width: =40
                   - LblAppNameAdminMonitoring:
                       Control: ModernText@1.0.0
                       Properties:
@@ -55,21 +90,34 @@ Screens:
                         FillPortions: =1
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
-                        Height: =64
-                        Size: =16
+                        Height: =40
+                        Size: =18
                         Text: ="MyCareerApp"
                   - AdminMonitoringTopBarSpacer:
-                      Control: Rectangle@2.3.0
+                      Control: ModernText@1.0.0
                       Properties:
-                        Fill: =RGBA(0, 0, 0, 0)
-                        Height: =64
-                        Width: =44
+                        AccessibleLabel: ="Kembali ke Homepage"
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        OnSelect: |-
+                          =Set(gblPimpinanView, false);
+                          Set(gblSubjectNIP, Blank());
+                          Set(gblChecklistAdminView, false);
+                          Clear(colNonFormNavigationHistory);
+                          Navigate(S1_Homepage, ScreenTransition.Fade)
+                        Size: =20
+                        Text: ="⌂"
+                        Width: =40
             - AdminMonitoringTopBarShadow:
                 Control: Rectangle@2.3.0
                 Properties:
-                  BorderThickness: =0
-                  Fill: =RGBA(0, 0, 0, 0.08)
-                  Height: =5
+                  Fill: =RGBA(0, 0, 0, 0)
+                  FillPortions: =0
+                  Height: =0
+                  LayoutMinHeight: =0
                   Width: =Parent.Width
             - AdminMonitoringMain:
                 Control: GroupContainer@1.5.0
@@ -80,10 +128,10 @@ Screens:
                   LayoutGap: =16
                   LayoutMinHeight: =16
                   LayoutOverflowY: =LayoutOverflow.Scroll
-                  PaddingBottom: =16
-                  PaddingLeft: =16
-                  PaddingRight: =16
-                  PaddingTop: =16
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
                   Width: =Parent.Width
                 Children:
                   - AdminMonitoringBreadcrumb:

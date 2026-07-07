@@ -16,41 +16,61 @@ Screens:
             LayoutAlignItems: =LayoutAlignItems.Stretch
             LayoutDirection: =LayoutDirection.Vertical
             Width: =Parent.Width
+            LayoutGap: =16
+            PaddingBottom: =16
+            PaddingLeft: =16
+            PaddingRight: =16
+            PaddingTop: =16
           Children:
             - HeaderPendidikanForm:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
                 Properties:
-                  DropShadow: =DropShadow.None
-                  Fill: =RGBA(18, 38, 82, 1)
+                  Fill: =RGBA(31, 48, 112, 1)
                   FillPortions: =0
-                  Height: =64
+                  Height: =75
                   LayoutAlignItems: =LayoutAlignItems.Center
                   LayoutDirection: =LayoutDirection.Horizontal
-                  LayoutMinHeight: =64
+                  LayoutMinHeight: =75
+                  PaddingBottom: =8
                   PaddingLeft: =8
                   PaddingRight: =8
-                  RadiusBottomLeft: =0
-                  RadiusBottomRight: =0
-                  RadiusTopLeft: =0
-                  RadiusTopRight: =0
+                  PaddingTop: =8
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
                   Width: =Parent.Width
                 Children:
                   - BtnBackPendidikanForm:
                       Control: ModernText@1.0.0
                       Properties:
+                        AutoHeight: =true
                         Align: =Align.Center
                         Color: =RGBA(255, 255, 255, 1)
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
-                        Height: =64
+                        Height: =40
                         OnSelect: |-
-                          =Set(gblPendidikanEditMode, false);
-                          Set(gblSelectedPendidikan, Defaults(Profil_Pendidikan));
-                          Back()
-                        Size: =24
+                              =Set(gblPendidikanEditMode, false);
+                              Set(gblSelectedPendidikan, Defaults(Profil_Pendidikan));
+                              If(
+                                  IsMatch(App.ActiveScreen.Name, "form", MatchOptions.IgnoreCase),
+                                  If(
+                                      !IsEmpty(colNonFormNavigationHistory),
+                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                      Back()
+                                  ),
+                                  If(
+                                      CountRows(colNonFormNavigationHistory) > 1,
+                                      Remove(colNonFormNavigationHistory, Last(colNonFormNavigationHistory));
+                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                      Back()
+                                  )
+                              )
+                        Size: =22
                         Text: ="‹"
-                        Width: =44
+                        Width: =40
                   - LblAppNamePendidikanForm:
                       Control: ModernText@1.0.0
                       Properties:
@@ -59,20 +79,34 @@ Screens:
                         FillPortions: =1
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
-                        Height: =64
-                        Size: =16
+                        Height: =40
+                        Size: =18
                         Text: ="MyCareerApp"
                   - HeaderSpacerPendidikanForm:
-                      Control: Rectangle@2.3.0
+                      Control: ModernText@1.0.0
                       Properties:
-                        Fill: =RGBA(0, 0, 0, 0)
-                        Height: =64
-                        Width: =44
+                        AccessibleLabel: ="Kembali ke Homepage"
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        OnSelect: |-
+                          =Set(gblPimpinanView, false);
+                          Set(gblSubjectNIP, Blank());
+                          Set(gblChecklistAdminView, false);
+                          Clear(colNonFormNavigationHistory);
+                          Navigate(S1_Homepage, ScreenTransition.Fade)
+                        Size: =20
+                        Text: ="⌂"
+                        Width: =40
             - TopBarShadowPendidikanForm:
                 Control: Rectangle@2.3.0
                 Properties:
-                  Fill: =RGBA(0, 0, 0, 0.08)
-                  Height: =5
+                  Fill: =RGBA(0, 0, 0, 0)
+                  FillPortions: =0
+                  Height: =0
+                  LayoutMinHeight: =0
                   Width: =Parent.Width
             - MainPendidikanForm:
                 Control: GroupContainer@1.5.0
@@ -83,10 +117,10 @@ Screens:
                   LayoutDirection: =LayoutDirection.Vertical
                   LayoutMinHeight: =16
                   LayoutOverflowY: =LayoutOverflow.Scroll
-                  PaddingBottom: =16
-                  PaddingLeft: =16
-                  PaddingRight: =16
-                  PaddingTop: =16
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
                   Width: =Parent.Width
                 Children:
                   - CardPendidikanForm:
@@ -120,7 +154,7 @@ Screens:
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Bold
                               Size: =20
-                              Text: =If(Coalesce(gblPendidikanEditMode, false), "Edit Pendidikan", "Tambah Pendidikan")
+                              Text: =If(Coalesce(gblPendidikanDetailMode, false), "Detail Pendidikan", If(Coalesce(gblPendidikanEditMode, false), "Edit Pendidikan", "Tambah Pendidikan"))
                               Width: =Parent.Width
                         - SubtitlePendidikanForm:
                             Control: ModernText@1.0.0
@@ -172,8 +206,9 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Jenjang pendidikan"
+                                    DisplayMode: =If(Coalesce(gblPendidikanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
-                                    Value: =If(Coalesce(gblPendidikanEditMode, false), Coalesce(gblSelectedPendidikan.Jenjang, ""), "")
+                                    Value: =If(Coalesce(gblPendidikanEditMode, false) || Coalesce(gblPendidikanDetailMode, false), Coalesce(gblSelectedPendidikan.Jenjang, ""), "")
                                     Width: =Parent.Width
                         - FieldUniversitasPendidikan:
                             Control: GroupContainer@1.5.0
@@ -201,8 +236,9 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Universitas atau institusi"
+                                    DisplayMode: =If(Coalesce(gblPendidikanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
-                                    Value: =If(Coalesce(gblPendidikanEditMode, false), Coalesce(gblSelectedPendidikan.Universitas, ""), "")
+                                    Value: =If(Coalesce(gblPendidikanEditMode, false) || Coalesce(gblPendidikanDetailMode, false), Coalesce(gblSelectedPendidikan.Universitas, ""), "")
                                     Width: =Parent.Width
                         - FieldProgramStudiPendidikan:
                             Control: GroupContainer@1.5.0
@@ -230,8 +266,9 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Program studi atau bidang"
+                                    DisplayMode: =If(Coalesce(gblPendidikanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
-                                    Value: =If(Coalesce(gblPendidikanEditMode, false), Coalesce(gblSelectedPendidikan.ProgramStudi, ""), "")
+                                    Value: =If(Coalesce(gblPendidikanEditMode, false) || Coalesce(gblPendidikanDetailMode, false), Coalesce(gblSelectedPendidikan.ProgramStudi, ""), "")
                                     Width: =Parent.Width
                         - FieldTahunLulusPendidikan:
                             Control: GroupContainer@1.5.0
@@ -259,9 +296,10 @@ Screens:
                                   Control: NumberInput@2.9.12
                                   Properties:
                                     AccessibleLabel: ="Tahun lulus"
+                                    DisplayMode: =If(Coalesce(gblPendidikanDetailMode, false), DisplayMode.View, DisplayMode.Edit)
                                     Max: =Year(Today()) + 10
                                     Min: =1900
-                                    Value: =If(Coalesce(gblPendidikanEditMode, false), Value(gblSelectedPendidikan.TahunLulus), Year(Today()))
+                                    Value: =If(Coalesce(gblPendidikanEditMode, false) || Coalesce(gblPendidikanDetailMode, false), Value(gblSelectedPendidikan.TahunLulus), Year(Today()))
                                     Width: =Parent.Width
                         - FormActionsPendidikan:
                             Control: GroupContainer@1.5.0
@@ -275,6 +313,7 @@ Screens:
                               LayoutJustifyContent: =LayoutJustifyContent.End
                               LayoutMinHeight: =If(Coalesce(locConfirmDeletePendidikan, false), 104, 48)
                               LayoutWrap: =true
+                              Visible: =!Coalesce(gblPendidikanDetailMode, false) && !Coalesce(gblPimpinanView, false)
                               Width: =Parent.Width
                             Children:
                               - BtnBatalPendidikan:
@@ -304,11 +343,12 @@ Screens:
                               - BtnHapusPendidikan:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    Fill: =If(Coalesce(gblPimpinanView, false), RGBA(225, 223, 221, 1), RGBA(196, 43, 28, 1))
                                     Align: =Align.Center
-                                    BorderColor: =RGBA(196, 43, 28, 1)
-                                    BorderStyle: =BorderStyle.Solid
-                                    BorderThickness: =1
-                                    Color: =RGBA(196, 43, 28, 1)
+                                    BorderColor: =RGBA(0, 0, 0, 0)
+                                    BorderStyle: =BorderStyle.None
+                                    BorderThickness: =0
+                                    Color: =If(Coalesce(gblPimpinanView, false), RGBA(96, 94, 92, 1), RGBA(255, 255, 255, 1))
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
                                     Height: =44
@@ -348,7 +388,7 @@ Screens:
                                   Properties:
                                     Align: =Align.Center
                                     Color: =RGBA(255, 255, 255, 1)
-                                    DisplayMode: =If(Coalesce(gblPendidikanSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    DisplayMode: =If(Coalesce(gblPimpinanView, false) || Coalesce(gblPendidikanSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
                                     Fill: =RGBA(196, 43, 28, 1)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
@@ -384,7 +424,7 @@ Screens:
                                   Properties:
                                     Align: =Align.Center
                                     Color: =RGBA(255, 255, 255, 1)
-                                    DisplayMode: =If(Coalesce(gblPendidikanSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    DisplayMode: =If(Coalesce(gblPimpinanView, false) || Coalesce(gblPendidikanSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
                                     Fill: =RGBA(9, 33, 98, 1)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold

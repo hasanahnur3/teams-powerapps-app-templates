@@ -54,7 +54,7 @@ Screens:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
                 Properties:
-                  Fill: =RGBA(9, 33, 98, 1)
+                  Fill: =RGBA(31, 48, 112, 1)
                   FillPortions: =0
                   Height: =75
                   LayoutAlignItems: =LayoutAlignItems.Center
@@ -68,18 +68,33 @@ Screens:
                   RadiusBottomRight: =8
                   RadiusTopLeft: =8
                   RadiusTopRight: =8
+                  Width: =Parent.Width
                 Children:
                   - BtnBackCKForm:
                       Control: ModernText@1.0.0
                       Properties:
                         Align: =Align.Center
+                        AutoHeight: =true
                         Color: =RGBA(255, 255, 255, 1)
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
                         Height: =40
                         OnSelect: |-
                           =Set(gblCoachingKarirSubmitting, false);
-                          Back()
+                          If(
+                              IsMatch(App.ActiveScreen.Name, "form", MatchOptions.IgnoreCase),
+                              If(
+                                  !IsEmpty(colNonFormNavigationHistory),
+                                  Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                  Back()
+                              ),
+                              If(
+                                  CountRows(colNonFormNavigationHistory) > 1,
+                                  Remove(colNonFormNavigationHistory, Last(colNonFormNavigationHistory));
+                                  Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                  Back()
+                              )
+                          )
                         Size: =22
                         Text: ="‹"
                         Width: =40
@@ -95,31 +110,50 @@ Screens:
                         Size: =18
                         Text: ="MyCareerApp"
                   - CKFormHeaderSpacer:
-                      Control: Rectangle@2.3.0
+                      Control: ModernText@1.0.0
                       Properties:
-                        Fill: =RGBA(0, 0, 0, 0)
+                        AccessibleLabel: ="Kembali ke Homepage"
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
                         Height: =40
+                        OnSelect: |-
+                          =Set(gblPimpinanView, false);
+                          Set(gblSubjectNIP, Blank());
+                          Set(gblChecklistAdminView, false);
+                          Clear(colNonFormNavigationHistory);
+                          Navigate(S1_Homepage, ScreenTransition.Fade)
+                        Size: =20
+                        Text: ="⌂"
                         Width: =40
+            - CKFormHeaderShadow:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =RGBA(0, 0, 0, 0)
+                  Height: =0
+                  LayoutMinHeight: =0
+                  Width: =Parent.Width
             - CKFormScroll:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
                 Properties:
                   DropShadow: =DropShadow.None
-                  FillPortions: =1
                   LayoutAlignItems: =LayoutAlignItems.Stretch
                   LayoutDirection: =LayoutDirection.Vertical
                   LayoutMinHeight: =16
                   LayoutOverflowY: =LayoutOverflow.Scroll
-                  PaddingBottom: =90
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
                 Children:
                   - CKFormCard:
                       Control: GroupContainer@1.5.0
                       Variant: AutoLayout
                       Properties:
                         BorderColor: =RGBA(225, 223, 221, 1)
-                        BorderStyle: =BorderStyle.Solid
                         BorderThickness: =1
-                        DropShadow: =DropShadow.Light
                         Fill: =RGBA(255, 255, 255, 1)
                         FillPortions: =0
                         Height: =1800
@@ -138,12 +172,15 @@ Screens:
                         - CKFormTitle:
                             Control: ModernText@1.0.0
                             Properties:
+                              AutoHeight: =true
                               Color: =RGBA(31, 56, 100, 1)
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Bold
                               Height: =36
                               Size: =20
                               Text: =If(Coalesce(gblCoachingKarirCoachEditMode, false), "Edit Coaching Karir", "Buat Coaching Karir")
+                              Width: =300
+                              Wrap: =false
                         - CKFormSubject:
                             Control: ModernText@1.0.0
                             Properties:
@@ -151,7 +188,8 @@ Screens:
                               Color: =RGBA(96, 94, 92, 1)
                               Font: =Font.'Open Sans'
                               Size: =12
-                              Text: '="Mentee: " & Coalesce(CmbMenteeCKForm.Selected.Value, "-")'
+                              Text: |-
+                                ="Mentee: " & Coalesce(CmbMenteeCKForm.Selected.Value, "-")
                         - CKFormDivider:
                             Control: Rectangle@2.3.0
                             Properties:
@@ -177,7 +215,7 @@ Screens:
                                     Size: =12
                                     Text: ="Tanggal *"
                               - DateTanggalCKForm:
-                                  Control: ModernDatePicker@1.0.0
+                                  Control: ModernDatePicker@1.0.1
                                   Properties:
                                     AccessibleLabel: ="Tanggal coaching"
                                     DefaultDate: |-
@@ -232,7 +270,6 @@ Screens:
                                               NIP: Title
                                           }
                                       )
-                                    SelectMultiple: =false
                                     Width: =Parent.Width
                         - FieldCatatanCKForm:
                             Control: GroupContainer@1.5.0
@@ -292,11 +329,10 @@ Screens:
                                     - FotoBukti_DataCardCK:
                                         Control: TypedDataCard@1.0.7
                                         Variant: LargePicture
-                                        IsLocked: false
                                         Properties:
                                           DataField: ="FotoBukti"
                                           Default: =ThisItem.FotoBukti
-                                          DisplayName: =DataSourceInfo([@CoachingKarir],DataSourceInfo.DisplayName,'FotoBukti')
+                                          DisplayName: =DataSourceInfo([@CoachingKarir],DataSourceInfo.DisplayName,FotoBukti)
                                           Height: =210
                                           Required: =false
                                           Update: =ImageFotoBuktiCK.Image
@@ -312,39 +348,32 @@ Screens:
                                                 BorderStyle: =BorderStyle.None
                                                 BorderThickness: =2
                                                 DisplayMode: =Parent.DisplayMode
-                                                Height: =AddMediaFotoBuktiCK.Height
+                                                Height: =150
                                                 Image: =If(IsBlank(AddMediaFotoBuktiCK.Media), Parent.Default, AddMediaFotoBuktiCK.Media)
-                                                ImagePosition: =ImagePosition.Fit
                                                 RadiusBottomLeft: =6
                                                 RadiusBottomRight: =6
                                                 RadiusTopLeft: =6
                                                 RadiusTopRight: =6
                                                 Tooltip: =Parent.DisplayName
-                                                Width: =AddMediaFotoBuktiCK.Width
-                                                X: =AddMediaFotoBuktiCK.X
-                                                Y: =AddMediaFotoBuktiCK.Y
+                                                Width: =Min(420, Parent.Width)
                                           - AddMediaFotoBuktiCK:
                                               Control: AddMedia@2.2.1
                                               MetadataKey: AddPicture
                                               Properties:
-                                                BorderColor: =RGBA(0, 0, 0, 0)
-                                                BorderStyle: =BorderStyle.None
-                                                BorderThickness: =2
+                                                BorderColor: =RGBA(200, 198, 196, 1)
+                                                BorderThickness: =1
                                                 ChangePictureText: ="Ganti foto"
-                                                Color: =RGBA(255, 255, 255, 1)
+                                                Color: =RGBA(50, 49, 48, 1)
                                                 DisplayMode: =Parent.DisplayMode
-                                                Fill: =RGBA(9, 33, 98, 1)
-                                                Font: =Font.'Open Sans'
-                                                Height: =200
-                                                HoverColor: =RGBA(255, 255, 255, 1)
-                                                HoverFill: =RGBA(20, 54, 145, 1)
-                                                PressedColor: =RGBA(255, 255, 255, 1)
-                                                PressedFill: =RGBA(6, 24, 72, 1)
-                                                Size: =15
+                                                Height: =44
+                                                HoverColor: =RGBA(50, 49, 48, 1)
+                                                HoverFill: =RGBA(250, 250, 250, 1)
+                                                PressedColor: =RGBA(50, 49, 48, 1)
+                                                PressedFill: =RGBA(243, 242, 241, 1)
+                                                Size: =12
                                                 Text: ="Unggah foto"
-                                                Width: =Min(420, Parent.Width)
-                                                X: =0
-                                                Y: =0
+                                                Width: =110
+                                                Y: =ImageFotoBuktiCK.Y + ImageFotoBuktiCK.Height + 8
                                           - ErrorMessageFotoBuktiCK:
                                               Control: Text@0.0.51
                                               MetadataKey: ErrorMessage
@@ -354,7 +383,6 @@ Screens:
                                                 Text: =Parent.Error
                                                 Visible: =And(!IsBlank(Parent.Error), Parent.DisplayMode=DisplayMode.Edit)
                                                 Width: =Parent.Width
-                                                X: =0
                                                 Y: =ImageFotoBuktiCK.Y + ImageFotoBuktiCK.Height
                         - CKActionItemsTitle:
                             Control: ModernText@1.0.0
@@ -370,7 +398,6 @@ Screens:
                             Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
                             Properties:
                               BorderColor: =RGBA(225, 223, 221, 1)
-                              BorderStyle: =BorderStyle.Solid
                               BorderThickness: =1
                               Fill: =RGBA(255, 255, 255, 1)
                               FillPortions: =0
@@ -385,7 +412,6 @@ Screens:
                                   Control: Rectangle@2.3.0
                                   Properties:
                                     BorderColor: =RGBA(225, 223, 221, 1)
-                                    BorderStyle: =BorderStyle.Solid
                                     BorderThickness: =1
                                     Fill: =RGBA(248, 247, 246, 1)
                                     Height: =Parent.TemplateHeight - 4
@@ -477,7 +503,6 @@ Screens:
                                               )
                                           }
                                       )
-                                    SelectMultiple: =false
                                     Width: =If(Parent.TemplateWidth < 700, Parent.TemplateWidth - 32, (Parent.TemplateWidth - 44) * 0.45)
                                     X: =12
                                     Y: =42
@@ -486,9 +511,9 @@ Screens:
                                   Properties:
                                     Color: =RGBA(96, 94, 92, 1)
                                     Font: =Font.'Open Sans'
-                                    Height: =32
                                     Size: =11
-                                    Text: '="Kategori: " & Coalesce(ThisItem.Kategori, "-")'
+                                    Text: |-
+                                      ="Kategori: " & Coalesce(ThisItem.Kategori, "-")
                                     Width: =If(Parent.TemplateWidth < 700, Parent.TemplateWidth - 32, (Parent.TemplateWidth - 44) * 0.55)
                                     X: =If(Parent.TemplateWidth < 700, 12, CmbTipeActionCK.X + CmbTipeActionCK.Width + 12)
                                     Y: =If(Parent.TemplateWidth < 700, 82, 44)
@@ -498,7 +523,8 @@ Screens:
                                     AccessibleLabel: ="Detail action item"
                                     Height: =72
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeMultiLine"
-                                    OnChange: '=Patch(colCKActionItems, ThisItem, {Detail: Self.Value})'
+                                    OnChange: |-
+                                      =Patch(colCKActionItems, ThisItem, {Detail: Self.Value})
                                     Value: =ThisItem.Detail
                                     Width: =Parent.TemplateWidth - 32
                                     X: =12
@@ -532,11 +558,22 @@ Screens:
                               Width: =220
       - CKFormActions:
           Control: GroupContainer@1.5.0
-          Variant: ManualLayout
+          Variant: AutoLayout
           Properties:
             DropShadow: =DropShadow.None
-            Fill: =RGBA(255, 255, 255, 1)
             Height: =75
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Horizontal
+            LayoutGap: =12
+            LayoutJustifyContent: =LayoutJustifyContent.End
+            LayoutMinHeight: =16
+            LayoutMinWidth: =16
+            PaddingLeft: =8
+            PaddingRight: =8
+            RadiusBottomLeft: =8
+            RadiusBottomRight: =8
+            RadiusTopLeft: =8
+            RadiusTopRight: =8
             Width: =Parent.Width
             Y: =Parent.Height - Self.Height
           Children:
@@ -548,11 +585,10 @@ Screens:
                   BorderStyle: =BorderStyle.Solid
                   BorderThickness: =1
                   Color: =RGBA(50, 49, 48, 1)
+                  Fill: =RGBA(255, 255, 255, 1)
                   Font: =Font.'Open Sans'
                   FontWeight: =FontWeight.Semibold
                   Height: =44
-                  X: =Parent.Width - 308
-                  Y: =15
                   OnSelect: |-
                     =Reset(DateTanggalCKForm);
                     Reset(CmbMenteeCKForm);
@@ -568,6 +604,7 @@ Screens:
                   RadiusBottomRight: =6
                   RadiusTopLeft: =6
                   RadiusTopRight: =6
+                  Size: =12
                   Text: ="Batal"
                   Width: =110
             - BtnSaveCKForm:
@@ -575,13 +612,11 @@ Screens:
                 Properties:
                   Align: =Align.Center
                   Color: =RGBA(255, 255, 255, 1)
-                  DisplayMode: =DisplayMode.Edit
+                  DisplayMode: =If(Coalesce(gblCoachingKarirSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
                   Fill: =RGBA(9, 33, 98, 1)
                   Font: =Font.'Open Sans'
                   FontWeight: =FontWeight.Semibold
                   Height: =44
-                  X: =Parent.Width - 186
-                  Y: =15
                   OnSelect: |-
                     =If(
                         Or(
@@ -692,5 +727,6 @@ Screens:
                   RadiusBottomRight: =6
                   RadiusTopLeft: =6
                   RadiusTopRight: =6
+                  Size: =13
                   Text: =If(Coalesce(gblCoachingKarirSubmitting, false), "Menyimpan...", If(Coalesce(gblCoachingKarirCoachEditMode, false), "Simpan Perubahan", "Simpan"))
                   Width: =170

@@ -3,7 +3,19 @@ Screens:
     Properties:
       Fill: =RGBA(245, 245, 245, 1)
       LoadingSpinnerColor: =RGBA(9, 33, 98, 1)
-      OnVisible: '=UpdateContext({locShowDeleteCK: false})'
+      OnVisible: |-
+        =If(
+            IsEmpty(colNonFormNavigationHistory) ||
+            Last(colNonFormNavigationHistory).ScreenName <> App.ActiveScreen.Name,
+            Collect(
+                colNonFormNavigationHistory,
+                {
+                    ScreenName: App.ActiveScreen.Name,
+                    ScreenRef: App.ActiveScreen
+                }
+            )
+        );
+        UpdateContext({locShowDeleteCK: false, locShowDetailImagePreview: false, locDetailImageFull: Blank()})
     Children:
       - CKDetailScreenContainer:
           Control: GroupContainer@1.5.0
@@ -24,7 +36,7 @@ Screens:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
                 Properties:
-                  Fill: =RGBA(9, 33, 98, 1)
+                  Fill: =RGBA(31, 48, 112, 1)
                   FillPortions: =0
                   Height: =75
                   LayoutAlignItems: =LayoutAlignItems.Center
@@ -38,16 +50,32 @@ Screens:
                   RadiusBottomRight: =8
                   RadiusTopLeft: =8
                   RadiusTopRight: =8
+                  Width: =Parent.Width
                 Children:
                   - BtnBackCKDetail:
                       Control: ModernText@1.0.0
                       Properties:
                         Align: =Align.Center
+                        AutoHeight: =true
                         Color: =RGBA(255, 255, 255, 1)
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
                         Height: =40
-                        OnSelect: =Back()
+                        OnSelect: |-
+                          =If(
+                              IsMatch(App.ActiveScreen.Name, "form", MatchOptions.IgnoreCase),
+                              If(
+                                  !IsEmpty(colNonFormNavigationHistory),
+                                  Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                  Back()
+                              ),
+                              If(
+                                  CountRows(colNonFormNavigationHistory) > 1,
+                                  Remove(colNonFormNavigationHistory, Last(colNonFormNavigationHistory));
+                                  Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                  Back()
+                              )
+                          )
                         Size: =22
                         Text: ="‹"
                         Width: =40
@@ -61,13 +89,32 @@ Screens:
                         FontWeight: =FontWeight.Bold
                         Height: =40
                         Size: =18
-                        Text: ="MyCareerApp"
+                        Text: =If(Coalesce(gblPimpinanView, false), Coalesce(LookUp(Pegawai, Title = Text(gblSubjectNIP), Nama), Text(gblSubjectNIP), "-") & " (" & Text(gblSubjectNIP) & ")", "MyCareerApp")
                   - CKDetailHeaderSpacer:
-                      Control: Rectangle@2.3.0
+                      Control: ModernText@1.0.0
                       Properties:
-                        Fill: =RGBA(0, 0, 0, 0)
+                        AccessibleLabel: ="Kembali ke Homepage"
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
                         Height: =40
+                        OnSelect: |-
+                          =Set(gblPimpinanView, false);
+                          Set(gblSubjectNIP, Blank());
+                          Set(gblChecklistAdminView, false);
+                          Clear(colNonFormNavigationHistory);
+                          Navigate(S1_Homepage, ScreenTransition.Fade)
+                        Size: =20
+                        Text: ="⌂"
                         Width: =40
+            - CKDetailHeaderShadow:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =RGBA(0, 0, 0, 0)
+                  Height: =0
+                  LayoutMinHeight: =0
+                  Width: =Parent.Width
             - CKDetailMain:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
@@ -79,6 +126,9 @@ Screens:
                   LayoutMinHeight: =16
                   LayoutOverflowY: =LayoutOverflow.Scroll
                   PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
                 Children:
                   - CKDetailHeading:
                       Control: GroupContainer@1.5.0
@@ -106,13 +156,15 @@ Screens:
                             Control: ModernText@1.0.0
                             Properties:
                               Align: =Align.Center
-                              BorderColor: =RGBA(9, 33, 98, 1)
-                              BorderStyle: =BorderStyle.Solid
-                              BorderThickness: =1
-                              Color: =RGBA(9, 33, 98, 1)
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =0
+                              Color: =If(Coalesce(gblPimpinanView, false), RGBA(96, 94, 92, 1), RGBA(9, 33, 98, 1))
+                              DisplayMode: =If(Coalesce(gblPimpinanView, false), DisplayMode.Disabled, DisplayMode.Edit)
+                              Fill: =If(Coalesce(gblPimpinanView, false), RGBA(225, 223, 221, 1), RGBA(235, 240, 252, 1))
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Semibold
-                              Height: =40
+                              Height: =44
                               OnSelect: |-
                                 =Set(gblCoachingKarirCoachEditMode, true);
                                 Set(gblCoachingKarirListMode, "Coach");
@@ -122,28 +174,36 @@ Screens:
                               RadiusTopLeft: =6
                               RadiusTopRight: =6
                               Text: ="Edit"
-                              Visible: =And(gblCoachingKarirListMode = "Coach", Trim(gblSelectedCoachingKarir.MentorNIP) = Trim(Text(gblCurrentNIP)))
+                              Visible: =And(!Coalesce(gblPimpinanView, false), gblCoachingKarirListMode = "Coach", Trim(gblSelectedCoachingKarir.MentorNIP) = Trim(Text(gblCurrentNIP)))
                               Width: =90
                         - BtnDeleteCKDetail:
                             Control: ModernText@1.0.0
                             Properties:
                               Align: =Align.Center
-                              Color: =RGBA(196, 43, 28, 1)
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =0
+                              Color: =If(Coalesce(gblPimpinanView, false), RGBA(96, 94, 92, 1), RGBA(255, 255, 255, 1))
+                              DisplayMode: =If(Coalesce(gblPimpinanView, false), DisplayMode.Disabled, DisplayMode.Edit)
+                              Fill: =If(Coalesce(gblPimpinanView, false), RGBA(225, 223, 221, 1), RGBA(196, 43, 28, 1))
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Semibold
-                              Height: =40
-                              OnSelect: '=UpdateContext({locShowDeleteCK: true})'
+                              Height: =44
+                              OnSelect: |-
+                                =UpdateContext({locShowDeleteCK: true})
+                              RadiusBottomLeft: =6
+                              RadiusBottomRight: =6
+                              RadiusTopLeft: =6
+                              RadiusTopRight: =6
                               Text: ="Hapus"
-                              Visible: =And(gblCoachingKarirListMode = "Coach", Trim(gblSelectedCoachingKarir.MentorNIP) = Trim(Text(gblCurrentNIP)))
+                              Visible: =And(!Coalesce(gblPimpinanView, false), gblCoachingKarirListMode = "Coach", Trim(gblSelectedCoachingKarir.MentorNIP) = Trim(Text(gblCurrentNIP)))
                               Width: =90
                   - CKDetailCard:
                       Control: GroupContainer@1.5.0
                       Variant: AutoLayout
                       Properties:
                         BorderColor: =RGBA(225, 223, 221, 1)
-                        BorderStyle: =BorderStyle.Solid
                         BorderThickness: =1
-                        DropShadow: =DropShadow.Light
                         Fill: =RGBA(255, 255, 255, 1)
                         FillPortions: =0
                         Height: |-
@@ -196,6 +256,7 @@ Screens:
                               - CKDetailMenteeLabel:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Color: =RGBA(145, 145, 145, 1)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Bold
@@ -219,6 +280,7 @@ Screens:
                               - CKDetailDateLabel:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Color: =RGBA(145, 145, 145, 1)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Bold
@@ -253,6 +315,7 @@ Screens:
                               - CKDetailMentorLabel:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Color: =RGBA(145, 145, 145, 1)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Bold
@@ -285,6 +348,7 @@ Screens:
                         - CKDetailCatatanLabel:
                             Control: ModernText@1.0.0
                             Properties:
+                              AutoHeight: =true
                               Color: =RGBA(145, 145, 145, 1)
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Bold
@@ -307,6 +371,7 @@ Screens:
                         - CKDetailResultLabel:
                             Control: ModernText@1.0.0
                             Properties:
+                              AutoHeight: =true
                               Color: =RGBA(145, 145, 145, 1)
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Bold
@@ -317,17 +382,22 @@ Screens:
                         - CKDetailResult:
                             Control: Image@2.2.3
                             Properties:
+                              AccessibleLabel: ="Klik untuk memperbesar foto bukti Coaching Karir"
                               BorderColor: =RGBA(225, 223, 221, 1)
-                              BorderStyle: =BorderStyle.Solid
                               BorderThickness: =1
                               Fill: =RGBA(250, 250, 250, 1)
                               Height: =If(Parent.Width < 640, 260, 220)
-                              Image: =gblSelectedCoachingKarir.FotoBukti
-                              ImagePosition: =ImagePosition.Fit
+                              Image: =gblSelectedCoachingKarir.FotoBukti.Large
+                              OnSelect: |-
+                                =If(
+                                    !IsBlank(gblSelectedCoachingKarir.FotoBukti),
+                                    UpdateContext({locDetailImageFull: gblSelectedCoachingKarir.FotoBukti.Full, locShowDetailImagePreview: true})
+                                )
                               Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                         - CKDetailActionItemsLabel:
                             Control: ModernText@1.0.0
                             Properties:
+                              AutoHeight: =true
                               Color: =RGBA(145, 145, 145, 1)
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Bold
@@ -340,15 +410,14 @@ Screens:
                             Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
                             Properties:
                               BorderColor: =RGBA(225, 223, 221, 1)
-                              BorderStyle: =BorderStyle.Solid
-                              BorderThickness: =1
+                              BorderThickness: =0
                               Fill: =RGBA(255, 255, 255, 1)
                               FillPortions: =0
                               Height: |-
                                 =If(
                                     IsEmpty(Filter(ActionItem, CoachingID = gblSelectedCoachingKarir.ID)),
-                                    72,
-                                    CountRows(Filter(ActionItem, CoachingID = gblSelectedCoachingKarir.ID)) * 96
+                                    88,
+                                    CountRows(Filter(ActionItem, CoachingID = gblSelectedCoachingKarir.ID)) * 160 + 8
                                 )
                               Items: |-
                                 =Sort(
@@ -362,54 +431,84 @@ Screens:
                               LayoutMinHeight: |-
                                 =If(
                                     IsEmpty(Filter(ActionItem, CoachingID = gblSelectedCoachingKarir.ID)),
-                                    72,
-                                    CountRows(Filter(ActionItem, CoachingID = gblSelectedCoachingKarir.ID)) * 96
+                                    88,
+                                    CountRows(Filter(ActionItem, CoachingID = gblSelectedCoachingKarir.ID)) * 160 + 8
                                 )
-                              TemplatePadding: =6
-                              TemplateSize: =90
+                              TemplatePadding: =0
+                              TemplateSize: =160
                               Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                             Children:
-                              - CKDetailActionItemCard:
+                              - CKDetailActionDivider:
                                   Control: Rectangle@2.3.0
                                   Properties:
-                                    BorderColor: =RGBA(235, 235, 235, 1)
-                                    BorderStyle: =BorderStyle.Solid
-                                    BorderThickness: =1
-                                    Fill: =RGBA(250, 250, 250, 1)
-                                    Height: =Parent.TemplateHeight - 6
-                                    Width: =Parent.TemplateWidth - 12
-                                    X: =6
-                                    Y: =3
-                              - CKDetailActionItemTitle:
+                                    Fill: =RGBA(237, 235, 233, 1)
+                                    Height: =1
+                                    Width: =Parent.TemplateWidth
+                                    Y: =Parent.TemplateHeight - 1
+                              - CKDetailActionCategoryBadge:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    Align: =Align.Center
                                     AutoHeight: =true
-                                    Color: =RGBA(31, 56, 100, 1)
+                                    Color: |-
+                                      =Switch(
+                                          ThisItem.Kategori,
+                                          "Pendidikan (PTB)", RGBA(0, 84, 153, 1),
+                                          "Sertifikasi", RGBA(0, 100, 0, 1),
+                                          "Exposure", RGBA(98, 48, 180, 1),
+                                          RGBA(50, 49, 48, 1)
+                                      )
+                                    Fill: |-
+                                      =Switch(
+                                          ThisItem.Kategori,
+                                          "Pendidikan (PTB)", RGBA(222, 236, 249, 1),
+                                          "Sertifikasi", RGBA(218, 242, 208, 1),
+                                          "Exposure", RGBA(239, 224, 255, 1),
+                                          RGBA(245, 245, 245, 1)
+                                      )
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Bold
-                                    Height: =24
+                                    Height: =34
+                                    RadiusBottomLeft: =14
+                                    RadiusBottomRight: =14
+                                    RadiusTopLeft: =14
+                                    RadiusTopRight: =14
                                     Size: =12
-                                    Text: =Coalesce(ThisItem.Title, "-") & " • " & Coalesce(ThisItem.Kategori, "-") & " • " & Coalesce(ThisItem.Tipe.Value, "-")
-                                    Width: =Parent.TemplateWidth - 32
-                                    X: =16
-                                    Y: =10
-                              - CKDetailActionItemDetail:
+                                    Text: =Coalesce(ThisItem.Kategori, "-")
+                                    Width: =Min(Parent.TemplateWidth - 64, 220)
+                                    X: =32
+                                    Y: =22
+                              - CKDetailActionType:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     AutoHeight: =true
                                     Color: =RGBA(50, 49, 48, 1)
                                     Font: =Font.'Open Sans'
-                                    Height: =48
-                                    Size: =12
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =36
+                                    Size: =18
+                                    Text: =Coalesce(ThisItem.Tipe.Value, "-")
+                                    Width: =Parent.TemplateWidth - 64
+                                    X: =32
+                                    Y: =66
+                              - CKDetailActionItemDetail:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    Height: =56
+                                    Size: =13
                                     Text: =Coalesce(ThisItem.Detail, "-")
                                     VerticalAlign: =VerticalAlign.Top
-                                    Width: =Parent.TemplateWidth - 32
-                                    X: =16
-                                    Y: =38
+                                    Width: =Parent.TemplateWidth - 64
+                                    X: =32
+                                    Y: =106
                               - CKDetailActionItemsEmpty:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     Align: =Align.Center
+                                    AutoHeight: =true
                                     Color: =RGBA(96, 94, 92, 1)
                                     Font: =Font.'Open Sans'
                                     Height: =60
@@ -417,12 +516,12 @@ Screens:
                                     Text: ="Belum ada action item."
                                     Visible: =IsEmpty(Parent.AllItems)
                                     Width: =Parent.TemplateWidth
-                                    X: =0
-                                    Y: =10
+                                    Y: =14
                         - CKDetailActionItemsEmptyState:
                             Control: ModernText@1.0.0
                             Properties:
                               Align: =Align.Center
+                              AutoHeight: =true
                               Color: =RGBA(96, 94, 92, 1)
                               Font: =Font.'Open Sans'
                               Height: =60
@@ -451,7 +550,6 @@ Screens:
                 Variant: AutoLayout
                 Properties:
                   BorderColor: =RGBA(225, 223, 221, 1)
-                  BorderStyle: =BorderStyle.Solid
                   BorderThickness: =1
                   DropShadow: =DropShadow.Bold
                   Fill: =RGBA(255, 255, 255, 1)
@@ -461,7 +559,6 @@ Screens:
                   LayoutGap: =14
                   LayoutMinHeight: =220
                   LayoutMinWidth: =0
-                  LayoutOverflowY: =LayoutOverflow.Hide
                   PaddingBottom: =24
                   PaddingLeft: =24
                   PaddingRight: =24
@@ -476,11 +573,12 @@ Screens:
                       Control: ModernText@1.0.0
                       Properties:
                         Align: =Align.Center
+                        AutoHeight: =true
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
-                        Height: =32
                         Size: =16
                         Text: ="Hapus Coaching Karir?"
+                        Width: =Parent.Width
                   - CKDeleteMessage:
                       Control: ModernText@1.0.0
                       Properties:
@@ -495,12 +593,18 @@ Screens:
                       Control: GroupContainer@1.5.0
                       Variant: AutoLayout
                       Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =0
+                        DropShadow: =DropShadow.None
+                        Fill: =RGBA(0, 0, 0, 0)
                         FillPortions: =0
                         Height: =46
                         LayoutDirection: =LayoutDirection.Horizontal
                         LayoutGap: =12
                         LayoutJustifyContent: =LayoutJustifyContent.Center
                         LayoutMinHeight: =46
+                        Width: =Parent.Width
                       Children:
                         - BtnCancelDeleteCK:
                             Control: ModernText@1.0.0
@@ -511,7 +615,8 @@ Screens:
                               BorderThickness: =1
                               Font: =Font.'Open Sans'
                               Height: =42
-                              OnSelect: '=UpdateContext({locShowDeleteCK: false})'
+                              OnSelect: |-
+                                =UpdateContext({locShowDeleteCK: false})
                               Text: ="Batal"
                               Width: =If(Parent.Width < 280, (Parent.Width - 12) / 2, 120)
                         - BtnConfirmDeleteCK:
@@ -545,3 +650,56 @@ Screens:
                                 )
                               Text: ="Ya, Hapus"
                               Width: =If(Parent.Width < 280, (Parent.Width - 12) / 2, 120)
+      - CKImagePreviewOverlay:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(0, 0, 0, 0.88)
+            Height: =Parent.Height
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =12
+            PaddingBottom: =24
+            PaddingLeft: =24
+            PaddingRight: =24
+            PaddingTop: =16
+            Visible: =Coalesce(locShowDetailImagePreview, false)
+            Width: =Parent.Width
+          Children:
+            - CKImagePreviewHeader:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  FillPortions: =0
+                  Height: =48
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutJustifyContent: =LayoutJustifyContent.End
+                  LayoutMinHeight: =48
+                Children:
+                  - BtnCloseCKImagePreview:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AccessibleLabel: ="Tutup pratinjau gambar"
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Fill: =RGBA(50, 49, 48, 0.75)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =44
+                        OnSelect: |-
+                          =UpdateContext({locShowDetailImagePreview: false, locDetailImageFull: Blank()})
+                        RadiusBottomLeft: =22
+                        RadiusBottomRight: =22
+                        RadiusTopLeft: =22
+                        RadiusTopRight: =22
+                        Size: =22
+                        Text: ="×"
+                        Width: =44
+            - ImgCKImagePreviewFull:
+                Control: Image@2.2.3
+                Properties:
+                  AccessibleLabel: ="Pratinjau foto bukti Coaching Karir resolusi penuh"
+                  FillPortions: =1
+                  Image: =locDetailImageFull
+                  Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight

@@ -4,7 +4,18 @@ Screens:
       Fill: =RGBA(245, 245, 245, 1)
       LoadingSpinnerColor: =RGBA(9, 33, 98, 1)
       OnVisible: |-
-        =UpdateContext({locShowDeleteCT: false})
+        =If(
+            IsEmpty(colNonFormNavigationHistory) ||
+            Last(colNonFormNavigationHistory).ScreenName <> App.ActiveScreen.Name,
+            Collect(
+                colNonFormNavigationHistory,
+                {
+                    ScreenName: App.ActiveScreen.Name,
+                    ScreenRef: App.ActiveScreen
+                }
+            )
+        );
+        UpdateContext({locShowDeleteCT: false})
     Children:
       - CTDetailScreenContainer:
           Control: GroupContainer@1.5.0
@@ -25,7 +36,7 @@ Screens:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
                 Properties:
-                  Fill: =RGBA(9, 33, 98, 1)
+                  Fill: =RGBA(31, 48, 112, 1)
                   FillPortions: =0
                   Height: =75
                   LayoutAlignItems: =LayoutAlignItems.Center
@@ -39,20 +50,34 @@ Screens:
                   RadiusBottomRight: =8
                   RadiusTopLeft: =8
                   RadiusTopRight: =8
+                  Width: =Parent.Width
                 Children:
                   - BtnBackCTDetail:
-                      Control: Classic/Icon@2.5.0
+                      Control: ModernText@1.0.0
                       Properties:
-                        AccessibleLabel: ="Kembali"
+                        AutoHeight: =true
+                        Align: =Align.Center
                         Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
                         Height: =40
-                        Icon: =Icon.ChevronLeft
-                        OnSelect: =Back()
-                        PaddingBottom: =10
-                        PaddingLeft: =10
-                        PaddingRight: =10
-                        PaddingTop: =10
-                        Tooltip: ="Kembali"
+                        OnSelect: |-
+                              =If(
+                                  IsMatch(App.ActiveScreen.Name, "form", MatchOptions.IgnoreCase),
+                                  If(
+                                      !IsEmpty(colNonFormNavigationHistory),
+                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                      Back()
+                                  ),
+                                  If(
+                                      CountRows(colNonFormNavigationHistory) > 1,
+                                      Remove(colNonFormNavigationHistory, Last(colNonFormNavigationHistory));
+                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                      Back()
+                                  )
+                              )
+                        Size: =22
+                        Text: ="‹"
                         Width: =40
                   - LblAppNameCTDetail:
                       Control: ModernText@1.0.0
@@ -64,13 +89,33 @@ Screens:
                         FontWeight: =FontWeight.Bold
                         Height: =40
                         Size: =18
-                        Text: ="MyCareerApp"
+                        Text: =If(Coalesce(gblPimpinanView, false), Coalesce(LookUp(Pegawai, Title = Text(gblSubjectNIP), Nama), Text(gblSubjectNIP), "-") & " (" & Text(gblSubjectNIP) & ")", "MyCareerApp")
                   - CTDetailHeaderSpacer:
-                      Control: Rectangle@2.3.0
+                      Control: ModernText@1.0.0
                       Properties:
-                        Fill: =RGBA(0, 0, 0, 0)
+                        AccessibleLabel: ="Kembali ke Homepage"
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
                         Height: =40
+                        OnSelect: |-
+                          =Set(gblPimpinanView, false);
+                          Set(gblSubjectNIP, Blank());
+                          Set(gblChecklistAdminView, false);
+                          Clear(colNonFormNavigationHistory);
+                          Navigate(S1_Homepage, ScreenTransition.Fade)
+                        Size: =20
+                        Text: ="⌂"
                         Width: =40
+            - CTDetailHeaderShadow:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =RGBA(0, 0, 0, 0)
+                  FillPortions: =0
+                  Height: =0
+                  LayoutMinHeight: =0
+                  Width: =Parent.Width
             - CTDetailMain:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
@@ -82,6 +127,9 @@ Screens:
                   LayoutMinHeight: =16
                   LayoutOverflowY: =LayoutOverflow.Scroll
                   PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
                 Children:
                   - CTDetailHeading:
                       Control: GroupContainer@1.5.0
@@ -108,14 +156,15 @@ Screens:
                         - BtnEditCTDetail:
                             Control: ModernText@1.0.0
                             Properties:
+                              Fill: =If(Coalesce(gblPimpinanView, false), RGBA(225, 223, 221, 1), RGBA(235, 240, 252, 1))
                               Align: =Align.Center
-                              BorderColor: =RGBA(9, 33, 98, 1)
-                              BorderStyle: =BorderStyle.Solid
-                              BorderThickness: =1
-                              Color: =RGBA(9, 33, 98, 1)
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =0
+                              Color: =If(Coalesce(gblPimpinanView, false), RGBA(96, 94, 92, 1), RGBA(9, 33, 98, 1))
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Semibold
-                              Height: =40
+                              Height: =44
                               OnSelect: |-
                                 =Set(gblCoachingTematikEditMode, true);
                                 Navigate(S7B_CoachingTematik_Form, ScreenTransition.Fade)
@@ -133,11 +182,19 @@ Screens:
                         - BtnDeleteCTDetail:
                             Control: ModernText@1.0.0
                             Properties:
+                              RadiusTopRight: =6
+                              RadiusTopLeft: =6
+                              RadiusBottomRight: =6
+                              RadiusBottomLeft: =6
+                              Fill: =If(Coalesce(gblPimpinanView, false), RGBA(225, 223, 221, 1), RGBA(196, 43, 28, 1))
+                              BorderThickness: =0
+                              BorderStyle: =BorderStyle.None
+                              BorderColor: =RGBA(0, 0, 0, 0)
                               Align: =Align.Center
-                              Color: =RGBA(196, 43, 28, 1)
+                              Color: =If(Coalesce(gblPimpinanView, false), RGBA(96, 94, 92, 1), RGBA(255, 255, 255, 1))
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Semibold
-                              Height: =40
+                              Height: =44
                               OnSelect: |-
                                 =UpdateContext({locShowDeleteCT: true})
                               Text: ="Hapus"
@@ -398,12 +455,18 @@ Screens:
                       Control: GroupContainer@1.5.0
                       Variant: AutoLayout
                       Properties:
+                        BorderColor: =RGBA(0, 0, 0, 0)
+                        BorderStyle: =BorderStyle.None
+                        BorderThickness: =0
+                        DropShadow: =DropShadow.None
+                        Fill: =RGBA(0, 0, 0, 0)
                         FillPortions: =0
                         Height: =46
                         LayoutDirection: =LayoutDirection.Horizontal
                         LayoutGap: =12
                         LayoutJustifyContent: =LayoutJustifyContent.Center
                         LayoutMinHeight: =46
+                        Width: =Parent.Width
                       Children:
                         - BtnCancelDeleteCT:
                             Control: ModernText@1.0.0

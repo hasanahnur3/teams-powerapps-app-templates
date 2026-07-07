@@ -3,6 +3,19 @@ Screens:
     Properties:
       Fill: =RGBA(245, 245, 245, 1)
       LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+      OnVisible: |-
+        =If(
+            IsEmpty(colNonFormNavigationHistory) ||
+            Last(colNonFormNavigationHistory).ScreenName <> App.ActiveScreen.Name,
+            Collect(
+                colNonFormNavigationHistory,
+                {
+                    ScreenName: App.ActiveScreen.Name,
+                    ScreenRef: App.ActiveScreen
+                }
+            )
+        );
+        UpdateContext({locShowPhotoPreview: false})
     Children:
       - PRDetailScreenContainer:
           Control: GroupContainer@1.5.0
@@ -23,13 +36,12 @@ Screens:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
                 Properties:
-                  Fill: =RGBA(9, 33, 98, 1)
+                  Fill: =RGBA(31, 48, 112, 1)
                   FillPortions: =0
                   Height: =75
                   LayoutAlignItems: =LayoutAlignItems.Center
                   LayoutDirection: =LayoutDirection.Horizontal
-                  LayoutMinHeight: =16
-                  LayoutMinWidth: =16
+                  LayoutMinHeight: =75
                   PaddingBottom: =8
                   PaddingLeft: =8
                   PaddingRight: =8
@@ -38,18 +50,32 @@ Screens:
                   RadiusBottomRight: =8
                   RadiusTopLeft: =8
                   RadiusTopRight: =8
+                  Width: =Parent.Width
                 Children:
                   - BtnBackPRDetail:
                       Control: ModernText@1.0.0
                       Properties:
-                        Align: =Align.Center
                         AutoHeight: =true
+                        Align: =Align.Center
                         Color: =RGBA(255, 255, 255, 1)
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
                         Height: =40
-                        OnSelect: =Back()
-                        PaddingLeft: =20
+                        OnSelect: |-
+                              =If(
+                                  IsMatch(App.ActiveScreen.Name, "form", MatchOptions.IgnoreCase),
+                                  If(
+                                      !IsEmpty(colNonFormNavigationHistory),
+                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                      Back()
+                                  ),
+                                  If(
+                                      CountRows(colNonFormNavigationHistory) > 1,
+                                      Remove(colNonFormNavigationHistory, Last(colNonFormNavigationHistory));
+                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                      Back()
+                                  )
+                              )
                         Size: =22
                         Text: ="‹"
                         Width: =40
@@ -63,13 +89,33 @@ Screens:
                         FontWeight: =FontWeight.Bold
                         Height: =40
                         Size: =18
-                        Text: ="MyCareerApp"
+                        Text: =If(Coalesce(gblPimpinanView, false), Coalesce(LookUp(Pegawai, Title = Text(gblSelectedPR.NIP), Nama), Text(gblSelectedPR.NIP), "-") & " (" & Text(gblSelectedPR.NIP) & ")", "MyCareerApp")
                   - HeaderSpacerPRDetail:
-                      Control: Rectangle@2.3.0
+                      Control: ModernText@1.0.0
                       Properties:
-                        Fill: =RGBA(0, 0, 0, 0)
+                        AccessibleLabel: ="Kembali ke Homepage"
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
                         Height: =40
+                        OnSelect: |-
+                          =Set(gblPimpinanView, false);
+                          Set(gblSubjectNIP, Blank());
+                          Set(gblChecklistAdminView, false);
+                          Clear(colNonFormNavigationHistory);
+                          Navigate(S1_Homepage, ScreenTransition.Fade)
+                        Size: =20
+                        Text: ="⌂"
                         Width: =40
+            - PRDetailHeaderShadow:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =RGBA(0, 0, 0, 0)
+                  FillPortions: =0
+                  Height: =0
+                  LayoutMinHeight: =0
+                  Width: =Parent.Width
             - PRDetailScroll:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
@@ -80,6 +126,9 @@ Screens:
                   LayoutGap: =16
                   LayoutOverflowY: =LayoutOverflow.Scroll
                   PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
                 Children:
                   - PRDetailCard:
                       Control: GroupContainer@1.5.0
@@ -198,7 +247,7 @@ Screens:
                                           Font: =Font.'Open Sans'
                                           FontWeight: =FontWeight.Bold
                                           Size: =11
-                                          Text: ="SEMESTER"
+                                          Text: ="PERFORMANCE REVIEW"
                                     - ValSemesterPRDetail:
                                         Control: ModernText@1.0.0
                                         Properties:
@@ -481,17 +530,21 @@ Screens:
                               LayoutGap: =12
                               LayoutJustifyContent: =LayoutJustifyContent.End
                               LayoutMinHeight: =48
-                              Visible: =Value(gblSelectedPR.Tahun) = Year(Today())
+                              Visible: =And(Value(gblSelectedPR.Tahun) = Year(Today()), !Coalesce(gblPimpinanView, false), !Coalesce(gblPRLineManagerView, false))
                             Children:
                               - BtnEditPRDetail:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    BorderThickness: =0
+                                    BorderStyle: =BorderStyle.None
+                                    BorderColor: =RGBA(0, 0, 0, 0)
                                     Align: =Align.Center
-                                    Color: =RGBA(9, 33, 98, 1)
-                                    Fill: =RGBA(235, 240, 252, 1)
+                                    Color: =If(Or(Coalesce(gblPimpinanView, false), Coalesce(gblPRLineManagerView, false)), RGBA(96, 94, 92, 1), RGBA(9, 33, 98, 1))
+                                    DisplayMode: =If(Or(Coalesce(gblPimpinanView, false), Coalesce(gblPRLineManagerView, false)), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Fill: =If(Or(Coalesce(gblPimpinanView, false), Coalesce(gblPRLineManagerView, false)), RGBA(225, 223, 221, 1), RGBA(235, 240, 252, 1))
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
-                                    Height: =42
+                                    Height: =44
                                     OnSelect: |-
                                       =Set(gblPREditMode, true);
                                       Navigate(S3B_PR_Form, ScreenTransition.Fade)
@@ -501,16 +554,21 @@ Screens:
                                     RadiusTopRight: =6
                                     Size: =12
                                     Text: ="Edit"
+                                    Visible: =And(!Coalesce(gblPimpinanView, false), !Coalesce(gblPRLineManagerView, false))
                                     Width: =If(Parent.Width < 480, (Parent.Width - 12) / 2, 120)
                               - BtnDeletePRDetail:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    BorderThickness: =0
+                                    BorderStyle: =BorderStyle.None
+                                    BorderColor: =RGBA(0, 0, 0, 0)
                                     Align: =Align.Center
-                                    Color: =RGBA(255, 255, 255, 1)
-                                    Fill: =RGBA(196, 43, 28, 1)
+                                    Color: =If(Or(Coalesce(gblPimpinanView, false), Coalesce(gblPRLineManagerView, false)), RGBA(96, 94, 92, 1), RGBA(255, 255, 255, 1))
+                                    DisplayMode: =If(Or(Coalesce(gblPimpinanView, false), Coalesce(gblPRLineManagerView, false)), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Fill: =If(Or(Coalesce(gblPimpinanView, false), Coalesce(gblPRLineManagerView, false)), RGBA(225, 223, 221, 1), RGBA(196, 43, 28, 1))
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
-                                    Height: =42
+                                    Height: =44
                                     OnSelect: '=UpdateContext({locShowDeleteConfirm: true})'
                                     RadiusBottomLeft: =6
                                     RadiusBottomRight: =6
@@ -518,6 +576,7 @@ Screens:
                                     RadiusTopRight: =6
                                     Size: =12
                                     Text: ="Hapus"
+                                    Visible: =And(!Coalesce(gblPimpinanView, false), !Coalesce(gblPRLineManagerView, false))
                                     Width: =If(Parent.Width < 480, (Parent.Width - 12) / 2, 120)
                         - PRPhotoSection:
                             Control: GroupContainer@1.5.0
@@ -562,10 +621,16 @@ Screens:
                                     - ImgPhotoPRDetail:
                                         Control: Image@2.2.3
                                         Properties:
+                                          AccessibleLabel: ="Klik untuk memperbesar foto bukti"
                                           Fill: =RGBA(243, 242, 241, 1)
                                           Height: =250
-                                          Image: =gblSelectedPR.FotoBukti
+                                          Image: =gblSelectedPR.FotoBukti.Large
                                           ImagePosition: =ImagePosition.Fit
+                                          OnSelect: |-
+                                            =If(
+                                                !IsBlank(Self.Image),
+                                                UpdateContext({locShowPhotoPreview: true})
+                                            )
                                           RadiusBottomLeft: =6
                                           RadiusBottomRight: =6
                                           RadiusTopLeft: =6
@@ -619,12 +684,14 @@ Screens:
                             Control: ModernText@1.0.0
                             Properties:
                               Align: =Align.Center
+                              AutoHeight: =true
                               Color: =RGBA(50, 49, 48, 1)
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Bold
                               Height: =32
                               Size: =16
                               Text: ="Hapus Performance Review?"
+                              Width: =Parent.Width
                         - DeleteConfirmMessage:
                             Control: ModernText@1.0.0
                             Properties:
@@ -639,13 +706,18 @@ Screens:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
                             Properties:
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              BorderThickness: =0
                               DropShadow: =DropShadow.None
+                              Fill: =RGBA(0, 0, 0, 0)
                               FillPortions: =0
                               Height: =46
                               LayoutDirection: =LayoutDirection.Horizontal
                               LayoutGap: =12
                               LayoutJustifyContent: =LayoutJustifyContent.Center
                               LayoutMinHeight: =46
+                              Width: =Parent.Width
                             Children:
                               - BtnCancelDeletePR:
                                   Control: ModernText@1.0.0
@@ -700,3 +772,59 @@ Screens:
                                     Size: =12
                                     Text: ="Ya, Hapus"
                                     Width: =If(Parent.Width < 280, (Parent.Width - 12) / 2, 120)
+      - PRPhotoPreviewOverlay:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(0, 0, 0, 0.88)
+            Height: =Parent.Height
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =12
+            PaddingBottom: =24
+            PaddingLeft: =24
+            PaddingRight: =24
+            PaddingTop: =16
+            Visible: =Coalesce(locShowPhotoPreview, false)
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+          Children:
+            - PRPhotoPreviewHeader:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  FillPortions: =0
+                  Height: =48
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutJustifyContent: =LayoutJustifyContent.End
+                  LayoutMinHeight: =48
+                Children:
+                  - BtnClosePRPhotoPreview:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AccessibleLabel: ="Tutup pratinjau foto"
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Fill: =RGBA(50, 49, 48, 0.75)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =44
+                        OnSelect: |-
+                          =UpdateContext({locShowPhotoPreview: false})
+                        RadiusBottomLeft: =22
+                        RadiusBottomRight: =22
+                        RadiusTopLeft: =22
+                        RadiusTopRight: =22
+                        Size: =22
+                        Text: ="×"
+                        Width: =44
+            - ImgPRPhotoPreviewFull:
+                Control: Image@2.2.3
+                Properties:
+                  AccessibleLabel: ="Pratinjau penuh foto bukti Performance Review"
+                  FillPortions: =1
+                  Image: =gblSelectedPR.FotoBukti.Full
+                  ImagePosition: =ImagePosition.Fit
+                  Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight

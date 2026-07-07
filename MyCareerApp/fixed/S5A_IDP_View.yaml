@@ -4,7 +4,18 @@ Screens:
       Fill: =RGBA(245, 245, 245, 1)
       LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
       OnVisible: |-
-        =Refresh(CoachingKarir);
+        =If(
+            IsEmpty(colNonFormNavigationHistory) ||
+            Last(colNonFormNavigationHistory).ScreenName <> App.ActiveScreen.Name,
+            Collect(
+                colNonFormNavigationHistory,
+                {
+                    ScreenName: App.ActiveScreen.Name,
+                    ScreenRef: App.ActiveScreen
+                }
+            )
+        );
+        Refresh(CoachingKarir);
         Refresh(ActionItem);
         Refresh(IDP)
     Children:
@@ -16,35 +27,60 @@ Screens:
             Height: =Parent.Height
             LayoutAlignItems: =LayoutAlignItems.Stretch
             LayoutDirection: =LayoutDirection.Vertical
-            LayoutGap: =0
             Width: =Parent.Width
+            LayoutGap: =16
+            PaddingBottom: =16
+            PaddingLeft: =16
+            PaddingRight: =16
+            PaddingTop: =16
           Children:
             - IDPViewTopBar:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
                 Properties:
-                  Fill: =RGBA(18, 38, 82, 1)
+                  Fill: =RGBA(31, 48, 112, 1)
                   FillPortions: =0
-                  Height: =64
+                  Height: =75
                   LayoutAlignItems: =LayoutAlignItems.Center
                   LayoutDirection: =LayoutDirection.Horizontal
-                  LayoutMinHeight: =64
+                  LayoutMinHeight: =75
+                  PaddingBottom: =8
                   PaddingLeft: =8
                   PaddingRight: =8
+                  PaddingTop: =8
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
                   Width: =Parent.Width
                 Children:
                   - BtnBackIDPView:
                       Control: ModernText@1.0.0
                       Properties:
+                        AutoHeight: =true
                         Align: =Align.Center
                         Color: =RGBA(255, 255, 255, 1)
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
-                        Height: =64
-                        OnSelect: =Back()
-                        Size: =24
+                        Height: =40
+                        OnSelect: |-
+                              =If(
+                                  IsMatch(App.ActiveScreen.Name, "form", MatchOptions.IgnoreCase),
+                                  If(
+                                      !IsEmpty(colNonFormNavigationHistory),
+                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                      Back()
+                                  ),
+                                  If(
+                                      CountRows(colNonFormNavigationHistory) > 1,
+                                      Remove(colNonFormNavigationHistory, Last(colNonFormNavigationHistory));
+                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                      Back()
+                                  )
+                              )
+                        Size: =22
                         Text: ="‹"
-                        Width: =44
+                        Width: =40
                   - LblAppNameIDPView:
                       Control: ModernText@1.0.0
                       Properties:
@@ -53,36 +89,48 @@ Screens:
                         FillPortions: =1
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
-                        Height: =64
-                        Size: =16
-                        Text: ="MyCareerApp"
+                        Height: =40
+                        Size: =18
+                        Text: =If(Coalesce(gblPimpinanView, false), Coalesce(LookUp(Pegawai, Title = Text(gblSubjectNIP), Nama), Text(gblSubjectNIP), "-") & " (" & Text(gblSubjectNIP) & ")", "MyCareerApp")
                   - IDPViewTopBarSpacer:
-                      Control: Rectangle@2.3.0
+                      Control: ModernText@1.0.0
                       Properties:
-                        Fill: =RGBA(0, 0, 0, 0)
-                        Height: =64
-                        Width: =44
+                        AccessibleLabel: ="Kembali ke Homepage"
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        OnSelect: |-
+                          =Set(gblPimpinanView, false);
+                          Set(gblSubjectNIP, Blank());
+                          Set(gblChecklistAdminView, false);
+                          Clear(colNonFormNavigationHistory);
+                          Navigate(S1_Homepage, ScreenTransition.Fade)
+                        Size: =20
+                        Text: ="⌂"
+                        Width: =40
             - IDPViewTopBarShadow:
                 Control: Rectangle@2.3.0
                 Properties:
-                  BorderThickness: =0
-                  Fill: =RGBA(0, 0, 0, 0.08)
-                  Height: =5
+                  Fill: =RGBA(0, 0, 0, 0)
+                  FillPortions: =0
+                  Height: =0
+                  LayoutMinHeight: =0
                   Width: =Parent.Width
             - IDPViewMain:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
                 Properties:
-                  FillPortions: =1
                   LayoutAlignItems: =LayoutAlignItems.Stretch
                   LayoutDirection: =LayoutDirection.Vertical
                   LayoutGap: =18
                   LayoutMinHeight: =16
                   LayoutOverflowY: =LayoutOverflow.Scroll
-                  PaddingBottom: =16
-                  PaddingLeft: =16
-                  PaddingRight: =16
-                  PaddingTop: =16
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
                   Width: =Parent.Width
                 Children:
                   - IDPViewHeading:
@@ -126,7 +174,6 @@ Screens:
                               Color: =RGBA(31, 56, 100, 1)
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Bold
-                              Height: =32
                               Size: =18
                               Text: ="Action Items Dari Coaching Karir Terakhir"
                               Width: =Parent.Width
@@ -147,7 +194,6 @@ Screens:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     Color: =RGBA(80, 80, 80, 1)
-                                    FillPortions: =0
                                     Font: =Font.'Open Sans'
                                     Height: =30
                                     Size: =14
@@ -228,11 +274,9 @@ Screens:
                             Variant: AutoLayout
                             Properties:
                               BorderColor: =RGBA(225, 223, 221, 1)
-                              BorderStyle: =BorderStyle.Solid
                               BorderThickness: =1
                               DropShadow: =DropShadow.None
                               Fill: =RGBA(255, 255, 255, 1)
-                              FillPortions: =1
                               LayoutDirection: =LayoutDirection.Vertical
                               LayoutMinHeight: =320
                               RadiusBottomLeft: =8
@@ -273,7 +317,6 @@ Screens:
                                           )
                                       )
                                     LayoutMinHeight: =300
-                                    TemplatePadding: =0
                                     TemplateSize: =112
                                   Children:
                                     - LastCKActionDivider:
@@ -287,6 +330,7 @@ Screens:
                                         Control: ModernText@1.0.0
                                         Properties:
                                           Align: =Align.Center
+                                          AutoHeight: =true
                                           Color: |-
                                             =Switch(
                                                 ThisItem.Kategori,
@@ -322,7 +366,6 @@ Screens:
                                           Font: =Font.'Open Sans'
                                           FontWeight: =FontWeight.Bold
                                           Height: =28
-                                          Size: =15
                                           Text: =Coalesce(ThisItem.Tipe.Value, "-")
                                           Width: =Parent.TemplateWidth - LastCKCategoryBadge.X - LastCKCategoryBadge.Width - 60
                                           X: =LastCKCategoryBadge.X + LastCKCategoryBadge.Width + 16
@@ -405,17 +448,16 @@ Screens:
                                     RadiusTopRight: =6
                                     Size: =12
                                     Text: ="+ Tambah"
+                                    Visible: =!Coalesce(gblPimpinanView, false)
                                     Width: =110
                         - IDPTableCard:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
                             Properties:
                               BorderColor: =RGBA(225, 223, 221, 1)
-                              BorderStyle: =BorderStyle.Solid
                               BorderThickness: =1
                               DropShadow: =DropShadow.None
                               Fill: =RGBA(255, 255, 255, 1)
-                              FillPortions: =1
                               LayoutDirection: =LayoutDirection.Vertical
                               LayoutMinHeight: =480
                               RadiusBottomLeft: =8
@@ -479,7 +521,6 @@ Screens:
                                           Height: =40
                                           Size: =13
                                           Text: ="LAST EDITED"
-                                          Width: =150
                                           X: =Parent.Width - 560
                                           Y: =18
                                     - HeaderTargetIDP:
@@ -534,7 +575,6 @@ Screens:
                                           )
                                       )
                                     LayoutMinHeight: =380
-                                    TemplatePadding: =0
                                     TemplateSize: =105
                                   Children:
                                     - IDPRowCurrentYearBackground:
@@ -545,11 +585,9 @@ Screens:
                                           OnSelect: |-
                                             =Set(gblSelectedIDP, ThisItem);
                                             Set(gblIDPEditMode, true);
-                                            Set(gblIDPReadOnly, Value(ThisItem.Tahun) <> Year(Today()));
+                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Value(ThisItem.Tahun) <> Year(Today()));
                                             Navigate(S5B_IDP_Edit, ScreenTransition.Fade)
                                           Width: =Parent.TemplateWidth
-                                          X: =0
-                                          Y: =0
                                     - IDPTableDivider:
                                         Control: Rectangle@2.3.0
                                         Properties:
@@ -566,7 +604,7 @@ Screens:
                                           OnSelect: |-
                                             =Set(gblSelectedIDP, ThisItem);
                                             Set(gblIDPEditMode, true);
-                                            Set(gblIDPReadOnly, Value(ThisItem.Tahun) <> Year(Today()));
+                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Value(ThisItem.Tahun) <> Year(Today()));
                                             Navigate(S5B_IDP_Edit, ScreenTransition.Fade)
                                           Size: =13
                                           Text: =Text(ThisItem.Tahun)
@@ -599,7 +637,7 @@ Screens:
                                           OnSelect: |-
                                             =Set(gblSelectedIDP, ThisItem);
                                             Set(gblIDPEditMode, true);
-                                            Set(gblIDPReadOnly, Value(ThisItem.Tahun) <> Year(Today()));
+                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Value(ThisItem.Tahun) <> Year(Today()));
                                             Navigate(S5B_IDP_Edit, ScreenTransition.Fade)
                                           RadiusBottomLeft: =14
                                           RadiusBottomRight: =14
@@ -619,7 +657,7 @@ Screens:
                                           OnSelect: |-
                                             =Set(gblSelectedIDP, ThisItem);
                                             Set(gblIDPEditMode, true);
-                                            Set(gblIDPReadOnly, Value(ThisItem.Tahun) <> Year(Today()));
+                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Value(ThisItem.Tahun) <> Year(Today()));
                                             Navigate(S5B_IDP_Edit, ScreenTransition.Fade)
                                           Size: =13
                                           Text: =Coalesce(ThisItem.Tipe.Value, "-")
@@ -636,7 +674,7 @@ Screens:
                                           OnSelect: |-
                                             =Set(gblSelectedIDP, ThisItem);
                                             Set(gblIDPEditMode, true);
-                                            Set(gblIDPReadOnly, Value(ThisItem.Tahun) <> Year(Today()));
+                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Value(ThisItem.Tahun) <> Year(Today()));
                                             Navigate(S5B_IDP_Edit, ScreenTransition.Fade)
                                           Size: =11
                                           Text: |-
@@ -645,7 +683,6 @@ Screens:
                                                 "-",
                                                 Text(ThisItem.Modified, "[$-id-ID]dd mmm yyyy HH:mm")
                                             )
-                                          Width: =150
                                           X: =Parent.TemplateWidth - 560
                                           Y: =28
                                     - IDPRowTargetBadge:
@@ -660,7 +697,7 @@ Screens:
                                           OnSelect: |-
                                             =Set(gblSelectedIDP, ThisItem);
                                             Set(gblIDPEditMode, true);
-                                            Set(gblIDPReadOnly, Value(ThisItem.Tahun) <> Year(Today()));
+                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Value(ThisItem.Tahun) <> Year(Today()));
                                             Navigate(S5B_IDP_Edit, ScreenTransition.Fade)
                                           RadiusBottomLeft: =14
                                           RadiusBottomRight: =14
@@ -697,7 +734,7 @@ Screens:
                                           OnSelect: |-
                                             =Set(gblSelectedIDP, ThisItem);
                                             Set(gblIDPEditMode, true);
-                                            Set(gblIDPReadOnly, Value(ThisItem.Tahun) <> Year(Today()));
+                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Value(ThisItem.Tahun) <> Year(Today()));
                                             Navigate(S5B_IDP_Edit, ScreenTransition.Fade)
                                           RadiusBottomLeft: =14
                                           RadiusBottomRight: =14
