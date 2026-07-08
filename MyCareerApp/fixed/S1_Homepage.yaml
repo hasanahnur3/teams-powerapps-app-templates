@@ -769,10 +769,10 @@ Screens:
                   BorderColor: =RGBA(225, 223, 221, 1)
                   BorderThickness: =1
                   Fill: =RGBA(255, 255, 255, 1)
-                  Height: =112
+                  Height: =If(Parent.Width < 620, 172, 112)
                   LayoutDirection: =LayoutDirection.Vertical
                   LayoutGap: =8
-                  LayoutMinHeight: =112
+                  LayoutMinHeight: =If(Parent.Width < 620, 172, 112)
                   PaddingBottom: =16
                   PaddingLeft: =16
                   PaddingRight: =16
@@ -797,10 +797,10 @@ Screens:
                       Variant: AutoLayout
                       Properties:
                         DropShadow: =DropShadow.None
-                        Height: =48
+                        Height: =If(Parent.Width < 620, 108, 48)
                         LayoutDirection: =LayoutDirection.Horizontal
                         LayoutGap: =12
-                        LayoutMinHeight: =48
+                        LayoutMinHeight: =If(Parent.Width < 620, 108, 48)
                         LayoutWrap: =true
                       Children:
                         - BtnMentorCoachingKarir:
@@ -843,6 +843,27 @@ Screens:
                               RadiusTopRight: =8
                               Size: =13
                               Text: ="Coaching Tematik"
+                        - BtnMentorIndikatorProfil:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(200, 198, 196, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              Color: =RGBA(31, 56, 100, 1)
+                              Fill: =RGBA(243, 242, 241, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =48
+                              LayoutMinWidth: =180
+                              OnSelect: =Navigate(S13_Coach_IndikatorWarnaProfil, ScreenTransition.Fade)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =13
+                              Text: ="Indikator Profil"
             - CardPimpinan:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
