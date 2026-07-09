@@ -18,7 +18,14 @@ Screens:
         Set(gblProfilIndikatorSubmitting, false);
         Refresh(Pegawai);
         Refresh(ProfilIndikatorWarna);
-        UpdateContext({locIndikatorTahun: Year(Today()), locSelectedIndicatorNIP: Blank(), locResetIndicatorInputs: false, locSubmittingIndicatorKey: Blank()})
+        UpdateContext(
+            {
+                locIndikatorTahun: Year(Today()),
+                locSelectedIndicatorNIP: Blank(),
+                locResetIndicatorInputs: false,
+                locSubmittingIndicatorKey: Blank()
+            }
+        )
     Children:
       - IndicatorScreenContainer_1:
           Control: GroupContainer@1.5.0
@@ -215,15 +222,22 @@ Screens:
                                         Properties:
                                           AccessibleLabel: ="Pilih pegawai"
                                           Height: =44
-                                          DisplayMode: =If(Coalesce(LookUp(Pegawai, Title = Text(gblCurrentNIP), IsLineManager), false), DisplayMode.Edit, DisplayMode.Disabled)
+                                          DisplayMode: =DisplayMode.Edit
                                           InputTextPlaceholder: ="Cari nama pegawai"
                                           Items: |-
-                                            =ForAll(
-                                                Filter(Pegawai, Coalesce(IsPegawai, true)),
-                                                {
-                                                    Value: Nama,
-                                                    NIP: Title
-                                                  }
+                                            =SortByColumns(
+                                                ForAll(
+                                                    Filter(
+                                                        Pegawai,
+                                                        LineManagerNIP = Text(gblCurrentNIP)
+                                                    ),
+                                                    {
+                                                        Value: Nama,
+                                                        NIP: Title
+                                                    }
+                                                ),
+                                                "Value",
+                                                SortOrder.Ascending
                                             )
                                           OnChange: |-
                                             =UpdateContext(
@@ -264,7 +278,7 @@ Screens:
                                         Control: NumberInput@2.9.12
                                         Properties:
                                           AccessibleLabel: ="Tahun"
-                                          DisplayMode: =If(Coalesce(LookUp(Pegawai, Title = Text(gblCurrentNIP), IsLineManager), false), DisplayMode.Edit, DisplayMode.Disabled)
+                                          DisplayMode: =DisplayMode.Edit
                                           Height: =44
                                           Max: =Year(Today()) + 5
                                           Min: =2000
@@ -443,7 +457,7 @@ Screens:
                                                     Warna.Value
                                                 )
                                             )
-                                          DisplayMode: =If(!Coalesce(LookUp(Pegawai, Title = Text(gblCurrentNIP), IsLineManager), false) || IsBlank(Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title))) || Coalesce(gblProfilIndikatorSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                          DisplayMode: =If(IsBlank(Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title))) || Coalesce(gblProfilIndikatorSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
                                           Height: =44
                                           InputTextPlaceholder: ="Warna"
                                           Items: |-
@@ -460,7 +474,7 @@ Screens:
                                         Control: TextInput@0.0.54
                                         Properties:
                                           AccessibleLabel: ="Catatan coach"
-                                          DisplayMode: =If(!Coalesce(LookUp(Pegawai, Title = Text(gblCurrentNIP), IsLineManager), false) || IsBlank(Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title))) || Coalesce(gblProfilIndikatorSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                          DisplayMode: =If(IsBlank(Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title))) || Coalesce(gblProfilIndikatorSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
                                           FillPortions: =1
                                           Height: =44
                                           LayoutMinWidth: =120
@@ -482,7 +496,7 @@ Screens:
                                         Properties:
                                           Align: =Align.Center
                                           Color: =RGBA(255, 255, 255, 1)
-                                          DisplayMode: =If(!Coalesce(LookUp(Pegawai, Title = Text(gblCurrentNIP), IsLineManager), false) || IsBlank(Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title))) || IsBlank(NumTahunIndicator_1.Value) || IsBlank(CmbWarnaIndicator_1.Selected.Value) || Coalesce(gblProfilIndikatorSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                          DisplayMode: =If(IsBlank(Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title))) || IsBlank(NumTahunIndicator_1.Value) || IsBlank(CmbWarnaIndicator_1.Selected.Value) || Coalesce(gblProfilIndikatorSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
                                           Fill: =RGBA(18, 38, 82, 1)
                                           Font: =Font.'Open Sans'
                                           FontWeight: =FontWeight.Semibold
@@ -490,7 +504,6 @@ Screens:
                                           OnSelect: |-
                                             =If(
                                                 !Coalesce(gblProfilIndikatorSubmitting, false) &&
-                                                Coalesce(LookUp(Pegawai, Title = Text(gblCurrentNIP), IsLineManager), false) &&
                                                 !IsBlank(Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title))) &&
                                                 !IsBlank(NumTahunIndicator_1.Value) &&
                                                 !IsBlank(CmbWarnaIndicator_1.Selected.Value),
@@ -559,13 +572,13 @@ Screens:
                                     FillPortions: =1
                                     Font: =Font.'Open Sans'
                                     Size: =11
-                                    Text: =If(!Coalesce(LookUp(Pegawai, Title = Text(gblCurrentNIP), IsLineManager), false), "Hanya Line Manager yang dapat mengubah indikator warna.", If(IsBlank(Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title))), "Pilih pegawai terlebih dahulu.", If(IsBlank(NumTahunIndicator_1.Value), "Isi tahun penilaian.", "")))
+                                    Text: =If(IsBlank(Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title))), "Pilih pegawai terlebih dahulu.", If(IsBlank(NumTahunIndicator_1.Value), "Isi tahun penilaian.", ""))
                               - BtnSubmitIndicator_1:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     Align: =Align.Center
                                     Color: =RGBA(255, 255, 255, 1)
-                                    DisplayMode: =If(!Coalesce(LookUp(Pegawai, Title = Text(gblCurrentNIP), IsLineManager), false) || IsBlank(Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title))) || IsBlank(NumTahunIndicator_1.Value) || Coalesce(gblProfilIndikatorSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    DisplayMode: =If(IsBlank(Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title))) || IsBlank(NumTahunIndicator_1.Value) || Coalesce(gblProfilIndikatorSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
                                     Fill: =RGBA(18, 38, 82, 1)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
