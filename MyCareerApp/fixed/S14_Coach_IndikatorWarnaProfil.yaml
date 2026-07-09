@@ -1,0 +1,621 @@
+Screens:
+  S14_Coach_IndikatorWarnaProfil:
+    Properties:
+      Fill: =RGBA(245, 245, 245, 1)
+      LoadingSpinnerColor: =RGBA(31, 56, 100, 1)
+      OnVisible: |-
+        =If(
+            IsEmpty(colNonFormNavigationHistory) ||
+            Last(colNonFormNavigationHistory).ScreenName <> App.ActiveScreen.Name,
+            Collect(
+                colNonFormNavigationHistory,
+                {
+                    ScreenName: App.ActiveScreen.Name,
+                    ScreenRef: App.ActiveScreen
+                }
+            )
+        );
+        Set(gblProfilIndikatorSubmitting, false);
+        Refresh(Pegawai);
+        Refresh(ProfilIndikatorWarna);
+        UpdateContext({locIndikatorTahun: Year(Today()), locSelectedIndicatorNIP: Blank(), locResetIndicatorInputs: false, locSubmittingIndicatorKey: Blank()})
+    Children:
+      - IndicatorScreenContainer_1:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(245, 245, 245, 1)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =16
+            PaddingBottom: =16
+            PaddingLeft: =16
+            PaddingRight: =16
+            PaddingTop: =16
+            Width: =Parent.Width
+          Children:
+            - IndicatorHeader_1:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(31, 48, 112, 1)
+                  FillPortions: =0
+                  Height: =75
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutMinHeight: =75
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                  Width: =Parent.Width
+                Children:
+                  - BtnBackIndicator_1:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        AutoHeight: =true
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        OnSelect: |-
+                          =If(
+                              CountRows(colNonFormNavigationHistory) > 1,
+                              Remove(colNonFormNavigationHistory, Last(colNonFormNavigationHistory));
+                              Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                              Back()
+                          )
+                        Size: =22
+                        Text: ="‹"
+                        Width: =40
+                  - LblIndicatorAppName_1:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        FillPortions: =1
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        Size: =18
+                        Text: ="MyCareerApp"
+                  - BtnHomeIndicator_1:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AccessibleLabel: ="Kembali ke Homepage"
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        OnSelect: |-
+                          =Set(gblPimpinanView, false);
+                          Set(gblSubjectNIP, Blank());
+                          Set(gblChecklistAdminView, false);
+                          Clear(colNonFormNavigationHistory);
+                          Navigate(S1_Homepage, ScreenTransition.Fade)
+                        Size: =20
+                        Text: ="⌂"
+                        Width: =40
+            - IndicatorHeaderShadow_1:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =RGBA(0, 0, 0, 0)
+                  FillPortions: =0
+                  Height: =0
+                  LayoutMinHeight: =0
+                  Width: =Parent.Width
+            - IndicatorMain_1:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =16
+                  LayoutMinHeight: =16
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  Width: =Parent.Width
+                Children:
+                  - IndicatorCard_1:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(225, 223, 221, 1)
+                        BorderThickness: =1
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =0
+                        Height: =If(Parent.Width < 820, 2060, 1850)
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =16
+                        LayoutMinHeight: =If(Parent.Width < 820, 2060, 1850)
+                        LayoutMinWidth: =0
+                        PaddingBottom: =If(Parent.Width < 640, 18, 28)
+                        PaddingLeft: =If(Parent.Width < 640, 18, 28)
+                        PaddingRight: =If(Parent.Width < 640, 18, 28)
+                        PaddingTop: =If(Parent.Width < 640, 18, 24)
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Width: =Parent.Width
+                      Children:
+                        - IndicatorTitle_1:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(31, 56, 100, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Size: =20
+                              Text: ="Indikator Warna Profil Pegawai"
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                        - IndicatorSubtitle_1:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(96, 94, 92, 1)
+                              Font: =Font.'Open Sans'
+                              Size: =12
+                              Text: ="Coach manajemen karier dapat memberi warna Putih, Kuning, Hijau, atau Merah untuk setiap komponen quantitative dan qualitative."
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                        - IndicatorDivider_1:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              Fill: =RGBA(225, 223, 221, 1)
+                              Height: =1
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                        - IndicatorFilterRow_1:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =If(Parent.Width < 720, 164, 78)
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =16
+                              LayoutMinHeight: =If(Parent.Width < 720, 164, 78)
+                              LayoutWrap: =true
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                            Children:
+                              - FieldPegawaiIndicator_1:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    Height: =78
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =6
+                                    LayoutMinHeight: =78
+                                    LayoutMinWidth: =If(Parent.Width < 720, Parent.Width, 320)
+                                    Width: =If(Parent.Width < 720, Parent.Width, Parent.Width - 196)
+                                  Children:
+                                    - LblPegawaiIndicator_1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =12
+                                          Text: ="Pegawai *"
+                                          Width: =Parent.Width
+                                    - CmbPegawaiIndicator_1:
+                                        Control: ComboBox@0.0.51
+                                        Properties:
+                                          AccessibleLabel: ="Pilih pegawai"
+                                          Height: =44
+                                          DisplayMode: =If(Coalesce(LookUp(Pegawai, Title = Text(gblCurrentNIP), IsLineManager), false), DisplayMode.Edit, DisplayMode.Disabled)
+                                          InputTextPlaceholder: ="Cari nama pegawai"
+                                          Items: |-
+                                            =ForAll(
+                                                Filter(Pegawai, Coalesce(IsPegawai, true)),
+                                                {
+                                                    Value: Nama,
+                                                    NIP: Title
+                                                  }
+                                            )
+                                          OnChange: |-
+                                            =UpdateContext(
+                                                {
+                                                    locSelectedIndicatorNIP: Coalesce(
+                                                        Self.Selected.NIP,
+                                                        LookUp(Pegawai, Nama = Self.Selected.Value, Title)
+                                                    ),
+                                                    locResetIndicatorInputs: !locResetIndicatorInputs
+                                                }
+                                            )
+                                          SelectMultiple: =false
+                                          Width: =Parent.Width
+                              - FieldTahunIndicator_1:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    FillPortions: =0
+                                    Height: =78
+                                    LayoutDirection: =LayoutDirection.Vertical
+                                    LayoutGap: =6
+                                    LayoutMinHeight: =78
+                                    LayoutMinWidth: =160
+                                    Width: =If(Parent.Width < 720, Parent.Width, 180)
+                                  Children:
+                                    - LblTahunIndicator_1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =22
+                                          Size: =12
+                                          Text: ="Tahun *"
+                                          Width: =Parent.Width
+                                    - NumTahunIndicator_1:
+                                        Control: NumberInput@2.9.12
+                                        Properties:
+                                          AccessibleLabel: ="Tahun"
+                                          DisplayMode: =If(Coalesce(LookUp(Pegawai, Title = Text(gblCurrentNIP), IsLineManager), false), DisplayMode.Edit, DisplayMode.Disabled)
+                                          Height: =44
+                                          Max: =Year(Today()) + 5
+                                          Min: =2000
+                                          OnChange: |-
+                                            =UpdateContext({locIndikatorTahun: Value(Self.Value), locResetIndicatorInputs: !locResetIndicatorInputs})
+                                          Value: =Coalesce(locIndikatorTahun, Year(Today()))
+                                          Width: =Parent.Width
+                        - IndicatorLegend_1:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =If(Parent.Width < 720, 112, 48)
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =8
+                              LayoutMinHeight: =If(Parent.Width < 720, 112, 48)
+                              LayoutWrap: =true
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                            Children:
+                              - LegendPutihIndicator_1:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Fill: =RGBA(255, 255, 255, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    RadiusBottomLeft: =22
+                                    RadiusBottomRight: =22
+                                    RadiusTopLeft: =22
+                                    RadiusTopRight: =22
+                                    Size: =11
+                                    Text: ="Putih"
+                                    Width: =128
+                              - LegendKuningIndicator_1:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(122, 70, 0, 1)
+                                    Fill: =RGBA(255, 244, 206, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    RadiusBottomLeft: =22
+                                    RadiusBottomRight: =22
+                                    RadiusTopLeft: =22
+                                    RadiusTopRight: =22
+                                    Size: =11
+                                    Text: ="Kuning"
+                                    Width: =128
+                              - LegendHijauIndicator_1:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(16, 124, 16, 1)
+                                    Fill: =RGBA(223, 246, 221, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    RadiusBottomLeft: =22
+                                    RadiusBottomRight: =22
+                                    RadiusTopLeft: =22
+                                    RadiusTopRight: =22
+                                    Size: =11
+                                    Text: ="Hijau"
+                                    Width: =128
+                              - LegendMerahIndicator_1:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(196, 43, 28, 1)
+                                    Fill: =RGBA(253, 231, 233, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    RadiusBottomLeft: =22
+                                    RadiusBottomRight: =22
+                                    RadiusTopLeft: =22
+                                    RadiusTopRight: =22
+                                    Size: =11
+                                    Text: ="Merah"
+                                    Width: =128
+                        - GalleryProfilIndikator_1:
+                            Control: Gallery@2.15.0
+                            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+                            Properties:
+                              BorderColor: =RGBA(225, 223, 221, 1)
+                              BorderThickness: =1
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =0
+                              Height: =If(Parent.Width < 820, 1716, 1540)
+                              Items: |-
+                                =Table(
+                                    {KodeKomponen: "NILAI_KINERJA", NamaKomponen: "Nilai Kinerja Rata-rata 5 Tahun", Area: "Quantitative"},
+                                    {KodeKomponen: "MASA_DINAS_PANGKAT", NamaKomponen: "Masa Dinas Pangkat", Area: "Quantitative"},
+                                    {KodeKomponen: "PENDIDIKAN", NamaKomponen: "Pendidikan", Area: "Quantitative"},
+                                    {KodeKomponen: "SERTIFIKASI_TIER_1", NamaKomponen: "Sertifikasi Tier 1", Area: "Quantitative"},
+                                    {KodeKomponen: "SERTIFIKASI_TIER_2", NamaKomponen: "Sertifikasi Tier 2", Area: "Quantitative"},
+                                    {KodeKomponen: "PMK", NamaKomponen: "PMK / External Learning", Area: "Quantitative"},
+                                    {KodeKomponen: "KUM_MENGAJAR", NamaKomponen: "Kum Mengajar", Area: "Quantitative"},
+                                    {KodeKomponen: "PENUGASAN", NamaKomponen: "Penugasan DN/LN atau Strategis", Area: "Qualitative"},
+                                    {KodeKomponen: "PRESTASI", NamaKomponen: "Prestasi BI Wide atau Lainnya", Area: "Qualitative"},
+                                    {KodeKomponen: "KEPANITIAAN", NamaKomponen: "Kepanitiaan / Proyek / Tim Kerja / Adhoc", Area: "Qualitative"},
+                                    {KodeKomponen: "PLT", NamaKomponen: "Plt / Penunjukan / Rangkap Jabatan", Area: "Qualitative"}
+                                )
+                              LayoutMinHeight: =If(Parent.Width < 820, 1716, 1540)
+                              TemplatePadding: =8
+                              TemplateSize: =If(Parent.Width < 820, 156, 132)
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                            Children:
+                              - RowBackgroundIndicator_1:
+                                  Control: Rectangle@2.3.0
+                                  Properties:
+                                    BorderColor: =RGBA(225, 223, 221, 1)
+                                    BorderThickness: =1
+                                    Fill: =RGBA(248, 247, 246, 1)
+                                    Height: =Parent.TemplateHeight - 4
+                                    Width: =Parent.TemplateWidth - 8
+                              - LblComponentIndicator_1:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(31, 56, 100, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =If(Parent.TemplateWidth < 820, 48, 28)
+                                    Size: =12
+                                    Text: =ThisItem.NamaKomponen
+                                    Width: =Parent.TemplateWidth - 32
+                                    X: =12
+                                    Y: =10
+                              - LblAreaIndicator_1:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    Height: =22
+                                    Size: =11
+                                    Text: =ThisItem.Area
+                                    Width: =Parent.TemplateWidth - 32
+                                    X: =12
+                                    Y: =If(Parent.TemplateWidth < 820, 58, 42)
+                              - IndicatorRowInputs_1:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: AutoLayout
+                                  Properties:
+                                    DropShadow: =DropShadow.None
+                                    Fill: =RGBA(0, 0, 0, 0)
+                                    Height: =44
+                                    LayoutAlignItems: =LayoutAlignItems.Center
+                                    LayoutDirection: =LayoutDirection.Horizontal
+                                    LayoutGap: =8
+                                    LayoutMinHeight: =44
+                                    Width: =Parent.TemplateWidth - 32
+                                    X: =12
+                                    Y: =If(Parent.TemplateWidth < 820, 94, 72)
+                                  Children:
+                                    - CmbWarnaIndicator_1:
+                                        Control: ComboBox@0.0.51
+                                        Properties:
+                                          AccessibleLabel: ="Pilih warna indikator"
+                                          DefaultSelectedItems: |-
+                                            =Filter(
+                                                Table({Value: "Putih"}, {Value: "Kuning"}, {Value: "Hijau"}, {Value: "Merah"}),
+                                                Value = LookUp(
+                                                    ProfilIndikatorWarna,
+                                                    NIP = Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title)) &&
+                                                    Tahun = Value(NumTahunIndicator_1.Value) &&
+                                                    KodeKomponen = ThisItem.KodeKomponen,
+                                                    Warna.Value
+                                                )
+                                            )
+                                          DisplayMode: =If(!Coalesce(LookUp(Pegawai, Title = Text(gblCurrentNIP), IsLineManager), false) || IsBlank(Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title))) || Coalesce(gblProfilIndikatorSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                          Height: =44
+                                          InputTextPlaceholder: ="Warna"
+                                          Items: |-
+                                            =Table(
+                                                {Value: "Putih"},
+                                                {Value: "Kuning"},
+                                                {Value: "Hijau"},
+                                                {Value: "Merah"}
+                                            )
+                                          LayoutMinWidth: =132
+                                          SelectMultiple: =false
+                                          Width: =If(Parent.Width < 420, 118, 180)
+                                    - TxtCatatanIndicator_1:
+                                        Control: TextInput@0.0.54
+                                        Properties:
+                                          AccessibleLabel: ="Catatan coach"
+                                          DisplayMode: =If(!Coalesce(LookUp(Pegawai, Title = Text(gblCurrentNIP), IsLineManager), false) || IsBlank(Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title))) || Coalesce(gblProfilIndikatorSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                          FillPortions: =1
+                                          Height: =44
+                                          LayoutMinWidth: =120
+                                          Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                                          Placeholder: ="Catatan ..."
+                                          Value: |-
+                                            =Coalesce(
+                                                LookUp(
+                                                    ProfilIndikatorWarna,
+                                                    NIP = Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title)) &&
+                                                    Tahun = Value(NumTahunIndicator_1.Value) &&
+                                                    KodeKomponen = ThisItem.KodeKomponen,
+                                                    CatatanCoach
+                                                ),
+                                                ""
+                                            )
+                                    - BtnSubmitIndicatorRow_1:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Center
+                                          Color: =RGBA(255, 255, 255, 1)
+                                          DisplayMode: =If(!Coalesce(LookUp(Pegawai, Title = Text(gblCurrentNIP), IsLineManager), false) || IsBlank(Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title))) || IsBlank(NumTahunIndicator_1.Value) || IsBlank(CmbWarnaIndicator_1.Selected.Value) || Coalesce(gblProfilIndikatorSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                          Fill: =RGBA(18, 38, 82, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =44
+                                          OnSelect: |-
+                                            =If(
+                                                !Coalesce(gblProfilIndikatorSubmitting, false) &&
+                                                Coalesce(LookUp(Pegawai, Title = Text(gblCurrentNIP), IsLineManager), false) &&
+                                                !IsBlank(Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title))) &&
+                                                !IsBlank(NumTahunIndicator_1.Value) &&
+                                                !IsBlank(CmbWarnaIndicator_1.Selected.Value),
+                                                Set(gblProfilIndikatorSubmitting, true);
+                                                UpdateContext({locSubmittingIndicatorKey: ThisItem.KodeKomponen});
+                                                IfError(
+                                                    Patch(
+                                                        ProfilIndikatorWarna,
+                                                        Coalesce(
+                                                            LookUp(
+                                                                ProfilIndikatorWarna,
+                                                                NIP = Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title)) &&
+                                                                Tahun = Value(NumTahunIndicator_1.Value) &&
+                                                                KodeKomponen = ThisItem.KodeKomponen
+                                                            ),
+                                                            Defaults(ProfilIndikatorWarna)
+                                                        ),
+                                                        {
+                                                            Title: Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title)) & "_" & ThisItem.KodeKomponen & "_" & Text(NumTahunIndicator_1.Value),
+                                                            NIP: Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title)),
+                                                            Tahun: Value(NumTahunIndicator_1.Value),
+                                                            KodeKomponen: ThisItem.KodeKomponen,
+                                                            NamaKomponen: ThisItem.NamaKomponen,
+                                                            Area: {Value: ThisItem.Area},
+                                                            Warna: {Value: CmbWarnaIndicator_1.Selected.Value},
+                                                            CatatanCoach: TxtCatatanIndicator_1.Value,
+                                                            TanggalUpdate: Now()
+                                                        }
+                                                    );
+                                                    Refresh(ProfilIndikatorWarna);
+                                                    Notify("Indikator " & ThisItem.NamaKomponen & " berhasil diperbarui.", NotificationType.Success);
+                                                    UpdateContext({locSubmittingIndicatorKey: Blank()});
+                                                    Set(gblProfilIndikatorSubmitting, false),
+                                                    Notify("Gagal memperbarui indikator: " & FirstError.Message, NotificationType.Error);
+                                                    UpdateContext({locSubmittingIndicatorKey: Blank()});
+                                                    Set(gblProfilIndikatorSubmitting, false)
+                                                )
+                                            )
+                                          LayoutMinWidth: =88
+                                          RadiusBottomLeft: =6
+                                          RadiusBottomRight: =6
+                                          RadiusTopLeft: =6
+                                          RadiusTopRight: =6
+                                          Size: =12
+                                          Text: =If(Coalesce(gblProfilIndikatorSubmitting, false) && locSubmittingIndicatorKey = ThisItem.KodeKomponen, "Simpan...", "Submit")
+                                          Width: =100
+                        - IndicatorActions_1:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =52
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =12
+                              LayoutJustifyContent: =LayoutJustifyContent.End
+                              LayoutMinHeight: =52
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                            Children:
+                              - LblIndicatorValidation_1:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(196, 43, 28, 1)
+                                    FillPortions: =1
+                                    Font: =Font.'Open Sans'
+                                    Size: =11
+                                    Text: =If(!Coalesce(LookUp(Pegawai, Title = Text(gblCurrentNIP), IsLineManager), false), "Hanya Line Manager yang dapat mengubah indikator warna.", If(IsBlank(Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title))), "Pilih pegawai terlebih dahulu.", If(IsBlank(NumTahunIndicator_1.Value), "Isi tahun penilaian.", "")))
+                              - BtnSubmitIndicator_1:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisplayMode: =If(!Coalesce(LookUp(Pegawai, Title = Text(gblCurrentNIP), IsLineManager), false) || IsBlank(Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title))) || IsBlank(NumTahunIndicator_1.Value) || Coalesce(gblProfilIndikatorSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Fill: =RGBA(18, 38, 82, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =If(
+                                          !Coalesce(gblProfilIndikatorSubmitting, false),
+                                          Set(gblProfilIndikatorSubmitting, true);
+                                          IfError(
+                                              ForAll(
+                                                  Filter(
+                                                      GalleryProfilIndikator_1.AllItems,
+                                                      !IsBlank(CmbWarnaIndicator_1.Selected.Value)
+                                                  ) As indicatorRow,
+                                                  Patch(
+                                                      ProfilIndikatorWarna,
+                                                      Coalesce(
+                                                          LookUp(
+                                                              ProfilIndikatorWarna,
+                                                              NIP = Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title)) &&
+                                                              Tahun = Value(NumTahunIndicator_1.Value) &&
+                                                              KodeKomponen = indicatorRow.KodeKomponen
+                                                          ),
+                                                          Defaults(ProfilIndikatorWarna)
+                                                      ),
+                                                      {
+                                                          Title: Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title)) & "_" & indicatorRow.KodeKomponen & "_" & Text(NumTahunIndicator_1.Value),
+                                                          NIP: Coalesce(locSelectedIndicatorNIP, CmbPegawaiIndicator_1.Selected.NIP, LookUp(Pegawai, Nama = CmbPegawaiIndicator_1.Selected.Value, Title)),
+                                                          Tahun: Value(NumTahunIndicator_1.Value),
+                                                          KodeKomponen: indicatorRow.KodeKomponen,
+                                                          NamaKomponen: indicatorRow.NamaKomponen,
+                                                          Area: {Value: indicatorRow.Area},
+                                                          Warna: {Value: indicatorRow.CmbWarnaIndicator_1.Selected.Value},
+                                                          CatatanCoach: indicatorRow.TxtCatatanIndicator_1.Value,
+                                                          TanggalUpdate: Now()
+                                                      }
+                                                  )
+                                              );
+                                              Refresh(ProfilIndikatorWarna);
+                                              Notify("Indikator warna profil berhasil disubmit.", NotificationType.Success);
+                                              Set(gblProfilIndikatorSubmitting, false),
+                                              Notify("Gagal submit indikator warna: " & FirstError.Message, NotificationType.Error);
+                                              Set(gblProfilIndikatorSubmitting, false)
+                                          )
+                                      )
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =13
+                                    Text: =If(Coalesce(gblProfilIndikatorSubmitting, false), "Menyimpan...", "Submit")
+                                    Visible: =false
+                                    Width: =140

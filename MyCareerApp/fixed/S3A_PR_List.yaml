@@ -226,10 +226,10 @@ Screens:
                                           {
                                               PRTerbaru:
                                                   First(
-                                                      SortByColumns(
+                                                      Sort(
                                                           Filter(PerformanceReview, NIP = Text(gblSubjectNIP)),
-                                                          "Tahun", SortOrder.Descending,
-                                                          "Semester", SortOrder.Descending
+                                                          Value(Tahun) * 10 + Value(Semester.Value),
+                                                          SortOrder.Descending
                                                       )
                                                   )
                                           },
@@ -269,12 +269,12 @@ Screens:
                                       =Coalesce(
                                           Text(
                                               First(
-                                                  SortByColumns(
+                                                  Sort(
                                                       Filter(PerformanceReview, NIP = Text(gblSubjectNIP)),
-                                                      "Tahun", SortOrder.Descending,
-                                                      "Semester", SortOrder.Descending
+                                                      Value(Tahun) * 10 + Value(Semester.Value),
+                                                      SortOrder.Descending
                                                   )
-                                              ).Semester
+                                              ).Semester.Value
                                           ),
                                           "-"
                                       )
@@ -313,10 +313,10 @@ Screens:
                                           {
                                               ManagerNIP:
                                                   First(
-                                                      SortByColumns(
+                                                      Sort(
                                                           Filter(PerformanceReview, NIP = Text(gblSubjectNIP)),
-                                                          "Tahun", SortOrder.Descending,
-                                                          "Semester", SortOrder.Descending
+                                                          Value(Tahun) * 10 + Value(Semester.Value),
+                                                          SortOrder.Descending
                                                       )
                                                   ).LineManagerNIP
                                           },
@@ -399,7 +399,7 @@ Screens:
                               PaddingTop: =0
                               Size: =12
                               Text: |-
-                                ="Performance Review " & ThisItem.Semester
+                                ="Performance Review " & ThisItem.Semester.Value
                               VerticalAlign: =VerticalAlign.Top
                               Width: =Title2.Width
                               X: =Title2.X

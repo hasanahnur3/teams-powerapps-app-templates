@@ -261,7 +261,7 @@ Screens:
                                                   First(
                                                       Sort(
                                                           Filter(PerformanceReview, NIP = Text(gblSubjectNIP)),
-                                                          Value(Tahun) * 10 + Value(Semester),
+                                                          Value(Tahun) * 10 + Value(Semester.Value),
                                                           SortOrder.Descending
                                                       )
                                                   )
@@ -304,10 +304,10 @@ Screens:
                                               First(
                                                   Sort(
                                                       Filter(PerformanceReview, NIP = Text(gblSubjectNIP)),
-                                                      Value(Tahun) * 10 + Value(Semester),
+                                                      Value(Tahun) * 10 + Value(Semester.Value),
                                                       SortOrder.Descending
                                                   )
-                                              ).Semester
+                                              ).Semester.Value
                                           ),
                                           "-"
                                       )
@@ -348,7 +348,7 @@ Screens:
                                                   First(
                                                       Sort(
                                                           Filter(PerformanceReview, NIP = Text(gblSubjectNIP)),
-                                                          Value(Tahun) * 10 + Value(Semester),
+                                                          Value(Tahun) * 10 + Value(Semester.Value),
                                                           SortOrder.Descending
                                                       )
                                                   ).LineManagerNIP
@@ -465,8 +465,8 @@ Screens:
                                                 IsBlank(keyword) ||
                                                 keyword in Lower(Text(PRRecord.Tahun)) ||
                                                 keyword in Lower("Tahun " & Text(PRRecord.Tahun)) ||
-                                                keyword in Lower(Text(PRRecord.Semester)) ||
-                                                keyword in Lower("Performance Review " & Text(PRRecord.Semester)) ||
+                                                keyword in Lower(Text(PRRecord.Semester.Value)) ||
+                                                keyword in Lower("Performance Review " & Text(PRRecord.Semester.Value)) ||
                                                 keyword in Lower(Text(PRRecord.Tanggal, "[$-id-ID]dd mmmm yyyy")) ||
                                                 keyword in Lower(Coalesce(PRRecord.NIP, "")) ||
                                                 keyword in Lower(
@@ -481,7 +481,7 @@ Screens:
                                                 )
                                             )
                                         ),
-                                        Value(Tahun) * 10 + Value(Semester),
+                                        Value(Tahun) * 10 + Value(Semester.Value),
                                         SortOrder.Descending
                                     )
                                 )
@@ -541,7 +541,7 @@ Screens:
                                     Height: =26
                                     OnSelect: =Select(Parent)
                                     Size: =11
-                                    Text: =If(App.Width < 1200, "Performance Review " & Text(ThisItem.Semester), Text(ThisItem.Semester))
+                                    Text: =If(App.Width < 1200, "Performance Review " & Text(ThisItem.Semester.Value), Text(ThisItem.Semester.Value))
                                     Width: =If(App.Width < 1200, 150, (Parent.TemplateWidth - 24) * 0.13)
                                     X: =If(App.Width < 1200, 84, 12 + (Parent.TemplateWidth - 24) * 0.23)
                                     Y: =If(App.Width < 1200, 39, 31)

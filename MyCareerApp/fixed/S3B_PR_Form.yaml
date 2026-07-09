@@ -144,7 +144,7 @@ Screens:
                                     Form5.Mode = FormMode.New,
                                     Text(gblCurrentNIP) & "_" &
                                     Text(DataCardValue27.Value) & "_" &
-                                    Text(DataCardValue28.Value) & "_" &
+                                    Text(DataCardValue28.Selected.Value) & "_" &
                                     Text(Now(), "yyyymmddhhmmss"),
                                     ThisItem.Title
                                 )
@@ -323,7 +323,7 @@ Screens:
                                     Y: =DataCardKey27.Y
                         - Semester_DataCard3:
                             Control: TypedDataCard@1.0.7
-                            Variant: NumberEdit
+                            Variant: ComboBoxEdit
                             IsLocked: true
                             Properties:
                               BorderColor: =RGBA(245, 245, 245, 1)
@@ -331,7 +331,7 @@ Screens:
                               Default: =ThisItem.Semester
                               DisplayName: =DataSourceInfo([@PerformanceReview],DataSourceInfo.DisplayName,Semester)
                               Required: =false
-                              Update: =Value(DataCardValue28.Value)
+                              Update: =DataCardValue28.Selected
                               Width: =444
                               X: =0
                               Y: =1
@@ -348,15 +348,25 @@ Screens:
                                     X: =24
                                     Y: =10
                               - DataCardValue28:
-                                  Control: NumberInput@2.9.12
+                                  Control: ComboBox@0.0.51
                                   MetadataKey: FieldValue
                                   Properties:
                                     AccessibleLabel: =Parent.DisplayName
+                                    DefaultSelectedItems: |-
+                                      =If(
+                                          IsBlank(Parent.Default),
+                                          Blank(),
+                                          Filter(
+                                              Choices([@PerformanceReview].Semester),
+                                              Value = Parent.Default.Value
+                                          )
+                                      )
                                     DisplayMode: =Parent.DisplayMode
-                                    Max: =Blank()
-                                    Min: =Blank()
+                                    InputTextPlaceholder: ="Pilih semester"
+                                    Items: =Choices([@PerformanceReview].Semester)
+                                    Required: =Parent.Required
+                                    SelectMultiple: =false
                                     ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
-                                    Value: =Parent.Default
                                     Width: =Parent.Width - 48
                                     X: =24
                                     Y: =DataCardKey28.Y + DataCardKey28.Height + 4
@@ -896,7 +906,7 @@ Screens:
                         OnSelect: |-
                           =If(
                               Or(
-                                  IsBlank(DataCardValue28.Value),
+                                  IsBlank(DataCardValue28.Selected.Value),
                                   IsBlank(DataCardValue30.Selected.NIP),
                                   IsBlank(Trim(DataCardValue31.Value)),
                                   IsBlank(Trim(DataCardValue32.Value)),
@@ -918,7 +928,7 @@ Screens:
                                           {
                                               NIP: gblSelectedPR.NIP,
                                               Tahun: Value(DataCardValue27.Value),
-                                              Semester: Value(DataCardValue28.Value),
+                                              Semester: DataCardValue28.Selected,
                                               Tanggal: DataCardValue29.SelectedDate,
                                               LineManagerNIP: DataCardValue30.Selected.NIP,
                                               Goal: DataCardValue31.Value,
@@ -937,7 +947,7 @@ Screens:
                                                       Title: "TEMP_" & Text(GUID()),
                                                       NIP: Text(gblCurrentNIP),
                                                       Tahun: Value(DataCardValue27.Value),
-                                                      Semester: Value(DataCardValue28.Value),
+                                                      Semester: DataCardValue28.Selected,
                                                       Tanggal: DataCardValue29.SelectedDate,
                                                       LineManagerNIP: DataCardValue30.Selected.NIP,
                                                       Goal: DataCardValue31.Value,

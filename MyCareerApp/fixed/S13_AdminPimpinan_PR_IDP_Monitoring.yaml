@@ -1,0 +1,609 @@
+Screens:
+  S13_AdminPimpinan_PR_IDP_Monitoring:
+    Properties:
+      Fill: =RGBA(245, 245, 245, 1)
+      LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+      OnVisible: |-
+        =If(
+            IsEmpty(colNonFormNavigationHistory) ||
+            Last(colNonFormNavigationHistory).ScreenName <> App.ActiveScreen.Name,
+            Collect(
+                colNonFormNavigationHistory,
+                {
+                    ScreenName: App.ActiveScreen.Name,
+                    ScreenRef: App.ActiveScreen
+                }
+            )
+        );
+        Refresh(Pegawai);
+        Refresh(PerformanceReview);
+        Refresh(IDP);
+        Refresh(ChecklistMentoring)
+    Children:
+      - PRIDPMonitoringContainer:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(245, 245, 245, 1)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =16
+            PaddingBottom: =16
+            PaddingLeft: =16
+            PaddingRight: =16
+            PaddingTop: =16
+            Width: =Parent.Width
+          Children:
+            - PRIDPMonitoringTopBar:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(31, 48, 112, 1)
+                  FillPortions: =0
+                  Height: =75
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutMinHeight: =75
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                  Width: =Parent.Width
+                Children:
+                  - BtnBackPRIDPMonitoring:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        AutoHeight: =true
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        OnSelect: |-
+                          =If(
+                              CountRows(colNonFormNavigationHistory) > 1,
+                              Remove(colNonFormNavigationHistory, Last(colNonFormNavigationHistory));
+                              Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                              Back()
+                          )
+                        Size: =22
+                        Text: ="‹"
+                        Width: =40
+                  - LblAppNamePRIDPMonitoring:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        FillPortions: =1
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        Size: =18
+                        Text: ="MyCareerApp"
+                  - HeaderSpacerPRIDPMonitoring:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AccessibleLabel: ="Kembali ke Homepage"
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        OnSelect: |-
+                          =Set(gblPimpinanView, false);
+                          Set(gblSubjectNIP, Blank());
+                          Set(gblChecklistAdminView, false);
+                          Clear(colNonFormNavigationHistory);
+                          Navigate(S1_Homepage, ScreenTransition.Fade)
+                        Size: =20
+                        Text: ="⌂"
+                        Width: =40
+            - PRIDPMonitoringTopBarShadow:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =RGBA(0, 0, 0, 0)
+                  FillPortions: =0
+                  Height: =0
+                  LayoutMinHeight: =0
+                  Width: =Parent.Width
+            - PRIDPMonitoringMain:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =12
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                Children:
+                  - PRIDPMonitoringTitleRow:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =If(Parent.Width < 640, 148, If(Parent.Width < 980, 96, 44))
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutMinHeight: =If(Parent.Width < 640, 148, If(Parent.Width < 980, 96, 44))
+                        LayoutMinWidth: =16
+                        LayoutWrap: =true
+                        Width: =Parent.Width
+                      Children:
+                        - PRIDPMonitoringPageTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Color: =RGBA(31, 56, 100, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =40
+                              LayoutMinWidth: =240
+                              Size: =18
+                              Text: ="Monitoring PR dan IDP Pegawai"
+                        - TxtSearchPRIDPMonitoring:
+                            Control: TextInput@0.0.54
+                            Properties:
+                              AccessibleLabel: ="Cari pegawai"
+                              BorderColor: =RGBA(200, 198, 196, 1)
+                              Fill: =RGBA(255, 255, 255, 1)
+                              Height: =40
+                              LayoutMinWidth: =If(Parent.Width < 640, Parent.Width, 240)
+                              Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                              Placeholder: ="Cari nama atau NIP..."
+                              TriggerOutput: ='TextInputCanvas.TriggerOutput'.Keypress
+                              Width: =If(Parent.Width < 640, Parent.Width, 300)
+                        - CmbTahunPRIDPMonitoring:
+                            Control: ComboBox@0.0.51
+                            Properties:
+                              AccessibleLabel: ="Pilih tahun monitoring"
+                              DefaultSelectedItems: |-
+                                =Table({Value: Year(Today())})
+                              InputTextPlaceholder: ="Tahun"
+                              Items: |-
+                                =Table(
+                                    {Value: Year(Today()) + 1},
+                                    {Value: Year(Today())},
+                                    {Value: Year(Today()) - 1},
+                                    {Value: Year(Today()) - 2},
+                                    {Value: Year(Today()) - 3}
+                                )
+                              LayoutMinWidth: =If(Parent.Width < 640, Parent.Width, 160)
+                              SelectMultiple: =false
+                              Width: =If(Parent.Width < 640, Parent.Width, 170)
+                  - PRIDPMonitoringTableCard:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(225, 223, 221, 1)
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =1
+                        Height: =720
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutMinHeight: =420
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Width: =Parent.Width
+                      Children:
+                        - PRIDPMonitoringColumnHeader:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =RGBA(243, 246, 250, 1)
+                              FillPortions: =0
+                              Height: =48
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutMinHeight: =48
+                              PaddingLeft: =12
+                              PaddingRight: =12
+                              Visible: =App.Width >= 1200
+                            Children:
+                              - HeaderNamaPRIDPMonitoring:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Size: =11
+                                    Text: ="NAMA PEGAWAI"
+                                    Width: =(Parent.Width - 24) * 0.30
+                              - HeaderNIPPRIDPMonitoring:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Size: =11
+                                    Text: ="NIP"
+                                    Width: =(Parent.Width - 24) * 0.12
+                              - HeaderPR1Monitoring:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Size: =11
+                                    Text: ="PR 1"
+                                    Width: =(Parent.Width - 24) * 0.11
+                              - HeaderPR2Monitoring:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Size: =11
+                                    Text: ="PR 2"
+                                    Width: =(Parent.Width - 24) * 0.11
+                              - HeaderPR3Monitoring:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Size: =11
+                                    Text: ="PR 3"
+                                    Width: =(Parent.Width - 24) * 0.11
+                              - HeaderIDPCountMonitoring:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Size: =11
+                                    Text: ="JUMLAH IDP"
+                                    Width: =(Parent.Width - 24) * 0.125
+                              - HeaderMentoringMonitoring:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Size: =11
+                                    Text: ="MENTORING"
+                                    Width: =(Parent.Width - 24) * 0.125
+                        - GalleryPRIDPMonitoring:
+                            Control: Gallery@2.15.0
+                            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+                            Properties:
+                              BorderColor: =RGBA(245, 245, 245, 1)
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =1
+                              Items: |-
+                                =With(
+                                    {
+                                        keyword: Lower(Trim(TxtSearchPRIDPMonitoring.Value))
+                                    },
+                                    Sort(
+                                        Filter(
+                                            Pegawai As PegawaiRecord,
+                                            Coalesce(PegawaiRecord.IsPegawai, true) &&
+                                            (
+                                                IsBlank(keyword) ||
+                                                keyword in Lower(Coalesce(PegawaiRecord.Nama, "")) ||
+                                                keyword in Lower(Text(PegawaiRecord.Title))
+                                            )
+                                        ),
+                                        Coalesce(Nama, Title),
+                                        SortOrder.Ascending
+                                    )
+                                )
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              TemplatePadding: =0
+                              TemplateSize: =If(App.Width < 1200, 224, 92)
+                            Children:
+                              - RowBackgroundPRIDPMonitoring:
+                                  Control: Rectangle@2.3.0
+                                  Properties:
+                                    BorderColor: =RGBA(235, 235, 235, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Fill: =If(ThisItem.IsSelected, RGBA(245, 250, 255, 1), RGBA(255, 255, 255, 1))
+                                    Height: =Parent.TemplateHeight - 6
+                                    OnSelect: =Select(Parent)
+                                    Width: =Parent.TemplateWidth
+                              - ValNamaPRIDPMonitoring:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =If(App.Width < 1200, 30, 30)
+                                    OnSelect: =Select(Parent)
+                                    Size: =12
+                                    Text: =Coalesce(ThisItem.Nama, "-")
+                                    Width: =If(App.Width < 1200, Parent.TemplateWidth - 24, (Parent.TemplateWidth - 24) * 0.30)
+                                    X: =12
+                                    Y: =If(App.Width < 1200, 12, 24)
+                              - ValNIPPRIDPMonitoring:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    Height: =26
+                                    OnSelect: =Select(Parent)
+                                    Size: =11
+                                    Text: |-
+                                      =If(App.Width < 1200, "NIP: " & Text(ThisItem.Title), Text(ThisItem.Title))
+                                    Width: =If(App.Width < 1200, Parent.TemplateWidth - 24, (Parent.TemplateWidth - 24) * 0.12)
+                                    X: =If(App.Width < 1200, 12, 12 + (Parent.TemplateWidth - 24) * 0.30)
+                                    Y: =If(App.Width < 1200, 39, 31)
+                              - ValPR1Monitoring:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: |-
+                                      =If(
+                                          CountRows(
+                                              Filter(
+                                                  PerformanceReview,
+                                                  NIP = ThisItem.Title &&
+                                                  Tahun = Value(Coalesce(CmbTahunPRIDPMonitoring.Selected.Value, Year(Today()))) &&
+                                                  Text(Semester.Value) = "1"
+                                              )
+                                          ) > 0,
+                                          RGBA(16, 124, 16, 1),
+                                          RGBA(161, 98, 7, 1)
+                                      )
+                                    Fill: |-
+                                      =If(
+                                          CountRows(
+                                              Filter(
+                                                  PerformanceReview,
+                                                  NIP = ThisItem.Title &&
+                                                  Tahun = Value(Coalesce(CmbTahunPRIDPMonitoring.Selected.Value, Year(Today()))) &&
+                                                  Text(Semester.Value) = "1"
+                                              )
+                                          ) > 0,
+                                          RGBA(218, 242, 208, 1),
+                                          RGBA(255, 244, 206, 1)
+                                      )
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =26
+                                    OnSelect: =Select(Parent)
+                                    RadiusBottomLeft: =14
+                                    RadiusBottomRight: =14
+                                    RadiusTopLeft: =14
+                                    RadiusTopRight: =14
+                                    Size: =11
+                                    Text: |-
+                                      =If(
+                                          CountRows(
+                                              Filter(
+                                                  PerformanceReview,
+                                                  NIP = ThisItem.Title &&
+                                                  Tahun = Value(Coalesce(CmbTahunPRIDPMonitoring.Selected.Value, Year(Today()))) &&
+                                                  Text(Semester.Value) = "1"
+                                              )
+                                          ) > 0,
+                                          "Sudah",
+                                          "Belum"
+                                      )
+                                    Width: =If(App.Width < 1200, 92, (Parent.TemplateWidth - 24) * 0.11 - 24)
+                                    X: =If(App.Width < 1200, 12, 12 + (Parent.TemplateWidth - 24) * 0.42 + 12)
+                                    Y: =If(App.Width < 1200, 76, 32)
+                              - ValPR2Monitoring:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: |-
+                                      =If(
+                                          CountRows(
+                                              Filter(
+                                                  PerformanceReview,
+                                                  NIP = ThisItem.Title &&
+                                                  Tahun = Value(Coalesce(CmbTahunPRIDPMonitoring.Selected.Value, Year(Today()))) &&
+                                                  Text(Semester.Value) = "2"
+                                              )
+                                          ) > 0,
+                                          RGBA(16, 124, 16, 1),
+                                          RGBA(161, 98, 7, 1)
+                                      )
+                                    Fill: |-
+                                      =If(
+                                          CountRows(
+                                              Filter(
+                                                  PerformanceReview,
+                                                  NIP = ThisItem.Title &&
+                                                  Tahun = Value(Coalesce(CmbTahunPRIDPMonitoring.Selected.Value, Year(Today()))) &&
+                                                  Text(Semester.Value) = "2"
+                                              )
+                                          ) > 0,
+                                          RGBA(218, 242, 208, 1),
+                                          RGBA(255, 244, 206, 1)
+                                      )
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =26
+                                    OnSelect: =Select(Parent)
+                                    RadiusBottomLeft: =14
+                                    RadiusBottomRight: =14
+                                    RadiusTopLeft: =14
+                                    RadiusTopRight: =14
+                                    Size: =11
+                                    Text: |-
+                                      =If(
+                                          CountRows(
+                                              Filter(
+                                                  PerformanceReview,
+                                                  NIP = ThisItem.Title &&
+                                                  Tahun = Value(Coalesce(CmbTahunPRIDPMonitoring.Selected.Value, Year(Today()))) &&
+                                                  Text(Semester.Value) = "2"
+                                              )
+                                          ) > 0,
+                                          "Sudah",
+                                          "Belum"
+                                      )
+                                    Width: =If(App.Width < 1200, 92, (Parent.TemplateWidth - 24) * 0.11 - 24)
+                                    X: =If(App.Width < 1200, 112, 12 + (Parent.TemplateWidth - 24) * 0.53 + 12)
+                                    Y: =If(App.Width < 1200, 76, 32)
+                              - ValPR3Monitoring:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: |-
+                                      =If(
+                                          CountRows(
+                                              Filter(
+                                                  PerformanceReview,
+                                                  NIP = ThisItem.Title &&
+                                                  Tahun = Value(Coalesce(CmbTahunPRIDPMonitoring.Selected.Value, Year(Today()))) &&
+                                                  Text(Semester.Value) = "3"
+                                              )
+                                          ) > 0,
+                                          RGBA(16, 124, 16, 1),
+                                          RGBA(161, 98, 7, 1)
+                                      )
+                                    Fill: |-
+                                      =If(
+                                          CountRows(
+                                              Filter(
+                                                  PerformanceReview,
+                                                  NIP = ThisItem.Title &&
+                                                  Tahun = Value(Coalesce(CmbTahunPRIDPMonitoring.Selected.Value, Year(Today()))) &&
+                                                  Text(Semester.Value) = "3"
+                                              )
+                                          ) > 0,
+                                          RGBA(218, 242, 208, 1),
+                                          RGBA(255, 244, 206, 1)
+                                      )
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =26
+                                    OnSelect: =Select(Parent)
+                                    RadiusBottomLeft: =14
+                                    RadiusBottomRight: =14
+                                    RadiusTopLeft: =14
+                                    RadiusTopRight: =14
+                                    Size: =11
+                                    Text: |-
+                                      =If(
+                                          CountRows(
+                                              Filter(
+                                                  PerformanceReview,
+                                                  NIP = ThisItem.Title &&
+                                                  Tahun = Value(Coalesce(CmbTahunPRIDPMonitoring.Selected.Value, Year(Today()))) &&
+                                                  Text(Semester.Value) = "3"
+                                              )
+                                          ) > 0,
+                                          "Sudah",
+                                          "Belum"
+                                      )
+                                    Width: =If(App.Width < 1200, 92, (Parent.TemplateWidth - 24) * 0.11 - 24)
+                                    X: =If(App.Width < 1200, 212, 12 + (Parent.TemplateWidth - 24) * 0.64 + 12)
+                                    Y: =If(App.Width < 1200, 76, 32)
+                              - ValIDPCountMonitoring:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(0, 84, 153, 1)
+                                    Fill: =RGBA(222, 236, 249, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =26
+                                    OnSelect: =Select(Parent)
+                                    RadiusBottomLeft: =14
+                                    RadiusBottomRight: =14
+                                    RadiusTopLeft: =14
+                                    RadiusTopRight: =14
+                                    Size: =11
+                                    Text: |-
+                                      =Text(
+                                          CountRows(
+                                              Filter(
+                                                  IDP,
+                                                  NIP = ThisItem.Title &&
+                                                  Tahun = Value(Coalesce(CmbTahunPRIDPMonitoring.Selected.Value, Year(Today())))
+                                              )
+                                          )
+                                      ) & " IDP"
+                                    Width: =If(App.Width < 1200, 92, (Parent.TemplateWidth - 24) * 0.125 - 24)
+                                    X: =If(App.Width < 1200, 12, 12 + (Parent.TemplateWidth - 24) * 0.75 + 12)
+                                    Y: =If(App.Width < 1200, 112, 32)
+                              - ValMentoringMonitoring:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: |-
+                                      =If(
+                                          !IsBlank(
+                                              LookUp(
+                                                  ChecklistMentoring,
+                                                  NIP = ThisItem.Title &&
+                                                  Tahun = Value(Coalesce(CmbTahunPRIDPMonitoring.Selected.Value, Year(Today())))
+                                              ).ID
+                                          ),
+                                          RGBA(16, 124, 16, 1),
+                                          RGBA(161, 98, 7, 1)
+                                      )
+                                    Fill: |-
+                                      =If(
+                                          !IsBlank(
+                                              LookUp(
+                                                  ChecklistMentoring,
+                                                  NIP = ThisItem.Title &&
+                                                  Tahun = Value(Coalesce(CmbTahunPRIDPMonitoring.Selected.Value, Year(Today())))
+                                              ).ID
+                                          ),
+                                          RGBA(218, 242, 208, 1),
+                                          RGBA(255, 244, 206, 1)
+                                      )
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =26
+                                    OnSelect: =Select(Parent)
+                                    RadiusBottomLeft: =14
+                                    RadiusBottomRight: =14
+                                    RadiusTopLeft: =14
+                                    RadiusTopRight: =14
+                                    Size: =11
+                                    Text: |-
+                                      =If(
+                                          !IsBlank(
+                                              LookUp(
+                                                  ChecklistMentoring,
+                                                  NIP = ThisItem.Title &&
+                                                  Tahun = Value(Coalesce(CmbTahunPRIDPMonitoring.Selected.Value, Year(Today())))
+                                              ).ID
+                                          ),
+                                          "Sudah",
+                                          "Belum"
+                                      )
+                                    Width: =If(App.Width < 1200, 92, (Parent.TemplateWidth - 24) * 0.125 - 24)
+                                    X: =If(App.Width < 1200, 112, 12 + (Parent.TemplateWidth - 24) * 0.875 + 12)
+                                    Y: =If(App.Width < 1200, 112, 32)
+                        - PRIDPMonitoringEmptyState:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              Color: =RGBA(96, 94, 92, 1)
+                              Font: =Font.'Open Sans'
+                              Height: =80
+                              Size: =12
+                              Text: ="Tidak ada pegawai yang cocok dengan pencarian."
+                              Visible: =IsEmpty(GalleryPRIDPMonitoring.AllItems)
+                              Width: =Parent.Width

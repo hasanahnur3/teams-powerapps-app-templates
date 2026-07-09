@@ -23,16 +23,18 @@ Screens:
           Control: GroupContainer@1.5.0
           Variant: AutoLayout
           Properties:
+            BorderStyle: =BorderStyle.None
+            DropShadow: =DropShadow.None
             Fill: =RGBA(245, 245, 245, 1)
             Height: =Parent.Height
             LayoutAlignItems: =LayoutAlignItems.Stretch
             LayoutDirection: =LayoutDirection.Vertical
-            Width: =Parent.Width
             LayoutGap: =16
             PaddingBottom: =16
             PaddingLeft: =16
             PaddingRight: =16
             PaddingTop: =16
+            Width: =Parent.Width
           Children:
             - IDPViewTopBar:
                 Control: GroupContainer@1.5.0
@@ -57,27 +59,27 @@ Screens:
                   - BtnBackIDPView:
                       Control: ModernText@1.0.0
                       Properties:
-                        AutoHeight: =true
                         Align: =Align.Center
+                        AutoHeight: =true
                         Color: =RGBA(255, 255, 255, 1)
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
                         Height: =40
                         OnSelect: |-
-                              =If(
-                                  IsMatch(App.ActiveScreen.Name, "form", MatchOptions.IgnoreCase),
-                                  If(
-                                      !IsEmpty(colNonFormNavigationHistory),
-                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
-                                      Back()
-                                  ),
-                                  If(
-                                      CountRows(colNonFormNavigationHistory) > 1,
-                                      Remove(colNonFormNavigationHistory, Last(colNonFormNavigationHistory));
-                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
-                                      Back()
-                                  )
+                          =If(
+                              IsMatch(App.ActiveScreen.Name, "form", MatchOptions.IgnoreCase),
+                              If(
+                                  !IsEmpty(colNonFormNavigationHistory),
+                                  Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                  Back()
+                              ),
+                              If(
+                                  CountRows(colNonFormNavigationHistory) > 1,
+                                  Remove(colNonFormNavigationHistory, Last(colNonFormNavigationHistory));
+                                  Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                  Back()
                               )
+                          )
                         Size: =22
                         Text: ="‹"
                         Width: =40
@@ -114,7 +116,6 @@ Screens:
                 Control: Rectangle@2.3.0
                 Properties:
                   Fill: =RGBA(0, 0, 0, 0)
-                  FillPortions: =0
                   Height: =0
                   LayoutMinHeight: =0
                   Width: =Parent.Width
@@ -122,40 +123,14 @@ Screens:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout
                 Properties:
+                  DropShadow: =DropShadow.None
                   LayoutAlignItems: =LayoutAlignItems.Stretch
                   LayoutDirection: =LayoutDirection.Vertical
                   LayoutGap: =18
                   LayoutMinHeight: =16
                   LayoutOverflowY: =LayoutOverflow.Scroll
-                  PaddingBottom: =0
-                  PaddingLeft: =0
-                  PaddingRight: =0
-                  PaddingTop: =0
                   Width: =Parent.Width
                 Children:
-                  - IDPViewHeading:
-                      Control: GroupContainer@1.5.0
-                      Variant: AutoLayout
-                      Properties:
-                        DropShadow: =DropShadow.None
-                        FillPortions: =0
-                        Height: =48
-                        LayoutAlignItems: =LayoutAlignItems.Center
-                        LayoutDirection: =LayoutDirection.Horizontal
-                        LayoutGap: =12
-                        LayoutMinHeight: =48
-                        Width: =Parent.Width
-                      Children:
-                        - IDPViewTitle:
-                            Control: ModernText@1.0.0
-                            Properties:
-                              Color: =RGBA(31, 56, 100, 1)
-                              FillPortions: =1
-                              Font: =Font.'Open Sans'
-                              FontWeight: =FontWeight.Bold
-                              Height: =40
-                              Size: =18
-                              Text: ="Individual Development Plan"
                   - IDPLastCKSection:
                       Control: GroupContainer@1.5.0
                       Variant: AutoLayout
@@ -171,6 +146,7 @@ Screens:
                         - LastCKActionTitle:
                             Control: ModernText@1.0.0
                             Properties:
+                              AutoHeight: =true
                               Color: =RGBA(31, 56, 100, 1)
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Bold
@@ -362,6 +338,7 @@ Screens:
                                     - LastCKActionType:
                                         Control: ModernText@1.0.0
                                         Properties:
+                                          AutoHeight: =true
                                           Color: =RGBA(50, 49, 48, 1)
                                           Font: =Font.'Open Sans'
                                           FontWeight: =FontWeight.Bold
