@@ -27,7 +27,7 @@ Screens:
                         NoSesi: existingSesi.NoSesi,
                         Tanggal: existingSesi.Tanggal,
                         FotoBuktiLama: existingSesi.FotoBukti,
-                        FotoBuktiBaru: Blank(),
+                        FotoBuktiBaru: existingSesi.FotoBukti,
                         FotoDiubah: false
                     }
                 )
@@ -38,17 +38,17 @@ Screens:
           Control: GroupContainer@1.5.0
           Variant: AutoLayout
           Properties:
-            Fill: =RGBA(245, 245, 245, 1)
             DropShadow: =DropShadow.None
+            Fill: =RGBA(245, 245, 245, 1)
             Height: =Parent.Height
             LayoutAlignItems: =LayoutAlignItems.Stretch
             LayoutDirection: =LayoutDirection.Vertical
             LayoutGap: =16
-            Width: =Parent.Width
             PaddingBottom: =16
             PaddingLeft: =16
             PaddingRight: =16
             PaddingTop: =16
+            Width: =Parent.Width
           Children:
             - ChecklistFormTopBar:
                 Control: GroupContainer@1.5.0
@@ -73,29 +73,29 @@ Screens:
                   - BtnBackChecklistForm:
                       Control: ModernText@1.0.0
                       Properties:
-                        AutoHeight: =true
                         Align: =Align.Center
+                        AutoHeight: =true
                         Color: =RGBA(255, 255, 255, 1)
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
                         Height: =40
                         OnSelect: |-
-                              =Set(gblChecklistEditMode, false);
-                              Set(gblSelectedChecklist, Defaults(ChecklistMentoring));
+                          =Set(gblChecklistEditMode, false);
+                          Set(gblSelectedChecklist, Defaults(ChecklistMentoring));
+                          If(
+                              IsMatch(App.ActiveScreen.Name, "form", MatchOptions.IgnoreCase),
                               If(
-                                  IsMatch(App.ActiveScreen.Name, "form", MatchOptions.IgnoreCase),
-                                  If(
-                                      !IsEmpty(colNonFormNavigationHistory),
-                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
-                                      Back()
-                                  ),
-                                  If(
-                                      CountRows(colNonFormNavigationHistory) > 1,
-                                      Remove(colNonFormNavigationHistory, Last(colNonFormNavigationHistory));
-                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
-                                      Back()
-                                  )
+                                  !IsEmpty(colNonFormNavigationHistory),
+                                  Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                  Back()
+                              ),
+                              If(
+                                  CountRows(colNonFormNavigationHistory) > 1,
+                                  Remove(colNonFormNavigationHistory, Last(colNonFormNavigationHistory));
+                                  Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                  Back()
                               )
+                          )
                         Size: =22
                         Text: ="‹"
                         Width: =40
@@ -132,7 +132,6 @@ Screens:
                 Control: Rectangle@2.3.0
                 Properties:
                   Fill: =RGBA(0, 0, 0, 0)
-                  FillPortions: =0
                   Height: =0
                   LayoutMinHeight: =0
                   Width: =Parent.Width
@@ -156,7 +155,6 @@ Screens:
                       Variant: AutoLayout
                       Properties:
                         BorderStyle: =BorderStyle.None
-                        BorderThickness: =0
                         DropShadow: =DropShadow.None
                         Fill: =RGBA(255, 255, 255, 1)
                         FillPortions: =0
@@ -177,6 +175,7 @@ Screens:
                         - ChecklistFormTitle:
                             Control: ModernText@1.0.0
                             Properties:
+                              AutoHeight: =true
                               Color: =RGBA(31, 56, 100, 1)
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Bold
@@ -213,6 +212,7 @@ Screens:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
                             Properties:
+                              DropShadow: =DropShadow.None
                               FillPortions: =0
                               Height: =76
                               LayoutDirection: =LayoutDirection.Vertical
@@ -241,6 +241,7 @@ Screens:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
                             Properties:
+                              DropShadow: =DropShadow.None
                               FillPortions: =0
                               Height: =76
                               LayoutDirection: =LayoutDirection.Vertical
@@ -279,12 +280,12 @@ Screens:
                                               NIP: Title
                                           }
                                       )
-                                    SelectMultiple: =false
                                     Width: =Parent.Width
                         - FieldPersonalStatementChecklist:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
                             Properties:
+                              DropShadow: =DropShadow.None
                               FillPortions: =0
                               Height: =210
                               LayoutDirection: =LayoutDirection.Vertical
@@ -314,8 +315,7 @@ Screens:
                                         Properties:
                                           BorderStyle: =BorderStyle.None
                                           Height: =110
-                                          Image: =If(IsBlank(AddMediaPersonalStatementChecklist.Media), If(Coalesce(gblChecklistEditMode, false), gblSelectedChecklist.PersonalStatementFile, Blank()), AddMediaPersonalStatementChecklist.Media)
-                                          ImagePosition: =ImagePosition.Fit
+                                          Image: =If(IsBlank(AddMediaPersonalStatementChecklist.Media), If(Coalesce(gblChecklistEditMode, false), gblSelectedChecklist.PersonalStatementFile.Large, Blank()), AddMediaPersonalStatementChecklist.Media)
                                           RadiusBottomLeft: =6
                                           RadiusBottomRight: =6
                                           RadiusTopLeft: =6
@@ -325,12 +325,9 @@ Screens:
                                         Control: AddMedia@2.2.1
                                         Properties:
                                           BorderColor: =RGBA(200, 198, 196, 1)
-                                          BorderStyle: =BorderStyle.Solid
                                           BorderThickness: =1
                                           ChangePictureText: ="Ganti gambar"
                                           Color: =RGBA(50, 49, 48, 1)
-                                          Fill: =RGBA(255, 255, 255, 1)
-                                          Font: =Font.'Open Sans'
                                           Height: =44
                                           HoverColor: =RGBA(50, 49, 48, 1)
                                           HoverFill: =RGBA(250, 250, 250, 1)
@@ -339,12 +336,12 @@ Screens:
                                           Size: =12
                                           Text: ="Unggah gambar"
                                           Width: =110
-                                          X: =0
                                           Y: =ImgPersonalStatementChecklist.Y + ImgPersonalStatementChecklist.Height + 8
                         - FieldCareerPlanChecklist:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
                             Properties:
+                              DropShadow: =DropShadow.None
                               FillPortions: =0
                               Height: =210
                               LayoutDirection: =LayoutDirection.Vertical
@@ -374,8 +371,7 @@ Screens:
                                         Properties:
                                           BorderStyle: =BorderStyle.None
                                           Height: =110
-                                          Image: =If(IsBlank(AddMediaCareerPlanChecklist.Media), If(Coalesce(gblChecklistEditMode, false), gblSelectedChecklist.CareerPlanFile, Blank()), AddMediaCareerPlanChecklist.Media)
-                                          ImagePosition: =ImagePosition.Fit
+                                          Image: =If(IsBlank(AddMediaCareerPlanChecklist.Media), If(Coalesce(gblChecklistEditMode, false), gblSelectedChecklist.CareerPlanFile.Large, Blank()), AddMediaCareerPlanChecklist.Media)
                                           RadiusBottomLeft: =6
                                           RadiusBottomRight: =6
                                           RadiusTopLeft: =6
@@ -385,12 +381,9 @@ Screens:
                                         Control: AddMedia@2.2.1
                                         Properties:
                                           BorderColor: =RGBA(200, 198, 196, 1)
-                                          BorderStyle: =BorderStyle.Solid
                                           BorderThickness: =1
                                           ChangePictureText: ="Ganti gambar"
                                           Color: =RGBA(50, 49, 48, 1)
-                                          Fill: =RGBA(255, 255, 255, 1)
-                                          Font: =Font.'Open Sans'
                                           Height: =44
                                           HoverColor: =RGBA(50, 49, 48, 1)
                                           HoverFill: =RGBA(250, 250, 250, 1)
@@ -399,12 +392,12 @@ Screens:
                                           Size: =12
                                           Text: ="Unggah gambar"
                                           Width: =110
-                                          X: =0
                                           Y: =ImgCareerPlanChecklist.Y + ImgCareerPlanChecklist.Height + 8
                         - FieldBuktiUploadChecklist:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
                             Properties:
+                              DropShadow: =DropShadow.None
                               FillPortions: =0
                               Height: =210
                               LayoutDirection: =LayoutDirection.Vertical
@@ -434,8 +427,7 @@ Screens:
                                         Properties:
                                           BorderStyle: =BorderStyle.None
                                           Height: =110
-                                          Image: =If(IsBlank(AddMediaBuktiUploadChecklist.Media), If(Coalesce(gblChecklistEditMode, false), gblSelectedChecklist.BuktiUploadFile, Blank()), AddMediaBuktiUploadChecklist.Media)
-                                          ImagePosition: =ImagePosition.Fit
+                                          Image: =If(IsBlank(AddMediaBuktiUploadChecklist.Media), If(Coalesce(gblChecklistEditMode, false), gblSelectedChecklist.BuktiUploadFile.Large, Blank()), AddMediaBuktiUploadChecklist.Media)
                                           RadiusBottomLeft: =6
                                           RadiusBottomRight: =6
                                           RadiusTopLeft: =6
@@ -445,12 +437,9 @@ Screens:
                                         Control: AddMedia@2.2.1
                                         Properties:
                                           BorderColor: =RGBA(200, 198, 196, 1)
-                                          BorderStyle: =BorderStyle.Solid
                                           BorderThickness: =1
                                           ChangePictureText: ="Ganti gambar"
                                           Color: =RGBA(50, 49, 48, 1)
-                                          Fill: =RGBA(255, 255, 255, 1)
-                                          Font: =Font.'Open Sans'
                                           Height: =44
                                           HoverColor: =RGBA(50, 49, 48, 1)
                                           HoverFill: =RGBA(250, 250, 250, 1)
@@ -459,7 +448,6 @@ Screens:
                                           Size: =12
                                           Text: ="Unggah gambar"
                                           Width: =110
-                                          X: =0
                                           Y: =ImgBuktiUploadChecklist.Y + ImgBuktiUploadChecklist.Height + 8
                         - ChecklistStatusPreview:
                             Control: ModernText@1.0.0
@@ -476,7 +464,6 @@ Screens:
                                 )
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Semibold
-                              Height: =32
                               Text: |-
                                 ="Status: " &
                                 If(
@@ -502,6 +489,7 @@ Screens:
                         - MentoringSesiFormHelp:
                             Control: ModernText@1.0.0
                             Properties:
+                              AutoHeight: =true
                               Color: =RGBA(96, 94, 92, 1)
                               Font: =Font.'Open Sans'
                               Height: =24
@@ -513,7 +501,6 @@ Screens:
                             Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
                             Properties:
                               BorderColor: =RGBA(225, 223, 221, 1)
-                              BorderStyle: =BorderStyle.Solid
                               BorderThickness: =1
                               Fill: =RGBA(255, 255, 255, 1)
                               FillPortions: =0
@@ -528,7 +515,6 @@ Screens:
                                   Control: Rectangle@2.3.0
                                   Properties:
                                     BorderColor: =RGBA(225, 223, 221, 1)
-                                    BorderStyle: =BorderStyle.Solid
                                     BorderThickness: =1
                                     Fill: =RGBA(248, 247, 246, 1)
                                     Height: =Parent.TemplateHeight - 4
@@ -536,33 +522,34 @@ Screens:
                               - MentoringSesiEditLabel:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Color: =RGBA(31, 56, 100, 1)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Bold
-                                    Height: =26
+                                    Height: =25
                                     Size: =12
-                                    Text: '="Sesi " & Text(ThisItem.NoSesi)'
-                                    Width: =Parent.TemplateWidth - 130
-                                    X: =12
+                                    Text: ="Sesi " & Text(ThisItem.NoSesi)
+                                    Width: =Max(120, Parent.TemplateWidth - 150)
                                     Y: =8
                               - BtnDeleteMentoringSesi:
                                   Control: ModernText@1.0.0
                                   Properties:
-                                    Align: =Align.Center
+                                    Align: =Align.Right
+                                    AutoHeight: =true
                                     Color: =RGBA(196, 43, 28, 1)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
-                                    Height: =28
+                                    Height: =38
                                     OnSelect: |-
                                       =If(
                                           ThisItem.RecordID > 0,
                                           Collect(colMentoringSesiDeleted, {RecordID: ThisItem.RecordID})
                                       );
                                       Remove(colMentoringSesi, ThisItem)
+                                    PaddingLeft: =10
                                     Size: =11
                                     Text: ="× Hapus"
-                                    Width: =90
-                                    X: =Parent.TemplateWidth - 106
+                                    Width: =Parent.Width - 30
                                     Y: =6
                               - NumNoMentoringSesi:
                                   Control: NumberInput@2.9.12
@@ -570,58 +557,78 @@ Screens:
                                     AccessibleLabel: ="Nomor sesi"
                                     Max: =99
                                     Min: =1
-                                    OnChange: '=Patch(colMentoringSesi, ThisItem, {NoSesi: Value(Self.Value)})'
+                                    OnChange: |-
+                                      =Patch(colMentoringSesi, ThisItem, {NoSesi: Value(Self.Value)})
                                     Value: =ThisItem.NoSesi
                                     Width: =If(Parent.TemplateWidth < 600, Parent.TemplateWidth - 32, 160)
-                                    X: =12
+                                    X: =1
                                     Y: =44
                               - DateMentoringSesi:
-                                  Control: ModernDatePicker@1.0.0
+                                  Control: ModernDatePicker@1.0.1
                                   Properties:
                                     AccessibleLabel: ="Tanggal sesi mentoring"
                                     DefaultDate: =Coalesce(ThisItem.Tanggal, Today())
                                     Format: ="dd/mm/yyyy"
-                                    OnChange: '=Patch(colMentoringSesi, ThisItem, {Tanggal: Self.SelectedDate})'
+                                    OnChange: |-
+                                      =Patch(colMentoringSesi, ThisItem, {Tanggal: Self.SelectedDate})
+                                    PaddingLeft: =10
                                     Placeholder: ="Pilih tanggal"
                                     Width: =If(Parent.TemplateWidth < 600, Parent.TemplateWidth - 32, 220)
-                                    X: =If(Parent.TemplateWidth < 600, 12, 184)
+                                    X: =1
                                     Y: =If(Parent.TemplateWidth < 600, 94, 44)
                               - ImgMentoringSesiEdit:
                                   Control: Image@2.2.3
                                   Properties:
                                     BorderColor: =RGBA(225, 223, 221, 1)
-                                    BorderStyle: =BorderStyle.Solid
                                     BorderThickness: =1
                                     Height: =120
-                                    Image: =If(ThisItem.FotoDiubah, ThisItem.FotoBuktiBaru, ThisItem.FotoBuktiLama)
-                                    ImagePosition: =ImagePosition.Fit
+                                    Image: |-
+                                      =If(
+                                          ThisItem.FotoDiubah && !IsBlank(ThisItem.FotoBuktiBaru.Full),
+                                          ThisItem.FotoBuktiBaru.Full,
+                                          If(
+                                              !IsBlank(ThisItem.FotoBuktiLama),
+                                              ThisItem.FotoBuktiLama.Large,
+                                              Blank()
+                                          )
+                                      )
+                                    PaddingLeft: =10
                                     RadiusBottomLeft: =6
                                     RadiusBottomRight: =6
                                     RadiusTopLeft: =6
                                     RadiusTopRight: =6
                                     Width: =If(Parent.TemplateWidth < 600, Parent.TemplateWidth - 32, 280)
-                                    X: =12
+                                    X: =1
                                     Y: =If(Parent.TemplateWidth < 600, 148, 108)
                               - AddMediaMentoringSesiEdit:
                                   Control: AddMedia@2.2.1
                                   Properties:
                                     BorderColor: =RGBA(200, 198, 196, 1)
-                                    BorderStyle: =BorderStyle.Solid
                                     BorderThickness: =1
                                     ChangePictureText: ="Ganti foto bukti"
                                     Color: =RGBA(50, 49, 48, 1)
-                                    Fill: =RGBA(255, 255, 255, 1)
-                                    Font: =Font.'Open Sans'
                                     Height: =44
                                     HoverColor: =RGBA(50, 49, 48, 1)
                                     HoverFill: =RGBA(250, 250, 250, 1)
-                                    OnChange: '=Patch(colMentoringSesi, ThisItem, {FotoBuktiBaru: Self.Media, FotoDiubah: true})'
+                                    OnChange: |-
+                                      =Patch(
+                                          colMentoringSesi,
+                                          ThisItem,
+                                          {
+                                              FotoBuktiBaru: {
+                                                  Full: Self.Media,
+                                                  Large: Self.Media,
+                                                  Medium: Self.Media,
+                                                  Small: Self.Media
+                                              },
+                                              FotoDiubah: true
+                                          }
+                                      )
                                     PressedColor: =RGBA(50, 49, 48, 1)
                                     PressedFill: =RGBA(243, 242, 241, 1)
                                     Size: =12
                                     Text: ="Unggah foto"
-                                    Width: =110
-                                    X: =12
+                                    Width: =If(Parent.TemplateWidth < 600, Parent.TemplateWidth - 32, 280)
                                     Y: =ImgMentoringSesiEdit.Y + ImgMentoringSesiEdit.Height + 8
                         - MentoringSesiEmptyEdit:
                             Control: ModernText@1.0.0
@@ -651,7 +658,12 @@ Screens:
                                         NoSesi: CountRows(colMentoringSesi) + 1,
                                         Tanggal: Today(),
                                         FotoBuktiLama: Blank(),
-                                        FotoBuktiBaru: Blank(),
+                                        FotoBuktiBaru: {
+                                            Full: "",
+                                            Large: "",
+                                            Medium: "",
+                                            Small: ""
+                                        },
                                         FotoDiubah: false
                                     }
                                 )
@@ -665,6 +677,7 @@ Screens:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
                             Properties:
+                              DropShadow: =DropShadow.None
                               FillPortions: =0
                               Height: =48
                               LayoutDirection: =LayoutDirection.Horizontal
@@ -697,20 +710,21 @@ Screens:
                               - BtnDeleteChecklistForm:
                                   Control: ModernText@1.0.0
                                   Properties:
-                                    RadiusTopRight: =6
-                                    RadiusTopLeft: =6
-                                    RadiusBottomRight: =6
-                                    RadiusBottomLeft: =6
-                                    Fill: =If(Coalesce(gblPimpinanView, false), RGBA(225, 223, 221, 1), RGBA(196, 43, 28, 1))
-                                    BorderThickness: =0
-                                    BorderStyle: =BorderStyle.None
-                                    BorderColor: =RGBA(0, 0, 0, 0)
                                     Align: =Align.Center
+                                    BorderColor: =RGBA(0, 0, 0, 0)
+                                    BorderStyle: =BorderStyle.None
+                                    BorderThickness: =0
                                     Color: =If(Coalesce(gblPimpinanView, false), RGBA(96, 94, 92, 1), RGBA(255, 255, 255, 1))
+                                    Fill: =If(Coalesce(gblPimpinanView, false), RGBA(225, 223, 221, 1), RGBA(196, 43, 28, 1))
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
                                     Height: =44
-                                    OnSelect: '=UpdateContext({locConfirmDeleteChecklistForm: true})'
+                                    OnSelect: |-
+                                      =UpdateContext({locConfirmDeleteChecklistForm: true})
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
                                     Text: ="Hapus"
                                     Visible: |-
                                       =And(
@@ -730,7 +744,8 @@ Screens:
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
                                     Height: =44
-                                    OnSelect: '=UpdateContext({locConfirmDeleteChecklistForm: false})'
+                                    OnSelect: |-
+                                      =UpdateContext({locConfirmDeleteChecklistForm: false})
                                     RadiusBottomLeft: =6
                                     RadiusBottomRight: =6
                                     RadiusTopLeft: =6
@@ -790,7 +805,7 @@ Screens:
                                                       colMentoringSesi,
                                                       IsBlank(NoSesi) ||
                                                           IsBlank(Tanggal) ||
-                                                          (RecordID = 0 && IsBlank(FotoBuktiBaru))
+                                                          (RecordID = 0 && IsBlank(FotoBuktiBaru.Full))
                                                   )
                                               ) > 0,
                                               CountRows(Distinct(colMentoringSesi, NoSesi)) <> CountRows(colMentoringSesi)
@@ -910,14 +925,13 @@ Screens:
                       Control: Form@2.4.4
                       Layout: Vertical
                       Properties:
-                        BorderThickness: =0
                         DataSource: =ChecklistMentoring
                         DefaultMode: =If(Coalesce(gblChecklistEditMode, false), FormMode.Edit, FormMode.New)
                         FillPortions: =0
                         Height: =1
                         Item: =gblSelectedChecklist
                         LayoutMinHeight: =1
-                        LayoutMinWidth: =1
+                        LayoutMinWidth: =16
                         OnFailure: |-
                           =Notify("Gagal menyimpan checklist: " & ChecklistImagesForm.Error, NotificationType.Error);
                           Set(gblChecklistSubmitting, false)
@@ -932,77 +946,78 @@ Screens:
                           Set(gblChecklistEditMode, false);
                           Set(gblSelectedChecklist, Defaults(ChecklistMentoring));
                           Navigate(S6A_ChecklistMentoring_List, ScreenTransition.Fade)
-                        Visible: =true
-                        Width: =1
+                        Width: =Parent.Width
                       Children:
                         - Title_Checklist_DataCard:
                             Control: TypedDataCard@1.0.7
                             Variant: TextualEdit
-                            IsLocked: false
                             Properties:
                               DataField: ="Title"
                               Default: =ThisItem.Title
-                              DisplayName: =DataSourceInfo([@ChecklistMentoring], DataSourceInfo.DisplayName, 'Title')
+                              DisplayName: =DataSourceInfo([@ChecklistMentoring], DataSourceInfo.DisplayName, Title)
+                              MaxLength: =DataSourceInfo(%DATACARD_DATASOURCE_NAME.ID%, %DataSourceInfo.RESERVED%.MaxLength, '%DATACARD_FIELD_NAME.ID%')
                               Required: =true
                               Update: =If(Coalesce(gblChecklistEditMode, false), gblSelectedChecklist.Title, "TEMP_" & Text(GUID()))
-                              Visible: =true
+                              X: =0
+                              Y: =0
                         - NIP_Checklist_DataCard:
                             Control: TypedDataCard@1.0.7
                             Variant: TextualEdit
-                            IsLocked: false
                             Properties:
                               DataField: ="NIP"
                               Default: =ThisItem.NIP
-                              DisplayName: =DataSourceInfo([@ChecklistMentoring], DataSourceInfo.DisplayName, 'NIP')
+                              DisplayName: =DataSourceInfo([@ChecklistMentoring], DataSourceInfo.DisplayName, NIP)
+                              MaxLength: =DataSourceInfo(%DATACARD_DATASOURCE_NAME.ID%, %DataSourceInfo.RESERVED%.MaxLength, '%DATACARD_FIELD_NAME.ID%')
                               Required: =false
                               Update: =Text(If(Coalesce(gblChecklistEditMode, false), gblSelectedChecklist.NIP, If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))
-                              Visible: =true
+                              X: =0
+                              Y: =0
                         - Tahun_Checklist_DataCard:
                             Control: TypedDataCard@1.0.7
                             Variant: NumberEdit
-                            IsLocked: false
                             Properties:
                               DataField: ="Tahun"
                               Default: =ThisItem.Tahun
-                              DisplayName: =DataSourceInfo([@ChecklistMentoring], DataSourceInfo.DisplayName, 'Tahun')
+                              DisplayName: =DataSourceInfo([@ChecklistMentoring], DataSourceInfo.DisplayName, Tahun)
                               Required: =false
                               Update: =Value(NumTahunChecklist.Value)
-                              Visible: =true
+                              X: =0
+                              Y: =0
                         - MentorNIP_Checklist_DataCard:
                             Control: TypedDataCard@1.0.7
                             Variant: TextualEdit
-                            IsLocked: false
                             Properties:
                               DataField: ="MentorNIP"
                               Default: =ThisItem.MentorNIP
-                              DisplayName: =DataSourceInfo([@ChecklistMentoring], DataSourceInfo.DisplayName, 'MentorNIP')
+                              DisplayName: =DataSourceInfo([@ChecklistMentoring], DataSourceInfo.DisplayName, MentorNIP)
+                              MaxLength: =DataSourceInfo(%DATACARD_DATASOURCE_NAME.ID%, %DataSourceInfo.RESERVED%.MaxLength, '%DATACARD_FIELD_NAME.ID%')
                               Required: =false
                               Update: =CmbMentorChecklist.Selected.NIP
-                              Visible: =true
+                              X: =0
+                              Y: =0
                         - Status_Checklist_DataCard:
                             Control: TypedDataCard@1.0.7
                             Variant: TextualEdit
-                            IsLocked: false
                             Properties:
                               DataField: ="Status"
                               Default: =ThisItem.Status
-                              DisplayName: =DataSourceInfo([@ChecklistMentoring], DataSourceInfo.DisplayName, 'Status')
+                              DisplayName: =DataSourceInfo([@ChecklistMentoring], DataSourceInfo.DisplayName, Status)
+                              MaxLength: =DataSourceInfo(%DATACARD_DATASOURCE_NAME.ID%, %DataSourceInfo.RESERVED%.MaxLength, '%DATACARD_FIELD_NAME.ID%')
                               Required: =false
                               Update: =If(And(!IsBlank(ImgPersonalStatementChecklist.Image), !IsBlank(ImgCareerPlanChecklist.Image), !IsBlank(ImgBuktiUploadChecklist.Image)), "Lengkap", "Belum Lengkap")
-                              Visible: =true
+                              X: =0
+                              Y: =0
                         - PersonalStatementFile_DataCard:
                             Control: TypedDataCard@1.0.7
                             Variant: LargePicture
-                            IsLocked: false
                             Properties:
                               BorderColor: =RGBA(245, 245, 245, 1)
                               DataField: ="PersonalStatementFile"
                               Default: =ThisItem.PersonalStatementFile
-                              DisplayName: =DataSourceInfo([@ChecklistMentoring], DataSourceInfo.DisplayName, 'PersonalStatementFile')
+                              DisplayName: =DataSourceInfo([@ChecklistMentoring], DataSourceInfo.DisplayName, PersonalStatementFile)
                               Height: =200
                               Required: =false
                               Update: =ImagePersonalStatementSubmit.Image
-                              Visible: =true
                               Width: =Parent.Width
                               X: =0
                               Y: =5
@@ -1019,16 +1034,14 @@ Screens:
                         - CareerPlanFile_DataCard:
                             Control: TypedDataCard@1.0.7
                             Variant: LargePicture
-                            IsLocked: false
                             Properties:
                               BorderColor: =RGBA(245, 245, 245, 1)
                               DataField: ="CareerPlanFile"
                               Default: =ThisItem.CareerPlanFile
-                              DisplayName: =DataSourceInfo([@ChecklistMentoring], DataSourceInfo.DisplayName, 'CareerPlanFile')
+                              DisplayName: =DataSourceInfo([@ChecklistMentoring], DataSourceInfo.DisplayName, CareerPlanFile)
                               Height: =200
                               Required: =false
                               Update: =ImageCareerPlanSubmit.Image
-                              Visible: =true
                               Width: =Parent.Width
                               X: =0
                               Y: =6
@@ -1045,16 +1058,14 @@ Screens:
                         - BuktiUploadFile_DataCard:
                             Control: TypedDataCard@1.0.7
                             Variant: LargePicture
-                            IsLocked: false
                             Properties:
                               BorderColor: =RGBA(245, 245, 245, 1)
                               DataField: ="BuktiUploadFile"
                               Default: =ThisItem.BuktiUploadFile
-                              DisplayName: =DataSourceInfo([@ChecklistMentoring], DataSourceInfo.DisplayName, 'BuktiUploadFile')
+                              DisplayName: =DataSourceInfo([@ChecklistMentoring], DataSourceInfo.DisplayName, BuktiUploadFile)
                               Height: =200
                               Required: =false
                               Update: =ImageBuktiUploadSubmit.Image
-                              Visible: =true
                               Width: =Parent.Width
                               X: =0
                               Y: =7

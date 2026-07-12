@@ -4,7 +4,8 @@ Screens:
       Fill: =RGBA(245, 245, 245, 1)
       LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
       OnVisible: |-
-        =If(
+        =UpdateContext({locPRIDPMonitoringLoading: true});
+        If(
             IsEmpty(colNonFormNavigationHistory) ||
             Last(colNonFormNavigationHistory).ScreenName <> App.ActiveScreen.Name,
             Collect(
@@ -18,7 +19,13 @@ Screens:
         Refresh(Pegawai);
         Refresh(PerformanceReview);
         Refresh(IDP);
-        Refresh(ChecklistMentoring)
+        Refresh(ChecklistMentoring);
+        Reset(CmbFilterPR1Monitoring);
+        Reset(CmbFilterPR2Monitoring);
+        Reset(CmbFilterPR3Monitoring);
+        Reset(CmbFilterIDPMonitoring);
+        Reset(CmbFilterMentoringMonitoring);
+        UpdateContext({locPRIDPMonitoringLoading: false})
     Children:
       - PRIDPMonitoringContainer:
           Control: GroupContainer@1.5.0
@@ -182,6 +189,188 @@ Screens:
                               LayoutMinWidth: =If(Parent.Width < 640, Parent.Width, 160)
                               SelectMultiple: =false
                               Width: =If(Parent.Width < 640, Parent.Width, 170)
+                  - PRIDPMonitoringFilterRow:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Fill: =RGBA(0, 0, 0, 0)
+                        FillPortions: =0
+                        Height: =If(Parent.Width < 760, 212, 76)
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutMinHeight: =If(Parent.Width < 760, 212, 76)
+                        LayoutWrap: =true
+                        PaddingBottom: =4
+                        PaddingLeft: =8
+                        PaddingRight: =8
+                        PaddingTop: =4
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Width: =Parent.Width
+                      Children:
+                        - FilterPR1Card:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Fill: =RGBA(0, 0, 0, 0)
+                              Height: =68
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =4
+                              LayoutMinWidth: =140
+                              Width: =160
+                            Children:
+                              - LblFilterPR1Monitoring:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =22
+                                    Size: =11
+                                    Text: ="PR 1"
+                                    Width: =Parent.Width
+                              - CmbFilterPR1Monitoring:
+                                  Control: ComboBox@0.0.51
+                                  Properties:
+                                    AccessibleLabel: ="Filter PR 1"
+                                    DefaultSelectedItems: |-
+                                      =Table({Value: "Semua"})
+                                    Fill: =RGBA(255, 255, 255, 1)
+                                    Items: |-
+                                      =Table({Value: "Semua"}, {Value: "Sudah"}, {Value: "Belum"})
+                                    SelectMultiple: =false
+                                    Width: =Parent.Width
+                        - FilterPR2Card:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Fill: =RGBA(0, 0, 0, 0)
+                              Height: =68
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =4
+                              LayoutMinWidth: =140
+                              Width: =160
+                            Children:
+                              - LblFilterPR2Monitoring:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =22
+                                    Size: =11
+                                    Text: ="PR 2"
+                                    Width: =Parent.Width
+                              - CmbFilterPR2Monitoring:
+                                  Control: ComboBox@0.0.51
+                                  Properties:
+                                    AccessibleLabel: ="Filter PR 2"
+                                    DefaultSelectedItems: |-
+                                      =Table({Value: "Semua"})
+                                    Fill: =RGBA(255, 255, 255, 1)
+                                    Items: |-
+                                      =Table({Value: "Semua"}, {Value: "Sudah"}, {Value: "Belum"})
+                                    SelectMultiple: =false
+                                    Width: =Parent.Width
+                        - FilterPR3Card:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Fill: =RGBA(0, 0, 0, 0)
+                              Height: =68
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =4
+                              LayoutMinWidth: =140
+                              Width: =160
+                            Children:
+                              - LblFilterPR3Monitoring:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =22
+                                    Size: =11
+                                    Text: ="PR 3"
+                                    Width: =Parent.Width
+                              - CmbFilterPR3Monitoring:
+                                  Control: ComboBox@0.0.51
+                                  Properties:
+                                    AccessibleLabel: ="Filter PR 3"
+                                    DefaultSelectedItems: |-
+                                      =Table({Value: "Semua"})
+                                    Fill: =RGBA(255, 255, 255, 1)
+                                    Items: |-
+                                      =Table({Value: "Semua"}, {Value: "Sudah"}, {Value: "Belum"})
+                                    SelectMultiple: =false
+                                    Width: =Parent.Width
+                        - FilterIDPCard:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Fill: =RGBA(0, 0, 0, 0)
+                              Height: =68
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =4
+                              LayoutMinWidth: =170
+                              Width: =190
+                            Children:
+                              - LblFilterIDPMonitoring:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =22
+                                    Size: =11
+                                    Text: ="IDP Disetujui"
+                                    Width: =Parent.Width
+                              - CmbFilterIDPMonitoring:
+                                  Control: ComboBox@0.0.51
+                                  Properties:
+                                    AccessibleLabel: ="Filter jumlah IDP disetujui"
+                                    DefaultSelectedItems: |-
+                                      =Table({Value: "Semua"})
+                                    Fill: =RGBA(255, 255, 255, 1)
+                                    Items: |-
+                                      =Table({Value: "Semua"}, {Value: "Masih 0"}, {Value: "Lebih dari 0"})
+                                    SelectMultiple: =false
+                                    Width: =Parent.Width
+                        - FilterMentoringCard:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              Fill: =RGBA(0, 0, 0, 0)
+                              Height: =68
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =4
+                              LayoutMinWidth: =150
+                              Width: =170
+                            Children:
+                              - LblFilterMentoringMonitoring:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =22
+                                    Size: =11
+                                    Text: ="Mentoring"
+                                    Width: =Parent.Width
+                              - CmbFilterMentoringMonitoring:
+                                  Control: ComboBox@0.0.51
+                                  Properties:
+                                    AccessibleLabel: ="Filter mentoring"
+                                    DefaultSelectedItems: |-
+                                      =Table({Value: "Semua"})
+                                    Fill: =RGBA(255, 255, 255, 1)
+                                    Items: |-
+                                      =Table({Value: "Semua"}, {Value: "Sudah"}, {Value: "Belum"})
+                                    SelectMultiple: =false
+                                    Width: =Parent.Width
                   - PRIDPMonitoringTableCard:
                       Control: GroupContainer@1.5.0
                       Variant: AutoLayout
@@ -202,6 +391,27 @@ Screens:
                         RadiusTopRight: =8
                         Width: =Parent.Width
                       Children:
+                        - PRIDPMonitoringLoadingBar:
+                            Control: Rectangle@2.3.0
+                            Properties:
+                              Fill: =RGBA(0, 120, 212, 1)
+                              FillPortions: =0
+                              Height: =4
+                              LayoutMinHeight: =4
+                              Visible: =Coalesce(locPRIDPMonitoringLoading, false)
+                              Width: =Parent.Width
+                        - PRIDPMonitoringLoadingText:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              Color: =RGBA(0, 84, 153, 1)
+                              FillPortions: =0
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =44
+                              Text: ="Memuat data monitoring..."
+                              Visible: =Coalesce(locPRIDPMonitoringLoading, false)
+                              Width: =Parent.Width
                         - PRIDPMonitoringColumnHeader:
                             Control: GroupContainer@1.5.0
                             Variant: AutoLayout
@@ -272,7 +482,7 @@ Screens:
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Bold
                                     Size: =11
-                                    Text: ="JUMLAH IDP"
+                                    Text: ="JUMLAH IDP DISETUJUI"
                                     Width: =(Parent.Width - 24) * 0.125
                               - HeaderMentoringMonitoring:
                                   Control: ModernText@1.0.0
@@ -292,9 +502,18 @@ Screens:
                               Fill: =RGBA(255, 255, 255, 1)
                               FillPortions: =1
                               Items: |-
-                                =With(
+                                =If(
+                                    Coalesce(locPRIDPMonitoringLoading, false),
+                                    Filter(Pegawai, false),
+                                    With(
                                     {
-                                        keyword: Lower(Trim(TxtSearchPRIDPMonitoring.Value))
+                                        keyword: Lower(Trim(TxtSearchPRIDPMonitoring.Value)),
+                                        selectedYear: Value(Coalesce(CmbTahunPRIDPMonitoring.Selected.Value, Year(Today()))),
+                                        filterPR1: Coalesce(CmbFilterPR1Monitoring.Selected.Value, "Semua"),
+                                        filterPR2: Coalesce(CmbFilterPR2Monitoring.Selected.Value, "Semua"),
+                                        filterPR3: Coalesce(CmbFilterPR3Monitoring.Selected.Value, "Semua"),
+                                        filterIDP: Coalesce(CmbFilterIDPMonitoring.Selected.Value, "Semua"),
+                                        filterMentoring: Coalesce(CmbFilterMentoringMonitoring.Selected.Value, "Semua")
                                     },
                                     Sort(
                                         Filter(
@@ -304,11 +523,34 @@ Screens:
                                                 IsBlank(keyword) ||
                                                 keyword in Lower(Coalesce(PegawaiRecord.Nama, "")) ||
                                                 keyword in Lower(Text(PegawaiRecord.Title))
+                                            ) &&
+                                            If(
+                                                filterPR1 = "Semua" &&
+                                                filterPR2 = "Semua" &&
+                                                filterPR3 = "Semua" &&
+                                                filterIDP = "Semua" &&
+                                                filterMentoring = "Semua",
+                                                true,
+                                                With(
+                                                    {
+                                                        pr1Count: CountRows(Filter(PerformanceReview, NIP = PegawaiRecord.Title && Tahun = selectedYear && Text(Semester.Value) = "1")),
+                                                        pr2Count: CountRows(Filter(PerformanceReview, NIP = PegawaiRecord.Title && Tahun = selectedYear && Text(Semester.Value) = "2")),
+                                                        pr3Count: CountRows(Filter(PerformanceReview, NIP = PegawaiRecord.Title && Tahun = selectedYear && Text(Semester.Value) = "3")),
+                                                        approvedIDPCount: CountRows(Filter(IDP, NIP = PegawaiRecord.Title && Tahun = selectedYear && (Status = "Proses" || Status = "Selesai"))),
+                                                        mentoringCount: CountRows(Filter(ChecklistMentoring, NIP = PegawaiRecord.Title && Tahun = selectedYear))
+                                                    },
+                                                    (filterPR1 = "Semua" || (filterPR1 = "Sudah" && pr1Count > 0) || (filterPR1 = "Belum" && pr1Count = 0)) &&
+                                                    (filterPR2 = "Semua" || (filterPR2 = "Sudah" && pr2Count > 0) || (filterPR2 = "Belum" && pr2Count = 0)) &&
+                                                    (filterPR3 = "Semua" || (filterPR3 = "Sudah" && pr3Count > 0) || (filterPR3 = "Belum" && pr3Count = 0)) &&
+                                                    (filterIDP = "Semua" || (filterIDP = "Masih 0" && approvedIDPCount = 0) || (filterIDP = "Lebih dari 0" && approvedIDPCount > 0)) &&
+                                                    (filterMentoring = "Semua" || (filterMentoring = "Sudah" && mentoringCount > 0) || (filterMentoring = "Belum" && mentoringCount = 0))
+                                                )
                                             )
                                         ),
                                         Coalesce(Nama, Title),
                                         SortOrder.Ascending
                                     )
+                                )
                                 )
                               LayoutMinHeight: =16
                               LayoutMinWidth: =16
@@ -537,7 +779,8 @@ Screens:
                                               Filter(
                                                   IDP,
                                                   NIP = ThisItem.Title &&
-                                                  Tahun = Value(Coalesce(CmbTahunPRIDPMonitoring.Selected.Value, Year(Today())))
+                                                  Tahun = Value(Coalesce(CmbTahunPRIDPMonitoring.Selected.Value, Year(Today()))) &&
+                                                  (Status = "Proses" || Status = "Selesai")
                                               )
                                           )
                                       ) & " IDP"
@@ -605,5 +848,5 @@ Screens:
                               Height: =80
                               Size: =12
                               Text: ="Tidak ada pegawai yang cocok dengan pencarian."
-                              Visible: =IsEmpty(GalleryPRIDPMonitoring.AllItems)
+                              Visible: =!Coalesce(locPRIDPMonitoringLoading, false) && IsEmpty(GalleryPRIDPMonitoring.AllItems)
                               Width: =Parent.Width

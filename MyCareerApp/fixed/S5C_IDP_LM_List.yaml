@@ -1,0 +1,454 @@
+Screens:
+  S5C_IDP_LM_List:
+    Properties:
+      Fill: =RGBA(245, 245, 245, 1)
+      LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+      OnVisible: |-
+        =If(
+            IsEmpty(colNonFormNavigationHistory) ||
+            Last(colNonFormNavigationHistory).ScreenName <> App.ActiveScreen.Name,
+            Collect(
+                colNonFormNavigationHistory,
+                {
+                    ScreenName: App.ActiveScreen.Name,
+                    ScreenRef: App.ActiveScreen
+                }
+            )
+        );
+        Refresh(Pegawai);
+        Refresh(IDP)
+    Children:
+      - LMIDPScreenContainer:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Fill: =RGBA(245, 245, 245, 1)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =16
+            PaddingBottom: =16
+            PaddingLeft: =16
+            PaddingRight: =16
+            PaddingTop: =16
+            Width: =Parent.Width
+          Children:
+            - LMIDPHeader:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(31, 48, 112, 1)
+                  FillPortions: =0
+                  Height: =75
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutMinHeight: =75
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                  Width: =Parent.Width
+                Children:
+                  - BtnBackLMIDP:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        OnSelect: |-
+                              =If(
+                                  CountRows(colNonFormNavigationHistory) > 1,
+                                  Remove(colNonFormNavigationHistory, Last(colNonFormNavigationHistory));
+                                  Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                  Back()
+                              )
+                        Size: =22
+                        Text: ="‹"
+                        Width: =40
+                  - LblAppNameLMIDP:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        FillPortions: =1
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        Size: =18
+                        Text: ="MyCareerApp"
+                  - HeaderSpacerLMIDP:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AccessibleLabel: ="Kembali ke Homepage"
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        OnSelect: |-
+                          =Set(gblPimpinanView, false);
+                          Set(gblLineManagerView, false);
+                          Set(gblSubjectNIP, Blank());
+                          Set(gblChecklistAdminView, false);
+                          Clear(colNonFormNavigationHistory);
+                          Navigate(S1_Homepage, ScreenTransition.Fade)
+                        Size: =20
+                        Text: ="⌂"
+                        Width: =40
+            - LMIDPHeaderShadow:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =RGBA(0, 0, 0, 0)
+                  FillPortions: =0
+                  Height: =0
+                  LayoutMinHeight: =0
+                  Width: =Parent.Width
+            - LMIDPMain:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =12
+                  LayoutMinHeight: =16
+                  LayoutMinWidth: =16
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                Children:
+                  - LMIDPTitleRow:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =If(Parent.Width < 640, 148, If(Parent.Width < 980, 96, 44))
+                        LayoutAlignItems: =LayoutAlignItems.Center
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutMinHeight: =If(Parent.Width < 640, 148, If(Parent.Width < 980, 96, 44))
+                        LayoutMinWidth: =16
+                        LayoutWrap: =true
+                        Width: =Parent.Width
+                      Children:
+                        - LMIDPPageTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Color: =RGBA(31, 56, 100, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Height: =40
+                              LayoutMinWidth: =220
+                              Size: =18
+                              Text: ="IDP Tim"
+                        - TxtSearchLMIDP:
+                            Control: TextInput@0.0.54
+                            Properties:
+                              AccessibleLabel: ="Cari pegawai"
+                              BorderColor: =RGBA(200, 198, 196, 1)
+                              Fill: =RGBA(255, 255, 255, 1)
+                              Height: =40
+                              LayoutMinWidth: =If(Parent.Width < 640, Parent.Width, 240)
+                              Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
+                              Placeholder: ="Cari nama atau NIP..."
+                              TriggerOutput: ='TextInputCanvas.TriggerOutput'.Keypress
+                              Width: =If(Parent.Width < 640, Parent.Width, 260)
+                        - CmbTahunLMIDP:
+                            Control: ComboBox@0.0.51
+                            Properties:
+                              AccessibleLabel: ="Pilih tahun IDP"
+                              DefaultSelectedItems: |-
+                                =Table({Value: Year(Today())})
+                              InputTextPlaceholder: ="Tahun"
+                              Items: |-
+                                =Table(
+                                    {Value: Year(Today()) + 1},
+                                    {Value: Year(Today())},
+                                    {Value: Year(Today()) - 1},
+                                    {Value: Year(Today()) - 2},
+                                    {Value: Year(Today()) - 3}
+                                )
+                              LayoutMinWidth: =If(Parent.Width < 640, Parent.Width, 160)
+                              SelectMultiple: =false
+                              Width: =If(Parent.Width < 640, Parent.Width, 170)
+                  - LMIDPTableCard:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        BorderColor: =RGBA(225, 223, 221, 1)
+                        BorderStyle: =BorderStyle.Solid
+                        BorderThickness: =1
+                        DropShadow: =DropShadow.None
+                        Fill: =RGBA(255, 255, 255, 1)
+                        FillPortions: =1
+                        Height: =640
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutMinHeight: =420
+                        RadiusBottomLeft: =8
+                        RadiusBottomRight: =8
+                        RadiusTopLeft: =8
+                        RadiusTopRight: =8
+                        Width: =Parent.Width
+                      Children:
+                        - LMIDPColumnHeader:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              Fill: =RGBA(243, 246, 250, 1)
+                              FillPortions: =0
+                              Height: =48
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutMinHeight: =48
+                              PaddingLeft: =12
+                              PaddingRight: =12
+                              Visible: =App.Width >= 1200
+                            Children:
+                              - HeaderNamaLMIDP:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Size: =11
+                                    Text: ="NAMA PEGAWAI"
+                                    Width: =(Parent.Width - 24) * 0.4
+                              - HeaderBelumApprovedLMIDP:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Size: =11
+                                    Text: ="BELUM APPROVED"
+                                    Width: =(Parent.Width - 24) * 0.2
+                              - HeaderDisetujuiLMIDP:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Size: =11
+                                    Text: ="DISETUJUI"
+                                    Width: =(Parent.Width - 24) * 0.2
+                              - HeaderDibatalkanLMIDP:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Size: =11
+                                    Text: ="DIBATALKAN"
+                                    Width: =(Parent.Width - 24) * 0.2
+                        - GalleryLMIDP:
+                            Control: Gallery@2.15.0
+                            Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+                            Properties:
+                              BorderColor: =RGBA(245, 245, 245, 1)
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =1
+                              Items: |-
+                                =With(
+                                    {
+                                        keyword: Lower(Trim(TxtSearchLMIDP.Value)),
+                                        selectedYear: Value(Coalesce(CmbTahunLMIDP.Selected.Value, Year(Today())))
+                                    },
+                                    Sort(
+                                        Filter(
+                                            Pegawai As PegawaiRecord,
+                                            CountRows(
+                                                Filter(
+                                                    IDP,
+                                                    NIP = PegawaiRecord.Title &&
+                                                    LineManagerNIP = Text(gblCurrentNIP) &&
+                                                    Tahun = selectedYear
+                                                )
+                                            ) > 0 &&
+                                            (
+                                                IsBlank(keyword) ||
+                                                keyword in Lower(Coalesce(PegawaiRecord.Nama, "")) ||
+                                                keyword in Lower(Text(PegawaiRecord.Title))
+                                            )
+                                        ),
+                                        Coalesce(Nama, Title),
+                                        SortOrder.Ascending
+                                    )
+                                )
+                              LayoutMinHeight: =16
+                              LayoutMinWidth: =16
+                              TemplatePadding: =0
+                              TemplateSize: =If(App.Width < 1200, 96, 64)
+                            Children:
+                              - RowBackgroundLMIDP:
+                                  Control: Rectangle@2.3.0
+                                  Properties:
+                                    BorderColor: =RGBA(235, 235, 235, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Fill: =If(ThisItem.IsSelected, RGBA(245, 250, 255, 1), RGBA(255, 255, 255, 1))
+                                    Height: =Parent.TemplateHeight - 6
+                                    OnSelect: |-
+                                      =Set(gblSubjectNIP, ThisItem.Title);
+                                      Set(gblLineManagerView, true);
+                                      Set(gblPimpinanView, false);
+                                      Navigate(S5A_IDP_View, ScreenTransition.Fade)
+                                    Width: =Parent.TemplateWidth
+                              - ValNamaLMIDP:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =28
+                                    OnSelect: |-
+                                      =Set(gblSubjectNIP, ThisItem.Title);
+                                      Set(gblLineManagerView, true);
+                                      Set(gblPimpinanView, false);
+                                      Navigate(S5A_IDP_View, ScreenTransition.Fade)
+                                    Size: =12
+                                    Text: =Coalesce(LookUp(Pegawai, Title = ThisItem.Title, Nama), ThisItem.Title, "-")
+                                    Width: =If(App.Width < 1200, Parent.TemplateWidth - 24, (Parent.TemplateWidth - 24) * 0.4)
+                                    X: =12
+                                    Y: =If(App.Width < 1200, 12, (Parent.TemplateHeight - 6 - 28) / 2)
+                              - ValBelumApprovedLMIDP:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(161, 98, 7, 1)
+                                    Fill: =RGBA(255, 244, 206, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =32
+                                    OnSelect: |-
+                                      =Set(gblSubjectNIP, ThisItem.Title);
+                                      Set(gblLineManagerView, true);
+                                      Set(gblPimpinanView, false);
+                                      Navigate(S5A_IDP_View, ScreenTransition.Fade)
+                                    RadiusBottomLeft: =16
+                                    RadiusBottomRight: =16
+                                    RadiusTopLeft: =16
+                                    RadiusTopRight: =16
+                                    Size: =11
+                                    Text: |-
+                                      =Text(
+                                          CountRows(
+                                              Filter(
+                                                  IDP,
+                                                  NIP = ThisItem.Title &&
+                                                  LineManagerNIP = Text(gblCurrentNIP) &&
+                                                  Tahun = Value(Coalesce(CmbTahunLMIDP.Selected.Value, Year(Today()))) &&
+                                                  Status = "Rencana"
+                                              )
+                                          )
+                                      )
+                                    Width: =If(App.Width < 1200, (Parent.TemplateWidth - 24 - 16) / 3, (Parent.TemplateWidth - 24) * 0.2 - 24)
+                                    X: |-
+                                      =If(
+                                          App.Width < 1200,
+                                          12,
+                                          12 + (Parent.TemplateWidth - 24) * 0.4 + 12
+                                      )
+                                    Y: =If(App.Width < 1200, 48, (Parent.TemplateHeight - 6 - 32) / 2)
+                              - ValDisetujuiLMIDP:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(16, 124, 16, 1)
+                                    Fill: =RGBA(218, 242, 208, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =32
+                                    OnSelect: |-
+                                      =Set(gblSubjectNIP, ThisItem.Title);
+                                      Set(gblLineManagerView, true);
+                                      Set(gblPimpinanView, false);
+                                      Navigate(S5A_IDP_View, ScreenTransition.Fade)
+                                    RadiusBottomLeft: =16
+                                    RadiusBottomRight: =16
+                                    RadiusTopLeft: =16
+                                    RadiusTopRight: =16
+                                    Size: =11
+                                    Text: |-
+                                      =Text(
+                                          CountRows(
+                                              Filter(
+                                                  IDP,
+                                                  NIP = ThisItem.Title &&
+                                                  LineManagerNIP = Text(gblCurrentNIP) &&
+                                                  Tahun = Value(Coalesce(CmbTahunLMIDP.Selected.Value, Year(Today()))) &&
+                                                  (Status = "Proses" || Status = "Selesai")
+                                              )
+                                          )
+                                      )
+                                    Width: =If(App.Width < 1200, (Parent.TemplateWidth - 24 - 16) / 3, (Parent.TemplateWidth - 24) * 0.2 - 24)
+                                    X: |-
+                                      =If(
+                                          App.Width < 1200,
+                                          12 + (Parent.TemplateWidth - 24 - 16) / 3 + 8,
+                                          12 + (Parent.TemplateWidth - 24) * 0.6 + 12
+                                      )
+                                    Y: =If(App.Width < 1200, 48, (Parent.TemplateHeight - 6 - 32) / 2)
+                              - ValDibatalkanLMIDP:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(196, 43, 28, 1)
+                                    Fill: =RGBA(253, 231, 233, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =32
+                                    OnSelect: |-
+                                      =Set(gblSubjectNIP, ThisItem.Title);
+                                      Set(gblLineManagerView, true);
+                                      Set(gblPimpinanView, false);
+                                      Navigate(S5A_IDP_View, ScreenTransition.Fade)
+                                    RadiusBottomLeft: =16
+                                    RadiusBottomRight: =16
+                                    RadiusTopLeft: =16
+                                    RadiusTopRight: =16
+                                    Size: =11
+                                    Text: |-
+                                      =Text(
+                                          CountRows(
+                                              Filter(
+                                                  IDP,
+                                                  NIP = ThisItem.Title &&
+                                                  LineManagerNIP = Text(gblCurrentNIP) &&
+                                                  Tahun = Value(Coalesce(CmbTahunLMIDP.Selected.Value, Year(Today()))) &&
+                                                  Status = "Dibatalkan"
+                                              )
+                                          )
+                                      )
+                                    Width: =If(App.Width < 1200, (Parent.TemplateWidth - 24 - 16) / 3, (Parent.TemplateWidth - 24) * 0.2 - 24)
+                                    X: |-
+                                      =If(
+                                          App.Width < 1200,
+                                          12 + 2 * ((Parent.TemplateWidth - 24 - 16) / 3 + 8),
+                                          12 + (Parent.TemplateWidth - 24) * 0.8 + 12
+                                      )
+                                    Y: =If(App.Width < 1200, 48, (Parent.TemplateHeight - 6 - 32) / 2)
+                        - LMIDPEmptyState:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              Color: =RGBA(96, 94, 92, 1)
+                              Font: =Font.'Open Sans'
+                              Height: =80
+                              Size: =12
+                              Text: ="Belum ada pegawai yang menuliskan Line Manager Anda pada IDP untuk tahun ini."
+                              Visible: =IsEmpty(GalleryLMIDP.AllItems)
+                              Width: =Parent.Width

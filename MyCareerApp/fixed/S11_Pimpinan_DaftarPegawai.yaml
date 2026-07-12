@@ -413,6 +413,7 @@ Screens:
                               LayoutMinWidth: =If(Parent.Width < 1200, 280, 140)
                               OnSelect: |-
                                 =Set(gblPimpinanView, true);
+                                Set(gblLineManagerView, false);
                                 Navigate(S5A_IDP_View, ScreenTransition.Fade)
                               RadiusBottomLeft: =8
                               RadiusBottomRight: =8

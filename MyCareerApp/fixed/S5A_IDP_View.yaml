@@ -93,7 +93,7 @@ Screens:
                         FontWeight: =FontWeight.Bold
                         Height: =40
                         Size: =18
-                        Text: =If(Coalesce(gblPimpinanView, false), Coalesce(LookUp(Pegawai, Title = Text(gblSubjectNIP), Nama), Text(gblSubjectNIP), "-") & " (" & Text(gblSubjectNIP) & ")", "MyCareerApp")
+                        Text: =If(Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false), Coalesce(LookUp(Pegawai, Title = Text(gblSubjectNIP), Nama), Text(gblSubjectNIP), "-") & " (" & Text(gblSubjectNIP) & ")", "MyCareerApp")
                   - IDPViewTopBarSpacer:
                       Control: ModernText@1.0.0
                       Properties:
@@ -105,6 +105,7 @@ Screens:
                         Height: =40
                         OnSelect: |-
                           =Set(gblPimpinanView, false);
+                          Set(gblLineManagerView, false);
                           Set(gblSubjectNIP, Blank());
                           Set(gblChecklistAdminView, false);
                           Clear(colNonFormNavigationHistory);
@@ -180,7 +181,7 @@ Screens:
                                                   SortByColumns(
                                                       Filter(
                                                           CoachingKarir,
-                                                          MenteeNIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))
+                                                          MenteeNIP = Text(If(Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false), gblSubjectNIP, gblCurrentNIP))
                                                       ),
                                                       "Tanggal",
                                                       SortOrder.Descending,
@@ -211,7 +212,7 @@ Screens:
                                                   SortByColumns(
                                                       Filter(
                                                           CoachingKarir,
-                                                          MenteeNIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))
+                                                          MenteeNIP = Text(If(Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false), gblSubjectNIP, gblCurrentNIP))
                                                       ),
                                                       "Tanggal",
                                                       SortOrder.Descending,
@@ -273,7 +274,7 @@ Screens:
                                                   SortByColumns(
                                                       Filter(
                                                           CoachingKarir,
-                                                          MenteeNIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))
+                                                          MenteeNIP = Text(If(Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false), gblSubjectNIP, gblCurrentNIP))
                                                       ),
                                                       "Tanggal",
                                                       SortOrder.Descending,
@@ -425,7 +426,7 @@ Screens:
                                     RadiusTopRight: =6
                                     Size: =12
                                     Text: ="+ Tambah"
-                                    Visible: =!Coalesce(gblPimpinanView, false)
+                                    Visible: =!(Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false))
                                     Width: =110
                         - IDPTableCard:
                             Control: GroupContainer@1.5.0
@@ -535,7 +536,7 @@ Screens:
                                               targetNIP: Trim(
                                                   Text(
                                                       If(
-                                                          Coalesce(gblPimpinanView, false) && !IsBlank(gblSubjectNIP),
+                                                          (Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false)) && !IsBlank(gblSubjectNIP),
                                                           gblSubjectNIP,
                                                           gblCurrentNIP
                                                       )
@@ -545,7 +546,11 @@ Screens:
                                           Sort(
                                               Filter(
                                                   IDP,
-                                                  Trim(Text(NIP)) = targetNIP
+                                                  Trim(Text(NIP)) = targetNIP &&
+                                                  (
+                                                      !Coalesce(gblPimpinanView, false) ||
+                                                      Coalesce(Status, "Rencana") <> "Rencana"
+                                                  )
                                               ),
                                               Value(Tahun) * 100000 + Value(ID),
                                               SortOrder.Descending
@@ -562,7 +567,7 @@ Screens:
                                           OnSelect: |-
                                             =Set(gblSelectedIDP, ThisItem);
                                             Set(gblIDPEditMode, true);
-                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Value(ThisItem.Tahun) <> Year(Today()));
+                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false) || Value(ThisItem.Tahun) <> Year(Today()));
                                             Navigate(S5B_IDP_Edit, ScreenTransition.Fade)
                                           Width: =Parent.TemplateWidth
                                     - IDPTableDivider:
@@ -581,7 +586,7 @@ Screens:
                                           OnSelect: |-
                                             =Set(gblSelectedIDP, ThisItem);
                                             Set(gblIDPEditMode, true);
-                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Value(ThisItem.Tahun) <> Year(Today()));
+                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false) || Value(ThisItem.Tahun) <> Year(Today()));
                                             Navigate(S5B_IDP_Edit, ScreenTransition.Fade)
                                           Size: =13
                                           Text: =Text(ThisItem.Tahun)
@@ -614,7 +619,7 @@ Screens:
                                           OnSelect: |-
                                             =Set(gblSelectedIDP, ThisItem);
                                             Set(gblIDPEditMode, true);
-                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Value(ThisItem.Tahun) <> Year(Today()));
+                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false) || Value(ThisItem.Tahun) <> Year(Today()));
                                             Navigate(S5B_IDP_Edit, ScreenTransition.Fade)
                                           RadiusBottomLeft: =14
                                           RadiusBottomRight: =14
@@ -634,7 +639,7 @@ Screens:
                                           OnSelect: |-
                                             =Set(gblSelectedIDP, ThisItem);
                                             Set(gblIDPEditMode, true);
-                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Value(ThisItem.Tahun) <> Year(Today()));
+                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false) || Value(ThisItem.Tahun) <> Year(Today()));
                                             Navigate(S5B_IDP_Edit, ScreenTransition.Fade)
                                           Size: =13
                                           Text: =Coalesce(ThisItem.Tipe.Value, "-")
@@ -651,7 +656,7 @@ Screens:
                                           OnSelect: |-
                                             =Set(gblSelectedIDP, ThisItem);
                                             Set(gblIDPEditMode, true);
-                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Value(ThisItem.Tahun) <> Year(Today()));
+                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false) || Value(ThisItem.Tahun) <> Year(Today()));
                                             Navigate(S5B_IDP_Edit, ScreenTransition.Fade)
                                           Size: =11
                                           Text: |-
@@ -674,7 +679,7 @@ Screens:
                                           OnSelect: |-
                                             =Set(gblSelectedIDP, ThisItem);
                                             Set(gblIDPEditMode, true);
-                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Value(ThisItem.Tahun) <> Year(Today()));
+                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false) || Value(ThisItem.Tahun) <> Year(Today()));
                                             Navigate(S5B_IDP_Edit, ScreenTransition.Fade)
                                           RadiusBottomLeft: =14
                                           RadiusBottomRight: =14
@@ -711,7 +716,7 @@ Screens:
                                           OnSelect: |-
                                             =Set(gblSelectedIDP, ThisItem);
                                             Set(gblIDPEditMode, true);
-                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Value(ThisItem.Tahun) <> Year(Today()));
+                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false) || Value(ThisItem.Tahun) <> Year(Today()));
                                             Navigate(S5B_IDP_Edit, ScreenTransition.Fade)
                                           RadiusBottomLeft: =14
                                           RadiusBottomRight: =14

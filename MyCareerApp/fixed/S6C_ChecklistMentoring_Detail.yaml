@@ -371,7 +371,22 @@ Screens:
                                           Height: =180
                                           Image: =gblSelectedChecklist.PersonalStatementFile.Large
                                           ImagePosition: =ImagePosition.Fit
-                                          OnSelect: '=UpdateContext({locDetailImageFull: gblSelectedChecklist.PersonalStatementFile.Full, locShowDetailImagePreview: true})'
+                                          OnSelect: |-
+                                            =If(
+                                                !IsBlank(gblSelectedChecklist.PersonalStatementFile),
+                                                UpdateContext({locDetailImageFull: gblSelectedChecklist.PersonalStatementFile.Full, locShowDetailImagePreview: true})
+                                            )
+                                          Visible: =!IsBlank(gblSelectedChecklist.PersonalStatementFile)
+                                          Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                                    - EmptyPersonalStatementDetail:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Center
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          Font: =Font.'Open Sans'
+                                          Height: =180
+                                          Text: ="Gambar belum tersedia"
+                                          Visible: =IsBlank(gblSelectedChecklist.PersonalStatementFile)
                                           Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                               - CareerPlanDetail:
                                   Control: GroupContainer@1.5.0
@@ -410,7 +425,22 @@ Screens:
                                           Height: =180
                                           Image: =gblSelectedChecklist.CareerPlanFile.Large
                                           ImagePosition: =ImagePosition.Fit
-                                          OnSelect: '=UpdateContext({locDetailImageFull: gblSelectedChecklist.CareerPlanFile.Full, locShowDetailImagePreview: true})'
+                                          OnSelect: |-
+                                            =If(
+                                                !IsBlank(gblSelectedChecklist.CareerPlanFile),
+                                                UpdateContext({locDetailImageFull: gblSelectedChecklist.CareerPlanFile.Full, locShowDetailImagePreview: true})
+                                            )
+                                          Visible: =!IsBlank(gblSelectedChecklist.CareerPlanFile)
+                                          Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                                    - EmptyCareerPlanDetail:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Center
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          Font: =Font.'Open Sans'
+                                          Height: =180
+                                          Text: ="Gambar belum tersedia"
+                                          Visible: =IsBlank(gblSelectedChecklist.CareerPlanFile)
                                           Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                               - BuktiUploadDetail:
                                   Control: GroupContainer@1.5.0
@@ -449,7 +479,22 @@ Screens:
                                           Height: =180
                                           Image: =gblSelectedChecklist.BuktiUploadFile.Large
                                           ImagePosition: =ImagePosition.Fit
-                                          OnSelect: '=UpdateContext({locDetailImageFull: gblSelectedChecklist.BuktiUploadFile.Full, locShowDetailImagePreview: true})'
+                                          OnSelect: |-
+                                            =If(
+                                                !IsBlank(gblSelectedChecklist.BuktiUploadFile),
+                                                UpdateContext({locDetailImageFull: gblSelectedChecklist.BuktiUploadFile.Full, locShowDetailImagePreview: true})
+                                            )
+                                          Visible: =!IsBlank(gblSelectedChecklist.BuktiUploadFile)
+                                          Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                                    - EmptyBuktiUploadDetail:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Center
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          Font: =Font.'Open Sans'
+                                          Height: =180
+                                          Text: ="Gambar belum tersedia"
+                                          Visible: =IsBlank(gblSelectedChecklist.BuktiUploadFile)
                                           Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
                         - MentoringSesiDetailTitle:
                             Control: ModernText@1.0.0
