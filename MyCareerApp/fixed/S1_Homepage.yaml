@@ -38,19 +38,15 @@ Screens:
             Width: =Parent.Width
           Children:
             - TopBarLogo_1:
-                Control: ModernText@1.0.0
+                Control: Image@2.2.3
                 Properties:
-                  Align: =Align.Center
-                  Color: =RGBA(35, 48, 108, 1)
-                  Fill: =RGBA(250, 176, 5, 1)
-                  Font: =Font.'Open Sans'
-                  FontWeight: =FontWeight.Bold
+                  BorderStyle: =BorderStyle.None
+                  Height: =32
+                  Image: =test
                   RadiusBottomLeft: =6
                   RadiusBottomRight: =6
                   RadiusTopLeft: =6
                   RadiusTopRight: =6
-                  Size: =14
-                  Text: ="M"
                   Width: =32
             - LblTitle_2:
                 Control: ModernText@1.0.0
@@ -724,7 +720,7 @@ Screens:
                   BorderColor: =RGBA(235, 240, 246, 1)
                   DropShadow: =DropShadow.Regular
                   Fill: =RGBA(255, 255, 255, 1)
-                  Height: =If(Self.Width - Self.PaddingLeft - Self.PaddingRight < 900, 328, If(Self.Width - Self.PaddingLeft - Self.PaddingRight < 1200, 228, 136))
+                  Height: =
                   LayoutDirection: =LayoutDirection.Vertical
                   LayoutGap: =14
                   LayoutMinHeight: =If(Self.Width - Self.PaddingLeft - Self.PaddingRight < 900, 328, If(Self.Width - Self.PaddingLeft - Self.PaddingRight < 1200, 228, 136))
@@ -887,6 +883,7 @@ Screens:
                               LayoutMinWidth: =If(Parent.Width < 1200, 280, 170)
                               OnSelect: |-
                                 =Set(gblPimpinanView, false);
+                                Set(gblLineManagerView, false);
                                 Navigate(S5A_IDP_View, ScreenTransition.Fade)
                               RadiusBottomLeft: =8
                               RadiusBottomRight: =8
@@ -901,10 +898,10 @@ Screens:
                   BorderColor: =RGBA(235, 240, 246, 1)
                   DropShadow: =DropShadow.Regular
                   Fill: =RGBA(255, 255, 255, 1)
-                  Height: =If(Parent.Width < 760, 210, 136)
+                  Height: =If(Parent.Width < 760, 284, 136)
                   LayoutDirection: =LayoutDirection.Vertical
                   LayoutGap: =14
-                  LayoutMinHeight: =If(Parent.Width < 760, 210, 136)
+                  LayoutMinHeight: =If(Parent.Width < 760, 284, 136)
                   PaddingBottom: =18
                   PaddingLeft: =18
                   PaddingRight: =18
@@ -930,12 +927,33 @@ Screens:
                       Variant: AutoLayout
                       Properties:
                         DropShadow: =DropShadow.None
-                        Height: =If(Parent.Width < 760, 136, 62)
+                        Height: =If(Parent.Width < 760, 210, 62)
                         LayoutDirection: =LayoutDirection.Horizontal
                         LayoutGap: =12
-                        LayoutMinHeight: =If(Parent.Width < 760, 136, 62)
+                        LayoutMinHeight: =If(Parent.Width < 760, 210, 62)
                         LayoutWrap: =true
                       Children:
+                        - BtnLMIDPTim_2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(220, 230, 242, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              Color: =RGBA(35, 48, 108, 1)
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =62
+                              LayoutMinWidth: =170
+                              OnSelect: =Navigate(S5C_IDP_LM_List, ScreenTransition.Fade)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =12
+                              Text: ="IDP Tim  >"
                         - BtnLMPerformanceReview_2:
                             Control: ModernText@1.0.0
                             Properties:
@@ -985,10 +1003,10 @@ Screens:
                   BorderColor: =RGBA(235, 240, 246, 1)
                   DropShadow: =DropShadow.Regular
                   Fill: =RGBA(255, 255, 255, 1)
-                  Height: =136
+                  Height: =If(Parent.Width < 760, 284, 136)
                   LayoutDirection: =LayoutDirection.Vertical
                   LayoutGap: =14
-                  LayoutMinHeight: =136
+                  LayoutMinHeight: =If(Parent.Width < 760, 284, 136)
                   PaddingBottom: =18
                   PaddingLeft: =18
                   PaddingRight: =18
@@ -1014,10 +1032,10 @@ Screens:
                       Variant: AutoLayout
                       Properties:
                         DropShadow: =DropShadow.None
-                        Height: =136
+                        Height: =If(Parent.Width < 760, 210, 62)
                         LayoutDirection: =LayoutDirection.Horizontal
                         LayoutGap: =12
-                        LayoutMinHeight: =136
+                        LayoutMinHeight: =If(Parent.Width < 760, 210, 62)
                         LayoutWrap: =true
                       Children:
                         - BtnMentorCoachingKarir_2:
@@ -1063,6 +1081,27 @@ Screens:
                               RadiusTopRight: =8
                               Size: =12
                               Text: ="Coaching Tematik"
+                        - BtnCoachProfilIndikatorWarna_2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(220, 230, 242, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              Color: =RGBA(35, 48, 108, 1)
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =62
+                              LayoutMinWidth: =170
+                              OnSelect: =Navigate(S14_Coach_IndikatorWarnaProfil, ScreenTransition.Fade)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =12
+                              Text: ="Profil Indikator Warna  >"
             - CardPimpinan_2:
                 Control: GroupContainer@1.5.0
                 Variant: AutoLayout

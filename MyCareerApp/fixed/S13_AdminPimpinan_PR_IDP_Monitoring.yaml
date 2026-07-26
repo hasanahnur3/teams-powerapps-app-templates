@@ -272,7 +272,7 @@ Screens:
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Bold
                                     Size: =11
-                                    Text: ="JUMLAH IDP"
+                                    Text: ="JUMLAH IDP DISETUJUI"
                                     Width: =(Parent.Width - 24) * 0.125
                               - HeaderMentoringMonitoring:
                                   Control: ModernText@1.0.0
@@ -537,7 +537,8 @@ Screens:
                                               Filter(
                                                   IDP,
                                                   NIP = ThisItem.Title &&
-                                                  Tahun = Value(Coalesce(CmbTahunPRIDPMonitoring.Selected.Value, Year(Today())))
+                                                  Tahun = Value(Coalesce(CmbTahunPRIDPMonitoring.Selected.Value, Year(Today()))) &&
+                                                  Coalesce(IsApproved, false)
                                               )
                                           )
                                       ) & " IDP"

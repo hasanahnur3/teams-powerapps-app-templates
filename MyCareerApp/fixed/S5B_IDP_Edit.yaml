@@ -15,8 +15,8 @@ Screens:
                 }
             )
         );
-        UpdateContext({locConfirmDeleteIDP: false});
-        If(Coalesce(gblPimpinanView, false), Set(gblIDPReadOnly, true))
+        UpdateContext({locConfirmDeleteIDP: false, locConfirmApproveIDP: false});
+        If(Coalesce(gblPimpinanView, false) && !Coalesce(gblIDPLineManagerView, false), Set(gblIDPReadOnly, true))
     Children:
       - IDPEditContainer:
           Control: GroupContainer@1.5.0
@@ -66,7 +66,7 @@ Screens:
                               =Set(gblIDPEditMode, false);
                               Set(gblIDPReadOnly, false);
                               Set(gblSelectedIDP, Defaults(IDP));
-                              UpdateContext({locConfirmDeleteIDP: false});
+                              UpdateContext({locConfirmDeleteIDP: false, locConfirmApproveIDP: false});
                               If(
                                   IsMatch(App.ActiveScreen.Name, "form", MatchOptions.IgnoreCase),
                                   If(
@@ -94,7 +94,7 @@ Screens:
                         FontWeight: =FontWeight.Bold
                         Height: =40
                         Size: =18
-                        Text: =If(Coalesce(gblPimpinanView, false), Coalesce(LookUp(Pegawai, Title = Text(If(!IsBlank(gblSelectedIDP.NIP), gblSelectedIDP.NIP, gblSubjectNIP)), Nama), Text(If(!IsBlank(gblSelectedIDP.NIP), gblSelectedIDP.NIP, gblSubjectNIP)), "-") & " (" & Text(If(!IsBlank(gblSelectedIDP.NIP), gblSelectedIDP.NIP, gblSubjectNIP)) & ")", "MyCareerApp")
+                        Text: =If(Coalesce(gblPimpinanView, false) || Coalesce(gblIDPLineManagerView, false), Coalesce(LookUp(Pegawai, Title = Text(If(!IsBlank(gblSelectedIDP.NIP), gblSelectedIDP.NIP, gblSubjectNIP)), Nama), Text(If(!IsBlank(gblSelectedIDP.NIP), gblSelectedIDP.NIP, gblSubjectNIP)), "-") & " (" & Text(If(!IsBlank(gblSelectedIDP.NIP), gblSelectedIDP.NIP, gblSubjectNIP)) & ")", "MyCareerApp")
                   - IDPEditTopBarSpacer:
                       Control: ModernText@1.0.0
                       Properties:
@@ -106,6 +106,7 @@ Screens:
                         Height: =40
                         OnSelect: |-
                           =Set(gblPimpinanView, false);
+                          Set(gblIDPLineManagerView, false);
                           Set(gblSubjectNIP, Blank());
                           Set(gblChecklistAdminView, false);
                           Clear(colNonFormNavigationHistory);
@@ -145,10 +146,10 @@ Screens:
                         DropShadow: =DropShadow.None
                         Fill: =RGBA(255, 255, 255, 1)
                         FillPortions: =0
-                        Height: =860
+                        Height: =996
                         LayoutDirection: =LayoutDirection.Vertical
                         LayoutGap: =18
-                        LayoutMinHeight: =860
+                        LayoutMinHeight: =996
                         PaddingBottom: =28
                         PaddingLeft: =28
                         PaddingRight: =28
@@ -167,7 +168,7 @@ Screens:
                               FontWeight: =FontWeight.Bold
                               Height: =34
                               Size: =20
-                              Text: =If(Coalesce(gblIDPReadOnly, false), "Detail Individual Development Plan", If(Coalesce(gblIDPEditMode, false), "Edit Individual Development Plan", "Tambah Individual Development Plan"))
+                              Text: =If(Coalesce(gblIDPReadOnly, false) || Coalesce(gblPimpinanView, false) || Coalesce(gblIDPLineManagerView, false), "Detail Individual Development Plan", If(Coalesce(gblIDPEditMode, false), "Edit Individual Development Plan", "Tambah Individual Development Plan"))
                               Width: =Parent.Width
                         - IDPEditSubtitle:
                             Control: ModernText@1.0.0
@@ -181,10 +182,10 @@ Screens:
                                 Coalesce(
                                     LookUp(
                                         Pegawai,
-                                        Title = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)),
+                                        Title = Text(If((Coalesce(gblPimpinanView, false) || Coalesce(gblIDPLineManagerView, false)) && !IsBlank(gblSubjectNIP), gblSubjectNIP, gblCurrentNIP)),
                                         Nama
                                     ),
-                                    Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))
+                                    Text(If((Coalesce(gblPimpinanView, false) || Coalesce(gblIDPLineManagerView, false)) && !IsBlank(gblSubjectNIP), gblSubjectNIP, gblCurrentNIP))
                                 )
                               Width: =Parent.Width
                         - IDPEditDivider:
@@ -217,7 +218,7 @@ Screens:
                                   Control: NumberInput@2.9.12
                                   Properties:
                                     AccessibleLabel: ="Tahun"
-                                    DisplayMode: =If(Coalesce(gblIDPReadOnly, false), DisplayMode.View, DisplayMode.Edit)
+                                    DisplayMode: =If(Coalesce(gblIDPReadOnly, false) || Coalesce(gblPimpinanView, false) || Coalesce(gblIDPLineManagerView, false) || (Coalesce(gblIDPEditMode, false) && Coalesce(gblSelectedIDP.IsApproved, false)), DisplayMode.View, DisplayMode.Edit)
                                     Max: =Year(Today()) + 5
                                     Min: =2000
                                     Value: =If(Coalesce(gblIDPEditMode, false), Value(gblSelectedIDP.Tahun), Year(Today()))
@@ -310,7 +311,7 @@ Screens:
                                   Control: ComboBox@0.0.51
                                   Properties:
                                     AccessibleLabel: ="Tipe IDP"
-                                    DisplayMode: =If(Coalesce(gblIDPReadOnly, false), DisplayMode.View, DisplayMode.Edit)
+                                    DisplayMode: =If(Coalesce(gblIDPReadOnly, false) || Coalesce(gblPimpinanView, false) || Coalesce(gblIDPLineManagerView, false) || (Coalesce(gblIDPEditMode, false) && Coalesce(gblSelectedIDP.IsApproved, false)), DisplayMode.View, DisplayMode.Edit)
                                     DefaultSelectedItems: |-
                                       =If(
                                           Coalesce(gblIDPEditMode, false),
@@ -345,10 +346,40 @@ Screens:
                                   Control: TextInput@0.0.54
                                   Properties:
                                     AccessibleLabel: ="Detail rencana pengembangan"
-                                    DisplayMode: =If(Coalesce(gblIDPReadOnly, false), DisplayMode.View, DisplayMode.Edit)
+                                    DisplayMode: =If(Coalesce(gblIDPReadOnly, false) || Coalesce(gblPimpinanView, false) || Coalesce(gblIDPLineManagerView, false) || (Coalesce(gblIDPEditMode, false) && Coalesce(gblSelectedIDP.IsApproved, false)), DisplayMode.View, DisplayMode.Edit)
                                     Height: =76
                                     Mode: ="'TextInputCanvas.Mode'.TextInputModeMultiline"
                                     Value: =If(Coalesce(gblIDPEditMode, false), Coalesce(gblSelectedIDP.Detail, ""), "")
+                                    Width: =Parent.Width
+                        - FieldUkuranKeberhasilanIDP:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =118
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =118
+                              Width: =Parent.Width
+                            Children:
+                              - LblUkuranKeberhasilanIDP:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Size: =12
+                                    Text: ="Ukuran Keberhasilan"
+                                    Width: =Parent.Width
+                              - TxtUkuranKeberhasilanIDP:
+                                  Control: TextInput@0.0.54
+                                  Properties:
+                                    AccessibleLabel: ="Ukuran keberhasilan IDP"
+                                    DisplayMode: =If(Coalesce(gblIDPReadOnly, false) || Coalesce(gblPimpinanView, false) || Coalesce(gblIDPLineManagerView, false) || (Coalesce(gblIDPEditMode, false) && Coalesce(gblSelectedIDP.IsApproved, false)), DisplayMode.View, DisplayMode.Edit)
+                                    Height: =76
+                                    Mode: ="'TextInputCanvas.Mode'.TextInputModeMultiline"
+                                    Placeholder: ="Tuliskan ukuran keberhasilan"
+                                    Value: =If(Coalesce(gblIDPEditMode, false), Coalesce(gblSelectedIDP.UkuranKeberhasilan, ""), "")
                                     Width: =Parent.Width
                         - FieldTargetIDP:
                             Control: GroupContainer@1.5.0
@@ -374,7 +405,7 @@ Screens:
                                   Control: ComboBox@0.0.51
                                   Properties:
                                     AccessibleLabel: ="Target triwulan"
-                                    DisplayMode: =If(Coalesce(gblIDPReadOnly, false), DisplayMode.View, DisplayMode.Edit)
+                                    DisplayMode: =If(Coalesce(gblIDPReadOnly, false) || Coalesce(gblPimpinanView, false) || Coalesce(gblIDPLineManagerView, false) || (Coalesce(gblIDPEditMode, false) && Coalesce(gblSelectedIDP.IsApproved, false)), DisplayMode.View, DisplayMode.Edit)
                                     DefaultSelectedItems: |-
                                       =If(
                                           Coalesce(gblIDPEditMode, false),
@@ -422,27 +453,32 @@ Screens:
                                   Control: ComboBox@0.0.51
                                   Properties:
                                     AccessibleLabel: ="Status IDP"
-                                    DisplayMode: =If(Coalesce(gblIDPReadOnly, false), DisplayMode.View, DisplayMode.Edit)
+                                    DisplayMode: =If(Coalesce(gblIDPReadOnly, false) || Coalesce(gblPimpinanView, false) || Coalesce(gblIDPLineManagerView, false) || !Coalesce(gblIDPEditMode, false) || !Coalesce(gblSelectedIDP.IsApproved, false), DisplayMode.View, DisplayMode.Edit)
                                     DefaultSelectedItems: |-
                                       =If(
                                           Coalesce(gblIDPEditMode, false),
                                           Filter(
                                               Table(
+                                                  {Value: "Draf"},
                                                   {Value: "Rencana"},
                                                   {Value: "Proses"},
                                                   {Value: "Selesai"},
                                                   {Value: "Dibatalkan"}
                                               ),
-                                              Value = gblSelectedIDP.Status
+                                              Value = Coalesce(gblSelectedIDP.Status, "Draf")
                                           ),
-                                          Table({Value: "Rencana"})
+                                          Table({Value: "Draf"})
                                       )
                                     Items: |-
-                                      =Table(
-                                          {Value: "Rencana"},
-                                          {Value: "Proses"},
-                                          {Value: "Selesai"},
-                                          {Value: "Dibatalkan"}
+                                      =If(
+                                          Coalesce(gblIDPEditMode, false) && Coalesce(gblSelectedIDP.IsApproved, false),
+                                          Table(
+                                              {Value: "Rencana"},
+                                              {Value: "Proses"},
+                                              {Value: "Selesai"},
+                                              {Value: "Dibatalkan"}
+                                          ),
+                                          Table({Value: "Draf"})
                                       )
                                     SelectMultiple: =false
                                     Width: =Parent.Width
@@ -451,11 +487,11 @@ Screens:
                             Variant: AutoLayout
                             Properties:
                               FillPortions: =0
-                              Height: =If(Coalesce(locConfirmDeleteIDP, false), 104, 48)
+                              Height: =If(Coalesce(locConfirmDeleteIDP, false) || Coalesce(locConfirmApproveIDP, false), 104, 48)
                               LayoutDirection: =LayoutDirection.Horizontal
                               LayoutGap: =12
                               LayoutJustifyContent: =LayoutJustifyContent.End
-                              LayoutMinHeight: =If(Coalesce(locConfirmDeleteIDP, false), 104, 48)
+                              LayoutMinHeight: =If(Coalesce(locConfirmDeleteIDP, false) || Coalesce(locConfirmApproveIDP, false), 104, 48)
                               LayoutWrap: =true
                               Width: =Parent.Width
                             Children:
@@ -469,7 +505,7 @@ Screens:
                                     Height: =44
                                     Size: =12
                                     Text: ="Yakin ingin menghapus IDP ini? Data yang dihapus tidak bisa dikembalikan."
-                                    Visible: =Coalesce(gblIDPEditMode, false) && !Coalesce(gblIDPReadOnly, false) && Coalesce(locConfirmDeleteIDP, false)
+                                    Visible: =Coalesce(gblIDPEditMode, false) && !Coalesce(gblIDPReadOnly, false) && !Coalesce(gblPimpinanView, false) && !Coalesce(gblIDPLineManagerView, false) && Coalesce(locConfirmDeleteIDP, false)
                               - BtnHapusIDP:
                                   Control: ModernText@1.0.0
                                   Properties:
@@ -489,7 +525,7 @@ Screens:
                                     RadiusTopLeft: =6
                                     RadiusTopRight: =6
                                     Text: ="Hapus"
-                                    Visible: =Coalesce(gblIDPEditMode, false) && !Coalesce(gblIDPReadOnly, false) && !Coalesce(locConfirmDeleteIDP, false)
+                                    Visible: =Coalesce(gblIDPEditMode, false) && !Coalesce(gblIDPReadOnly, false) && !Coalesce(gblPimpinanView, false) && !Coalesce(gblIDPLineManagerView, false) && !Coalesce(gblSelectedIDP.IsApproved, false) && !Coalesce(locConfirmDeleteIDP, false)
                                     Width: =110
                               - BtnBatalHapusIDP:
                                   Control: ModernText@1.0.0
@@ -509,7 +545,7 @@ Screens:
                                     RadiusTopLeft: =6
                                     RadiusTopRight: =6
                                     Text: ="Batal Hapus"
-                                    Visible: =Coalesce(gblIDPEditMode, false) && !Coalesce(gblIDPReadOnly, false) && Coalesce(locConfirmDeleteIDP, false)
+                                    Visible: =Coalesce(gblIDPEditMode, false) && !Coalesce(gblIDPReadOnly, false) && !Coalesce(gblPimpinanView, false) && !Coalesce(gblIDPLineManagerView, false) && Coalesce(locConfirmDeleteIDP, false)
                                     Width: =130
                               - BtnKonfirmasiHapusIDP:
                                   Control: ModernText@1.0.0
@@ -544,7 +580,100 @@ Screens:
                                     RadiusTopLeft: =6
                                     RadiusTopRight: =6
                                     Text: =If(Coalesce(gblIDPSubmitting, false), "Menghapus...", "Ya, Hapus")
-                                    Visible: =Coalesce(gblIDPEditMode, false) && !Coalesce(gblIDPReadOnly, false) && Coalesce(locConfirmDeleteIDP, false)
+                                    Visible: =Coalesce(gblIDPEditMode, false) && !Coalesce(gblIDPReadOnly, false) && !Coalesce(gblPimpinanView, false) && !Coalesce(gblIDPLineManagerView, false) && Coalesce(locConfirmDeleteIDP, false)
+                                    Width: =130
+                              - ApproveConfirmIDPText:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(31, 56, 100, 1)
+                                    FillPortions: =1
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    Size: =12
+                                    Text: ="Setujui IDP ini? Setelah disetujui, pegawai hanya dapat mengubah status."
+                                    Visible: =Coalesce(gblIDPLineManagerView, false) && Coalesce(gblIDPEditMode, false) && !Coalesce(gblSelectedIDP.IsApproved, false) && Coalesce(locConfirmApproveIDP, false)
+                              - BtnApproveIDP:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisplayMode: =If(Coalesce(gblIDPSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Fill: =RGBA(18, 38, 82, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: '=UpdateContext({locConfirmApproveIDP: true})'
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Text: ="Approve"
+                                    Visible: =Coalesce(gblIDPLineManagerView, false) && Coalesce(gblIDPEditMode, false) && !Coalesce(gblSelectedIDP.IsApproved, false) && !Coalesce(locConfirmApproveIDP, false)
+                                    Width: =110
+                              - BtnBatalApproveIDP:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    BorderColor: =RGBA(200, 198, 196, 1)
+                                    BorderStyle: =BorderStyle.Solid
+                                    BorderThickness: =1
+                                    Color: =RGBA(50, 49, 48, 1)
+                                    DisplayMode: =If(Coalesce(gblIDPSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: '=UpdateContext({locConfirmApproveIDP: false})'
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Text: ="Batal"
+                                    Visible: =Coalesce(gblIDPLineManagerView, false) && Coalesce(gblIDPEditMode, false) && !Coalesce(gblSelectedIDP.IsApproved, false) && Coalesce(locConfirmApproveIDP, false)
+                                    Width: =110
+                              - BtnKonfirmasiApproveIDP:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    DisplayMode: =If(Coalesce(gblIDPSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    Fill: =RGBA(16, 124, 16, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =44
+                                    OnSelect: |-
+                                      =If(
+                                          Coalesce(gblIDPLineManagerView, false) &&
+                                          Coalesce(gblIDPEditMode, false) &&
+                                          !Coalesce(gblSelectedIDP.IsApproved, false) &&
+                                          !Coalesce(gblIDPSubmitting, false),
+                                          Set(gblIDPSubmitting, true);
+                                          IfError(
+                                              Set(
+                                                  gblSelectedIDP,
+                                                  Patch(
+                                                      IDP,
+                                                      gblSelectedIDP,
+                                                      {
+                                                          IsApproved: true,
+                                                          Status: "Rencana"
+                                                      }
+                                                  )
+                                              );
+                                              Refresh(IDP);
+                                              Notify("IDP berhasil disetujui.", NotificationType.Success);
+                                              UpdateContext({locConfirmApproveIDP: false});
+                                              Set(gblIDPSubmitting, false),
+                                              Notify("Gagal menyetujui IDP: " & FirstError.Message, NotificationType.Error);
+                                              Set(gblIDPSubmitting, false)
+                                          )
+                                      )
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Text: =If(Coalesce(gblIDPSubmitting, false), "Menyetujui...", "Ya, Approve")
+                                    Visible: =Coalesce(gblIDPLineManagerView, false) && Coalesce(gblIDPEditMode, false) && !Coalesce(gblSelectedIDP.IsApproved, false) && Coalesce(locConfirmApproveIDP, false)
                                     Width: =130
                               - BtnBatalIDP:
                                   Control: ModernText@1.0.0
@@ -558,7 +687,7 @@ Screens:
                                     FontWeight: =FontWeight.Semibold
                                     Height: =44
                                     OnSelect: |-
-                                      =UpdateContext({locConfirmDeleteIDP: false});
+                                      =UpdateContext({locConfirmDeleteIDP: false, locConfirmApproveIDP: false});
                                       Set(gblIDPReadOnly, false);
                                       Back()
                                     RadiusBottomLeft: =6
@@ -566,14 +695,14 @@ Screens:
                                     RadiusTopLeft: =6
                                     RadiusTopRight: =6
                                     Text: =If(Coalesce(gblIDPReadOnly, false), "Kembali", "Batal")
-                                    Visible: =!Coalesce(locConfirmDeleteIDP, false)
+                                    Visible: =!Coalesce(locConfirmDeleteIDP, false) && !Coalesce(locConfirmApproveIDP, false) && !Coalesce(gblPimpinanView, false) && !Coalesce(gblIDPLineManagerView, false)
                                     Width: =110
                               - BtnSimpanIDP:
                                   Control: ModernText@1.0.0
                                   Properties:
                                     Align: =Align.Center
                                     Color: =RGBA(255, 255, 255, 1)
-                                    DisplayMode: =If(Coalesce(gblPimpinanView, false) || Coalesce(gblIDPSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                    DisplayMode: =If(Coalesce(gblPimpinanView, false) || Coalesce(gblIDPLineManagerView, false) || Coalesce(gblIDPSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
                                     Fill: =RGBA(18, 38, 82, 1)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
@@ -618,8 +747,9 @@ Screens:
                                                           ),
                                                           Tipe: CmbTipeIDP.Selected,
                                                           Detail: Trim(TxtDetailIDP.Value),
+                                                          UkuranKeberhasilan: Trim(TxtUkuranKeberhasilanIDP.Value),
                                                           Target: CmbTargetIDP.Selected.Value,
-                                                          Status: CmbStatusIDP.Selected.Value
+                                                          Status: If(Coalesce(gblSelectedIDP.IsApproved, false), CmbStatusIDP.Selected.Value, Coalesce(gblSelectedIDP.Status, "Draf"))
                                                       }
                                                   ),
                                                   With(
@@ -648,8 +778,10 @@ Screens:
                                                                       ),
                                                                       Tipe: CmbTipeIDP.Selected,
                                                                       Detail: Trim(TxtDetailIDP.Value),
+                                                                      UkuranKeberhasilan: Trim(TxtUkuranKeberhasilanIDP.Value),
                                                                       Target: CmbTargetIDP.Selected.Value,
-                                                                      Status: CmbStatusIDP.Selected.Value
+                                                                      Status: "Draf",
+                                                                      IsApproved: false
                                                                   }
                                                               )
                                                       },
@@ -682,5 +814,5 @@ Screens:
                                     RadiusTopLeft: =6
                                     RadiusTopRight: =6
                                     Text: =If(Coalesce(gblIDPSubmitting, false), "Menyimpan...", "Simpan")
-                                    Visible: =!Coalesce(gblIDPReadOnly, false) && !Coalesce(locConfirmDeleteIDP, false)
+                                    Visible: =!Coalesce(gblIDPReadOnly, false) && !Coalesce(gblPimpinanView, false) && !Coalesce(gblIDPLineManagerView, false) && !Coalesce(locConfirmDeleteIDP, false)
                                     Width: =130
