@@ -57,27 +57,27 @@ Screens:
                   - BtnBackCKList:
                       Control: ModernText@1.0.0
                       Properties:
-                        AutoHeight: =true
                         Align: =Align.Center
+                        AutoHeight: =true
                         Color: =RGBA(255, 255, 255, 1)
                         Font: =Font.'Open Sans'
                         FontWeight: =FontWeight.Bold
                         Height: =40
                         OnSelect: |-
-                              =If(
-                                  IsMatch(App.ActiveScreen.Name, "form", MatchOptions.IgnoreCase),
-                                  If(
-                                      !IsEmpty(colNonFormNavigationHistory),
-                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
-                                      Back()
-                                  ),
-                                  If(
-                                      CountRows(colNonFormNavigationHistory) > 1,
-                                      Remove(colNonFormNavigationHistory, Last(colNonFormNavigationHistory));
-                                      Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
-                                      Back()
-                                  )
+                          =If(
+                              IsMatch(App.ActiveScreen.Name, "form", MatchOptions.IgnoreCase),
+                              If(
+                                  !IsEmpty(colNonFormNavigationHistory),
+                                  Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                  Back()
+                              ),
+                              If(
+                                  CountRows(colNonFormNavigationHistory) > 1,
+                                  Remove(colNonFormNavigationHistory, Last(colNonFormNavigationHistory));
+                                  Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                  Back()
                               )
+                          )
                         Size: =22
                         Text: ="‹"
                         Width: =40
@@ -114,7 +114,6 @@ Screens:
                 Control: Rectangle@2.3.0
                 Properties:
                   Fill: =RGBA(0, 0, 0, 0)
-                  FillPortions: =0
                   Height: =0
                   LayoutMinHeight: =0
                   Width: =Parent.Width
@@ -139,7 +138,7 @@ Screens:
                       Properties:
                         DropShadow: =DropShadow.None
                         FillPortions: =0
-                        Height: =If(Parent.Width < 600, 148, If(Parent.Width < 900, 96, 44))
+                        Height: =If(Parent.Width < 600, 180, If(Parent.Width < 900, 96, 44))
                         LayoutAlignItems: =LayoutAlignItems.Center
                         LayoutDirection: =LayoutDirection.Horizontal
                         LayoutGap: =12
@@ -150,6 +149,7 @@ Screens:
                         - CKListPageTitle:
                             Control: ModernText@1.0.0
                             Properties:
+                              AutoHeight: =true
                               Color: =RGBA(31, 56, 100, 1)
                               FillPortions: =1
                               Font: =Font.'Open Sans'
@@ -164,7 +164,7 @@ Screens:
                               AccessibleLabel: ="Cari Coaching Karir sebagai coach"
                               BorderColor: =RGBA(200, 198, 196, 1)
                               Fill: =RGBA(255, 255, 255, 1)
-                              Height: =40
+                              Height: =45
                               LayoutMinWidth: =If(Parent.Width < 600, Parent.Width, 240)
                               Mode: ="'TextInputCanvas.Mode'.TextInputModeSingleLine"
                               Placeholder: ="Cari tanggal, catatan, atau mentee..."
@@ -178,7 +178,6 @@ Screens:
                               Fill: =RGBA(9, 33, 98, 1)
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Semibold
-                              FillPortions: =0
                               Height: =40
                               OnSelect: |-
                                 =Set(gblCoachingKarirCoachEditMode, false);
@@ -190,14 +189,12 @@ Screens:
                               RadiusTopRight: =6
                               Size: =12
                               Text: ="+ Tambah Coaching Karir"
-                              Visible: =true
                               Width: =224
                   - CoachContextCK:
                       Control: GroupContainer@1.5.0
                       Variant: AutoLayout
                       Properties:
                         BorderColor: =RGBA(225, 223, 221, 1)
-                        BorderStyle: =BorderStyle.Solid
                         BorderThickness: =1
                         DropShadow: =DropShadow.None
                         Fill: =RGBA(255, 255, 255, 1)
@@ -228,7 +225,8 @@ Screens:
                               OnSelect: =Navigate(S11_Pimpinan_DaftarPegawai, ScreenTransition.Fade)
                               PaddingLeft: =8
                               Size: =12
-                              Text: '="Pegawai: " & Coalesce(LookUp(Pegawai, Title = Text(gblSubjectNIP), Nama), Text(gblSubjectNIP))'
+                              Text: |-
+                                ="Pegawai: " & Coalesce(LookUp(Pegawai, Title = Text(gblSubjectNIP), Nama), Text(gblSubjectNIP))
                               Width: =If(Parent.Width < 620, Parent.Width - 32, Max(200, Parent.Width - 460))
                         - PimpinanTabProfileCK:
                             Control: ModernText@1.0.0
@@ -250,10 +248,9 @@ Screens:
                               Font: =Font.'Open Sans'
                               FontWeight: =FontWeight.Semibold
                               Height: =44
-                              OnSelect: =Navigate(S3A_PR_List_Table, ScreenTransition.Fade)
+                              OnSelect: =Navigate(S3A_PR_List, ScreenTransition.Fade)
                               Size: =11
                               Text: ="Performance Review"
-                              Width: =150
                         - PimpinanTabActiveCK:
                             Control: ModernText@1.0.0
                             Properties:
@@ -271,9 +268,7 @@ Screens:
                       Variant: AutoLayout
                       Properties:
                         BorderColor: =RGBA(225, 223, 221, 1)
-                        BorderStyle: =BorderStyle.Solid
                         BorderThickness: =1
-                        DropShadow: =DropShadow.Light
                         Fill: =RGBA(255, 255, 255, 1)
                         LayoutAlignItems: =LayoutAlignItems.Stretch
                         LayoutDirection: =LayoutDirection.Vertical
@@ -292,7 +287,6 @@ Screens:
                             Variant: AutoLayout
                             Properties:
                               Fill: =RGBA(243, 246, 250, 1)
-                              FillPortions: =0
                               Height: =48
                               LayoutAlignItems: =LayoutAlignItems.Center
                               LayoutDirection: =LayoutDirection.Horizontal
@@ -344,7 +338,6 @@ Screens:
                             Properties:
                               BorderColor: =RGBA(245, 245, 245, 1)
                               Fill: =RGBA(255, 255, 255, 1)
-                              FillPortions: =1
                               Items: |-
                                 =With(
                                     {keyword: Lower(Trim(TxtSearchCoachCK.Value))},
@@ -370,14 +363,12 @@ Screens:
                                 =Set(gblSelectedCoachingKarir, ThisItem);
                                 Set(gblCoachingKarirListMode, "Coach");
                                 Navigate(S9C_CoachingKarir_Detail, ScreenTransition.Fade)
-                              TemplatePadding: =0
                               TemplateSize: =If(App.Width < 1200, 152, 92)
                             Children:
                               - RowBackgroundCK:
                                   Control: Rectangle@2.3.0
                                   Properties:
                                     BorderColor: =RGBA(235, 235, 235, 1)
-                                    BorderStyle: =BorderStyle.Solid
                                     BorderThickness: =1
                                     Fill: =If(ThisItem.IsSelected, RGBA(245, 250, 255, 1), RGBA(255, 255, 255, 1))
                                     Height: =Parent.TemplateHeight - 6
@@ -389,7 +380,6 @@ Screens:
                                     Color: =RGBA(50, 49, 48, 1)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Semibold
-                                    Height: =32
                                     OnSelect: =Select(Parent)
                                     Size: =11
                                     Text: |-
@@ -413,6 +403,7 @@ Screens:
                               - ValCatatanCK:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Color: =RGBA(50, 49, 48, 1)
                                     Font: =Font.'Open Sans'
                                     FontWeight: =FontWeight.Bold
@@ -427,6 +418,7 @@ Screens:
                               - ValMentorCK:
                                   Control: ModernText@1.0.0
                                   Properties:
+                                    AutoHeight: =true
                                     Color: =RGBA(96, 94, 92, 1)
                                     Font: =Font.'Open Sans'
                                     Height: =If(App.Width < 1200, 38, 32)

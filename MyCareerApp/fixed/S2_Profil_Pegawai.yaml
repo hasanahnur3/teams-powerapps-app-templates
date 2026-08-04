@@ -29,11 +29,11 @@ Screens:
             Height: =Parent.Height
             LayoutAlignItems: =LayoutAlignItems.Stretch
             LayoutDirection: =LayoutDirection.Vertical
-            LayoutGap: =16
-            PaddingBottom: =16
-            PaddingLeft: =16
-            PaddingRight: =16
-            PaddingTop: =16
+            LayoutGap: =If(Parent.Width < 620, 8, 16)
+            PaddingBottom: =If(Parent.Width < 620, 8, 16)
+            PaddingLeft: =If(Parent.Width < 620, 8, 16)
+            PaddingRight: =If(Parent.Width < 620, 8, 16)
+            PaddingTop: =If(Parent.Width < 620, 8, 16)
             Width: =Parent.Width
           Children:
             - HeaderContainerS2:
@@ -42,14 +42,14 @@ Screens:
                 Properties:
                   Fill: =RGBA(31, 48, 112, 1)
                   FillPortions: =0
-                  Height: =75
+                  Height: =If(Parent.Width < 620, 60, 75)
                   LayoutAlignItems: =LayoutAlignItems.Center
                   LayoutDirection: =LayoutDirection.Horizontal
-                  LayoutMinHeight: =75
-                  PaddingBottom: =8
-                  PaddingLeft: =8
-                  PaddingRight: =8
-                  PaddingTop: =8
+                  LayoutMinHeight: =If(Parent.Width < 620, 60, 75)
+                  PaddingBottom: =If(Parent.Width < 620, 4, 8)
+                  PaddingLeft: =If(Parent.Width < 620, 4, 8)
+                  PaddingRight: =If(Parent.Width < 620, 4, 8)
+                  PaddingTop: =If(Parent.Width < 620, 4, 8)
                   RadiusBottomLeft: =8
                   RadiusBottomRight: =8
                   RadiusTopLeft: =8
@@ -211,15 +211,15 @@ Screens:
                         DropShadow: =DropShadow.None
                         Fill: =RGBA(255, 255, 255, 1)
                         FillPortions: =0
-                        Height: =If(Parent.Width < 620, 650, 450)
+                        Height: =If(Parent.Width < 620, 690, 450)
                         LayoutDirection: =LayoutDirection.Vertical
                         LayoutGap: =14
-                        LayoutMinHeight: =If(Parent.Width < 620, 650, 450)
+                        LayoutMinHeight: =If(Parent.Width < 620, 690, 450)
                         LayoutMinWidth: =0
-                        PaddingBottom: =22
-                        PaddingLeft: =28
-                        PaddingRight: =28
-                        PaddingTop: =22
+                        PaddingBottom: =If(Parent.Width < 620, 16, 22)
+                        PaddingLeft: =If(Parent.Width < 620, 16, 28)
+                        PaddingRight: =If(Parent.Width < 620, 16, 28)
+                        PaddingTop: =If(Parent.Width < 620, 16, 22)
                         RadiusBottomLeft: =8
                         RadiusBottomRight: =8
                         RadiusTopLeft: =8
@@ -232,11 +232,11 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =120
+                              Height: =If(Parent.Width < 564, 128, 120)
                               LayoutAlignItems: =LayoutAlignItems.Center
                               LayoutDirection: =LayoutDirection.Horizontal
                               LayoutGap: =10
-                              LayoutMinHeight: =120
+                              LayoutMinHeight: =If(Parent.Width < 564, 128, 120)
                             Children:
                               - TagI:
                                   Control: ModernText@1.0.0
@@ -269,7 +269,7 @@ Screens:
                                     AccessibleLabel: ="Klik untuk memperbesar foto profil pegawai"
                                     BorderColor: =RGBA(225, 223, 221, 1)
                                     BorderThickness: =2
-                                    Height: =120
+                                    Height: =If(Parent.Width < 564, 112, 120)
                                     Image: |-
                                       =With(
                                           {
@@ -306,7 +306,7 @@ Screens:
                                     RadiusBottomRight: =60
                                     RadiusTopLeft: =60
                                     RadiusTopRight: =60
-                                    Width: =120
+                                    Width: =If(Parent.Width < 564, 112, 120)
                         - SIDivider:
                             Control: Rectangle@2.3.0
                             Properties:
@@ -318,12 +318,12 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =If(Parent.Width < 564, 140, 70)
-                              LayoutDirection: =LayoutDirection.Horizontal
+                              Height: =If(Parent.Width < 564, 152, 70)
+                              LayoutDirection: =If(Parent.Width < 564, LayoutDirection.Vertical, LayoutDirection.Horizontal)
                               LayoutGap: =24
-                              LayoutMinHeight: =If(Parent.Width < 564, 140, 70)
+                              LayoutMinHeight: =If(Parent.Width < 564, 152, 70)
                               LayoutMinWidth: =0
-                              LayoutWrap: =true
+                              LayoutWrap: =false
                               Width: =Parent.Width
                             Children:
                               - FldNama:
@@ -331,8 +331,11 @@ Screens:
                                   Variant: AutoLayout
                                   Properties:
                                     DropShadow: =DropShadow.None
+                                    FillPortions: =If(Parent.Width < 564, 0, 1)
+                                    Height: =If(Parent.Width < 564, 64, Parent.Height)
                                     LayoutDirection: =LayoutDirection.Vertical
                                     LayoutGap: =4
+                                    LayoutMinHeight: =If(Parent.Width < 564, 64, 0)
                                     LayoutMinWidth: =If(Parent.Width < 564, Parent.Width, 120)
                                     Width: =If(Parent.Width < 564, Parent.Width, (Parent.Width - 24) / 2)
                                   Children:
@@ -359,8 +362,11 @@ Screens:
                                   Variant: AutoLayout
                                   Properties:
                                     DropShadow: =DropShadow.None
+                                    FillPortions: =If(Parent.Width < 564, 0, 1)
+                                    Height: =If(Parent.Width < 564, 64, Parent.Height)
                                     LayoutDirection: =LayoutDirection.Vertical
                                     LayoutGap: =4
+                                    LayoutMinHeight: =If(Parent.Width < 564, 64, 0)
                                     LayoutMinWidth: =If(Parent.Width < 564, Parent.Width, 120)
                                     Width: =If(Parent.Width < 564, Parent.Width, (Parent.Width - 24) / 2)
                                   Children:
@@ -388,12 +394,12 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =If(Parent.Width < 564, 140, 70)
-                              LayoutDirection: =LayoutDirection.Horizontal
+                              Height: =If(Parent.Width < 564, 152, 70)
+                              LayoutDirection: =If(Parent.Width < 564, LayoutDirection.Vertical, LayoutDirection.Horizontal)
                               LayoutGap: =24
-                              LayoutMinHeight: =If(Parent.Width < 564, 140, 70)
+                              LayoutMinHeight: =If(Parent.Width < 564, 152, 70)
                               LayoutMinWidth: =0
-                              LayoutWrap: =true
+                              LayoutWrap: =false
                               Width: =Parent.Width
                             Children:
                               - FldNIP:
@@ -401,8 +407,11 @@ Screens:
                                   Variant: AutoLayout
                                   Properties:
                                     DropShadow: =DropShadow.None
+                                    FillPortions: =If(Parent.Width < 564, 0, 1)
+                                    Height: =If(Parent.Width < 564, 64, Parent.Height)
                                     LayoutDirection: =LayoutDirection.Vertical
                                     LayoutGap: =4
+                                    LayoutMinHeight: =If(Parent.Width < 564, 64, 0)
                                     LayoutMinWidth: =If(Parent.Width < 564, Parent.Width, 120)
                                     Width: =If(Parent.Width < 564, Parent.Width, (Parent.Width - 24) / 2)
                                   Children:
@@ -429,8 +438,11 @@ Screens:
                                   Variant: AutoLayout
                                   Properties:
                                     DropShadow: =DropShadow.None
+                                    FillPortions: =If(Parent.Width < 564, 0, 1)
+                                    Height: =If(Parent.Width < 564, 64, Parent.Height)
                                     LayoutDirection: =LayoutDirection.Vertical
                                     LayoutGap: =4
+                                    LayoutMinHeight: =If(Parent.Width < 564, 64, 0)
                                     LayoutMinWidth: =If(Parent.Width < 564, Parent.Width, 120)
                                     Width: =If(Parent.Width < 564, Parent.Width, (Parent.Width - 24) / 2)
                                   Children:
@@ -458,12 +470,12 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =If(Parent.Width < 564, 140, 70)
-                              LayoutDirection: =LayoutDirection.Horizontal
+                              Height: =If(Parent.Width < 564, 152, 70)
+                              LayoutDirection: =If(Parent.Width < 564, LayoutDirection.Vertical, LayoutDirection.Horizontal)
                               LayoutGap: =24
-                              LayoutMinHeight: =If(Parent.Width < 564, 140, 70)
+                              LayoutMinHeight: =If(Parent.Width < 564, 152, 70)
                               LayoutMinWidth: =0
-                              LayoutWrap: =true
+                              LayoutWrap: =false
                               Width: =Parent.Width
                             Children:
                               - FldPangkat:
@@ -471,8 +483,11 @@ Screens:
                                   Variant: AutoLayout
                                   Properties:
                                     DropShadow: =DropShadow.None
+                                    FillPortions: =If(Parent.Width < 564, 0, 1)
+                                    Height: =If(Parent.Width < 564, 64, Parent.Height)
                                     LayoutDirection: =LayoutDirection.Vertical
                                     LayoutGap: =4
+                                    LayoutMinHeight: =If(Parent.Width < 564, 64, 0)
                                     LayoutMinWidth: =If(Parent.Width < 564, Parent.Width, 120)
                                     Width: =If(Parent.Width < 564, Parent.Width, (Parent.Width - 24) / 2)
                                   Children:
@@ -499,8 +514,11 @@ Screens:
                                   Variant: AutoLayout
                                   Properties:
                                     DropShadow: =DropShadow.None
+                                    FillPortions: =If(Parent.Width < 564, 0, 1)
+                                    Height: =If(Parent.Width < 564, 64, Parent.Height)
                                     LayoutDirection: =LayoutDirection.Vertical
                                     LayoutGap: =4
+                                    LayoutMinHeight: =If(Parent.Width < 564, 64, 0)
                                     LayoutMinWidth: =If(Parent.Width < 564, Parent.Width, 120)
                                     Width: =If(Parent.Width < 564, Parent.Width, (Parent.Width - 24) / 2)
                                   Children:
@@ -531,15 +549,15 @@ Screens:
                         DropShadow: =DropShadow.None
                         Fill: =RGBA(255, 255, 255, 1)
                         FillPortions: =0
-                        Height: =If(Parent.Width < 820, 966, 686)
+                        Height: =If(Parent.Width < 620, 1570, If(Parent.Width < 820, 966, 686))
                         LayoutDirection: =LayoutDirection.Vertical
                         LayoutGap: =14
-                        LayoutMinHeight: =If(Parent.Width < 820, 966, 686)
+                        LayoutMinHeight: =If(Parent.Width < 620, 1570, If(Parent.Width < 820, 966, 686))
                         LayoutMinWidth: =0
-                        PaddingBottom: =22
-                        PaddingLeft: =28
-                        PaddingRight: =28
-                        PaddingTop: =22
+                        PaddingBottom: =If(Parent.Width < 620, 16, 22)
+                        PaddingLeft: =If(Parent.Width < 620, 16, 28)
+                        PaddingRight: =If(Parent.Width < 620, 16, 28)
+                        PaddingTop: =If(Parent.Width < 620, 16, 22)
                         RadiusBottomLeft: =8
                         RadiusBottomRight: =8
                         RadiusTopLeft: =8
@@ -610,11 +628,10 @@ Screens:
                               BorderColor: =RGBA(245, 245, 245, 1)
                               Fill: =RGBA(255, 255, 255, 1)
                               FillPortions: =0
-                              Height: =If(Parent.Width < 820, 770, 490)
+                              Height: =If(Parent.Width < 620, 1342, If(Parent.Width < 820, 770, 490))
                               Items: |-
                                 =Table(
                                     {KodeKomponen: "NILAI_KINERJA", NamaKomponen: "Nilai Kinerja Rata-rata 5 Tahun"},
-                                    {KodeKomponen: "MASA_DINAS_PANGKAT", NamaKomponen: "Masa Dinas Pangkat"},
                                     {KodeKomponen: "PENDIDIKAN", NamaKomponen: "Pendidikan"},
                                     {KodeKomponen: "SERTIFIKASI_TIER_1", NamaKomponen: "Sertifikasi Tier 1"},
                                     {KodeKomponen: "SERTIFIKASI_TIER_2", NamaKomponen: "Sertifikasi Tier 2"},
@@ -625,10 +642,10 @@ Screens:
                                     {KodeKomponen: "KEPANITIAAN", NamaKomponen: "Kepanitiaan / Proyek / Tim Kerja / Adhoc"},
                                     {KodeKomponen: "PLT", NamaKomponen: "Plt / Penunjukan / Rangkap Jabatan"}
                                 )
-                              LayoutMinHeight: =If(Parent.Width < 820, 770, 490)
+                              LayoutMinHeight: =If(Parent.Width < 620, 1342, If(Parent.Width < 820, 770, 490))
                               TemplateSize: =122
                               Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
-                              WrapCount: =If(Parent.Width < 820, 2, 3)
+                              WrapCount: =If(Parent.Width < 620, 1, If(Parent.Width < 820, 2, 3))
                             Children:
                               - RowBackgroundExecutiveSummary:
                                   Control: ModernText@1.0.0
@@ -744,38 +761,44 @@ Screens:
                         Fill: =RGBA(255, 255, 255, 1)
                         FillPortions: =0
                         Height: |-
-                          =Max(
-                              If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 2460, 1540),
-                              900 +
-                                  68 *
-                                      (
-                                          CountRows(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
-                                          CountRows(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
-                                          CountRows(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
-                                          CountRows(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
-                                          CountRows(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
-                                      )
+                          =With(
+                              {
+                                  rowCount:
+                                      CountRows(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
+                                      CountRows(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
+                                      CountRows(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
+                                      CountRows(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
+                                      CountRows(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
+                              },
+                              If(
+                                  S2_ProfilPegawai.Size <= ScreenSize.Medium,
+                                  920 + 200 * rowCount,
+                                  Max(1540, 900 + 68 * rowCount)
+                              )
                           )
                         LayoutDirection: =LayoutDirection.Vertical
                         LayoutGap: =14
                         LayoutMinHeight: |-
-                          =Max(
-                              If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 2460, 1540),
-                              900 +
-                                  68 *
-                                      (
-                                          CountRows(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
-                                          CountRows(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
-                                          CountRows(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
-                                          CountRows(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
-                                          CountRows(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
-                                      )
+                          =With(
+                              {
+                                  rowCount:
+                                      CountRows(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
+                                      CountRows(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
+                                      CountRows(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
+                                      CountRows(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
+                                      CountRows(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
+                              },
+                              If(
+                                  S2_ProfilPegawai.Size <= ScreenSize.Medium,
+                                  920 + 200 * rowCount,
+                                  Max(1540, 900 + 68 * rowCount)
+                              )
                           )
                         LayoutMinWidth: =0
-                        PaddingBottom: =22
-                        PaddingLeft: =28
-                        PaddingRight: =28
-                        PaddingTop: =22
+                        PaddingBottom: =If(Parent.Width < 620, 16, 22)
+                        PaddingLeft: =If(Parent.Width < 620, 16, 28)
+                        PaddingRight: =If(Parent.Width < 620, 16, 28)
+                        PaddingTop: =If(Parent.Width < 620, 16, 22)
                         RadiusBottomLeft: =8
                         RadiusBottomRight: =8
                         RadiusTopLeft: =8
@@ -830,10 +853,10 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =100
-                              LayoutDirection: =LayoutDirection.Horizontal
+                              Height: =If(Parent.Width < 564, 180, 100)
+                              LayoutDirection: =If(Parent.Width < 564, LayoutDirection.Vertical, LayoutDirection.Horizontal)
                               LayoutGap: =24
-                              LayoutMinHeight: =70
+                              LayoutMinHeight: =If(Parent.Width < 564, 180, 70)
                             Children:
                               - FldNilaiKinerja:
                                   Control: GroupContainer@1.5.0
@@ -869,7 +892,13 @@ Screens:
                                               Control: NumberInput@2.9.12
                                               Properties:
                                                 AccessibleLabel: ="Nilai kinerja rata-rata 5 tahun"
-                                                DisplayMode: =If(Coalesce(gblNilaiKinerjaSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                                DisplayMode: |-
+                                                  =If(
+                                                      Coalesce(gblPimpinanView, false) ||
+                                                      Text(If(IsBlank(gblSubjectNIP), gblCurrentNIP, gblSubjectNIP)) <> Text(gblCurrentNIP),
+                                                      DisplayMode.View,
+                                                      If(Coalesce(gblNilaiKinerjaSubmitting, false), DisplayMode.Disabled, DisplayMode.Edit)
+                                                  )
                                                 Max: =5
                                                 Min: =0
                                                 Value: =LookUp(Pegawai, Title = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)), NilaiKinerja)
@@ -886,27 +915,27 @@ Screens:
                                                 Height: =34
                                                 OnSelect: |-
                                                   =If(
-                                                      IsBlank(NumNilaiKinerja.Value),
-                                                      Notify("Isi nilai kinerja terlebih dahulu.", NotificationType.Warning),
-                                                      Set(gblNilaiKinerjaSubmitting, true);
-                                                      IfError(
-                                                          With(
-                                                              {
-                                                                  targetNIP: Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))
-                                                              },
+                                                      Coalesce(gblPimpinanView, false) ||
+                                                      Text(If(IsBlank(gblSubjectNIP), gblCurrentNIP, gblSubjectNIP)) <> Text(gblCurrentNIP),
+                                                      Notify("Nilai kinerja hanya dapat diperbarui oleh pegawai yang bersangkutan.", NotificationType.Warning),
+                                                      If(
+                                                          IsBlank(NumNilaiKinerja.Value),
+                                                          Notify("Isi nilai kinerja terlebih dahulu.", NotificationType.Warning),
+                                                          Set(gblNilaiKinerjaSubmitting, true);
+                                                          IfError(
                                                               Patch(
                                                                   Pegawai,
-                                                                  LookUp(Pegawai, Title = targetNIP),
+                                                                  LookUp(Pegawai, Title = Text(gblCurrentNIP)),
                                                                   {
                                                                       NilaiKinerja: Value(NumNilaiKinerja.Value)
                                                                   }
-                                                              )
-                                                          );
-                                                          Refresh(Pegawai);
-                                                          Notify("Nilai kinerja berhasil diperbarui.", NotificationType.Success);
-                                                          Set(gblNilaiKinerjaSubmitting, false),
-                                                          Notify("Gagal memperbarui nilai kinerja: " & FirstError.Message, NotificationType.Error);
-                                                          Set(gblNilaiKinerjaSubmitting, false)
+                                                              );
+                                                              Refresh(Pegawai);
+                                                              Notify("Nilai kinerja berhasil diperbarui.", NotificationType.Success);
+                                                              Set(gblNilaiKinerjaSubmitting, false),
+                                                              Notify("Gagal memperbarui nilai kinerja: " & FirstError.Message, NotificationType.Error);
+                                                              Set(gblNilaiKinerjaSubmitting, false)
+                                                          )
                                                       )
                                                   )
                                                 RadiusBottomLeft: =6
@@ -915,6 +944,9 @@ Screens:
                                                 RadiusTopRight: =6
                                                 Size: =12
                                                 Text: =If(Coalesce(gblNilaiKinerjaSubmitting, false), "Menyimpan...", "Submit")
+                                                Visible: |-
+                                                  =!Coalesce(gblPimpinanView, false) &&
+                                                  Text(If(IsBlank(gblSubjectNIP), gblCurrentNIP, gblSubjectNIP)) = Text(gblCurrentNIP)
                                                 Width: =112
                               - FldMasaDinas:
                                   Control: GroupContainer@1.5.0
@@ -923,6 +955,7 @@ Screens:
                                     DropShadow: =DropShadow.None
                                     LayoutDirection: =LayoutDirection.Vertical
                                     LayoutGap: =4
+                                    Visible: =false
                                   Children:
                                     - LblMasaDinas:
                                         Control: ModernText@1.0.0
@@ -951,8 +984,12 @@ Screens:
                                                             TanggalAwalDinas
                                                         )
                                                 },
-                                                DateDiff(TanggalMulai, Today(), TimeUnit.Years) & " Tahun " &
-                                                Mod(DateDiff(TanggalMulai, Today(), TimeUnit.Months), 12) & " Bulan"
+                                                If(
+                                                    IsBlank(TanggalMulai),
+                                                    "—",
+                                                    DateDiff(TanggalMulai, Today(), TimeUnit.Years) & " Tahun " &
+                                                    Mod(DateDiff(TanggalMulai, Today(), TimeUnit.Months), 12) & " Bulan"
+                                                )
                                             )
                         - TitlePendidikan:
                             Control: ModernText@1.0.0
@@ -970,14 +1007,15 @@ Screens:
                             Properties:
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =44 + CountRows(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                              Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 0, 44) + CountRows(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                               LayoutDirection: =LayoutDirection.Vertical
-                              LayoutMinHeight: =44 + CountRows(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                              LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 0, 44) + CountRows(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                             Children:
                               - PendidikanHead:
                                   Control: GroupContainer@1.5.0
                                   Variant: AutoLayout
                                   Properties:
+                                    Visible: =S2_ProfilPegawai.Size > ScreenSize.Medium
                                     DropShadow: =DropShadow.None
                                     Fill: =RGBA(243, 242, 241, 1)
                                     FillPortions: =0
@@ -1046,11 +1084,11 @@ Screens:
                                   Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
                                   Properties:
                                     FillPortions: =0
-                                    Height: =CountRows(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                                    Height: =CountRows(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                                     Items: =SortByColumns(Filter(Profil_Pendidikan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))), "ID", SortOrder.Ascending)
                                     LayoutMinHeight: =0
                                     LayoutMinWidth: =0
-                                    TemplateSize: =68
+                                    TemplateSize: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                                     Width: =Parent.Width
                                   Children:
                                     - PendidikanGalleryBg:
@@ -1123,6 +1161,35 @@ Screens:
                                           Text: =If(IsBlank(ThisItem.TahunLulus), "-", Text(ThisItem.TahunLulus))
                                           Width: =Parent.TemplateWidth * 0.145
                                           X: =Parent.TemplateWidth * 0.855
+                                    - PendidikanMobileCard:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          BorderColor: =RGBA(225, 223, 221, 1)
+                                          BorderStyle: =BorderStyle.Solid
+                                          BorderThickness: =0
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Fill: =RGBA(255, 255, 255, 1)
+                                          Font: =Font.'Open Sans'
+                                          Height: =Parent.TemplateHeight
+                                          OnSelect: |-
+                                            =Set(gblPendidikanDetailMode, Coalesce(gblPimpinanView, false));
+                                            Set(gblSelectedPendidikan, ThisItem);
+                                            Set(gblPendidikanEditMode, !Coalesce(gblPimpinanView, false));
+                                            Navigate(S2A_Profil_Pendidikan_Form, ScreenTransition.Fade)
+                                          PaddingBottom: =10
+                                          PaddingLeft: =16
+                                          PaddingRight: =16
+                                          PaddingTop: =10
+                                          RadiusBottomLeft: =8
+                                          RadiusBottomRight: =8
+                                          RadiusTopLeft: =8
+                                          RadiusTopRight: =8
+                                          Size: =11
+                                          Text: ="JENJANG" & Char(10) & Coalesce(ThisItem.Jenjang, "-") & Char(10) & "UNIVERSITAS / INSTITUSI" & Char(10) & Coalesce(ThisItem.Universitas, "-") & Char(10) & "PROGRAM STUDI / BIDANG" & Char(10) & Coalesce(ThisItem.ProgramStudi, "-") & Char(10) & "TAHUN LULUS" & Char(10) & If(IsBlank(ThisItem.TahunLulus), "-", Text(ThisItem.TahunLulus))
+                                          Visible: =S2_ProfilPegawai.Size <= ScreenSize.Medium
+                                          Width: =Parent.TemplateWidth
+                                          X: =0
+                                          Y: =0
                               - PendidikanRow1:
                                   Control: GroupContainer@1.5.0
                                   Variant: AutoLayout
@@ -1461,9 +1528,9 @@ Screens:
                               BorderThickness: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 1, 0)
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =44 + CountRows(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                              Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 0, 44) + CountRows(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                               LayoutDirection: =LayoutDirection.Vertical
-                              LayoutMinHeight: =44 + CountRows(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                              LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 0, 44) + CountRows(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                               LayoutMinWidth: =0
                               RadiusBottomLeft: =8
                               RadiusBottomRight: =8
@@ -1475,6 +1542,7 @@ Screens:
                                   Control: GroupContainer@1.5.0
                                   Variant: AutoLayout
                                   Properties:
+                                    Visible: =S2_ProfilPegawai.Size > ScreenSize.Medium
                                     DropShadow: =DropShadow.None
                                     Fill: =RGBA(243, 242, 241, 1)
                                     FillPortions: =0
@@ -1555,11 +1623,11 @@ Screens:
                                   Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
                                   Properties:
                                     FillPortions: =0
-                                    Height: =CountRows(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                                    Height: =CountRows(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                                     Items: =SortByColumns(Filter(Profil_SertifikasiTier1, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))), "ID", SortOrder.Ascending)
                                     LayoutMinHeight: =0
                                     LayoutMinWidth: =0
-                                    TemplateSize: =68
+                                    TemplateSize: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                                     Width: =Parent.Width
                                   Children:
                                     - T1GalleryBg:
@@ -1659,6 +1727,35 @@ Screens:
                                           Text: =Coalesce(ThisItem.NomorSertifikat, "-")
                                           Width: =Parent.TemplateWidth * 0.188
                                           X: =Parent.TemplateWidth * 0.812
+                                    - T1MobileCard:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          BorderColor: =RGBA(225, 223, 221, 1)
+                                          BorderStyle: =BorderStyle.Solid
+                                          BorderThickness: =0
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Fill: =RGBA(255, 255, 255, 1)
+                                          Font: =Font.'Open Sans'
+                                          Height: =Parent.TemplateHeight
+                                          OnSelect: |-
+                                            =Set(gblSertifikasiTier1DetailMode, Coalesce(gblPimpinanView, false));
+                                            Set(gblSelectedSertifikasiTier1, ThisItem);
+                                            Set(gblSertifikasiTier1EditMode, !Coalesce(gblPimpinanView, false));
+                                            Navigate(S2B_Profil_SertifikasiTier1_Form, ScreenTransition.Fade)
+                                          PaddingBottom: =10
+                                          PaddingLeft: =16
+                                          PaddingRight: =16
+                                          PaddingTop: =10
+                                          RadiusBottomLeft: =8
+                                          RadiusBottomRight: =8
+                                          RadiusTopLeft: =8
+                                          RadiusTopRight: =8
+                                          Size: =11
+                                          Text: ="NAMA SERTIFIKAT" & Char(10) & Coalesce(ThisItem.NamaSertifikat, "-") & Char(10) & "PENERBIT / INSTITUSI" & Char(10) & Coalesce(ThisItem.Penerbit, "-") & Char(10) & "TGL TERBIT — TGL BERAKHIR" & Char(10) & If(IsBlank(ThisItem.TanggalTerbit), "-", Text(ThisItem.TanggalTerbit)) & " — " & If(IsBlank(ThisItem.TanggalBerakhir), "-", Text(ThisItem.TanggalBerakhir)) & Char(10) & "NO. SERTIFIKAT" & Char(10) & Coalesce(ThisItem.NomorSertifikat, "-")
+                                          Visible: =S2_ProfilPegawai.Size <= ScreenSize.Medium
+                                          Width: =Parent.TemplateWidth
+                                          X: =0
+                                          Y: =0
                               - T1Row1:
                                   Control: GroupContainer@1.5.0
                                   Variant: AutoLayout
@@ -1793,9 +1890,9 @@ Screens:
                               BorderThickness: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 1, 0)
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =44 + CountRows(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                              Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 0, 44) + CountRows(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                               LayoutDirection: =LayoutDirection.Vertical
-                              LayoutMinHeight: =44 + CountRows(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                              LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 0, 44) + CountRows(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                               LayoutMinWidth: =0
                               RadiusBottomLeft: =8
                               RadiusBottomRight: =8
@@ -1807,6 +1904,7 @@ Screens:
                                   Control: GroupContainer@1.5.0
                                   Variant: AutoLayout
                                   Properties:
+                                    Visible: =S2_ProfilPegawai.Size > ScreenSize.Medium
                                     DropShadow: =DropShadow.None
                                     Fill: =RGBA(243, 242, 241, 1)
                                     FillPortions: =0
@@ -1887,11 +1985,11 @@ Screens:
                                   Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
                                   Properties:
                                     FillPortions: =0
-                                    Height: =CountRows(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                                    Height: =CountRows(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                                     Items: =SortByColumns(Filter(Profil_SertifikasiTier2, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))), "ID", SortOrder.Ascending)
                                     LayoutMinHeight: =0
                                     LayoutMinWidth: =0
-                                    TemplateSize: =68
+                                    TemplateSize: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                                     Width: =Parent.Width
                                   Children:
                                     - T2GalleryBg:
@@ -1991,6 +2089,35 @@ Screens:
                                           Text: =Coalesce(ThisItem.NomorSertifikat, "-")
                                           Width: =Parent.TemplateWidth * 0.188
                                           X: =Parent.TemplateWidth * 0.812
+                                    - T2MobileCard:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          BorderColor: =RGBA(225, 223, 221, 1)
+                                          BorderStyle: =BorderStyle.Solid
+                                          BorderThickness: =0
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Fill: =RGBA(255, 255, 255, 1)
+                                          Font: =Font.'Open Sans'
+                                          Height: =Parent.TemplateHeight
+                                          OnSelect: |-
+                                            =Set(gblSertifikasiTier2DetailMode, Coalesce(gblPimpinanView, false));
+                                            Set(gblSelectedSertifikasiTier2, ThisItem);
+                                            Set(gblSertifikasiTier2EditMode, !Coalesce(gblPimpinanView, false));
+                                            Navigate(S2C_Profil_SertifikasiTier2_Form, ScreenTransition.Fade)
+                                          PaddingBottom: =10
+                                          PaddingLeft: =16
+                                          PaddingRight: =16
+                                          PaddingTop: =10
+                                          RadiusBottomLeft: =8
+                                          RadiusBottomRight: =8
+                                          RadiusTopLeft: =8
+                                          RadiusTopRight: =8
+                                          Size: =11
+                                          Text: ="NAMA SERTIFIKAT" & Char(10) & Coalesce(ThisItem.NamaSertifikat, "-") & Char(10) & "PENERBIT / INSTITUSI" & Char(10) & Coalesce(ThisItem.Penerbit, "-") & Char(10) & "TGL TERBIT — TGL BERAKHIR" & Char(10) & If(IsBlank(ThisItem.TanggalTerbit), "-", Text(ThisItem.TanggalTerbit)) & " — " & If(IsBlank(ThisItem.TanggalBerakhir), "-", Text(ThisItem.TanggalBerakhir)) & Char(10) & "NO. SERTIFIKAT" & Char(10) & Coalesce(ThisItem.NomorSertifikat, "-")
+                                          Visible: =S2_ProfilPegawai.Size <= ScreenSize.Medium
+                                          Width: =Parent.TemplateWidth
+                                          X: =0
+                                          Y: =0
                               - T2Row1:
                                   Control: GroupContainer@1.5.0
                                   Variant: AutoLayout
@@ -2126,9 +2253,9 @@ Screens:
                               BorderThickness: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 1, 0)
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =44 + CountRows(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                              Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 0, 44) + CountRows(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                               LayoutDirection: =LayoutDirection.Vertical
-                              LayoutMinHeight: =44 + CountRows(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                              LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 0, 44) + CountRows(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                               LayoutMinWidth: =0
                               RadiusBottomLeft: =8
                               RadiusBottomRight: =8
@@ -2140,6 +2267,7 @@ Screens:
                                   Control: GroupContainer@1.5.0
                                   Variant: AutoLayout
                                   Properties:
+                                    Visible: =S2_ProfilPegawai.Size > ScreenSize.Medium
                                     DropShadow: =DropShadow.None
                                     Fill: =RGBA(243, 242, 241, 1)
                                     FillPortions: =0
@@ -2242,11 +2370,11 @@ Screens:
                                   Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
                                   Properties:
                                     FillPortions: =0
-                                    Height: =CountRows(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                                    Height: =CountRows(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                                     Items: =SortByColumns(Filter(Profil_PMK, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))), "ID", SortOrder.Ascending)
                                     LayoutMinHeight: =0
                                     LayoutMinWidth: =0
-                                    TemplateSize: =68
+                                    TemplateSize: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                                     Width: =Parent.Width
                                   Children:
                                     - PMKGalleryBg:
@@ -2362,6 +2490,36 @@ Screens:
                                           Text: =Coalesce(ThisItem.Negara, "-")
                                           Width: =Parent.TemplateWidth * 0.113
                                           X: =Parent.TemplateWidth * 0.887
+                                    - PMKMobileCard:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          BorderColor: =RGBA(225, 223, 221, 1)
+                                          BorderStyle: =BorderStyle.Solid
+                                          BorderThickness: =0
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Fill: =RGBA(255, 255, 255, 1)
+                                          Font: =Font.'Open Sans'
+                                          Height: =Parent.TemplateHeight
+                                          OnSelect: |-
+                                            =Set(gblPMKDetailMode, Coalesce(gblPimpinanView, false));
+                                            Set(gblSelectedPMK, ThisItem);
+                                            Set(gblPMKEditMode, !Coalesce(gblPimpinanView, false));
+                                            Navigate(S2D_Profil_PMK_Form, ScreenTransition.Fade)
+                                          PaddingBottom: =10
+                                          PaddingLeft: =16
+                                          PaddingRight: =16
+                                          PaddingTop: =10
+                                          RadiusBottomLeft: =8
+                                          RadiusBottomRight: =8
+                                          RadiusTopLeft: =8
+                                          RadiusTopRight: =8
+                                          Size: =11
+                                          Text: |-
+                                            ="TRAINING: " & Coalesce(ThisItem.TrainingName, "-") & Char(10) & "PENYELENGGARA: " & Coalesce(ThisItem.Penyelenggara, "-") & Char(10) & "PERIODE: " & If(IsBlank(ThisItem.StartDate), "-", Text(ThisItem.StartDate, "[$-id-ID]dd/mm/yyyy")) & " — " & If(IsBlank(ThisItem.CompletionDate), "-", Text(ThisItem.CompletionDate, "[$-id-ID]dd/mm/yyyy")) & Char(10) & "JENIS PMK: " & Coalesce(ThisItem.JenisPMK, "-") & Char(10) & "TIPE: " & Coalesce(ThisItem.Tipe, "-") & Char(10) & "NEGARA: " & Coalesce(ThisItem.Negara, "-")
+                                          Visible: =S2_ProfilPegawai.Size <= ScreenSize.Medium
+                                          Width: =Parent.TemplateWidth
+                                          X: =0
+                                          Y: =0
                               - PMKRow1:
                                   Control: GroupContainer@1.5.0
                                   Variant: AutoLayout
@@ -2516,9 +2674,9 @@ Screens:
                               BorderThickness: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 1, 0)
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =44 + CountRows(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                              Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 0, 44) + CountRows(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                               LayoutDirection: =LayoutDirection.Vertical
-                              LayoutMinHeight: =44 + CountRows(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                              LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 0, 44) + CountRows(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                               LayoutMinWidth: =0
                               RadiusBottomLeft: =8
                               RadiusBottomRight: =8
@@ -2530,6 +2688,7 @@ Screens:
                                   Control: GroupContainer@1.5.0
                                   Variant: AutoLayout
                                   Properties:
+                                    Visible: =S2_ProfilPegawai.Size > ScreenSize.Medium
                                     DropShadow: =DropShadow.None
                                     Fill: =RGBA(243, 242, 241, 1)
                                     FillPortions: =0
@@ -2577,11 +2736,11 @@ Screens:
                                   Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
                                   Properties:
                                     FillPortions: =0
-                                    Height: =CountRows(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                                    Height: =CountRows(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                                     Items: =SortByColumns(Filter(Profil_KumMengajar, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))), "ID", SortOrder.Ascending)
                                     LayoutMinHeight: =0
                                     LayoutMinWidth: =0
-                                    TemplateSize: =68
+                                    TemplateSize: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                                     Width: =Parent.Width
                                   Children:
                                     - KumGalleryBg:
@@ -2637,6 +2796,35 @@ Screens:
                                             )
                                           Width: =Parent.TemplateWidth * 0.25
                                           X: =Parent.TemplateWidth * 0.75
+                                    - KumMobileCard:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          BorderColor: =RGBA(225, 223, 221, 1)
+                                          BorderStyle: =BorderStyle.Solid
+                                          BorderThickness: =0
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Fill: =RGBA(255, 255, 255, 1)
+                                          Font: =Font.'Open Sans'
+                                          Height: =Parent.TemplateHeight
+                                          OnSelect: |-
+                                            =Set(gblKumMengajarDetailMode, Coalesce(gblPimpinanView, false));
+                                            Set(gblSelectedKumMengajar, ThisItem);
+                                            Set(gblKumMengajarEditMode, !Coalesce(gblPimpinanView, false));
+                                            Navigate(S2E_Profil_KumMengajar_Form, ScreenTransition.Fade)
+                                          PaddingBottom: =10
+                                          PaddingLeft: =16
+                                          PaddingRight: =16
+                                          PaddingTop: =10
+                                          RadiusBottomLeft: =8
+                                          RadiusBottomRight: =8
+                                          RadiusTopLeft: =8
+                                          RadiusTopRight: =8
+                                          Size: =11
+                                          Text: ="NAMA IHT" & Char(10) & Coalesce(ThisItem.NamaIHT, "-") & Char(10) & "TANGGAL PELAKSANAAN" & Char(10) & If(IsBlank(ThisItem.TanggalPelaksanaan), "-", Text(ThisItem.TanggalPelaksanaan, "[$-id-ID]dd/mm/yyyy"))
+                                          Visible: =S2_ProfilPegawai.Size <= ScreenSize.Medium
+                                          Width: =Parent.TemplateWidth
+                                          X: =0
+                                          Y: =0
                               - KumRow1:
                                   Control: GroupContainer@1.5.0
                                   Variant: AutoLayout
@@ -2734,36 +2922,42 @@ Screens:
                         Fill: =RGBA(255, 255, 255, 1)
                         FillPortions: =0
                         Height: |-
-                          =Max(
-                              If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 1900, 1180),
-                              520 +
-                                  68 *
-                                      (
-                                          CountRows(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
-                                          CountRows(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
-                                          CountRows(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
-                                          CountRows(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
-                                      )
+                          =With(
+                              {
+                                  rowCount:
+                                      CountRows(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
+                                      CountRows(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
+                                      CountRows(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
+                                      CountRows(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
+                              },
+                              If(
+                                  S2_ProfilPegawai.Size <= ScreenSize.Medium,
+                                  640 + 200 * rowCount,
+                                  Max(1180, 520 + 68 * rowCount)
+                              )
                           )
                         LayoutDirection: =LayoutDirection.Vertical
                         LayoutGap: =14
                         LayoutMinHeight: |-
-                          =Max(
-                              If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 1900, 1180),
-                              520 +
-                                  68 *
-                                      (
-                                          CountRows(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
-                                          CountRows(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
-                                          CountRows(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
-                                          CountRows(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
-                                      )
+                          =With(
+                              {
+                                  rowCount:
+                                      CountRows(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
+                                      CountRows(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
+                                      CountRows(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) +
+                                      CountRows(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))))
+                              },
+                              If(
+                                  S2_ProfilPegawai.Size <= ScreenSize.Medium,
+                                  640 + 200 * rowCount,
+                                  Max(1180, 520 + 68 * rowCount)
+                              )
                           )
                         LayoutMinWidth: =0
-                        PaddingBottom: =22
-                        PaddingLeft: =28
-                        PaddingRight: =28
-                        PaddingTop: =22
+                        PaddingBottom: =If(Parent.Width < 620, 16, 22)
+                        PaddingLeft: =If(Parent.Width < 620, 16, 28)
+                        PaddingRight: =If(Parent.Width < 620, 16, 28)
+                        PaddingTop: =If(Parent.Width < 620, 16, 22)
                         RadiusBottomLeft: =8
                         RadiusBottomRight: =8
                         RadiusTopLeft: =8
@@ -2830,9 +3024,9 @@ Screens:
                               BorderThickness: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 1, 0)
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =44 + CountRows(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                              Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 0, 44) + CountRows(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                               LayoutDirection: =LayoutDirection.Vertical
-                              LayoutMinHeight: =44 + CountRows(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                              LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 0, 44) + CountRows(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                               LayoutMinWidth: =0
                               RadiusBottomLeft: =8
                               RadiusBottomRight: =8
@@ -2844,6 +3038,7 @@ Screens:
                                   Control: GroupContainer@1.5.0
                                   Variant: AutoLayout
                                   Properties:
+                                    Visible: =S2_ProfilPegawai.Size > ScreenSize.Medium
                                     DropShadow: =DropShadow.None
                                     Fill: =RGBA(243, 242, 241, 1)
                                     FillPortions: =0
@@ -2924,11 +3119,11 @@ Screens:
                                   Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
                                   Properties:
                                     FillPortions: =0
-                                    Height: =CountRows(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                                    Height: =CountRows(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                                     Items: =SortByColumns(Filter(Profil_Penugasan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))), "ID", SortOrder.Ascending)
                                     LayoutMinHeight: =0
                                     LayoutMinWidth: =0
-                                    TemplateSize: =68
+                                    TemplateSize: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                                     Width: =Parent.Width
                                   Children:
                                     - PenGalleryBg:
@@ -3022,6 +3217,36 @@ Screens:
                                           Text: =Coalesce(ThisItem.Deskripsi, "-")
                                           Width: =Parent.TemplateWidth * 0.267
                                           X: =Parent.TemplateWidth * 0.733
+                                    - PenugasanMobileCard:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          BorderColor: =RGBA(225, 223, 221, 1)
+                                          BorderStyle: =BorderStyle.Solid
+                                          BorderThickness: =0
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Fill: =RGBA(255, 255, 255, 1)
+                                          Font: =Font.'Open Sans'
+                                          Height: =Parent.TemplateHeight
+                                          OnSelect: |-
+                                            =Set(gblPenugasanDetailMode, Coalesce(gblPimpinanView, false));
+                                            Set(gblSelectedPenugasan, ThisItem);
+                                            Set(gblPenugasanEditMode, !Coalesce(gblPimpinanView, false));
+                                            Navigate(S2F_Profil_Penugasan_Form, ScreenTransition.Fade)
+                                          PaddingBottom: =10
+                                          PaddingLeft: =16
+                                          PaddingRight: =16
+                                          PaddingTop: =10
+                                          RadiusBottomLeft: =8
+                                          RadiusBottomRight: =8
+                                          RadiusTopLeft: =8
+                                          RadiusTopRight: =8
+                                          Size: =11
+                                          Text: |-
+                                            ="NAMA PENUGASAN" & Char(10) & Coalesce(ThisItem.NamaPenugasan, "-") & Char(10) & "PERIODE: " & If(IsBlank(ThisItem.TglMulai), "-", Text(ThisItem.TglMulai, "[$-id-ID]dd/mm/yyyy")) & " — " & If(IsBlank(ThisItem.TglAkhir), "-", Text(ThisItem.TglAkhir, "[$-id-ID]dd/mm/yyyy")) & Char(10) & "PIC: " & Coalesce(ThisItem.PIC, "-") & Char(10) & "DESKRIPSI" & Char(10) & Coalesce(ThisItem.Deskripsi, "-")
+                                          Visible: =S2_ProfilPegawai.Size <= ScreenSize.Medium
+                                          Width: =Parent.TemplateWidth
+                                          X: =0
+                                          Y: =0
                               - PenugasanRow1:
                                   Control: GroupContainer@1.5.0
                                   Variant: AutoLayout
@@ -3157,9 +3382,9 @@ Screens:
                               BorderThickness: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 1, 0)
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =44 + CountRows(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                              Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 0, 44) + CountRows(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                               LayoutDirection: =LayoutDirection.Vertical
-                              LayoutMinHeight: =44 + CountRows(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                              LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 0, 44) + CountRows(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                               LayoutMinWidth: =0
                               RadiusBottomLeft: =8
                               RadiusBottomRight: =8
@@ -3171,6 +3396,7 @@ Screens:
                                   Control: GroupContainer@1.5.0
                                   Variant: AutoLayout
                                   Properties:
+                                    Visible: =S2_ProfilPegawai.Size > ScreenSize.Medium
                                     DropShadow: =DropShadow.None
                                     Fill: =RGBA(243, 242, 241, 1)
                                     FillPortions: =0
@@ -3251,11 +3477,11 @@ Screens:
                                   Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
                                   Properties:
                                     FillPortions: =0
-                                    Height: =CountRows(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                                    Height: =CountRows(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                                     Items: =SortByColumns(Filter(Profil_Prestasi, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))), "ID", SortOrder.Ascending)
                                     LayoutMinHeight: =0
                                     LayoutMinWidth: =0
-                                    TemplateSize: =68
+                                    TemplateSize: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                                     Width: =Parent.Width
                                   Children:
                                     - PrGalleryBg:
@@ -3351,6 +3577,36 @@ Screens:
                                             )
                                           Width: =Parent.TemplateWidth * 0.145
                                           X: =Parent.TemplateWidth * 0.855
+                                    - PrestasiMobileCard:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          BorderColor: =RGBA(225, 223, 221, 1)
+                                          BorderStyle: =BorderStyle.Solid
+                                          BorderThickness: =0
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Fill: =RGBA(255, 255, 255, 1)
+                                          Font: =Font.'Open Sans'
+                                          Height: =Parent.TemplateHeight
+                                          OnSelect: |-
+                                            =Set(gblPrestasiDetailMode, Coalesce(gblPimpinanView, false));
+                                            Set(gblSelectedPrestasi, ThisItem);
+                                            Set(gblPrestasiEditMode, !Coalesce(gblPimpinanView, false));
+                                            Navigate(S2G_Profil_Prestasi_Form, ScreenTransition.Fade)
+                                          PaddingBottom: =10
+                                          PaddingLeft: =16
+                                          PaddingRight: =16
+                                          PaddingTop: =10
+                                          RadiusBottomLeft: =8
+                                          RadiusBottomRight: =8
+                                          RadiusTopLeft: =8
+                                          RadiusTopRight: =8
+                                          Size: =11
+                                          Text: |-
+                                            ="NAMA PRESTASI" & Char(10) & Coalesce(ThisItem.NamaPrestasi, "-") & Char(10) & "JENIS: " & Coalesce(ThisItem.Jenis, "-") & Char(10) & "LEVEL: " & Coalesce(ThisItem.Level, "-") & Char(10) & "TANGGAL: " & If(IsBlank(ThisItem.Tanggal), "-", Text(ThisItem.Tanggal)) & Char(10) & "DETAIL" & Char(10) & Coalesce(ThisItem.DetailPrestasi, "-")
+                                          Visible: =S2_ProfilPegawai.Size <= ScreenSize.Medium
+                                          Width: =Parent.TemplateWidth
+                                          X: =0
+                                          Y: =0
                               - PrestasiRow1:
                                   Control: GroupContainer@1.5.0
                                   Variant: AutoLayout
@@ -3496,9 +3752,9 @@ Screens:
                               BorderThickness: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 1, 0)
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =44 + CountRows(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                              Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 0, 44) + CountRows(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                               LayoutDirection: =LayoutDirection.Vertical
-                              LayoutMinHeight: =44 + CountRows(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                              LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 0, 44) + CountRows(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                               LayoutMinWidth: =0
                               RadiusBottomLeft: =8
                               RadiusBottomRight: =8
@@ -3510,6 +3766,7 @@ Screens:
                                   Control: GroupContainer@1.5.0
                                   Variant: AutoLayout
                                   Properties:
+                                    Visible: =S2_ProfilPegawai.Size > ScreenSize.Medium
                                     DropShadow: =DropShadow.None
                                     Fill: =RGBA(243, 242, 241, 1)
                                     FillPortions: =0
@@ -3612,11 +3869,11 @@ Screens:
                                   Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
                                   Properties:
                                     FillPortions: =0
-                                    Height: =CountRows(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                                    Height: =CountRows(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                                     Items: =SortByColumns(Filter(Profil_Kepanitiaan, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))), "ID", SortOrder.Ascending)
                                     LayoutMinHeight: =0
                                     LayoutMinWidth: =0
-                                    TemplateSize: =68
+                                    TemplateSize: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                                     Width: =Parent.Width
                                   Children:
                                     - KepGalleryBg:
@@ -3732,6 +3989,36 @@ Screens:
                                             )
                                           Width: =Parent.TemplateWidth * 0.113
                                           X: =Parent.TemplateWidth * 0.887
+                                    - KepanitiaanMobileCard:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          BorderColor: =RGBA(225, 223, 221, 1)
+                                          BorderStyle: =BorderStyle.Solid
+                                          BorderThickness: =0
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Fill: =RGBA(255, 255, 255, 1)
+                                          Font: =Font.'Open Sans'
+                                          Height: =Parent.TemplateHeight
+                                          OnSelect: |-
+                                            =Set(gblKepanitiaanDetailMode, Coalesce(gblPimpinanView, false));
+                                            Set(gblSelectedKepanitiaan, ThisItem);
+                                            Set(gblKepanitiaanEditMode, !Coalesce(gblPimpinanView, false));
+                                            Navigate(S2H_Profil_Kepanitiaan_Form, ScreenTransition.Fade)
+                                          PaddingBottom: =10
+                                          PaddingLeft: =16
+                                          PaddingRight: =16
+                                          PaddingTop: =10
+                                          RadiusBottomLeft: =8
+                                          RadiusBottomRight: =8
+                                          RadiusTopLeft: =8
+                                          RadiusTopRight: =8
+                                          Size: =11
+                                          Text: |-
+                                            ="NAMA KEPANITIAAN" & Char(10) & Coalesce(ThisItem.NamaKepanitiaan, "-") & Char(10) & "POSISI / BIDANG: " & Coalesce(ThisItem.Posisi, "-") & Char(10) & "INSTITUSI: " & Coalesce(ThisItem.Institusi, "-") & Char(10) & "PERIODE: " & If(IsBlank(ThisItem.StartDate), "-", Text(ThisItem.StartDate, "[$-id-ID]dd/mm/yyyy")) & " — " & If(IsBlank(ThisItem.EndDate), "-", Text(ThisItem.EndDate, "[$-id-ID]dd/mm/yyyy")) & Char(10) & "PRODUK: " & Coalesce(ThisItem.Produk, "-") & Char(10) & "URAIAN: " & Coalesce(ThisItem.UraianTugas, "-")
+                                          Visible: =S2_ProfilPegawai.Size <= ScreenSize.Medium
+                                          Width: =Parent.TemplateWidth
+                                          X: =0
+                                          Y: =0
                               - KepRow1:
                                   Control: GroupContainer@1.5.0
                                   Variant: AutoLayout
@@ -3886,9 +4173,9 @@ Screens:
                               BorderThickness: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 1, 0)
                               DropShadow: =DropShadow.None
                               FillPortions: =0
-                              Height: =44 + CountRows(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                              Height: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 0, 44) + CountRows(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                               LayoutDirection: =LayoutDirection.Vertical
-                              LayoutMinHeight: =44 + CountRows(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                              LayoutMinHeight: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 0, 44) + CountRows(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                               LayoutMinWidth: =0
                               RadiusBottomLeft: =8
                               RadiusBottomRight: =8
@@ -3900,6 +4187,7 @@ Screens:
                                   Control: GroupContainer@1.5.0
                                   Variant: AutoLayout
                                   Properties:
+                                    Visible: =S2_ProfilPegawai.Size > ScreenSize.Medium
                                     DropShadow: =DropShadow.None
                                     Fill: =RGBA(243, 242, 241, 1)
                                     FillPortions: =0
@@ -4002,11 +4290,11 @@ Screens:
                                   Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
                                   Properties:
                                     FillPortions: =0
-                                    Height: =CountRows(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * 68
+                                    Height: =CountRows(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP)))) * If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                                     Items: =SortByColumns(Filter(Profil_Plt, NIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))), "ID", SortOrder.Ascending)
                                     LayoutMinHeight: =0
                                     LayoutMinWidth: =0
-                                    TemplateSize: =68
+                                    TemplateSize: =If(S2_ProfilPegawai.Size <= ScreenSize.Medium, 200, 68)
                                     Width: =Parent.Width
                                   Children:
                                     - PltGalleryBg:
@@ -4122,6 +4410,36 @@ Screens:
                                           Text: =Coalesce(ThisItem.Catatan, "-")
                                           Width: =Parent.TemplateWidth * 0.164
                                           X: =Parent.TemplateWidth * 0.836
+                                    - PltMobileCard:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          BorderColor: =RGBA(225, 223, 221, 1)
+                                          BorderStyle: =BorderStyle.Solid
+                                          BorderThickness: =0
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Fill: =RGBA(255, 255, 255, 1)
+                                          Font: =Font.'Open Sans'
+                                          Height: =Parent.TemplateHeight
+                                          OnSelect: |-
+                                            =Set(gblPltDetailMode, Coalesce(gblPimpinanView, false));
+                                            Set(gblSelectedPlt, ThisItem);
+                                            Set(gblPltEditMode, !Coalesce(gblPimpinanView, false));
+                                            Navigate(S2I_Profil_Plt_Form, ScreenTransition.Fade)
+                                          PaddingBottom: =10
+                                          PaddingLeft: =16
+                                          PaddingRight: =16
+                                          PaddingTop: =10
+                                          RadiusBottomLeft: =8
+                                          RadiusBottomRight: =8
+                                          RadiusTopLeft: =8
+                                          RadiusTopRight: =8
+                                          Size: =11
+                                          Text: |-
+                                            ="JABATAN PLT / RANGKAP" & Char(10) & Coalesce(ThisItem.JabatanPlt, "-") & Char(10) & "UNIT KERJA: " & Coalesce(ThisItem.UnitKerja, "-") & Char(10) & "PERIODE: " & If(IsBlank(ThisItem.PeriodeMulai), "-", Text(ThisItem.PeriodeMulai)) & " — " & If(IsBlank(ThisItem.PeriodeSelesai), "-", Text(ThisItem.PeriodeSelesai)) & Char(10) & "NO. SK: " & Coalesce(ThisItem.NoSK, "-") & Char(10) & "SKOR: " & If(IsBlank(ThisItem.Skor), "-", Text(ThisItem.Skor)) & Char(10) & "CATATAN: " & Coalesce(ThisItem.Catatan, "-")
+                                          Visible: =S2_ProfilPegawai.Size <= ScreenSize.Medium
+                                          Width: =Parent.TemplateWidth
+                                          X: =0
+                                          Y: =0
                               - PltRow1:
                                   Control: GroupContainer@1.5.0
                                   Variant: AutoLayout

@@ -202,9 +202,9 @@ Screens:
                 Properties:
                   DropShadow: =DropShadow.Regular
                   Fill: =RGBA(35, 48, 108, 1)
-                  Height: =If(Parent.Width < 760, 430, 270)
+                  Height: =If(Parent.Width < 760, 500, 270)
                   LayoutDirection: =If(Parent.Width < 760, LayoutDirection.Vertical, LayoutDirection.Horizontal)
-                  LayoutMinHeight: =If(Parent.Width < 760, 430, 270)
+                  LayoutMinHeight: =If(Parent.Width < 760, 500, 270)
                   RadiusBottomLeft: =12
                   RadiusBottomRight: =12
                   RadiusTopLeft: =12
@@ -218,7 +218,7 @@ Screens:
                         DropShadow: =DropShadow.None
                         Fill: =RGBA(35, 48, 108, 1)
                         FillPortions: =If(Parent.Width < 760, 0, 1)
-                        Height: =If(Parent.Width < 760, 210, Parent.Height)
+                        Height: =If(Parent.Width < 760, 280, Parent.Height)
                         LayoutDirection: =LayoutDirection.Vertical
                         LayoutGap: =14
                         LayoutJustifyContent: =LayoutJustifyContent.Center
@@ -720,10 +720,10 @@ Screens:
                   BorderColor: =RGBA(235, 240, 246, 1)
                   DropShadow: =DropShadow.Regular
                   Fill: =RGBA(255, 255, 255, 1)
-                  Height: =
+                  Height: =If(Self.Width - Self.PaddingLeft - Self.PaddingRight < 600, 506, If(Self.Width - Self.PaddingLeft - Self.PaddingRight < 900, 284, If(Self.Width - Self.PaddingLeft - Self.PaddingRight < 1200, 210, 136)))
                   LayoutDirection: =LayoutDirection.Vertical
                   LayoutGap: =14
-                  LayoutMinHeight: =If(Self.Width - Self.PaddingLeft - Self.PaddingRight < 900, 328, If(Self.Width - Self.PaddingLeft - Self.PaddingRight < 1200, 228, 136))
+                  LayoutMinHeight: =If(Self.Width - Self.PaddingLeft - Self.PaddingRight < 600, 506, If(Self.Width - Self.PaddingLeft - Self.PaddingRight < 900, 284, If(Self.Width - Self.PaddingLeft - Self.PaddingRight < 1200, 210, 136)))
                   PaddingBottom: =18
                   PaddingLeft: =18
                   PaddingRight: =18
@@ -749,10 +749,10 @@ Screens:
                       Variant: AutoLayout
                       Properties:
                         DropShadow: =DropShadow.None
-                        Height: =If(Self.Width < 900, 252, If(Self.Width < 1200, 156, 62))
+                        Height: =If(Self.Width < 600, 432, If(Self.Width < 900, 210, If(Self.Width < 1200, 136, 62)))
                         LayoutDirection: =LayoutDirection.Horizontal
                         LayoutGap: =12
-                        LayoutMinHeight: =If(Self.Width < 900, 252, If(Self.Width < 1200, 156, 62))
+                        LayoutMinHeight: =If(Self.Width < 600, 432, If(Self.Width < 900, 210, If(Self.Width < 1200, 136, 62)))
                         LayoutWrap: =true
                       Children:
                         - BtnProfilPegawai_2:

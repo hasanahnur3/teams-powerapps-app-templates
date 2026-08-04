@@ -480,20 +480,39 @@ Screens:
                                   Properties:
                                     AccessibleLabel: =Parent.DisplayName
                                     DefaultSelectedItems: |-
-                                      =If(
-                                          IsBlank(Parent.Default),
-                                          Blank(),
-                                          Filter(
-                                              ForAll(Pegawai, {Value: Nama, NIP: Title}),
-                                              NIP = Parent.Default
+                                      =With(
+                                          {
+                                              managerNIP: Text(Parent.Default),
+                                              managerName: LookUp(
+                                                  Pegawai,
+                                                  Title = Text(Parent.Default),
+                                                  Nama
+                                              )
+                                          },
+                                          If(
+                                              IsBlank(managerNIP),
+                                              Blank(),
+                                              Table(
+                                                  {
+                                                      Value: Coalesce(managerName, "Line Manager tidak ditemukan"),
+                                                      NIP: managerNIP
+                                                  }
+                                              )
                                           )
                                       )
                                     DisplayMode: =Parent.DisplayMode
                                     InputTextPlaceholder: ="Pilih Line Manager"
                                     Items: |-
-                                      =ForAll(
-                                          Pegawai,
-                                          {Value: Nama, NIP: Title}
+                                      =SortByColumns(
+                                          ForAll(
+                                              Filter(Pegawai, !IsBlank(Nama)),
+                                              {
+                                                  Value: Nama,
+                                                  NIP: Text(Title)
+                                              }
+                                          ),
+                                          "Value",
+                                          SortOrder.Ascending
                                       )
                                     Required: =Parent.Required
                                     ValidationState: =If(IsBlank(Parent.Error), "None", "Error")
