@@ -1,0 +1,1278 @@
+Screens:
+  S1_Homepage:
+    Properties:
+      Fill: =RGBA(242, 246, 250, 1)
+      LoadingSpinnerColor: =RGBA(35, 48, 108, 1)
+      OnVisible: |-
+        =If(
+            IsEmpty(colNonFormNavigationHistory) ||
+            Last(colNonFormNavigationHistory).ScreenName <> App.ActiveScreen.Name,
+            Collect(
+                colNonFormNavigationHistory,
+                {
+                    ScreenName: App.ActiveScreen.Name,
+                    ScreenRef: App.ActiveScreen
+                }
+            )
+        );
+        UpdateContext({locShowDevelopmentWarning: false})
+    Children:
+      - TopBar_2:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            DropShadow: =DropShadow.None
+            Fill: =RGBA(35, 48, 108, 1)
+            Height: =52
+            LayoutAlignItems: =LayoutAlignItems.Center
+            LayoutDirection: =LayoutDirection.Horizontal
+            LayoutGap: =12
+            PaddingBottom: =6
+            PaddingLeft: =24
+            PaddingRight: =24
+            PaddingTop: =6
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Width: =Parent.Width
+          Children:
+            - TopBarLogo_1:
+                Control: Image@2.2.3
+                Properties:
+                  BorderStyle: =BorderStyle.None
+                  Height: =32
+                  Image: =test
+                  RadiusBottomLeft: =6
+                  RadiusBottomRight: =6
+                  RadiusTopLeft: =6
+                  RadiusTopRight: =6
+                  Width: =32
+            - LblTitle_2:
+                Control: ModernText@1.0.0
+                Properties:
+                  Color: =RGBA(255, 255, 255, 1)
+                  FillPortions: =1
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Bold
+                  Height: =40
+                  Text: ="MyCareerApp"
+            - TopBarYear_1:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: =Align.Center
+                  Color: =RGBA(255, 255, 255, 1)
+                  Fill: =RGBA(56, 83, 142, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =28
+                  RadiusBottomLeft: =14
+                  RadiusBottomRight: =14
+                  RadiusTopLeft: =14
+                  RadiusTopRight: =14
+                  Size: =11
+                  Text: ="DPID - " & Year(Today())
+                  Width: =116
+            - TopBarUserAvatar_1:
+                Control: Image@2.2.3
+                Properties:
+                  BorderColor: =RGBA(0, 0, 0, 0)
+                  BorderStyle: =BorderStyle.None
+                  Fill: =RGBA(250, 176, 5, 1)
+                  Height: =32
+                  Image: |-
+                    =With(
+                        {
+                            currentEmployee: LookUp(
+                                Pegawai,
+                                Title = Text(gblCurrentNIP)
+                            )
+                        },
+                        If(
+                            IsBlank(currentEmployee.Email),
+                            User().Image,
+                            IfError(
+                                Office365Users.UserPhotoV2(currentEmployee.Email),
+                                User().Image
+                            )
+                        )
+                    )
+                  ImagePosition: =ImagePosition.Fill
+                  RadiusBottomLeft: =16
+                  RadiusBottomRight: =16
+                  RadiusTopLeft: =16
+                  RadiusTopRight: =16
+                  Width: =32
+            - TopBarUserName_1:
+                Control: ModernText@1.0.0
+                Properties:
+                  AutoHeight: =true
+                  Color: =RGBA(255, 255, 255, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =34
+                  Size: =11
+                  Text: =Coalesce(LookUp(Pegawai, Title = Text(gblCurrentNIP), Nama), "Pegawai")
+                  Width: =If(Parent.Width < 720, 0, 150)
+      - TopBarShadow_2:
+          Control: Rectangle@2.3.0
+          Properties:
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =0
+            Width: =Parent.Width
+            Y: =52
+      - ContentArea_2:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            Height: =Parent.Height - 52
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =18
+            LayoutOverflowY: =LayoutOverflow.Scroll
+            PaddingBottom: =28
+            PaddingLeft: =If(Parent.Width < 900, 16, 40)
+            PaddingRight: =If(Parent.Width < 900, 16, 40)
+            PaddingTop: =24
+            Width: =Parent.Width
+            Y: =52
+          Children:
+            - DevelopmentWarningBanner_2:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  BorderColor: =RGBA(161, 98, 7, 1)
+                  BorderThickness: =1
+                  Fill: =RGBA(255, 244, 206, 1)
+                  FillPortions: =0
+                  Height: =64
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutGap: =12
+                  LayoutMinHeight: =64
+                  PaddingBottom: =12
+                  PaddingLeft: =16
+                  PaddingRight: =12
+                  PaddingTop: =12
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                  Visible: =Coalesce(locShowDevelopmentWarning, false)
+                  Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                Children:
+                  - DevelopmentWarningIcon_2:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(161, 98, 7, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        Size: =20
+                        Text: ="⚠"
+                        Width: =36
+                  - DevelopmentWarningText_2:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Color: =RGBA(122, 70, 0, 1)
+                        FillPortions: =1
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Semibold
+                        Height: =40
+                        Size: =13
+                        Text: ="Fitur Dalam Development"
+                  - BtnCloseDevelopmentWarning_2:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AccessibleLabel: ="Tutup peringatan"
+                        Align: =Align.Center
+                        Color: =RGBA(122, 70, 0, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        OnSelect: |-
+                          =UpdateContext({locShowDevelopmentWarning: false})
+                        Size: =18
+                        Text: ="×"
+                        Width: =40
+            - HeroDashboard_1:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.Regular
+                  Fill: =RGBA(35, 48, 108, 1)
+                  Height: =If(Parent.Width < 760, 500, 270)
+                  LayoutDirection: =If(Parent.Width < 760, LayoutDirection.Vertical, LayoutDirection.Horizontal)
+                  LayoutMinHeight: =If(Parent.Width < 760, 500, 270)
+                  RadiusBottomLeft: =12
+                  RadiusBottomRight: =12
+                  RadiusTopLeft: =12
+                  RadiusTopRight: =12
+                  Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                Children:
+                  - HeroCopy_1:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Fill: =RGBA(35, 48, 108, 1)
+                        FillPortions: =If(Parent.Width < 760, 0, 1)
+                        Height: =If(Parent.Width < 760, 280, Parent.Height)
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =14
+                        LayoutJustifyContent: =LayoutJustifyContent.Center
+                        PaddingBottom: =28
+                        PaddingLeft: =32
+                        PaddingRight: =28
+                        PaddingTop: =28
+                        Width: =If(Parent.Width < 760, Parent.Width, 420)
+                      Children:
+                        - HeroEyebrow_1:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(210, 225, 255, 1)
+                              Fill: =RGBA(56, 83, 142, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              PaddingLeft: =10
+                              PaddingRight: =10
+                              RadiusBottomLeft: =14
+                              RadiusBottomRight: =14
+                              RadiusTopLeft: =14
+                              RadiusTopRight: =14
+                              Size: =10
+                              Text: ="Portal Pengembangan Karier"
+                              Width: =210
+                        - HeroTitle_1:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(255, 255, 255, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Size: =If(Parent.Width < 380, 22, 26)
+                              Text: ="Selamat datang," & Char(10) & Coalesce(LookUp(Pegawai, Title = Text(gblCurrentNIP), Nama), "Pegawai") & "."
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                        - HeroSubtitle_1:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(214, 223, 238, 1)
+                              Font: =Font.'Open Sans'
+                              Size: =12
+                              Text: ="Pantau profil, performance review, IDP, mentoring, dan coaching dalam satu dashboard terintegrasi."
+                              Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+                  - HeroVisual_1:
+                      Control: GroupContainer@1.5.0
+                      Variant: ManualLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Fill: =RGBA(218, 236, 250, 1)
+                        FillPortions: =If(Parent.Width < 760, 0, 1)
+                        Height: =If(Parent.Width < 760, 220, Parent.Height)
+                        LayoutMinHeight: =220
+                        Width: =If(Parent.Width < 760, Parent.Width, 480)
+                      Children:
+                        - HeroLeadershipImage:
+                            Control: Image@2.2.3
+                            Properties:
+                              BorderColor: =RGBA(0, 0, 0, 0)
+                              BorderStyle: =BorderStyle.None
+                              DisabledBorderColor: =RGBA(0, 0, 0, 0)
+                              DisabledFill: =RGBA(0, 0, 0, 0)
+                              Fill: =RGBA(218, 236, 250, 1)
+                              Height: =Parent.Height
+                              HoverBorderColor: =RGBA(0, 0, 0, 0)
+                              HoverFill: =RGBA(0, 0, 0, 0)
+                              Image: ='Generated image 1'
+                              ImagePosition: =ImagePosition.Fill
+                              PressedBorderColor: =RGBA(0, 0, 0, 0)
+                              PressedFill: =RGBA(0, 0, 0, 0)
+                              Width: =Parent.Width
+            - CardStatus_2:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  BorderColor: =RGBA(235, 240, 246, 1)
+                  DropShadow: =DropShadow.Regular
+                  Fill: =RGBA(255, 255, 255, 1)
+                  Height: =If(Parent.Width < 620, 348, 170)
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =12
+                  LayoutMinHeight: =If(Parent.Width < 620, 348, 170)
+                  PaddingBottom: =18
+                  PaddingLeft: =18
+                  PaddingRight: =18
+                  PaddingTop: =18
+                  RadiusBottomLeft: =12
+                  RadiusBottomRight: =12
+                  RadiusTopLeft: =12
+                  RadiusTopRight: =12
+                Children:
+                  - StatusTitle_2:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =RGBA(35, 48, 108, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =24
+                        Size: =12
+                        Text: ="RINGKASAN KAMU"
+                  - StatusItemsRow_2:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Height: =If(Parent.Width < 588, 264, 80)
+                        LayoutAlignItems: =LayoutAlignItems.Stretch
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutMinHeight: =If(Parent.Width < 588, 264, 80)
+                        LayoutWrap: =true
+                      Children:
+                        - StatusItem1_2:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =If(Parent.Width < 588, 0, 1)
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =80
+                              LayoutMinWidth: =If(Parent.Width < 588, (Parent.Width - 12) / 2, 140)
+                              PaddingBottom: =12
+                              PaddingLeft: =12
+                              PaddingRight: =12
+                              PaddingTop: =12
+                              Width: =If(Parent.Width < 588, (Parent.Width - 12) / 2, 140)
+                            Children:
+                              - St1Label_2:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    Size: =11
+                                    Text: ="Performance Review 1"
+                              - St1Badge_2:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: |-
+                                      =With(
+                                          {
+                                              pr1ID: LookUp(
+                                                  PerformanceReview,
+                                                  NIP = Text(gblCurrentNIP) && Tahun = Year(Today()) && Text(Semester.Value) = "1",
+                                                  ID
+                                              )
+                                          },
+                                          If(
+                                              Month(Today()) > 6,
+                                              RGBA(96, 94, 92, 1),
+                                              If(IsBlank(pr1ID), RGBA(122, 70, 0, 1), RGBA(16, 124, 16, 1))
+                                          )
+                                      )
+                                    Fill: |-
+                                      =With(
+                                          {
+                                              pr1ID: LookUp(
+                                                  PerformanceReview,
+                                                  NIP = Text(gblCurrentNIP) && Tahun = Year(Today()) && Text(Semester.Value) = "1",
+                                                  ID
+                                              )
+                                          },
+                                          If(
+                                              Month(Today()) > 6,
+                                              RGBA(243, 242, 241, 1),
+                                              If(IsBlank(pr1ID), RGBA(255, 244, 206, 1), RGBA(223, 246, 221, 1))
+                                          )
+                                      )
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =28
+                                    PaddingBottom: =4
+                                    PaddingLeft: =10
+                                    PaddingRight: =10
+                                    PaddingTop: =4
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =11
+                                    Text: |-
+                                      =With(
+                                          {
+                                              pr1ID: LookUp(
+                                                  PerformanceReview,
+                                                  NIP = Text(gblCurrentNIP) && Tahun = Year(Today()) && Text(Semester.Value) = "1",
+                                                  ID
+                                              )
+                                          },
+                                          If(
+                                              Month(Today()) <= 6,
+                                              If(IsBlank(pr1ID), "Perlu Diisi", "Sudah Diisi"),
+                                              "Sudah Berakhir"
+                                          )
+                                      )
+                        - StatusItem2_2:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =If(Parent.Width < 588, 0, 1)
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =80
+                              LayoutMinWidth: =If(Parent.Width < 588, (Parent.Width - 12) / 2, 140)
+                              PaddingBottom: =12
+                              PaddingLeft: =12
+                              PaddingRight: =12
+                              PaddingTop: =12
+                              Width: =If(Parent.Width < 588, (Parent.Width - 12) / 2, 140)
+                            Children:
+                              - St2Label_2:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    Size: =11
+                                    Text: ="Performance Review 2"
+                              - St2Badge_2:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: |-
+                                      =With(
+                                          {
+                                              pr2ID: LookUp(
+                                                  PerformanceReview,
+                                                  NIP = Text(gblCurrentNIP) && Tahun = Year(Today()) && Text(Semester.Value) = "2",
+                                                  ID
+                                              )
+                                          },
+                                          If(
+                                              Or(Month(Today()) < 7, Month(Today()) > 10),
+                                              RGBA(96, 94, 92, 1),
+                                              If(IsBlank(pr2ID), RGBA(122, 70, 0, 1), RGBA(16, 124, 16, 1))
+                                          )
+                                      )
+                                    Fill: |-
+                                      =With(
+                                          {
+                                              pr2ID: LookUp(
+                                                  PerformanceReview,
+                                                  NIP = Text(gblCurrentNIP) && Tahun = Year(Today()) && Text(Semester.Value) = "2",
+                                                  ID
+                                              )
+                                          },
+                                          If(
+                                              Or(Month(Today()) < 7, Month(Today()) > 10),
+                                              RGBA(243, 242, 241, 1),
+                                              If(IsBlank(pr2ID), RGBA(255, 244, 206, 1), RGBA(223, 246, 221, 1))
+                                          )
+                                      )
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =28
+                                    PaddingBottom: =4
+                                    PaddingLeft: =10
+                                    PaddingRight: =10
+                                    PaddingTop: =4
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =11
+                                    Text: |-
+                                      =With(
+                                          {
+                                              pr2ID: LookUp(
+                                                  PerformanceReview,
+                                                  NIP = Text(gblCurrentNIP) && Tahun = Year(Today()) && Text(Semester.Value) = "2",
+                                                  ID
+                                              )
+                                          },
+                                          If(
+                                              Month(Today()) < 7,
+                                              "Belum Dimulai",
+                                              If(
+                                                  Month(Today()) > 10,
+                                                  "Sudah Berakhir",
+                                                  If(IsBlank(pr2ID), "Perlu Diisi", "Sudah Diisi")
+                                              )
+                                          )
+                                      )
+                        - StatusItem3_2:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =If(Parent.Width < 588, 0, 1)
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =80
+                              LayoutMinWidth: =If(Parent.Width < 588, (Parent.Width - 12) / 2, 140)
+                              PaddingBottom: =12
+                              PaddingLeft: =12
+                              PaddingRight: =12
+                              PaddingTop: =12
+                              Width: =If(Parent.Width < 588, (Parent.Width - 12) / 2, 140)
+                            Children:
+                              - St3Label_2:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    Size: =11
+                                    Text: ="Performance Review 3"
+                              - St3Badge_2:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: |-
+                                      =With(
+                                          {
+                                              pr3ID: LookUp(
+                                                  PerformanceReview,
+                                                  NIP = Text(gblCurrentNIP) && Tahun = Year(Today()) && Text(Semester.Value) = "3",
+                                                  ID
+                                              )
+                                          },
+                                          If(
+                                              Month(Today()) < 11,
+                                              RGBA(96, 94, 92, 1),
+                                              If(IsBlank(pr3ID), RGBA(122, 70, 0, 1), RGBA(16, 124, 16, 1))
+                                          )
+                                      )
+                                    Fill: |-
+                                      =With(
+                                          {
+                                              pr3ID: LookUp(
+                                                  PerformanceReview,
+                                                  NIP = Text(gblCurrentNIP) && Tahun = Year(Today()) && Text(Semester.Value) = "3",
+                                                  ID
+                                              )
+                                          },
+                                          If(
+                                              Month(Today()) < 11,
+                                              RGBA(243, 242, 241, 1),
+                                              If(IsBlank(pr3ID), RGBA(255, 244, 206, 1), RGBA(223, 246, 221, 1))
+                                          )
+                                      )
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =28
+                                    PaddingBottom: =4
+                                    PaddingLeft: =10
+                                    PaddingRight: =10
+                                    PaddingTop: =4
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =11
+                                    Text: |-
+                                      =With(
+                                          {
+                                              pr3ID: LookUp(
+                                                  PerformanceReview,
+                                                  NIP = Text(gblCurrentNIP) && Tahun = Year(Today()) && Text(Semester.Value) = "3",
+                                                  ID
+                                              )
+                                          },
+                                          If(
+                                              Month(Today()) < 11,
+                                              "Belum Dimulai",
+                                              If(IsBlank(pr3ID), "Perlu Diisi", "Sudah Diisi")
+                                          )
+                                      )
+                        - StatusItem4_2:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =If(Parent.Width < 588, 0, 1)
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =80
+                              LayoutMinWidth: =If(Parent.Width < 588, (Parent.Width - 12) / 2, 140)
+                              PaddingBottom: =12
+                              PaddingLeft: =12
+                              PaddingRight: =12
+                              PaddingTop: =12
+                              Width: =If(Parent.Width < 588, (Parent.Width - 12) / 2, 140)
+                            Children:
+                              - St4Label_2:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    Size: =11
+                                    Text: ="Coaching Karir Terakhir"
+                              - St4Badge_2:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(16, 124, 16, 1)
+                                    Fill: =RGBA(223, 246, 221, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =28
+                                    PaddingBottom: =4
+                                    PaddingLeft: =10
+                                    PaddingRight: =10
+                                    PaddingTop: =4
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =11
+                                    Text: |-
+                                      =With(
+                                          {
+                                              lastCK: First(
+                                                  SortByColumns(
+                                                      Filter(CoachingKarir, MenteeNIP = Text(gblCurrentNIP)),
+                                                      "Tanggal",
+                                                      SortOrder.Descending
+                                                  )
+                                              )
+                                          },
+                                          If(
+                                              IsBlank(lastCK.Tanggal),
+                                              "-",
+                                              IfError(
+                                                  Text(lastCK.Tanggal, "[$-id-ID]mmmm yyyy"),
+                                                  Text(Date(1899, 12, 30) + Value(lastCK.Tanggal), "[$-id-ID]mmmm yyyy")
+                                              )
+                                          )
+                                      )
+                        - StatusItem5_2:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =If(Parent.Width < 588, 0, 1)
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutGap: =6
+                              LayoutMinHeight: =80
+                              LayoutMinWidth: =If(Parent.Width < 588, (Parent.Width - 12) / 2, 140)
+                              PaddingBottom: =12
+                              PaddingLeft: =12
+                              PaddingRight: =12
+                              PaddingTop: =12
+                              Width: =If(Parent.Width < 588, (Parent.Width - 12) / 2, 140)
+                            Children:
+                              - St5Label_2:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    AutoHeight: =true
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    Size: =11
+                                    Text: ="IDP " & Year(Today())
+                              - St5Badge_2:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: |-
+                                      =If(
+                                          CountRows(Filter(IDP, NIP = Text(gblCurrentNIP) && Tahun = Year(Today()))) = 0,
+                                          RGBA(122, 70, 0, 1),
+                                          RGBA(0, 78, 140, 1)
+                                      )
+                                    Fill: |-
+                                      =If(
+                                          CountRows(Filter(IDP, NIP = Text(gblCurrentNIP) && Tahun = Year(Today()))) = 0,
+                                          RGBA(255, 244, 206, 1),
+                                          RGBA(222, 236, 249, 1)
+                                      )
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =28
+                                    PaddingBottom: =4
+                                    PaddingLeft: =10
+                                    PaddingRight: =10
+                                    PaddingTop: =4
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =11
+                                    Text: =CountRows(Filter(IDP, NIP = Text(gblCurrentNIP) && Tahun = Year(Today()))) & " item"
+            - ServicesTitle_1:
+                Control: ModernText@1.0.0
+                Properties:
+                  Align: =Align.Center
+                  AutoHeight: =true
+                  Color: =RGBA(135, 149, 166, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Bold
+                  Size: =10
+                  Text: ="LAYANAN TERSEDIA"
+                  Width: =Parent.Width - Parent.PaddingLeft - Parent.PaddingRight
+            - CardPegawai_2:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  BorderColor: =RGBA(235, 240, 246, 1)
+                  DropShadow: =DropShadow.Regular
+                  Fill: =RGBA(255, 255, 255, 1)
+                  Height: =If(Self.Width - Self.PaddingLeft - Self.PaddingRight < 600, 506, If(Self.Width - Self.PaddingLeft - Self.PaddingRight < 900, 284, If(Self.Width - Self.PaddingLeft - Self.PaddingRight < 1200, 210, 136)))
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =14
+                  LayoutMinHeight: =If(Self.Width - Self.PaddingLeft - Self.PaddingRight < 600, 506, If(Self.Width - Self.PaddingLeft - Self.PaddingRight < 900, 284, If(Self.Width - Self.PaddingLeft - Self.PaddingRight < 1200, 210, 136)))
+                  PaddingBottom: =18
+                  PaddingLeft: =18
+                  PaddingRight: =18
+                  PaddingTop: =18
+                  RadiusBottomLeft: =12
+                  RadiusBottomRight: =12
+                  RadiusTopLeft: =12
+                  RadiusTopRight: =12
+                  Visible: =LookUp(Pegawai, Title = Text(gblCurrentNIP), IsPegawai)
+                Children:
+                  - LblMenuPegawai_2:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =RGBA(35, 48, 108, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =24
+                        Size: =11
+                        Text: ="MENU PEGAWAI"
+                  - BtnRowPegawai_2:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Height: =If(Self.Width < 600, 432, If(Self.Width < 900, 210, If(Self.Width < 1200, 136, 62)))
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutMinHeight: =If(Self.Width < 600, 432, If(Self.Width < 900, 210, If(Self.Width < 1200, 136, 62)))
+                        LayoutWrap: =true
+                      Children:
+                        - BtnProfilPegawai_2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(220, 230, 242, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              Color: =RGBA(35, 48, 108, 1)
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =62
+                              LayoutMinWidth: =If(Parent.Width < 1200, 280, 170)
+                              OnSelect: |-
+                                =Set(gblPimpinanView, false);
+                                Set(gblSubjectNIP, Blank());
+                                Navigate(S2_ProfilPegawai, ScreenTransition.Fade)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =12
+                              Text: ="Profil Pegawai  >"
+                        - BtnMentoring_2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(200, 198, 196, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              Color: =RGBA(96, 94, 92, 1)
+                              Fill: =RGBA(225, 223, 221, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =62
+                              LayoutMinWidth: =If(Parent.Width < 1200, 280, 170)
+                              OnSelect: |-
+                                =UpdateContext({locShowDevelopmentWarning: true})
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =12
+                              Text: ="Mentoring"
+                              Visible: =false
+                        - BtnLearningPath:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(220, 230, 242, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              Color: =RGBA(35, 48, 108, 1)
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =62
+                              LayoutMinWidth: =If(Parent.Width < 1200, 280, 170)
+                              OnSelect: |-
+                                =Set(gblPimpinanView, false);
+                                Set(gblSubjectNIP, Blank());
+                                Launch("https://bankindonesiagov.sharepoint.com/:x:/s/DepartemenPengembangandanInovasiDigital-KPPD-SQUAD/IQCju-5aHSpoQrnJF3ABMZofASjG3RdExDRphleisWGoaQw")
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =12
+                              Text: ="Learning Path  >"
+                        - BtnPerformanceReview_2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(220, 230, 242, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              Color: =RGBA(35, 48, 108, 1)
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =62
+                              LayoutMinWidth: =If(Parent.Width < 1200, 280, 170)
+                              OnSelect: =Navigate(S3A_PR_List, ScreenTransition.Fade)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =12
+                              Text: ="Performance Review  >"
+                        - BtnCoachingKarir_2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(220, 230, 242, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              Color: =RGBA(35, 48, 108, 1)
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =62
+                              LayoutMinWidth: =If(Parent.Width < 1200, 280, 170)
+                              OnSelect: |-
+                                =Set(gblPimpinanView, false);
+                                Navigate(S9A_CoachingKarir_Mentee_List, ScreenTransition.Fade)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =12
+                              Text: ="Coaching Karir  >"
+                              Visible: =false
+                        - BtnCoachingTematik_2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(200, 198, 196, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              Color: =RGBA(96, 94, 92, 1)
+                              Fill: =RGBA(225, 223, 221, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =62
+                              LayoutMinWidth: =If(Parent.Width < 1200, 280, 170)
+                              OnSelect: |-
+                                =UpdateContext({locShowDevelopmentWarning: true})
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =12
+                              Text: ="Coaching Tematik"
+                              Visible: =false
+                        - BtnIDP_2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(220, 230, 242, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              Color: =RGBA(35, 48, 108, 1)
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =62
+                              LayoutMinWidth: =If(Parent.Width < 1200, 280, 170)
+                              OnSelect: |-
+                                =Set(gblPimpinanView, false);
+                                Set(gblLineManagerView, false);
+                                Navigate(S5A_IDP_View, ScreenTransition.Fade)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =12
+                              Text: ="IDP  >"
+            - CardLM_2:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  BorderColor: =RGBA(235, 240, 246, 1)
+                  DropShadow: =DropShadow.Regular
+                  Fill: =RGBA(255, 255, 255, 1)
+                  Height: =If(Parent.Width < 760, 284, 136)
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =14
+                  LayoutMinHeight: =If(Parent.Width < 760, 284, 136)
+                  PaddingBottom: =18
+                  PaddingLeft: =18
+                  PaddingRight: =18
+                  PaddingTop: =18
+                  RadiusBottomLeft: =12
+                  RadiusBottomRight: =12
+                  RadiusTopLeft: =12
+                  RadiusTopRight: =12
+                  Visible: =LookUp(Pegawai, Title = Text(gblCurrentNIP), IsLineManager)
+                Children:
+                  - LblMenuLM_2:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =RGBA(35, 48, 108, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =24
+                        Size: =11
+                        Text: ="MENU LINE MANAGER"
+                  - BtnRowLM_2:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Height: =If(Parent.Width < 760, 210, 62)
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutMinHeight: =If(Parent.Width < 760, 210, 62)
+                        LayoutWrap: =true
+                      Children:
+                        - BtnLMIDPTim_2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(220, 230, 242, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              Color: =RGBA(35, 48, 108, 1)
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =62
+                              LayoutMinWidth: =170
+                              OnSelect: =Navigate(S5C_IDP_LM_List, ScreenTransition.Fade)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =12
+                              Text: ="IDP Tim  >"
+                        - BtnLMPerformanceReview_2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(220, 230, 242, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              Color: =RGBA(35, 48, 108, 1)
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =62
+                              LayoutMinWidth: =170
+                              OnSelect: =Navigate(S3D_PR_LM_List, ScreenTransition.Fade)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =12
+                              Text: ="Performance Review  >"
+                        - BtnLMProfilIndikatorWarna_2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(220, 230, 242, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              Color: =RGBA(35, 48, 108, 1)
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =62
+                              LayoutMinWidth: =170
+                              OnSelect: =Navigate(S14_Coach_IndikatorWarnaProfil, ScreenTransition.Fade)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =12
+                              Text: ="Profil Indikator Warna  >"
+            - CardMentor_2:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  BorderColor: =RGBA(235, 240, 246, 1)
+                  DropShadow: =DropShadow.Regular
+                  Fill: =RGBA(255, 255, 255, 1)
+                  Height: =If(Parent.Width < 760, 284, 136)
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =14
+                  LayoutMinHeight: =If(Parent.Width < 760, 284, 136)
+                  PaddingBottom: =18
+                  PaddingLeft: =18
+                  PaddingRight: =18
+                  PaddingTop: =18
+                  RadiusBottomLeft: =12
+                  RadiusBottomRight: =12
+                  RadiusTopLeft: =12
+                  RadiusTopRight: =12
+                  Visible: =LookUp(Pegawai, Title = Text(gblCurrentNIP), IsCoach)
+                Children:
+                  - LblMenuMentor_2:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =RGBA(35, 48, 108, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =24
+                        Size: =11
+                        Text: ="MENU MENTOR"
+                  - BtnRowMentor_2:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Height: =If(Parent.Width < 760, 210, 62)
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutMinHeight: =If(Parent.Width < 760, 210, 62)
+                        LayoutWrap: =true
+                      Children:
+                        - BtnMentorCoachingKarir_2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(220, 230, 242, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              Color: =RGBA(35, 48, 108, 1)
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =62
+                              LayoutMinWidth: =170
+                              OnSelect: =Navigate(S9A_CoachingKarir_Coach_List, ScreenTransition.Fade)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =12
+                              Text: ="Coaching Karir  >"
+                        - BtnMentorCoachingTematik_2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(200, 198, 196, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              Color: =RGBA(96, 94, 92, 1)
+                              Fill: =RGBA(225, 223, 221, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =62
+                              LayoutMinWidth: =170
+                              OnSelect: |-
+                                =UpdateContext({locShowDevelopmentWarning: true})
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =12
+                              Text: ="Coaching Tematik"
+                        - BtnCoachProfilIndikatorWarna_2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(220, 230, 242, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              Color: =RGBA(35, 48, 108, 1)
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =62
+                              LayoutMinWidth: =170
+                              OnSelect: =Navigate(S14_Coach_IndikatorWarnaProfil, ScreenTransition.Fade)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =12
+                              Text: ="Profil Indikator Warna  >"
+            - CardPimpinan_2:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  BorderColor: =RGBA(235, 240, 246, 1)
+                  DropShadow: =DropShadow.Regular
+                  Fill: =RGBA(255, 255, 255, 1)
+                  Height: =210
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =14
+                  LayoutMinHeight: =210
+                  PaddingBottom: =18
+                  PaddingLeft: =18
+                  PaddingRight: =18
+                  PaddingTop: =18
+                  RadiusBottomLeft: =12
+                  RadiusBottomRight: =12
+                  RadiusTopLeft: =12
+                  RadiusTopRight: =12
+                  Visible: =LookUp(Pegawai, Title = Text(gblCurrentNIP), IsPimpinan)
+                Children:
+                  - LblMenuPimpinan_2:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =RGBA(35, 48, 108, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =24
+                        Size: =11
+                        Text: ="MENU PIMPINAN"
+                  - BtnRowPimpinan_2:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Height: =136
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutMinHeight: =136
+                        LayoutWrap: =true
+                      Children:
+                        - BtnPimpinanDaftarPegawai_2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(220, 230, 242, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              Color: =RGBA(35, 48, 108, 1)
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =62
+                              LayoutMinWidth: =170
+                              OnSelect: =Navigate(S11_Pimpinan_DaftarPegawai, ScreenTransition.Fade)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =12
+                              Text: ="Daftar Pegawai  >"
+                        - BtnPimpinanMonitoringPRIDP_2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(220, 230, 242, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              Color: =RGBA(35, 48, 108, 1)
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =62
+                              LayoutMinWidth: =170
+                              OnSelect: =Navigate(S13_AdminPimpinan_PR_IDP_Monitoring, ScreenTransition.Fade)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =12
+                              Text: ="Monitoring Pegawai  >"
+            - CardAdmin_2:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  BorderColor: =RGBA(235, 240, 246, 1)
+                  DropShadow: =DropShadow.Regular
+                  Fill: =RGBA(255, 255, 255, 1)
+                  Height: =136
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =14
+                  LayoutMinHeight: =136
+                  PaddingBottom: =18
+                  PaddingLeft: =18
+                  PaddingRight: =18
+                  PaddingTop: =18
+                  RadiusBottomLeft: =12
+                  RadiusBottomRight: =12
+                  RadiusTopLeft: =12
+                  RadiusTopRight: =12
+                  Visible: =LookUp(Pegawai, Title = Text(gblCurrentNIP), IsAdmin)
+                Children:
+                  - LblMenuAdmin_2:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AutoHeight: =true
+                        Color: =RGBA(35, 48, 108, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =24
+                        Size: =11
+                        Text: ="MENU ADMIN"
+                  - BtnRowAdmin_2:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        Height: =62
+                        LayoutDirection: =LayoutDirection.Horizontal
+                        LayoutGap: =12
+                        LayoutMinHeight: =62
+                        LayoutWrap: =true
+                      Children:
+                        - BtnAdminMonitoringPRIDP_2:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              Align: =Align.Center
+                              BorderColor: =RGBA(220, 230, 242, 1)
+                              BorderStyle: =BorderStyle.Solid
+                              BorderThickness: =1
+                              Color: =RGBA(35, 48, 108, 1)
+                              Fill: =RGBA(255, 255, 255, 1)
+                              FillPortions: =1
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Semibold
+                              Height: =62
+                              LayoutMinWidth: =170
+                              OnSelect: =Navigate(S13_AdminPimpinan_PR_IDP_Monitoring, ScreenTransition.Fade)
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Size: =12
+                              Text: ="Monitoring Pegawai  >"

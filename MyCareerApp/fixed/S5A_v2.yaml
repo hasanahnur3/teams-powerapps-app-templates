@@ -1,0 +1,989 @@
+Screens:
+  S5A_IDP_View:
+    Properties:
+      Fill: =RGBA(245, 245, 245, 1)
+      LoadingSpinnerColor: =RGBA(0, 120, 212, 1)
+      OnVisible: |-
+        =If(
+            IsEmpty(colNonFormNavigationHistory) ||
+            Last(colNonFormNavigationHistory).ScreenName <> App.ActiveScreen.Name,
+            Collect(
+                colNonFormNavigationHistory,
+                {
+                    ScreenName: App.ActiveScreen.Name,
+                    ScreenRef: App.ActiveScreen
+                }
+            )
+        );
+        Refresh(CoachingKarir);
+        Refresh(ActionItem);
+        Refresh(IDP)
+    Children:
+      - IDPViewContainer:
+          Control: GroupContainer@1.5.0
+          Variant: AutoLayout
+          Properties:
+            BorderStyle: =BorderStyle.None
+            DropShadow: =DropShadow.None
+            Fill: =RGBA(245, 245, 245, 1)
+            Height: =Parent.Height
+            LayoutAlignItems: =LayoutAlignItems.Stretch
+            LayoutDirection: =LayoutDirection.Vertical
+            LayoutGap: =16
+            PaddingBottom: =16
+            PaddingLeft: =16
+            PaddingRight: =16
+            PaddingTop: =16
+            Width: =Parent.Width
+          Children:
+            - IDPViewTopBar:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  Fill: =RGBA(31, 48, 112, 1)
+                  FillPortions: =0
+                  Height: =75
+                  LayoutAlignItems: =LayoutAlignItems.Center
+                  LayoutDirection: =LayoutDirection.Horizontal
+                  LayoutMinHeight: =75
+                  PaddingBottom: =8
+                  PaddingLeft: =8
+                  PaddingRight: =8
+                  PaddingTop: =8
+                  RadiusBottomLeft: =8
+                  RadiusBottomRight: =8
+                  RadiusTopLeft: =8
+                  RadiusTopRight: =8
+                  Width: =Parent.Width
+                Children:
+                  - BtnBackIDPView:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        AutoHeight: =true
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        OnSelect: |-
+                          =If(
+                              IsMatch(App.ActiveScreen.Name, "form", MatchOptions.IgnoreCase),
+                              If(
+                                  !IsEmpty(colNonFormNavigationHistory),
+                                  Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                  Back()
+                              ),
+                              If(
+                                  CountRows(colNonFormNavigationHistory) > 1,
+                                  Remove(colNonFormNavigationHistory, Last(colNonFormNavigationHistory));
+                                  Navigate(Last(colNonFormNavigationHistory).ScreenRef, ScreenTransition.Fade),
+                                  Back()
+                              )
+                          )
+                        Size: =22
+                        Text: ="‹"
+                        Width: =40
+                  - LblAppNameIDPView:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        FillPortions: =1
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        Size: =18
+                        Text: =If(Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false), Coalesce(LookUp(Pegawai, Title = Text(gblSubjectNIP), Nama), Text(gblSubjectNIP), "-") & " (" & Text(gblSubjectNIP) & ")", "MyCareerApp")
+                  - IDPViewTopBarSpacer:
+                      Control: ModernText@1.0.0
+                      Properties:
+                        AccessibleLabel: ="Kembali ke Homepage"
+                        Align: =Align.Center
+                        Color: =RGBA(255, 255, 255, 1)
+                        Font: =Font.'Open Sans'
+                        FontWeight: =FontWeight.Bold
+                        Height: =40
+                        OnSelect: |-
+                          =Set(gblPimpinanView, false);
+                          Set(gblLineManagerView, false);
+                          Set(gblSubjectNIP, Blank());
+                          Set(gblChecklistAdminView, false);
+                          Clear(colNonFormNavigationHistory);
+                          Navigate(S1_Homepage, ScreenTransition.Fade)
+                        Size: =20
+                        Text: ="⌂"
+                        Width: =40
+            - IDPViewTopBarShadow:
+                Control: Rectangle@2.3.0
+                Properties:
+                  Fill: =RGBA(0, 0, 0, 0)
+                  Height: =0
+                  LayoutMinHeight: =0
+                  Width: =Parent.Width
+            - IDPViewMain:
+                Control: GroupContainer@1.5.0
+                Variant: AutoLayout
+                Properties:
+                  DropShadow: =DropShadow.None
+                  LayoutAlignItems: =LayoutAlignItems.Stretch
+                  LayoutDirection: =LayoutDirection.Vertical
+                  LayoutGap: =18
+                  LayoutMinHeight: =16
+                  LayoutOverflowY: =LayoutOverflow.Scroll
+                  Width: =Parent.Width
+                Children:
+                  - IDPLastCKSection:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =440
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =8
+                        LayoutMinHeight: =440
+                        Width: =Parent.Width
+                      Children:
+                        - LastCKActionTitle:
+                            Control: ModernText@1.0.0
+                            Properties:
+                              AutoHeight: =true
+                              Color: =RGBA(31, 56, 100, 1)
+                              Font: =Font.'Open Sans'
+                              FontWeight: =FontWeight.Bold
+                              Size: =18
+                              Text: ="Action Items Dari Coaching Karir Terakhir"
+                              Width: =Parent.Width
+                        - LastCKActionMetaRow:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =30
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =18
+                              LayoutMinHeight: =30
+                              Width: =Parent.Width
+                            Children:
+                              - LastCKActionMeta:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(80, 80, 80, 1)
+                                    Font: =Font.'Open Sans'
+                                    Height: =30
+                                    Size: =14
+                                    Text: |-
+                                      =With(
+                                          {
+                                              lastCK: First(
+                                                  SortByColumns(
+                                                      Filter(
+                                                          CoachingKarir,
+                                                          MenteeNIP = Text(If(Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false), gblSubjectNIP, gblCurrentNIP))
+                                                      ),
+                                                      "Tanggal",
+                                                      SortOrder.Descending,
+                                                      "ID",
+                                                      SortOrder.Descending
+                                                  )
+                                              )
+                                          },
+                                          If(
+                                              IsBlank(lastCK.ID),
+                                              "Belum ada sesi Coaching Karir.",
+                                              "Sesi " & Text(lastCK.Tanggal, "[$-id-ID]dd mmmm yyyy") &
+                                              " — Mentor: " &
+                                              Coalesce(LookUp(Pegawai, Title = lastCK.MentorNIP, Nama), lastCK.MentorNIP, "-")
+                                          )
+                                      )
+                                    Width: =Min(520, Parent.Width - 140)
+                              - LastCKDetailLink:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(0, 120, 212, 1)
+                                    Font: =Font.'Open Sans'
+                                    Height: =30
+                                    OnSelect: |-
+                                      =With(
+                                          {
+                                              lastCK: First(
+                                                  SortByColumns(
+                                                      Filter(
+                                                          CoachingKarir,
+                                                          MenteeNIP = Text(If(Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false), gblSubjectNIP, gblCurrentNIP))
+                                                      ),
+                                                      "Tanggal",
+                                                      SortOrder.Descending,
+                                                      "ID",
+                                                      SortOrder.Descending
+                                                  )
+                                              )
+                                          },
+                                          If(
+                                              !IsBlank(lastCK.ID),
+                                              Set(gblSelectedCoachingKarir, lastCK);
+                                              Set(gblCoachingKarirListMode, "Mentee");
+                                              Navigate(S9C_CoachingKarir_Detail, ScreenTransition.Fade)
+                                          )
+                                      )
+                                    Size: =14
+                                    Text: ="Lihat detail ›"
+                                    Visible: |-
+                                      =!IsBlank(
+                                          First(
+                                              SortByColumns(
+                                                  Filter(
+                                                      CoachingKarir,
+                                                      MenteeNIP = Text(If(Coalesce(gblPimpinanView, false), gblSubjectNIP, gblCurrentNIP))
+                                                  ),
+                                                  "Tanggal",
+                                                  SortOrder.Descending,
+                                                  "ID",
+                                                  SortOrder.Descending
+                                              )
+                                          ).ID
+                                      )
+                                    Width: =120
+                        - LastCKActionCard:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =RGBA(225, 223, 221, 1)
+                              BorderThickness: =1
+                              DropShadow: =DropShadow.None
+                              Fill: =RGBA(255, 255, 255, 1)
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutMinHeight: =320
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Width: =Parent.Width
+                            Children:
+                              - GalleryLastCKActionItems:
+                                  Control: Gallery@2.15.0
+                                  Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+                                  Properties:
+                                    Fill: =RGBA(255, 255, 255, 1)
+                                    Items: |-
+                                      =With(
+                                          {
+                                              lastCK: First(
+                                                  SortByColumns(
+                                                      Filter(
+                                                          CoachingKarir,
+                                                          MenteeNIP = Text(If(Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false), gblSubjectNIP, gblCurrentNIP))
+                                                      ),
+                                                      "Tanggal",
+                                                      SortOrder.Descending,
+                                                      "ID",
+                                                      SortOrder.Descending
+                                                  )
+                                              )
+                                          },
+                                          If(
+                                              IsBlank(lastCK.ID),
+                                              Filter(ActionItem, false),
+                                              Sort(
+                                                  Filter(ActionItem, CoachingID = lastCK.ID),
+                                                  Title,
+                                                  SortOrder.Ascending
+                                              )
+                                          )
+                                      )
+                                    LayoutMinHeight: =300
+                                    TemplateSize: =112
+                                  Children:
+                                    - LastCKActionDivider:
+                                        Control: Rectangle@2.3.0
+                                        Properties:
+                                          Fill: =RGBA(237, 235, 233, 1)
+                                          Height: =1
+                                          Width: =Parent.TemplateWidth
+                                          Y: =Parent.TemplateHeight - 1
+                                    - LastCKCategoryBadge:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Center
+                                          AutoHeight: =true
+                                          Color: |-
+                                            =Switch(
+                                                ThisItem.Kategori,
+                                                "Pendidikan (PTB)", RGBA(0, 84, 153, 1),
+                                                "Sertifikasi", RGBA(0, 100, 0, 1),
+                                                "Exposure", RGBA(98, 48, 180, 1),
+                                                RGBA(50, 49, 48, 1)
+                                            )
+                                          Fill: |-
+                                            =Switch(
+                                                ThisItem.Kategori,
+                                                "Pendidikan (PTB)", RGBA(222, 236, 249, 1),
+                                                "Sertifikasi", RGBA(218, 242, 208, 1),
+                                                "Exposure", RGBA(239, 224, 255, 1),
+                                                RGBA(245, 245, 245, 1)
+                                            )
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =26
+                                          RadiusBottomLeft: =14
+                                          RadiusBottomRight: =14
+                                          RadiusTopLeft: =14
+                                          RadiusTopRight: =14
+                                          Size: =12
+                                          Text: =Coalesce(ThisItem.Kategori, "-")
+                                          Width: =If(ThisItem.Kategori = "Pendidikan (PTB)", 150, 120)
+                                          X: =32
+                                          Y: =26
+                                    - LastCKActionType:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =28
+                                          Text: =Coalesce(ThisItem.Tipe.Value, "-")
+                                          Width: =Parent.TemplateWidth - LastCKCategoryBadge.X - LastCKCategoryBadge.Width - 60
+                                          X: =LastCKCategoryBadge.X + LastCKCategoryBadge.Width + 16
+                                          Y: =25
+                                    - LastCKActionDetail:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          Font: =Font.'Open Sans'
+                                          Height: =42
+                                          Size: =13
+                                          Text: =Coalesce(ThisItem.Detail, "-")
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Width: =Parent.TemplateWidth - 64
+                                          X: =32
+                                          Y: =60
+                              - LastCKActionEmpty:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    Height: =90
+                                    Size: =12
+                                    Text: ="Belum ada Action Items dari Coaching Karir terakhir."
+                                    Visible: =IsEmpty(GalleryLastCKActionItems.AllItems)
+                                    Width: =Parent.Width
+                  - IDPAllSection:
+                      Control: GroupContainer@1.5.0
+                      Variant: AutoLayout
+                      Properties:
+                        DropShadow: =DropShadow.None
+                        FillPortions: =0
+                        Height: =560
+                        LayoutDirection: =LayoutDirection.Vertical
+                        LayoutGap: =10
+                        LayoutMinHeight: =560
+                        Width: =Parent.Width
+                      Children:
+                        - IDPAllHeading:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              DropShadow: =DropShadow.None
+                              FillPortions: =0
+                              Height: =44
+                              LayoutAlignItems: =LayoutAlignItems.Center
+                              LayoutDirection: =LayoutDirection.Horizontal
+                              LayoutGap: =12
+                              LayoutMinHeight: =44
+                              Width: =Parent.Width
+                            Children:
+                              - IDPAllTitle:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Color: =RGBA(31, 56, 100, 1)
+                                    FillPortions: =1
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Bold
+                                    Height: =40
+                                    Size: =18
+                                    Text: ="Daftar IDP"
+                              - BtnTambahIDP2:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(255, 255, 255, 1)
+                                    Fill: =RGBA(18, 38, 82, 1)
+                                    Font: =Font.'Open Sans'
+                                    FontWeight: =FontWeight.Semibold
+                                    Height: =40
+                                    OnSelect: |-
+                                      =Set(gblIDPEditMode, false);
+                                      Set(gblIDPReadOnly, false);
+                                      Set(gblSelectedIDP, Defaults(IDP));
+                                      Navigate(S5B_IDP_Edit, ScreenTransition.Fade)
+                                    RadiusBottomLeft: =6
+                                    RadiusBottomRight: =6
+                                    RadiusTopLeft: =6
+                                    RadiusTopRight: =6
+                                    Size: =12
+                                    Text: ="+ Tambah"
+                                    Visible: =!(Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false))
+                                    Width: =110
+                        - IDPTableCard:
+                            Control: GroupContainer@1.5.0
+                            Variant: AutoLayout
+                            Properties:
+                              BorderColor: =RGBA(225, 223, 221, 1)
+                              BorderThickness: =If(S5A_IDP_View.Size <= ScreenSize.Medium, 0, 1)
+                              DropShadow: =DropShadow.None
+                              Fill: =If(S5A_IDP_View.Size <= ScreenSize.Medium, RGBA(0, 0, 0, 0), RGBA(255, 255, 255, 1))
+                              LayoutDirection: =LayoutDirection.Vertical
+                              LayoutMinHeight: =480
+                              RadiusBottomLeft: =8
+                              RadiusBottomRight: =8
+                              RadiusTopLeft: =8
+                              RadiusTopRight: =8
+                              Width: =Parent.Width
+                            Children:
+                              - IDPTableHeader:
+                                  Control: GroupContainer@1.5.0
+                                  Variant: ManualLayout
+                                  Properties:
+                                    Fill: =RGBA(250, 249, 248, 1)
+                                    FillPortions: =0
+                                    Height: =70
+                                    LayoutMinHeight: =70
+                                    Visible: =S5A_IDP_View.Size > ScreenSize.Medium
+                                    Width: =Parent.Width
+                                  Children:
+                                    - HeaderTahunIDP:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =40
+                                          Size: =13
+                                          Text: ="TAHUN"
+                                          Width: =90
+                                          X: =24
+                                          Y: =18
+                                    - HeaderKategoriIDP:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =40
+                                          Size: =13
+                                          Text: ="KATEGORI"
+                                          Width: =170
+                                          X: =130
+                                          Y: =18
+                                    - HeaderTipeIDP:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =40
+                                          Size: =13
+                                          Text: ="TIPE"
+                                          Width: =Max(240, Parent.Width - 920)
+                                          X: =320
+                                          Y: =18
+                                    - HeaderEditedIDP:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =40
+                                          Size: =13
+                                          Text: ="LAST EDITED"
+                                          X: =Parent.Width - 560
+                                          Y: =18
+                                    - HeaderTargetIDP:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =40
+                                          Size: =13
+                                          Text: ="TARGET"
+                                          Width: =120
+                                          X: =Parent.Width - 330
+                                          Y: =18
+                                    - HeaderStatusIDP:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =40
+                                          Size: =13
+                                          Text: ="STATUS"
+                                          Width: =140
+                                          X: =Parent.Width - 180
+                                          Y: =18
+                              - GalleryIDP:
+                                  Control: Gallery@2.15.0
+                                  Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+                                  Properties:
+                                    Fill: =If(S5A_IDP_View.Size <= ScreenSize.Medium, RGBA(0, 0, 0, 0), RGBA(255, 255, 255, 1))
+                                    Items: |-
+                                      =With(
+                                          {
+                                              targetNIP: Trim(
+                                                  Text(
+                                                      If(
+                                                          (Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false)) && !IsBlank(gblSubjectNIP),
+                                                          gblSubjectNIP,
+                                                          gblCurrentNIP
+                                                      )
+                                                  )
+                                              )
+                                          },
+                                          Sort(
+                                              Filter(
+                                                  IDP,
+                                                  Trim(Text(NIP)) = targetNIP &&
+                                                  (
+                                                      !Coalesce(gblPimpinanView, false) ||
+                                                      IsApproved = true
+                                                  )
+                                              ),
+                                              Value(Tahun) * 100000 + Value(ID),
+                                              SortOrder.Descending
+                                          )
+                                      )
+                                    LayoutMinHeight: =380
+                                    TemplatePadding: =If(S5A_IDP_View.Size <= ScreenSize.Medium, 6, 0)
+                                    TemplateSize: =If(S5A_IDP_View.Size <= ScreenSize.Medium, 230, 105)
+                                  Children:
+                                    - IDPRowCurrentYearBackground:
+                                        Control: Rectangle@2.3.0
+                                        Properties:
+                                          Fill: =If(Value(ThisItem.Tahun) = Year(Today()), RGBA(245, 250, 255, 1), RGBA(255, 255, 255, 1))
+                                          Height: =Parent.TemplateHeight - 1
+                                          OnSelect: |-
+                                            =Set(gblSelectedIDP, ThisItem);
+                                            Set(gblIDPEditMode, true);
+                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false) || Value(ThisItem.Tahun) <> Year(Today()));
+                                            Navigate(S5B_IDP_Edit, ScreenTransition.Fade)
+                                          Visible: =S5A_IDP_View.Size > ScreenSize.Medium
+                                          Width: =Parent.TemplateWidth
+                                    - IDPTableDivider:
+                                        Control: Rectangle@2.3.0
+                                        Properties:
+                                          Fill: =RGBA(237, 235, 233, 1)
+                                          Height: =1
+                                          Visible: =S5A_IDP_View.Size > ScreenSize.Medium
+                                          Width: =Parent.TemplateWidth
+                                          Y: =Parent.TemplateHeight - 1
+                                    - IDPRowTahun:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Font: =Font.'Open Sans'
+                                          Height: =44
+                                          OnSelect: |-
+                                            =Set(gblSelectedIDP, ThisItem);
+                                            Set(gblIDPEditMode, true);
+                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false) || Value(ThisItem.Tahun) <> Year(Today()));
+                                            Navigate(S5B_IDP_Edit, ScreenTransition.Fade)
+                                          Size: =13
+                                          Text: =Text(ThisItem.Tahun)
+                                          Visible: =S5A_IDP_View.Size > ScreenSize.Medium
+                                          Width: =90
+                                          X: =24
+                                          Y: =30
+                                    - IDPRowKategoriBadge:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Center
+                                          Color: |-
+                                            =Switch(
+                                                ThisItem.Kategori,
+                                                "Pendidikan (PTB)", RGBA(0, 84, 153, 1),
+                                                "Sertifikasi", RGBA(0, 100, 0, 1),
+                                                "Exposure", RGBA(98, 48, 180, 1),
+                                                RGBA(50, 49, 48, 1)
+                                            )
+                                          Fill: |-
+                                            =Switch(
+                                                ThisItem.Kategori,
+                                                "Pendidikan (PTB)", RGBA(222, 236, 249, 1),
+                                                "Sertifikasi", RGBA(218, 242, 208, 1),
+                                                "Exposure", RGBA(239, 224, 255, 1),
+                                                RGBA(245, 245, 245, 1)
+                                            )
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =26
+                                          OnSelect: |-
+                                            =Set(gblSelectedIDP, ThisItem);
+                                            Set(gblIDPEditMode, true);
+                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false) || Value(ThisItem.Tahun) <> Year(Today()));
+                                            Navigate(S5B_IDP_Edit, ScreenTransition.Fade)
+                                          RadiusBottomLeft: =14
+                                          RadiusBottomRight: =14
+                                          RadiusTopLeft: =14
+                                          RadiusTopRight: =14
+                                          Size: =11
+                                          Text: =Coalesce(ThisItem.Kategori, "-")
+                                          Visible: =S5A_IDP_View.Size > ScreenSize.Medium
+                                          Width: =If(ThisItem.Kategori = "Pendidikan (PTB)", 150, 120)
+                                          X: =130
+                                          Y: =38
+                                    - IDPRowTipe:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Font: =Font.'Open Sans'
+                                          Height: =50
+                                          OnSelect: |-
+                                            =Set(gblSelectedIDP, ThisItem);
+                                            Set(gblIDPEditMode, true);
+                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false) || Value(ThisItem.Tahun) <> Year(Today()));
+                                            Navigate(S5B_IDP_Edit, ScreenTransition.Fade)
+                                          Size: =13
+                                          Text: =Coalesce(ThisItem.Tipe.Value, "-")
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Visible: =S5A_IDP_View.Size > ScreenSize.Medium
+                                          Width: =Max(240, Parent.TemplateWidth - 920)
+                                          X: =320
+                                          Y: =28
+                                    - IDPRowLastEdited:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          Font: =Font.'Open Sans'
+                                          Height: =50
+                                          OnSelect: |-
+                                            =Set(gblSelectedIDP, ThisItem);
+                                            Set(gblIDPEditMode, true);
+                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false) || Value(ThisItem.Tahun) <> Year(Today()));
+                                            Navigate(S5B_IDP_Edit, ScreenTransition.Fade)
+                                          Size: =11
+                                          Text: |-
+                                            =If(
+                                                IsBlank(ThisItem.Modified),
+                                                "-",
+                                                Text(ThisItem.Modified, "[$-id-ID]dd mmm yyyy HH:mm")
+                                            )
+                                          Visible: =S5A_IDP_View.Size > ScreenSize.Medium
+                                          X: =Parent.TemplateWidth - 560
+                                          Y: =28
+                                    - IDPRowTargetBadge:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Center
+                                          Color: =RGBA(0, 84, 153, 1)
+                                          Fill: =RGBA(222, 236, 249, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =26
+                                          OnSelect: |-
+                                            =Set(gblSelectedIDP, ThisItem);
+                                            Set(gblIDPEditMode, true);
+                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false) || Value(ThisItem.Tahun) <> Year(Today()));
+                                            Navigate(S5B_IDP_Edit, ScreenTransition.Fade)
+                                          RadiusBottomLeft: =14
+                                          RadiusBottomRight: =14
+                                          RadiusTopLeft: =14
+                                          RadiusTopRight: =14
+                                          Size: =11
+                                          Text: =Coalesce(ThisItem.Target, "-")
+                                          Visible: =S5A_IDP_View.Size > ScreenSize.Medium
+                                          Width: =74
+                                          X: =Parent.TemplateWidth - 330
+                                          Y: =38
+                                    - IDPRowStatusBadge:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Center
+                                          Color: |-
+                                            =Switch(
+                                                ThisItem.Status,
+                                                "Selesai", RGBA(0, 100, 0, 1),
+                                                "Proses", RGBA(0, 84, 153, 1),
+                                                "Dibatalkan", RGBA(196, 43, 28, 1),
+                                                "Draf", RGBA(96, 94, 92, 1),
+                                                RGBA(161, 98, 7, 1)
+                                            )
+                                          Fill: |-
+                                            =Switch(
+                                                ThisItem.Status,
+                                                "Selesai", RGBA(218, 242, 208, 1),
+                                                "Proses", RGBA(222, 236, 249, 1),
+                                                "Dibatalkan", RGBA(253, 231, 233, 1),
+                                                "Draf", RGBA(237, 235, 233, 1),
+                                                RGBA(255, 244, 206, 1)
+                                            )
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =26
+                                          OnSelect: |-
+                                            =Set(gblSelectedIDP, ThisItem);
+                                            Set(gblIDPEditMode, true);
+                                            Set(gblIDPReadOnly, Coalesce(gblPimpinanView, false) || Coalesce(gblLineManagerView, false) || Value(ThisItem.Tahun) <> Year(Today()));
+                                            Navigate(S5B_IDP_Edit, ScreenTransition.Fade)
+                                          RadiusBottomLeft: =14
+                                          RadiusBottomRight: =14
+                                          RadiusTopLeft: =14
+                                          RadiusTopRight: =14
+                                          Size: =11
+                                          Text: =Coalesce(ThisItem.Status, "Rencana")
+                                          Visible: =S5A_IDP_View.Size > ScreenSize.Medium
+                                          Width: =120
+                                          X: =Parent.TemplateWidth - 180
+                                          Y: =38
+                                    - IDPMobileItemCard:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          BorderColor: =RGBA(220, 218, 216, 1)
+                                          BorderStyle: =BorderStyle.Solid
+                                          BorderThickness: =1
+                                          Fill: =RGBA(252, 251, 250, 1)
+                                          Font: =Font.'Open Sans'
+                                          Height: =Parent.TemplateHeight - 12
+                                          OnSelect: |-
+                                            =Set(gblSelectedIDP, ThisItem);
+                                            Set(gblIDPEditMode, true);
+                                            Set(
+                                                gblIDPReadOnly,
+                                                Coalesce(gblPimpinanView, false) ||
+                                                Coalesce(gblLineManagerView, false) ||
+                                                Value(ThisItem.Tahun) <> Year(Today())
+                                            );
+                                            Navigate(S5B_IDP_Edit, ScreenTransition.Fade)
+                                          PaddingBottom: =0
+                                          PaddingLeft: =0
+                                          PaddingRight: =0
+                                          PaddingTop: =0
+                                          RadiusBottomLeft: =8
+                                          RadiusBottomRight: =8
+                                          RadiusTopLeft: =8
+                                          RadiusTopRight: =8
+                                          Text: =""
+                                          Visible: =S5A_IDP_View.Size <= ScreenSize.Medium
+                                          Width: =Parent.TemplateWidth - 8
+                                          X: =4
+                                          Y: =6
+                                    - IDPMobileYearLabel:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          OnSelect: =Select(IDPMobileItemCard)
+                                          Size: =9
+                                          Text: ="TAHUN"
+                                          Visible: =S5A_IDP_View.Size <= ScreenSize.Medium
+                                          Width: =80
+                                          X: =20
+                                          Y: =18
+                                    - IDPMobileYearValue:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(31, 56, 100, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          OnSelect: =Select(IDPMobileItemCard)
+                                          Size: =17
+                                          Text: =Text(ThisItem.Tahun)
+                                          Visible: =S5A_IDP_View.Size <= ScreenSize.Medium
+                                          Width: =90
+                                          X: =20
+                                          Y: =34
+                                    - IDPMobileCategoryBadge:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Center
+                                          Color: |-
+                                            =Switch(
+                                                ThisItem.Kategori,
+                                                "Pendidikan (PTB)", RGBA(0, 84, 153, 1),
+                                                "Sertifikasi", RGBA(0, 100, 0, 1),
+                                                "Exposure", RGBA(98, 48, 180, 1),
+                                                RGBA(50, 49, 48, 1)
+                                            )
+                                          Fill: |-
+                                            =Switch(
+                                                ThisItem.Kategori,
+                                                "Pendidikan (PTB)", RGBA(222, 236, 249, 1),
+                                                "Sertifikasi", RGBA(218, 242, 208, 1),
+                                                "Exposure", RGBA(239, 224, 255, 1),
+                                                RGBA(245, 245, 245, 1)
+                                            )
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =28
+                                          OnSelect: =Select(IDPMobileItemCard)
+                                          RadiusBottomLeft: =14
+                                          RadiusBottomRight: =14
+                                          RadiusTopLeft: =14
+                                          RadiusTopRight: =14
+                                          Size: =10
+                                          Text: =Coalesce(ThisItem.Kategori, "-")
+                                          Visible: =S5A_IDP_View.Size <= ScreenSize.Medium
+                                          Width: =Min(150, Parent.TemplateWidth - 140)
+                                          X: =Parent.TemplateWidth - Self.Width - 20
+                                          Y: =22
+                                    - IDPMobileDivider:
+                                        Control: Rectangle@2.3.0
+                                        Properties:
+                                          Fill: =RGBA(225, 223, 221, 1)
+                                          Height: =1
+                                          OnSelect: =Select(IDPMobileItemCard)
+                                          Visible: =S5A_IDP_View.Size <= ScreenSize.Medium
+                                          Width: =Parent.TemplateWidth - 40
+                                          X: =20
+                                          Y: =68
+                                    - IDPMobileTypeLabel:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          OnSelect: =Select(IDPMobileItemCard)
+                                          Size: =9
+                                          Text: ="TIPE PENGEMBANGAN"
+                                          Visible: =S5A_IDP_View.Size <= ScreenSize.Medium
+                                          Width: =Parent.TemplateWidth - 40
+                                          X: =20
+                                          Y: =80
+                                    - IDPMobileTypeValue:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Color: =RGBA(50, 49, 48, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Semibold
+                                          Height: =34
+                                          OnSelect: =Select(IDPMobileItemCard)
+                                          Size: =13
+                                          Text: =Coalesce(ThisItem.Tipe.Value, "-")
+                                          VerticalAlign: =VerticalAlign.Top
+                                          Visible: =S5A_IDP_View.Size <= ScreenSize.Medium
+                                          Width: =Parent.TemplateWidth - 40
+                                          X: =20
+                                          Y: =98
+                                    - IDPMobileTargetLabel:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          OnSelect: =Select(IDPMobileItemCard)
+                                          Size: =9
+                                          Text: ="TARGET"
+                                          Visible: =S5A_IDP_View.Size <= ScreenSize.Medium
+                                          Width: =80
+                                          X: =20
+                                          Y: =134
+                                    - IDPMobileTargetBadge:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Center
+                                          Color: =RGBA(0, 84, 153, 1)
+                                          Fill: =RGBA(222, 236, 249, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =26
+                                          OnSelect: =Select(IDPMobileItemCard)
+                                          RadiusBottomLeft: =13
+                                          RadiusBottomRight: =13
+                                          RadiusTopLeft: =13
+                                          RadiusTopRight: =13
+                                          Size: =10
+                                          Text: =Coalesce(ThisItem.Target, "-")
+                                          Visible: =S5A_IDP_View.Size <= ScreenSize.Medium
+                                          Width: =72
+                                          X: =20
+                                          Y: =156
+                                    - IDPMobileStatusLabel:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          AutoHeight: =true
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          OnSelect: =Select(IDPMobileItemCard)
+                                          Size: =9
+                                          Text: ="STATUS"
+                                          Visible: =S5A_IDP_View.Size <= ScreenSize.Medium
+                                          Width: =90
+                                          X: =112
+                                          Y: =134
+                                    - IDPMobileStatusBadge:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Center
+                                          Color: |-
+                                            =Switch(
+                                                ThisItem.Status,
+                                                "Selesai", RGBA(0, 100, 0, 1),
+                                                "Proses", RGBA(0, 84, 153, 1),
+                                                "Dibatalkan", RGBA(196, 43, 28, 1),
+                                                "Draf", RGBA(96, 94, 92, 1),
+                                                RGBA(161, 98, 7, 1)
+                                            )
+                                          Fill: |-
+                                            =Switch(
+                                                ThisItem.Status,
+                                                "Selesai", RGBA(218, 242, 208, 1),
+                                                "Proses", RGBA(222, 236, 249, 1),
+                                                "Dibatalkan", RGBA(253, 231, 233, 1),
+                                                "Draf", RGBA(237, 235, 233, 1),
+                                                RGBA(255, 244, 206, 1)
+                                            )
+                                          Font: =Font.'Open Sans'
+                                          FontWeight: =FontWeight.Bold
+                                          Height: =26
+                                          OnSelect: =Select(IDPMobileItemCard)
+                                          RadiusBottomLeft: =13
+                                          RadiusBottomRight: =13
+                                          RadiusTopLeft: =13
+                                          RadiusTopRight: =13
+                                          Size: =10
+                                          Text: =Coalesce(ThisItem.Status, "Rencana")
+                                          Visible: =S5A_IDP_View.Size <= ScreenSize.Medium
+                                          Width: =110
+                                          X: =112
+                                          Y: =156
+                                    - IDPMobileLastEdited:
+                                        Control: ModernText@1.0.0
+                                        Properties:
+                                          Align: =Align.Right
+                                          AutoHeight: =true
+                                          Color: =RGBA(96, 94, 92, 1)
+                                          Font: =Font.'Open Sans'
+                                          OnSelect: =Select(IDPMobileItemCard)
+                                          Size: =9
+                                          Text: |-
+                                            ="Diperbarui " &
+                                            If(
+                                                IsBlank(ThisItem.Modified),
+                                                "-",
+                                                Text(ThisItem.Modified, "[$-id-ID]dd mmm yyyy HH:mm")
+                                            )
+                                          Visible: =S5A_IDP_View.Size <= ScreenSize.Medium
+                                          Width: =Parent.TemplateWidth - 40
+                                          X: =20
+                                          Y: =194
+                              - IDPEmptyState:
+                                  Control: ModernText@1.0.0
+                                  Properties:
+                                    Align: =Align.Center
+                                    Color: =RGBA(96, 94, 92, 1)
+                                    Font: =Font.'Open Sans'
+                                    Height: =80
+                                    Size: =12
+                                    Text: ="Belum ada IDP di sistem."
+                                    Visible: =IsEmpty(GalleryIDP.AllItems)
+                                    Width: =Parent.Width
